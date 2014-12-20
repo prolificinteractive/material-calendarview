@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="TestTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#F00</item>
+    </style>
+
+</resources>
