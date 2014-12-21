@@ -1,17 +1,28 @@
 package com.adamkoski.sample;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.adamkoski.calendarwidget.CalendarWidget;
+import com.adamkoski.calendarwidget.OnDateChangedListener;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements OnDateChangedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        CalendarWidget widget = (CalendarWidget) findViewById(R.id.calendarView);
+        widget.setOnDateChangedListener(this);
     }
 
 
@@ -35,5 +46,12 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    static final DateFormat formatter = SimpleDateFormat.getDateInstance();
+
+    @Override
+    public void onDateChanged(CalendarWidget widget, Calendar date) {
+        Toast.makeText(this, formatter.format(date.getTime()), Toast.LENGTH_SHORT).show();
     }
 }

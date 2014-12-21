@@ -15,10 +15,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static java.util.Calendar.MONTH;
+
 /**
  *
  */
-public class CalendarWidget extends LinearLayout implements View.OnClickListener {
+public class CalendarWidget extends LinearLayout implements View.OnClickListener, MonthView.Callbacks {
 
     private static final DateFormat TITLE_FORMAT = new SimpleDateFormat("MMMM yyyy");
     private TextView title;
@@ -27,6 +29,8 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     private MonthView monthView;
 
     private Calendar calendar;
+
+    private OnDateChangedListener listener;
 
     public CalendarWidget(Context context) {
         super(context);
@@ -65,6 +69,8 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         buttonPast.setOnClickListener(this);
         buttonFuture.setOnClickListener(this);
 
+        monthView.setCallbacks(this);
+
         updateUi();
     }
 
@@ -76,12 +82,34 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.___calendar_widget_button_forward) {
-            calendar.add(Calendar.MONTH, 1);
+            calendar.add(MONTH, 1);
             updateUi();
         }
         else if(v.getId() == R.id.___calendar_widget_button_backwards) {
-            calendar.add(Calendar.MONTH, -1);
+            calendar.add(MONTH, -1);
             updateUi();
+        }
+    }
+
+    public void setOnDateChangedListener(OnDateChangedListener listener) {
+        this.listener = listener;
+    }
+
+    public Calendar getSelectedDate() {
+        return CalendarUtils.copy(calendar);
+    }
+
+    @Override
+    public void onDateChanged(Calendar date) {
+        int prevMonth = calendar.get(MONTH);
+        CalendarUtils.copyDateTo(date, calendar);
+        int month = calendar.get(MONTH);
+        if(prevMonth != month) {
+            updateUi();
+        }
+
+        if(listener != null) {
+            listener.onDateChanged(this, CalendarUtils.copy(calendar));
         }
     }
 }
