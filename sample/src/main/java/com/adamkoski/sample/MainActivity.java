@@ -6,12 +6,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.adamkoski.calendarwidget.CalendarDay;
 import com.adamkoski.calendarwidget.CalendarWidget;
 import com.adamkoski.calendarwidget.OnDateChangedListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 
 public class MainActivity extends ActionBarActivity implements OnDateChangedListener {
@@ -51,7 +51,7 @@ public class MainActivity extends ActionBarActivity implements OnDateChangedList
     static final DateFormat formatter = SimpleDateFormat.getDateInstance();
 
     @Override
-    public void onDateChanged(CalendarWidget widget, Calendar date) {
-        Toast.makeText(this, formatter.format(date.getTime()), Toast.LENGTH_SHORT).show();
+    public void onDateChanged(CalendarWidget widget, CalendarDay date) {
+        Toast.makeText(this, formatter.format(date.getDate()), Toast.LENGTH_SHORT).show();
     }
 }

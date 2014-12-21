@@ -12,7 +12,6 @@ import java.util.Calendar;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_WEEK;
-import static java.util.Calendar.MONTH;
 import static java.util.Calendar.SUNDAY;
 
 /**
@@ -22,7 +21,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
 
     public static interface Callbacks {
 
-        public void onDateChanged(Calendar date);
+        public void onDateChanged(CalendarDay date);
     }
 
     private Callbacks callbacks;
@@ -30,11 +29,10 @@ class MonthView extends GridLayout implements View.OnClickListener {
     private ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
     private ArrayList<DayView> monthDayViews = new ArrayList<>();
 
-    private Calendar calendar = CalendarUtils.copy(Calendar.getInstance());
-    private Calendar tempCal = CalendarUtils.copy(Calendar.getInstance());
-    private int dayOfWeek = SUNDAY;
-    private int month = calendar.get(MONTH);
-    private Calendar selection = CalendarUtils.copy(calendar);
+    private Calendar calendarOfRecord = CalendarUtils.copy(Calendar.getInstance());
+    private Calendar tempWorkingCalendar = CalendarUtils.copy(Calendar.getInstance());
+    private int firstDayOfWeek = SUNDAY;
+    private CalendarDay selection = new CalendarDay(calendarOfRecord);
 
     public MonthView(Context context) {
         super(context);
@@ -71,7 +69,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
             addView(dayView);
             weekDayViews.add(dayView);
         }
-        setFirstDayOfWeek(dayOfWeek);
+        setFirstDayOfWeek(firstDayOfWeek);
 
         for(int i = 0; i < 42; i++) {
             DayView dayView = new DayView(getContext());
@@ -82,21 +80,21 @@ class MonthView extends GridLayout implements View.OnClickListener {
         setTime(Calendar.getInstance());
     }
 
-    private Calendar getResetTempCal() {
-        CalendarUtils.copyDateTo(calendar, tempCal);
-        int dow = tempCal.get(DAY_OF_WEEK);
-        int delta = dayOfWeek - dow;
+    private Calendar resetAndGetWorkingCalendar() {
+        CalendarUtils.copyDateTo(calendarOfRecord, tempWorkingCalendar);
+        int dow = tempWorkingCalendar.get(DAY_OF_WEEK);
+        int delta = firstDayOfWeek - dow;
         if(delta >= 0) { //TODO add logic for '>=' week above VS '>' week below
             delta -= 7;
         }
-        tempCal.add(DATE, delta);
-        return tempCal;
+        tempWorkingCalendar.add(DATE, delta);
+        return tempWorkingCalendar;
     }
 
     public void setFirstDayOfWeek(int dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+        this.firstDayOfWeek = dayOfWeek;
 
-        Calendar calendar = getResetTempCal();
+        Calendar calendar = resetAndGetWorkingCalendar();
         calendar.set(DAY_OF_WEEK, dayOfWeek);
         for(WeekDayView dayView : weekDayViews) {
             dayView.setDayOfWeek(calendar.get(DAY_OF_WEEK));
@@ -105,14 +103,14 @@ class MonthView extends GridLayout implements View.OnClickListener {
     }
 
     public void setTime(Calendar cal) {
-        CalendarUtils.copyDateTo(cal, this.calendar);
-        this.month = cal.get(MONTH);
-        CalendarUtils.setToFirstDay(calendar);
+        CalendarUtils.copyDateTo(cal, calendarOfRecord);
+        CalendarUtils.setToFirstDay(calendarOfRecord);
 
-        Calendar calendar = getResetTempCal();
+        Calendar calendar = resetAndGetWorkingCalendar();
         for(DayView dayView : monthDayViews) {
-            dayView.setDay(calendar);
-            dayView.setChecked(CalendarUtils.equals(selection, calendar));
+            CalendarDay day = new CalendarDay(calendar);
+            dayView.setDay(day);
+            dayView.setChecked(day.equals(selection));
             calendar.add(DATE, 1);
         }
     }
@@ -130,11 +128,11 @@ class MonthView extends GridLayout implements View.OnClickListener {
             DayView dayView = (DayView) v;
             dayView.setChecked(true);
 
-            Calendar date = dayView.getDate();
-            if(CalendarUtils.equals(date, selection)) {
+            CalendarDay date = dayView.getDate();
+            if(date.equals(selection)) {
                 return;
             }
-            CalendarUtils.copyDateTo(date, selection);
+            selection = date;
 
             if(callbacks != null) {
                 callbacks.onDateChanged(dayView.getDate());
