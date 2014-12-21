@@ -18,6 +18,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.CheckedTextView;
 
+import com.adamkoski.library.calendarwidget.R;
+
 /**
  * Display one day
  */
@@ -48,6 +50,7 @@ class DayView extends CheckedTextView {
 
     private void init() {
         setBackgroundDrawable(generateBackground());
+        setTextColor(getResources().getColorStateList(R.color.cw__indicator_text));
 
         int dp40 = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics()

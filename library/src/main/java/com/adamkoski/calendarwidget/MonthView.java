@@ -12,6 +12,7 @@ import java.util.Calendar;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_WEEK;
+import static java.util.Calendar.MONTH;
 import static java.util.Calendar.SUNDAY;
 
 /**
@@ -84,7 +85,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
         CalendarUtils.copyDateTo(calendarOfRecord, tempWorkingCalendar);
         int dow = tempWorkingCalendar.get(DAY_OF_WEEK);
         int delta = firstDayOfWeek - dow;
-        if(delta >= 0) { //TODO add logic for '>=' week above VS '>' week below
+        if(delta >= 0) {
             delta -= 7;
         }
         tempWorkingCalendar.add(DATE, delta);
@@ -106,10 +107,12 @@ class MonthView extends GridLayout implements View.OnClickListener {
         CalendarUtils.copyDateTo(cal, calendarOfRecord);
         CalendarUtils.setToFirstDay(calendarOfRecord);
 
+        int ourMonth = calendarOfRecord.get(MONTH);
         Calendar calendar = resetAndGetWorkingCalendar();
         for(DayView dayView : monthDayViews) {
             CalendarDay day = new CalendarDay(calendar);
             dayView.setDay(day);
+            dayView.setActivated(day.getMonth() == ourMonth);
             dayView.setChecked(day.equals(selection));
             calendar.add(DATE, 1);
         }

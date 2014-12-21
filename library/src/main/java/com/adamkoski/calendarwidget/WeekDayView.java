@@ -4,10 +4,9 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
-
-import com.adamkoski.library.calendarwidget.R;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -42,11 +41,16 @@ class WeekDayView extends TextView {
     }
 
     private void init() {
-        setBackgroundResource(R.drawable.cw__indicator_normal);
         setGravity(Gravity.CENTER);
         if(isInEditMode()) {
             setText("Mon");
         }
+
+        int dp40 = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics()
+        );
+        setMinimumWidth(dp40);
+        setMinimumHeight(dp40);
     }
 
     public void setDayOfWeek(int dayOfWeek) {

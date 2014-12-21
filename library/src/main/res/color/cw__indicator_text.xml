@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+          android:enterFadeDuration="200">
+
+    <item android:state_activated="false"
+          android:color="@color/dim_foreground_disabled_material_dark"/>
+
+    <item android:state_selected="true"
+          android:state_activated="true"
+          android:color="@color/primary_text_default_material_dark"/>
+
+    <item android:state_checked="true"
+          android:state_activated="true"
+          android:color="@color/primary_text_default_material_dark"/>
+
+    <item android:state_pressed="true"
+          android:state_activated="true"
+          android:color="@color/primary_text_default_material_dark"/>
+
+    <item android:state_focused="true"
+          android:state_activated="true"
+          android:color="@color/primary_text_default_material_dark"/>
+
+    <item
+        android:color="@color/primary_text_default_material_light"/>
+
+</selector>
