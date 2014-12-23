@@ -9,6 +9,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -39,12 +41,14 @@ class DirectionButton extends ImageView {
     }
 
     private void init() {
-        setColor(Color.RED);
-        int dp48 = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics()
+        setColor(Color.GRAY);
+        int dp40 = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics()
         );
-        setMinimumWidth(dp48);
-        setMinimumHeight(dp48);
+        //setMinimumWidth(dp40);
+        //setMinimumHeight(dp40);
+
+        setLayoutParams(new ViewGroup.LayoutParams(dp40, dp40));
 
         TypedValue out = new TypedValue();
         Resources.Theme theme = getContext().getTheme();

@@ -65,6 +65,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         buttonFuture = (DirectionButton) findViewById(R.id.___calendar_widget_button_forward);
         monthView = (MonthView) findViewById(R.id.___calendar_widget_month);
 
+        title.setOnClickListener(this);
         buttonPast.setOnClickListener(this);
         buttonFuture.setOnClickListener(this);
 
@@ -107,6 +108,9 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         else if(v.getId() == R.id.___calendar_widget_button_backwards) {
             calendar.add(MONTH, -1);
             updateUi();
+        }
+        else if(v.getId() == R.id.___calendar_widget_title) {
+            //TODO show year selector
         }
     }
 

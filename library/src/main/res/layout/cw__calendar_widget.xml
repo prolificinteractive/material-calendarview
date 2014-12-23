@@ -17,10 +17,11 @@
 
         <com.adamkoski.calendarwidget.DirectionButton
             android:src="@drawable/cw__action_previous"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerInside"
             android:id="@+id/___calendar_widget_button_backwards"
-            style="?android:attr/borderlessButtonStyle"
+            android:background="?android:attr/selectableItemBackground"
             />
 
         <TextView
@@ -31,14 +32,16 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             tools:text="January 2014"
             android:id="@+id/___calendar_widget_title"
+            android:background="?android:attr/selectableItemBackground"
             />
 
         <com.adamkoski.calendarwidget.DirectionButton
             android:src="@drawable/cw__action_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerInside"
             android:id="@+id/___calendar_widget_button_forward"
-            style="?android:attr/borderlessButtonStyle"
+            android:background="?android:attr/selectableItemBackground"
             />
     </LinearLayout>
 
