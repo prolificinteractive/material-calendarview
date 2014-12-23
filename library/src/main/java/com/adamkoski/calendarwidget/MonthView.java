@@ -61,9 +61,6 @@ class MonthView extends GridLayout implements View.OnClickListener {
 
         setColumnCount(7);
         setRowCount(7);
-        setClipChildren(false);
-        setPadding(8, 8, 8, 8);
-        setClipToPadding(false);
 
         for(int i = 0; i < 7; i++) {
             WeekDayView dayView = new WeekDayView(getContext());
@@ -79,6 +76,12 @@ class MonthView extends GridLayout implements View.OnClickListener {
             dayView.setOnClickListener(this);
         }
         setTime(Calendar.getInstance());
+    }
+
+    public void setColor(int color) {
+        for(DayView dayView : monthDayViews) {
+            dayView.setColor(color);
+        }
     }
 
     private Calendar resetAndGetWorkingCalendar() {

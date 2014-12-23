@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -75,6 +76,26 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     private void updateUi() {
         title.setText(TITLE_FORMAT.format(calendar.getTime()));
         monthView.setTime(calendar);
+        setColor(getAccentColor());
+    }
+
+    private int getAccentColor() {
+        int colorAttr = 0;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            colorAttr = R.attr.colorAccent;
+        }
+        else {
+            colorAttr = getResources().getIdentifier("attr:colorAccent", "attr", null);
+        }
+        TypedValue outValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(colorAttr, outValue, true);
+        return outValue.data;
+    }
+
+    public void setColor(int color) {
+        buttonPast.setColor(color);
+        buttonFuture.setColor(color);
+        monthView.setColor(color);
     }
 
     @Override
