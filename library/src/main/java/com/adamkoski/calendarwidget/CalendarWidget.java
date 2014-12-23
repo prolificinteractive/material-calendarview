@@ -15,6 +15,7 @@ import com.adamkoski.library.calendarwidget.R;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import static java.util.Calendar.MONTH;
 
@@ -29,7 +30,10 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     private DirectionButton buttonFuture;
     private MonthView monthView;
 
-    private Calendar calendar = CalendarUtils.copy(Calendar.getInstance());
+    private Calendar calendar;
+    private Calendar selectedDate = CalendarUtils.copy(Calendar.getInstance());
+    private CalendarDay minDate = null;
+    private CalendarDay maxDate = null;
 
     private OnDateChangedListener listener;
 
@@ -56,6 +60,9 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
 
     private void init() {
 
+        calendar = Calendar.getInstance();
+        CalendarUtils.setToFirstDay(calendar);
+
         setOrientation(VERTICAL);
 
         LayoutInflater.from(getContext()).inflate(R.layout.cw__calendar_widget, this);
@@ -76,8 +83,33 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
 
     private void updateUi() {
         title.setText(TITLE_FORMAT.format(calendar.getTime()));
-        monthView.setTime(calendar);
+        monthView.setMinimumDate(minDate);
+        monthView.setMaximumDate(maxDate);
+        monthView.setSelectedDate(selectedDate);
+        monthView.setDate(calendar);
+        buttonPast.setEnabled(canGoBack());
+        buttonFuture.setEnabled(canGoForward());
+
         setColor(getAccentColor());
+    }
+
+    private boolean canGoForward() {
+        if(maxDate == null) {
+            return true;
+        }
+
+        Calendar maxCal = maxDate.getCalendar();
+        maxCal.add(MONTH, -1);
+        return maxCal.compareTo(calendar) >= 0;
+    }
+
+    private boolean canGoBack() {
+        if(minDate == null) {
+            return true;
+        }
+
+        Calendar minCal = minDate.getCalendar();
+        return minCal.compareTo(calendar) < 0;
     }
 
     private int getAccentColor() {
@@ -86,7 +118,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
             colorAttr = R.attr.colorAccent;
         }
         else {
-            colorAttr = getResources().getIdentifier("attr:colorAccent", "attr", null);
+            colorAttr = getResources().getIdentifier("colorAccent", "attr", getContext().getPackageName());
         }
         TypedValue outValue = new TypedValue();
         getContext().getTheme().resolveAttribute(colorAttr, outValue, true);
@@ -119,17 +151,37 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     }
 
     public CalendarDay getSelectedDate() {
-        return new CalendarDay(calendar);
+        return new CalendarDay(selectedDate);
+    }
+
+    public void setSelectedDate(Calendar calendar) {
+        setSelectedDate(new CalendarDay(calendar));
+    }
+
+    public void setSelectedDate(Date date) {
+        setSelectedDate(new CalendarDay(date));
+    }
+
+    public void setSelectedDate(CalendarDay day) {
+        day.copyTo(selectedDate);
+        day.copyTo(calendar);
+        CalendarUtils.setToFirstDay(calendar);
+        updateUi();
+    }
+
+    public void setMinimumDate(Calendar calendar) {
+        minDate = calendar == null ? null : new CalendarDay(calendar);
+        updateUi();
+    }
+
+    public void setMaximumDate(Calendar calendar) {
+        maxDate = calendar == null ? null : new CalendarDay(calendar);
+        updateUi();
     }
 
     @Override
     public void onDateChanged(CalendarDay date) {
-        int prevMonth = calendar.get(MONTH);
-        date.copyTo(calendar);
-        int month = calendar.get(MONTH);
-        if(prevMonth != month) {
-            updateUi();
-        }
+        setSelectedDate(date);
 
         if(listener != null) {
             listener.onDateChanged(this, date);

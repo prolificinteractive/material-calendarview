@@ -33,6 +33,10 @@ public final class CalendarDay implements Parcelable {
         this.day = day;
     }
 
+    public CalendarDay(Date date) {
+        this(CalendarUtils.fromDate(date));
+    }
+
     public int getYear() {
         return year;
     }
@@ -111,4 +115,21 @@ public final class CalendarDay implements Parcelable {
             return new CalendarDay[size];
         }
     };
+
+    public boolean isInRange(CalendarDay minDate, CalendarDay maxDate) {
+        return !(minDate != null && minDate.isAfter(this)) &&
+                !(maxDate != null && maxDate.isBefore(this));
+    }
+
+    public boolean isBefore(CalendarDay other) {
+        return (year == other.year) ?
+                ((month == other.month) ? (day < other.day) : (month < other.month)) :
+                (year < other.year);
+    }
+
+    public boolean isAfter(CalendarDay other) {
+        return (year == other.year) ?
+                ((month == other.month) ? (day > other.day) : (month > other.month)) :
+                (year > other.year);
+    }
 }

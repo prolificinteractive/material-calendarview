@@ -12,6 +12,7 @@ import com.adamkoski.calendarwidget.OnDateChangedListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 public class MainActivity extends ActionBarActivity implements OnDateChangedListener {
@@ -23,6 +24,17 @@ public class MainActivity extends ActionBarActivity implements OnDateChangedList
 
         CalendarWidget widget = (CalendarWidget) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
+
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.add(Calendar.DATE, -100);
+        widget.setMinimumDate(calendar);
+
+        calendar.add(Calendar.DATE, 100);
+        widget.setSelectedDate(calendar);
+
+        calendar.add(Calendar.DATE, 100);
+        widget.setMaximumDate(calendar);
     }
 
 

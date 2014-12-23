@@ -33,7 +33,10 @@ class MonthView extends GridLayout implements View.OnClickListener {
     private Calendar calendarOfRecord = CalendarUtils.copy(Calendar.getInstance());
     private Calendar tempWorkingCalendar = CalendarUtils.copy(Calendar.getInstance());
     private int firstDayOfWeek = SUNDAY;
+
     private CalendarDay selection = new CalendarDay(calendarOfRecord);
+    private CalendarDay minDate = null;
+    private CalendarDay maxDate = null;
 
     public MonthView(Context context) {
         super(context);
@@ -75,7 +78,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
             monthDayViews.add(dayView);
             dayView.setOnClickListener(this);
         }
-        setTime(Calendar.getInstance());
+        setSelectedDate(new CalendarDay());
     }
 
     public void setColor(int color) {
@@ -106,16 +109,40 @@ class MonthView extends GridLayout implements View.OnClickListener {
         }
     }
 
-    public void setTime(Calendar cal) {
-        CalendarUtils.copyDateTo(cal, calendarOfRecord);
-        CalendarUtils.setToFirstDay(calendarOfRecord);
+    public void setMinimumDate(CalendarDay minDate) {
+        this.minDate = minDate;
+        updateUi();
+    }
 
+    public void setMaximumDate(CalendarDay maxDate) {
+        this.maxDate = maxDate;
+        updateUi();
+    }
+
+    public void setDate(Calendar calendar) {
+        CalendarUtils.copyDateTo(calendar, calendarOfRecord);
+        CalendarUtils.setToFirstDay(calendarOfRecord);
+        updateUi();
+    }
+
+
+    public void setSelectedDate(Calendar cal) {
+        setSelectedDate(new CalendarDay(cal));
+    }
+
+    public void setSelectedDate(CalendarDay cal) {
+        selection = cal;
+        updateUi();
+    }
+
+    private void updateUi() {
         int ourMonth = calendarOfRecord.get(MONTH);
         Calendar calendar = resetAndGetWorkingCalendar();
         for(DayView dayView : monthDayViews) {
             CalendarDay day = new CalendarDay(calendar);
             dayView.setDay(day);
             dayView.setActivated(day.getMonth() == ourMonth);
+            dayView.setEnabled(day.isInRange(minDate, maxDate));
             dayView.setChecked(day.equals(selection));
             calendar.add(DATE, 1);
         }
