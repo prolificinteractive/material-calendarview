@@ -3,10 +3,8 @@ package com.adamkoski.calendarwidget;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
-import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
@@ -14,7 +12,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -84,8 +81,7 @@ class DayView extends CheckedTextView {
         drawable.addState(new int[] { android.R.attr.state_checked }, generateCircleDrawable(color));
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             drawable.addState(new int[] { android.R.attr.state_pressed }, generateRippleDrawable(color));
-        }
-        else {
+        } else {
             drawable.addState(new int[] { android.R.attr.state_pressed }, generateCircleDrawable(color));
         }
         drawable.addState(new int[] { }, generateCircleDrawable(Color.TRANSPARENT));

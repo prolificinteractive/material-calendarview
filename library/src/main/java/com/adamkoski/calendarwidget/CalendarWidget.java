@@ -115,7 +115,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     private int getAccentColor() {
         int colorAttr = 0;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            colorAttr = R.attr.colorAccent;
+            colorAttr = android.R.attr.colorAccent;
         }
         else {
             colorAttr = getResources().getIdentifier("colorAccent", "attr", getContext().getPackageName());
