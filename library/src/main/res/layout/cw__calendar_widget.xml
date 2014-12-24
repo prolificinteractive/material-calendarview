@@ -45,9 +45,12 @@
             />
     </LinearLayout>
 
-    <FrameLayout
+    <ViewSwitcher
+        android:id="@+id/___calendar_widget_switcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inAnimation="@android:anim/fade_in"
+        android:outAnimation="@android:anim/fade_out"
         >
 
         <com.adamkoski.calendarwidget.MonthView
@@ -57,6 +60,13 @@
             android:layout_gravity="center"
             />
 
-    </FrameLayout>
+        <NumberPicker
+            android:id="@+id/___calendar_widget_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+
+    </ViewSwitcher>
 
 </LinearLayout>

@@ -7,7 +7,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.adamkoski.library.calendarwidget.R;
 
@@ -21,14 +23,16 @@ import static java.util.Calendar.MONTH;
 /**
  *
  */
-public class CalendarWidget extends LinearLayout implements View.OnClickListener, MonthView.Callbacks {
+public class CalendarWidget extends LinearLayout implements View.OnClickListener, MonthView.Callbacks, NumberPicker.OnValueChangeListener {
 
     private static final DateFormat TITLE_FORMAT = new SimpleDateFormat("MMMM yyyy");
 
     private final TextView title;
     private final DirectionButton buttonPast;
     private final DirectionButton buttonFuture;
+    private final ViewSwitcher switcher;
     private final MonthView monthView;
+    private final NumberPicker yearView;
 
     private final Calendar calendar = Calendar.getInstance();
     private final Calendar selectedDate = CalendarUtils.copy(Calendar.getInstance());
@@ -53,7 +57,11 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         title = (TextView) findViewById(R.id.___calendar_widget_title);
         buttonPast = (DirectionButton) findViewById(R.id.___calendar_widget_button_backwards);
         buttonFuture = (DirectionButton) findViewById(R.id.___calendar_widget_button_forward);
+        switcher = (ViewSwitcher) findViewById(R.id.___calendar_widget_switcher);
         monthView = (MonthView) findViewById(R.id.___calendar_widget_month);
+        yearView = (NumberPicker) findViewById(R.id.___calendar_widget_year);
+
+        yearView.setOnValueChangedListener(this);
 
         title.setOnClickListener(this);
         buttonPast.setOnClickListener(this);
@@ -72,6 +80,10 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         monthView.setDate(calendar);
         buttonPast.setEnabled(canGoBack());
         buttonFuture.setEnabled(canGoForward());
+
+        yearView.setMinValue(minDate == null ? 0 : minDate.getYear());
+        yearView.setMaxValue(maxDate == null ? 0 : maxDate.getYear());
+        yearView.setValue(calendar.get(Calendar.YEAR));
 
         setColor(getAccentColor());
     }
@@ -122,7 +134,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
             calendar.add(MONTH, -1);
             updateUi();
         } else if(v.getId() == R.id.___calendar_widget_title) {
-            //TODO show year selector
+            switcher.showNext();
         }
     }
 
@@ -166,5 +178,22 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         if(listener != null) {
             listener.onDateChanged(this, date);
         }
+    }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+        calendar.set(Calendar.YEAR, newVal);
+        clampCalendar();
+        updateUi();
+    }
+
+    private void clampCalendar() {
+        if(maxDate != null && maxDate.getCalendar().compareTo(calendar) < 0) {
+            maxDate.copyTo(calendar);
+        }
+        if(minDate != null && minDate.getCalendar().compareTo(calendar) > 0) {
+            minDate.copyTo(calendar);
+        }
+        CalendarUtils.setToFirstDay(calendar);
     }
 }
