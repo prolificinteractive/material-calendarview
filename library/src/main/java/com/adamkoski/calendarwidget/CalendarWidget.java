@@ -1,6 +1,5 @@
 package com.adamkoski.calendarwidget;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -25,42 +24,26 @@ import static java.util.Calendar.MONTH;
 public class CalendarWidget extends LinearLayout implements View.OnClickListener, MonthView.Callbacks {
 
     private static final DateFormat TITLE_FORMAT = new SimpleDateFormat("MMMM yyyy");
-    private TextView title;
-    private DirectionButton buttonPast;
-    private DirectionButton buttonFuture;
-    private MonthView monthView;
 
-    private Calendar calendar;
-    private Calendar selectedDate = CalendarUtils.copy(Calendar.getInstance());
+    private final TextView title;
+    private final DirectionButton buttonPast;
+    private final DirectionButton buttonFuture;
+    private final MonthView monthView;
+
+    private final Calendar calendar = Calendar.getInstance();
+    private final Calendar selectedDate = CalendarUtils.copy(Calendar.getInstance());
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
 
     private OnDateChangedListener listener;
 
     public CalendarWidget(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public CalendarWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
 
-    public CalendarWidget(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public CalendarWidget(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
-
-    private void init() {
-
-        calendar = Calendar.getInstance();
         CalendarUtils.setToFirstDay(calendar);
 
         setOrientation(VERTICAL);
@@ -116,8 +99,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         int colorAttr = 0;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             colorAttr = android.R.attr.colorAccent;
-        }
-        else {
+        } else {
             colorAttr = getResources().getIdentifier("colorAccent", "attr", getContext().getPackageName());
         }
         TypedValue outValue = new TypedValue();
@@ -136,12 +118,10 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         if(v.getId() == R.id.___calendar_widget_button_forward) {
             calendar.add(MONTH, 1);
             updateUi();
-        }
-        else if(v.getId() == R.id.___calendar_widget_button_backwards) {
+        } else if(v.getId() == R.id.___calendar_widget_button_backwards) {
             calendar.add(MONTH, -1);
             updateUi();
-        }
-        else if(v.getId() == R.id.___calendar_widget_title) {
+        } else if(v.getId() == R.id.___calendar_widget_title) {
             //TODO show year selector
         }
     }

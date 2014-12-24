@@ -1,11 +1,11 @@
 package com.adamkoski.calendarwidget;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.GridLayout;
+
+import com.adamkoski.library.calendarwidget.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,11 +27,11 @@ class MonthView extends GridLayout implements View.OnClickListener {
 
     private Callbacks callbacks;
 
-    private ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
-    private ArrayList<DayView> monthDayViews = new ArrayList<>();
+    private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
+    private final ArrayList<DayView> monthDayViews = new ArrayList<>();
 
-    private Calendar calendarOfRecord = CalendarUtils.copy(Calendar.getInstance());
-    private Calendar tempWorkingCalendar = CalendarUtils.copy(Calendar.getInstance());
+    private final Calendar calendarOfRecord = CalendarUtils.copy(Calendar.getInstance());
+    private final Calendar tempWorkingCalendar = CalendarUtils.copy(Calendar.getInstance());
     private int firstDayOfWeek = SUNDAY;
 
     private CalendarDay selection = new CalendarDay(calendarOfRecord);
@@ -39,41 +39,26 @@ class MonthView extends GridLayout implements View.OnClickListener {
     private CalendarDay maxDate = null;
 
     public MonthView(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public MonthView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
-
-    public MonthView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public MonthView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
-
-    private void init() {
 
         setColumnCount(7);
         setRowCount(7);
 
+        int size = getResources().getDimensionPixelSize(R.dimen.cw__default_day_size);
+
         for(int i = 0; i < 7; i++) {
-            WeekDayView dayView = new WeekDayView(getContext());
+            WeekDayView dayView = new WeekDayView(getContext(), size);
             addView(dayView);
             weekDayViews.add(dayView);
         }
         setFirstDayOfWeek(firstDayOfWeek);
 
         for(int i = 0; i < 42; i++) {
-            DayView dayView = new DayView(getContext());
+            DayView dayView = new DayView(getContext(), size);
             addView(dayView);
             monthDayViews.add(dayView);
             dayView.setOnClickListener(this);

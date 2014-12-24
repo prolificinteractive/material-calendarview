@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="cw__day_size">42dp</dimen>
+    <dimen name="cw__default_day_size">40dp</dimen>
 
 </resources>

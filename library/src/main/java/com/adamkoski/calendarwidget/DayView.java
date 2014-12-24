@@ -1,5 +1,6 @@
 package com.adamkoski.calendarwidget;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -12,8 +13,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
-import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.CheckedTextView;
 
@@ -22,44 +21,24 @@ import com.adamkoski.library.calendarwidget.R;
 /**
  * Display one day
  */
+@SuppressLint("ViewConstructor")
 class DayView extends CheckedTextView {
 
     private CalendarDay date = new CalendarDay();
     private int color = Color.GRAY;
 
-    public DayView(Context context) {
+    public DayView(Context context, int size) {
         super(context);
-        init();
-    }
 
-    public DayView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public DayView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public DayView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
-
-    private void init() {
         setColor(this.color);
 
         setTextColor(getResources().getColorStateList(R.color.cw__indicator_text));
 
-        int dp40 = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics()
-        );
-        setMinimumWidth(dp40);
-        setMinimumHeight(dp40);
+        setMinimumWidth(size);
+        setMinimumHeight(size);
 
         setGravity(Gravity.CENTER);
+
         if(isInEditMode()) {
             setText("99");
         }
