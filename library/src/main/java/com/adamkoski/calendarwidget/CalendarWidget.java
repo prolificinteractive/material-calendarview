@@ -18,8 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static java.util.Calendar.MONTH;
-
 /**
  *
  */
@@ -34,8 +32,8 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     private final MonthView monthView;
     private final NumberPicker yearView;
 
-    private final Calendar calendar = Calendar.getInstance();
-    private final Calendar selectedDate = CalendarUtils.copy(Calendar.getInstance());
+    private final CalendarWrapper calendar = CalendarWrapper.getInstance();
+    private final CalendarWrapper selectedDate = CalendarWrapper.getInstance();
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
 
@@ -48,7 +46,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     public CalendarWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        CalendarUtils.setToFirstDay(calendar);
+        calendar.setToFirstDay();
 
         setOrientation(VERTICAL);
 
@@ -83,7 +81,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
 
         yearView.setMinValue(minDate == null ? 0 : minDate.getYear());
         yearView.setMaxValue(maxDate == null ? 0 : maxDate.getYear());
-        yearView.setValue(calendar.get(Calendar.YEAR));
+        yearView.setValue(calendar.getYear());
 
         setColor(getAccentColor());
     }
@@ -94,8 +92,8 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         }
 
         Calendar maxCal = maxDate.getCalendar();
-        maxCal.add(MONTH, -1);
-        return maxCal.compareTo(calendar) >= 0;
+        maxCal.add(Calendar.MONTH, -1);
+        return calendar.compareTo(maxCal) < 0;
     }
 
     private boolean canGoBack() {
@@ -104,7 +102,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         }
 
         Calendar minCal = minDate.getCalendar();
-        return minCal.compareTo(calendar) < 0;
+        return calendar.compareTo(minCal) >= 0;
     }
 
     private int getAccentColor() {
@@ -128,10 +126,10 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.___calendar_widget_button_forward) {
-            calendar.add(MONTH, 1);
+            calendar.add(Calendar.MONTH, 1);
             updateUi();
         } else if(v.getId() == R.id.___calendar_widget_button_backwards) {
-            calendar.add(MONTH, -1);
+            calendar.add(Calendar.MONTH, -1);
             updateUi();
         } else if(v.getId() == R.id.___calendar_widget_title) {
             switcher.showNext();
@@ -157,7 +155,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     public void setSelectedDate(CalendarDay day) {
         day.copyTo(selectedDate);
         day.copyTo(calendar);
-        CalendarUtils.setToFirstDay(calendar);
+        calendar.setToFirstDay();
         updateUi();
     }
 
@@ -188,12 +186,12 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     }
 
     private void clampCalendar() {
-        if(maxDate != null && maxDate.getCalendar().compareTo(calendar) < 0) {
+        if(maxDate != null && calendar.compareTo(maxDate.getCalendar()) >= 0) {
             maxDate.copyTo(calendar);
         }
-        if(minDate != null && minDate.getCalendar().compareTo(calendar) > 0) {
+        if(minDate != null && calendar.compareTo(minDate.getCalendar()) <= 0) {
             minDate.copyTo(calendar);
         }
-        CalendarUtils.setToFirstDay(calendar);
+        calendar.setToFirstDay();
     }
 }

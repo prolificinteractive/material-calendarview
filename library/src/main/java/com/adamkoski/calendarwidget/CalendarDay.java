@@ -6,6 +6,10 @@ import android.os.Parcelable;
 import java.util.Calendar;
 import java.util.Date;
 
+import static java.util.Calendar.DATE;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
+
 /**
  *
  */
@@ -21,9 +25,9 @@ public final class CalendarDay implements Parcelable {
 
     public CalendarDay(Calendar calendar) {
         this(
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DATE)
+                calendar.get(YEAR),
+                calendar.get(MONTH),
+                calendar.get(DATE)
         );
     }
 
@@ -34,7 +38,11 @@ public final class CalendarDay implements Parcelable {
     }
 
     public CalendarDay(Date date) {
-        this(CalendarUtils.fromDate(date));
+        this(CalendarWrapper.getInstance(date));
+    }
+
+    public CalendarDay(CalendarWrapper selectedDate) {
+        this(selectedDate.innerCalendar);
     }
 
     public int getYear() {
@@ -60,6 +68,11 @@ public final class CalendarDay implements Parcelable {
     }
 
     public void copyTo(Calendar calendar) {
+        calendar.clear();
+        calendar.set(year, month, day);
+    }
+
+    void copyTo(CalendarWrapper calendar) {
         calendar.clear();
         calendar.set(year, month, day);
     }
