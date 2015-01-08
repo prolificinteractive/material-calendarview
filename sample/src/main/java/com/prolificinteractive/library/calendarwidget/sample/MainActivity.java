@@ -1,12 +1,12 @@
-package com.adamkoski.sample;
+package com.prolificinteractive.library.calendarwidget.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
-import com.adamkoski.calendarwidget.CalendarDay;
-import com.adamkoski.calendarwidget.CalendarWidget;
-import com.adamkoski.calendarwidget.OnDateChangedListener;
+import com.prolificinteractive.library.calendarwidget.CalendarDay;
+import com.prolificinteractive.library.calendarwidget.CalendarWidget;
+import com.prolificinteractive.library.calendarwidget.OnDateChangedListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,14 +26,12 @@ public class MainActivity extends ActionBarActivity implements OnDateChangedList
         widget.setOnDateChangedListener(this);
 
         Calendar calendar = Calendar.getInstance();
-
-        calendar.add(Calendar.DATE, -100);
-        widget.setMinimumDate(calendar);
-
-        calendar.add(Calendar.DATE, 100);
         widget.setSelectedDate(calendar);
 
-        calendar.add(Calendar.DATE, 100);
+        calendar.set(2014, Calendar.JULY, 31);
+        widget.setMinimumDate(calendar);
+
+        calendar.set(2015, Calendar.MAY, 4);
         widget.setMaximumDate(calendar);
     }
 

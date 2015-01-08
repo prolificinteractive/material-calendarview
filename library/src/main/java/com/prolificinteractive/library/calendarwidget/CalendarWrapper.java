@@ -1,4 +1,4 @@
-package com.adamkoski.calendarwidget;
+package com.prolificinteractive.library.calendarwidget;
 
 import java.io.Serializable;
 import java.util.Calendar;

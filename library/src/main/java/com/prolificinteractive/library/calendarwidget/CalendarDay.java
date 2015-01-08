@@ -1,4 +1,4 @@
-package com.adamkoski.calendarwidget;
+package com.prolificinteractive.library.calendarwidget;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -1,4 +1,4 @@
-package com.adamkoski.calendarwidget;
+package com.prolificinteractive.library.calendarwidget;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -10,8 +10,6 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.adamkoski.library.calendarwidget.R;
 
 /**
  *

@@ -1,4 +1,4 @@
-package com.adamkoski.calendarwidget;
+package com.prolificinteractive.library.calendarwidget;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -15,8 +15,6 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.view.Gravity;
 import android.widget.CheckedTextView;
-
-import com.adamkoski.library.calendarwidget.R;
 
 /**
  * Display one day

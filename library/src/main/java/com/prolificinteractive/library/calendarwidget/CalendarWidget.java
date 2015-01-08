@@ -1,4 +1,4 @@
-package com.adamkoski.calendarwidget;
+package com.prolificinteractive.library.calendarwidget;
 
 import android.content.Context;
 import android.os.Build;
@@ -10,8 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
-
-import com.adamkoski.library.calendarwidget.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

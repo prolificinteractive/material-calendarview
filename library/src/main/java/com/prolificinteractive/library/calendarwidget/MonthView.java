@@ -1,11 +1,9 @@
-package com.adamkoski.calendarwidget;
+package com.prolificinteractive.library.calendarwidget;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.GridLayout;
-
-import com.adamkoski.library.calendarwidget.R;
 
 import java.util.ArrayList;
 

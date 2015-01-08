@@ -1,6 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.adamkoski.library.calendarwidget">
+<manifest
+    package="com.prolificinteractive.library.calendarwidget">
 
-    <application />
+    <application/>
 
 </manifest>

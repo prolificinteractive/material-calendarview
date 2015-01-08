@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         >
 
-        <com.adamkoski.calendarwidget.DirectionButton
+        <com.prolificinteractive.library.calendarwidget.DirectionButton
             android:src="@drawable/cw__action_previous"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -34,7 +34,7 @@
             android:background="?android:attr/selectableItemBackground"
             />
 
-        <com.adamkoski.calendarwidget.DirectionButton
+        <com.prolificinteractive.library.calendarwidget.DirectionButton
             android:src="@drawable/cw__action_next"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -53,7 +53,7 @@
         android:outAnimation="@android:anim/fade_out"
         >
 
-        <com.adamkoski.calendarwidget.MonthView
+        <com.prolificinteractive.library.calendarwidget.MonthView
             android:id="@+id/___calendar_widget_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.1"
 
     defaultConfig {
-        applicationId "com.adamkoski.sample"
+        applicationId "com.prolificinteractive.library.calendarwidget.sample"
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
