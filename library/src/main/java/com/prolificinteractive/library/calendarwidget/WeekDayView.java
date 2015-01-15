@@ -1,7 +1,10 @@
 package com.prolificinteractive.library.calendarwidget;
 
-import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
+import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -13,16 +16,38 @@ import static java.util.Calendar.SHORT;
 /**
  * Display one day
  */
-@SuppressLint("ViewConstructor")
-class WeekDayView extends TextView {
+public class WeekDayView extends TextView {
 
-    public WeekDayView(Context context, int size) {
+    public WeekDayView(Context context) {
         super(context);
+        init();
+    }
+
+    public WeekDayView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public WeekDayView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public WeekDayView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
+    private void init() {
 
         setGravity(Gravity.CENTER);
 
+        int size = getResources().getDimensionPixelSize(R.dimen.cw__default_day_size);
         setMinimumWidth(size);
         setMinimumHeight(size);
+
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
 
         if(isInEditMode()) {
             setText("Mon");

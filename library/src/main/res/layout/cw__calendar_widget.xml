@@ -16,8 +16,8 @@
 
         <com.prolificinteractive.library.calendarwidget.DirectionButton
             android:src="@drawable/cw__action_previous"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/cw__default_day_size"
+            android:layout_height="@dimen/cw__default_day_size"
             android:scaleType="centerInside"
             android:id="@+id/___calendar_widget_button_backwards"
             android:background="?android:attr/selectableItemBackground"
@@ -26,9 +26,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textStyle="bold"
             android:layout_weight="1"
             android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             tools:text="January 2014"
             android:id="@+id/___calendar_widget_title"
             android:background="?android:attr/selectableItemBackground"
@@ -36,8 +36,8 @@
 
         <com.prolificinteractive.library.calendarwidget.DirectionButton
             android:src="@drawable/cw__action_next"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/cw__default_day_size"
+            android:layout_height="@dimen/cw__default_day_size"
             android:scaleType="centerInside"
             android:id="@+id/___calendar_widget_button_forward"
             android:background="?android:attr/selectableItemBackground"
@@ -53,11 +53,9 @@
         android:outAnimation="@android:anim/fade_out"
         >
 
-        <com.prolificinteractive.library.calendarwidget.MonthView
+        <include
             android:id="@+id/___calendar_widget_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            layout="@layout/cw__month_view"
             />
 
         <NumberPicker

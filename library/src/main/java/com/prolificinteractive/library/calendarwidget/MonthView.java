@@ -43,22 +43,23 @@ class MonthView extends GridLayout implements View.OnClickListener {
 
         setColumnCount(7);
         setRowCount(7);
+    }
 
-        int size = getResources().getDimensionPixelSize(R.dimen.cw__default_day_size);
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
 
-        for(int i = 0; i < 7; i++) {
-            WeekDayView dayView = new WeekDayView(getContext(), size);
-            addView(dayView);
-            weekDayViews.add(dayView);
+        int children = getChildCount();
+        for(int i = 0; i < children; i++) {
+            View child = getChildAt(i);
+            if(child instanceof WeekDayView) {
+                weekDayViews.add((WeekDayView) child);
+            } else if(child instanceof DayView) {
+                monthDayViews.add((DayView) child);
+                child.setOnClickListener(this);
+            }
         }
         setFirstDayOfWeek(firstDayOfWeek);
-
-        for(int i = 0; i < 42; i++) {
-            DayView dayView = new DayView(getContext(), size);
-            addView(dayView);
-            monthDayViews.add(dayView);
-            dayView.setOnClickListener(this);
-        }
         setSelectedDate(new CalendarDay());
     }
 
@@ -122,8 +123,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
         for(DayView dayView : monthDayViews) {
             CalendarDay day = new CalendarDay(calendar);
             dayView.setDay(day);
-            dayView.setActivated(day.getMonth() == ourMonth);
-            dayView.setEnabled(day.isInRange(minDate, maxDate));
+            dayView.setEnabled(day.isInRange(minDate, maxDate) && day.getMonth() == ourMonth);
             dayView.setChecked(day.equals(selection));
             calendar.add(DATE, 1);
         }

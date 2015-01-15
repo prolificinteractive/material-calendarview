@@ -1,6 +1,5 @@
 package com.prolificinteractive.library.calendarwidget;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -13,29 +12,52 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
+import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.CheckedTextView;
 
 /**
  * Display one day
  */
-@SuppressLint("ViewConstructor")
-class DayView extends CheckedTextView {
+public class DayView extends CheckedTextView {
 
     private CalendarDay date = new CalendarDay();
     private int color = Color.GRAY;
 
-    public DayView(Context context, int size) {
+    public DayView(Context context) {
         super(context);
+        init();
+    }
 
+    public DayView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public DayView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public DayView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
+    private void init() {
         setColor(this.color);
 
         setTextColor(getResources().getColorStateList(R.color.cw__indicator_text));
 
+        int size = getResources().getDimensionPixelSize(R.dimen.cw__default_day_size);
         setMinimumWidth(size);
         setMinimumHeight(size);
 
         setGravity(Gravity.CENTER);
+
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
 
         if(isInEditMode()) {
             setText("99");
