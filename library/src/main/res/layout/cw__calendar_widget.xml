@@ -19,7 +19,7 @@
             android:layout_width="@dimen/cw__default_day_size"
             android:layout_height="@dimen/cw__default_day_size"
             android:scaleType="centerInside"
-            android:id="@+id/___calendar_widget_button_backwards"
+            android:id="@+id/cw__calendar_widget_button_backwards"
             android:background="?android:attr/selectableItemBackground"
             />
 
@@ -30,8 +30,9 @@
             android:layout_weight="1"
             android:gravity="center"
             tools:text="January 2014"
-            android:id="@+id/___calendar_widget_title"
+            android:id="@+id/cw__calendar_widget_title"
             android:background="?android:attr/selectableItemBackground"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
         <com.prolificinteractive.library.calendarwidget.DirectionButton
@@ -39,14 +40,14 @@
             android:layout_width="@dimen/cw__default_day_size"
             android:layout_height="@dimen/cw__default_day_size"
             android:scaleType="centerInside"
-            android:id="@+id/___calendar_widget_button_forward"
+            android:id="@+id/cw__calendar_widget_button_forward"
             android:background="?android:attr/selectableItemBackground"
             />
 
     </LinearLayout>
 
     <ViewSwitcher
-        android:id="@+id/___calendar_widget_switcher"
+        android:id="@+id/cw__calendar_widget_switcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inAnimation="@android:anim/fade_in"
@@ -54,12 +55,12 @@
         >
 
         <include
-            android:id="@+id/___calendar_widget_month"
+            android:id="@+id/cw__calendar_widget_month"
             layout="@layout/cw__month_view"
             />
 
         <NumberPicker
-            android:id="@+id/___calendar_widget_year"
+            android:id="@+id/cw__calendar_widget_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

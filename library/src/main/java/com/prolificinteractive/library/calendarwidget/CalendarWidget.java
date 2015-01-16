@@ -15,13 +15,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  *
  */
 public class CalendarWidget extends LinearLayout implements View.OnClickListener, MonthView.Callbacks, NumberPicker.OnValueChangeListener {
 
-    private static final DateFormat TITLE_FORMAT = new SimpleDateFormat("MMMM yyyy");
+    private static final DateFormat TITLE_FORMAT = new SimpleDateFormat(
+        "MMMM yyyy",
+        Locale.getDefault()
+    );
 
     private final TextView title;
     private final DirectionButton buttonPast;
@@ -50,12 +54,12 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
 
         LayoutInflater.from(getContext()).inflate(R.layout.cw__calendar_widget, this);
 
-        title = (TextView) findViewById(R.id.___calendar_widget_title);
-        buttonPast = (DirectionButton) findViewById(R.id.___calendar_widget_button_backwards);
-        buttonFuture = (DirectionButton) findViewById(R.id.___calendar_widget_button_forward);
-        switcher = (ViewSwitcher) findViewById(R.id.___calendar_widget_switcher);
-        monthView = (MonthView) findViewById(R.id.___calendar_widget_month);
-        yearView = (NumberPicker) findViewById(R.id.___calendar_widget_year);
+        title = (TextView) findViewById(R.id.cw__calendar_widget_title);
+        buttonPast = (DirectionButton) findViewById(R.id.cw__calendar_widget_button_backwards);
+        buttonFuture = (DirectionButton) findViewById(R.id.cw__calendar_widget_button_forward);
+        switcher = (ViewSwitcher) findViewById(R.id.cw__calendar_widget_switcher);
+        monthView = (MonthView) findViewById(R.id.cw__calendar_widget_month);
+        yearView = (NumberPicker) findViewById(R.id.cw__calendar_widget_year);
 
         yearView.setOnValueChangedListener(this);
 
@@ -123,13 +127,13 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.___calendar_widget_button_forward) {
+        if(v.getId() == R.id.cw__calendar_widget_button_forward) {
             calendar.add(Calendar.MONTH, 1);
             updateUi();
-        } else if(v.getId() == R.id.___calendar_widget_button_backwards) {
+        } else if(v.getId() == R.id.cw__calendar_widget_button_backwards) {
             calendar.add(Calendar.MONTH, -1);
             updateUi();
-        } else if(v.getId() == R.id.___calendar_widget_title) {
+        } else if(v.getId() == R.id.cw__calendar_widget_title) {
             switcher.showNext();
         }
     }
