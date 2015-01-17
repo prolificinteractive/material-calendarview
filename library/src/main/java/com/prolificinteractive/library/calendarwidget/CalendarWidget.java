@@ -34,8 +34,8 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     private final MonthView monthView;
     private final NumberPicker yearView;
 
-    private final CalendarWrapper calendar = CalendarWrapper.getInstance();
-    private final CalendarWrapper selectedDate = CalendarWrapper.getInstance();
+    private CalendarWrapper calendar = CalendarWrapper.getInstance();
+    private CalendarDay selectedDate = null;
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
 
@@ -69,6 +69,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
 
         monthView.setCallbacks(this);
 
+        setCurrentDate(new CalendarDay());
         updateUi();
     }
 
@@ -143,7 +144,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     }
 
     public CalendarDay getSelectedDate() {
-        return new CalendarDay(selectedDate);
+        return selectedDate;
     }
 
     public void setSelectedDate(Calendar calendar) {
@@ -155,7 +156,19 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     }
 
     public void setSelectedDate(CalendarDay day) {
-        day.copyTo(selectedDate);
+        selectedDate = day;
+        setCurrentDate(day);
+    }
+
+    public void setCurrentDate(Calendar calendar) {
+        setCurrentDate(new CalendarDay(calendar));
+    }
+
+    public void setCurrentDate(Date date) {
+        setCurrentDate(new CalendarDay(date));
+    }
+
+    public void setCurrentDate(CalendarDay day) {
         day.copyTo(calendar);
         calendar.setToFirstDay();
         updateUi();

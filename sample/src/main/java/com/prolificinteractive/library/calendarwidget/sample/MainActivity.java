@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity implements OnDateChangedList
         widget.setOnDateChangedListener(this);
 
         Calendar calendar = Calendar.getInstance();
-        widget.setSelectedDate(calendar);
+        //widget.setSelectedDate(calendar);
 
         calendar.set(2014, Calendar.JULY, 31);
         widget.setMinimumDate(calendar);

@@ -30,7 +30,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
     private final CalendarWrapper tempWorkingCalendar = CalendarWrapper.getInstance();
     private int firstDayOfWeek = SUNDAY;
 
-    private CalendarDay selection = new CalendarDay(calendarOfRecord);
+    private CalendarDay selection = null;
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
 
@@ -109,7 +109,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
 
 
     public void setSelectedDate(CalendarWrapper cal) {
-        setSelectedDate(new CalendarDay(cal));
+        setSelectedDate(cal == null ? null : new CalendarDay(cal));
     }
 
     public void setSelectedDate(CalendarDay cal) {
