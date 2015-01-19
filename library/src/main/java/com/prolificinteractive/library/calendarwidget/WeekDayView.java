@@ -43,11 +43,7 @@ public class WeekDayView extends TextView {
 
         setGravity(Gravity.CENTER);
 
-        int size = getResources().getDimensionPixelSize(R.dimen.cw__default_day_size);
-        setMinimumWidth(size);
-        setMinimumHeight(size);
-
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        setTextSize(12);
 
         if(isInEditMode()) {
             setText("Mon");

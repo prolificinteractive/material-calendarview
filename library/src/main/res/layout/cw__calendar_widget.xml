@@ -31,7 +31,6 @@
             android:gravity="center"
             tools:text="January 2014"
             android:id="@+id/cw__calendar_widget_title"
-            android:background="?android:attr/selectableItemBackground"
             android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
@@ -46,26 +45,9 @@
 
     </LinearLayout>
 
-    <ViewSwitcher
-        android:id="@+id/cw__calendar_widget_switcher"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inAnimation="@android:anim/fade_in"
-        android:outAnimation="@android:anim/fade_out"
-        >
-
-        <include
-            android:id="@+id/cw__calendar_widget_month"
-            layout="@layout/cw__month_view"
-            />
-
-        <NumberPicker
-            android:id="@+id/cw__calendar_widget_year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            />
-
-    </ViewSwitcher>
+    <include
+        android:id="@+id/cw__calendar_widget_month"
+        layout="@layout/cw__month_view"
+        />
 
 </LinearLayout>

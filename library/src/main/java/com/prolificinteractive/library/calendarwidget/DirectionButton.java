@@ -39,8 +39,6 @@ class DirectionButton extends ImageView {
 
     private void init() {
         setColor(Color.GRAY);
-        int dp40 = getResources().getDimensionPixelSize(R.dimen.cw__default_day_size);
-        setLayoutParams(new ViewGroup.LayoutParams(dp40, dp40));
 
         TypedValue out = new TypedValue();
         Resources.Theme theme = getContext().getTheme();

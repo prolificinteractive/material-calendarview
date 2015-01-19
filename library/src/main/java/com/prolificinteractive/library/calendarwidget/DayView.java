@@ -35,13 +35,9 @@ public class DayView extends CheckedTextView {
 
         setSelectionColor(this.selectionColor);
 
-        int size = getResources().getDimensionPixelSize(R.dimen.cw__default_day_size);
-        setMinimumWidth(size);
-        setMinimumHeight(size);
-
         setGravity(Gravity.CENTER);
 
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        setTextSize(12);
 
         if(isInEditMode()) {
             setText("99");

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,7 +21,7 @@ import java.util.Locale;
 /**
  *
  */
-public class CalendarWidget extends LinearLayout implements View.OnClickListener, MonthView.Callbacks, NumberPicker.OnValueChangeListener {
+public class CalendarWidget extends LinearLayout implements View.OnClickListener, MonthView.Callbacks {
 
     private static final DateFormat TITLE_FORMAT = new SimpleDateFormat(
         "MMMM yyyy",
@@ -32,9 +31,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     private final TextView title;
     private final DirectionButton buttonPast;
     private final DirectionButton buttonFuture;
-    private final ViewSwitcher switcher;
     private final MonthView monthView;
-    private final NumberPicker yearView;
 
     private CalendarWrapper calendar = CalendarWrapper.getInstance();
     private CalendarDay selectedDate = null;
@@ -56,17 +53,15 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         calendar.setToFirstDay();
 
         setOrientation(VERTICAL);
+        setClipChildren(false);
+        setClipToPadding(false);
 
         LayoutInflater.from(getContext()).inflate(R.layout.cw__calendar_widget, this);
 
         title = (TextView) findViewById(R.id.cw__calendar_widget_title);
         buttonPast = (DirectionButton) findViewById(R.id.cw__calendar_widget_button_backwards);
         buttonFuture = (DirectionButton) findViewById(R.id.cw__calendar_widget_button_forward);
-        switcher = (ViewSwitcher) findViewById(R.id.cw__calendar_widget_switcher);
         monthView = (MonthView) findViewById(R.id.cw__calendar_widget_month);
-        yearView = (NumberPicker) findViewById(R.id.cw__calendar_widget_year);
-
-        yearView.setOnValueChangedListener(this);
 
         title.setOnClickListener(this);
         buttonPast.setOnClickListener(this);
@@ -78,21 +73,21 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
             context.getTheme().obtainStyledAttributes(attrs, R.styleable.CalendarWidget, 0, 0);
         try {
             setArrowColor(a.getColor(R.styleable.CalendarWidget_arrowColor, Color.BLACK));
-            setAccentColor(a.getColor(R.styleable.CalendarWidget_selectionColor, getThemeAccentColor()));
+            setAccentColor(a.getColor(R.styleable.CalendarWidget_selectionColor, getThemeAccentColor(context)));
 
             int taId = a.getResourceId(R.styleable.CalendarWidget_headerTextAppearance, -1);
             if(taId != -1) {
-                title.setTextAppearance(getContext(), taId);
+                setHeaderTextAppearance(taId);
             }
 
             taId = a.getResourceId(R.styleable.CalendarWidget_weekdayTextAppearance, -1);
             if(taId != -1) {
-                monthView.setWeekdayTextAppearance(taId);
+                setWeekdayTextAppearance(taId);
             }
 
             taId = a.getResourceId(R.styleable.CalendarWidget_dayTextAppearance, -1);
             if(taId != -1) {
-                monthView.setDayTextAppearance(taId);
+                setDayTextAppearance(taId);
             }
 
             setShowOtherMonths(a.getBoolean(R.styleable.CalendarWidget_showOtherMonths, false));
@@ -105,6 +100,31 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         updateUi();
     }
 
+    @Override
+    public void onDateChanged(CalendarDay date) {
+        setSelectedDate(date);
+
+        if(listener != null) {
+            listener.onDateChanged(this, date);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if(id == R.id.cw__calendar_widget_button_forward) {
+            calendar.add(Calendar.MONTH, 1);
+            updateUi();
+        } else if(id == R.id.cw__calendar_widget_button_backwards) {
+            calendar.add(Calendar.MONTH, -1);
+            updateUi();
+        }
+    }
+
+    public void setOnDateChangedListener(OnDateChangedListener listener) {
+        this.listener = listener;
+    }
+
     private void updateUi() {
         title.setText(TITLE_FORMAT.format(calendar.getTime()));
         monthView.setMinimumDate(minDate);
@@ -113,10 +133,6 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         monthView.setDate(calendar);
         buttonPast.setEnabled(canGoBack());
         buttonFuture.setEnabled(canGoForward());
-
-        yearView.setMinValue(minDate == null ? 0 : minDate.getYear());
-        yearView.setMaxValue(maxDate == null ? 0 : maxDate.getYear());
-        yearView.setValue(calendar.getYear());
     }
 
     private boolean canGoForward() {
@@ -136,18 +152,6 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
 
         Calendar minCal = minDate.getCalendar();
         return calendar.compareTo(minCal) >= 0;
-    }
-
-    private int getThemeAccentColor() {
-        int colorAttr = 0;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            colorAttr = android.R.attr.colorAccent;
-        } else {
-            colorAttr = getResources().getIdentifier("colorAccent", "attr", getContext().getPackageName());
-        }
-        TypedValue outValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(colorAttr, outValue, true);
-        return outValue.data;
     }
 
     public int getAccentColor() {
@@ -171,21 +175,16 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         invalidate();
     }
 
-    @Override
-    public void onClick(View v) {
-        if(v.getId() == R.id.cw__calendar_widget_button_forward) {
-            calendar.add(Calendar.MONTH, 1);
-            updateUi();
-        } else if(v.getId() == R.id.cw__calendar_widget_button_backwards) {
-            calendar.add(Calendar.MONTH, -1);
-            updateUi();
-        } else if(v.getId() == R.id.cw__calendar_widget_title) {
-            switcher.showNext();
-        }
+    public void setHeaderTextAppearance(int styleRes) {
+        title.setTextAppearance(getContext(), styleRes);
     }
 
-    public void setOnDateChangedListener(OnDateChangedListener listener) {
-        this.listener = listener;
+    public void setDayTextAppearance(int styleRes) {
+        monthView.setDayTextAppearance(styleRes);
+    }
+
+    public void setWeekdayTextAppearance(int styleRes) {
+        monthView.setWeekdayTextAppearance(styleRes);
     }
 
     public CalendarDay getSelectedDate() {
@@ -219,9 +218,17 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         updateUi();
     }
 
+    public CalendarDay getMinimumDate() {
+        return minDate;
+    }
+
     public void setMinimumDate(Calendar calendar) {
         minDate = calendar == null ? null : new CalendarDay(calendar);
         updateUi();
+    }
+
+    public CalendarDay getMaximumDate() {
+        return maxDate;
     }
 
     public void setMaximumDate(Calendar calendar) {
@@ -237,22 +244,6 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         return monthView.getShowOtherMonths();
     }
 
-    @Override
-    public void onDateChanged(CalendarDay date) {
-        setSelectedDate(date);
-
-        if(listener != null) {
-            listener.onDateChanged(this, date);
-        }
-    }
-
-    @Override
-    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        calendar.set(Calendar.YEAR, newVal);
-        clampCalendar();
-        updateUi();
-    }
-
     private void clampCalendar() {
         if(maxDate != null && calendar.compareTo(maxDate.getCalendar()) >= 0) {
             maxDate.copyTo(calendar);
@@ -261,5 +252,18 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
             minDate.copyTo(calendar);
         }
         calendar.setToFirstDay();
+    }
+
+    private static int getThemeAccentColor(Context context) {
+        int colorAttr;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            colorAttr = android.R.attr.colorAccent;
+        } else {
+            //Get colorAccent defined for AppCompat
+            colorAttr = context.getResources().getIdentifier("colorAccent", "attr", context.getPackageName());
+        }
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(colorAttr, outValue, true);
+        return outValue.data;
     }
 }

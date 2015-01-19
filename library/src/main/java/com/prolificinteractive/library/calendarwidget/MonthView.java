@@ -45,6 +45,9 @@ class MonthView extends GridLayout implements View.OnClickListener {
 
         setColumnCount(7);
         setRowCount(7);
+
+        setClipChildren(false);
+        setClipToPadding(false);
     }
 
     @Override
