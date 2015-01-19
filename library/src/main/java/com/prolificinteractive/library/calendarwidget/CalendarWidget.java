@@ -1,6 +1,8 @@
 package com.prolificinteractive.library.calendarwidget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -41,6 +43,9 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
 
     private OnDateChangedListener listener;
 
+    private int accentColor = 0;
+    private int arrowColor = Color.BLACK;
+
     public CalendarWidget(Context context) {
         this(context, null);
     }
@@ -69,6 +74,33 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
 
         monthView.setCallbacks(this);
 
+        TypedArray a =
+            context.getTheme().obtainStyledAttributes(attrs, R.styleable.CalendarWidget, 0, 0);
+        try {
+            setArrowColor(a.getColor(R.styleable.CalendarWidget_arrowColor, Color.BLACK));
+            setAccentColor(a.getColor(R.styleable.CalendarWidget_selectionColor, getThemeAccentColor()));
+
+            int taId = a.getResourceId(R.styleable.CalendarWidget_headerTextAppearance, -1);
+            if(taId != -1) {
+                title.setTextAppearance(getContext(), taId);
+            }
+
+            taId = a.getResourceId(R.styleable.CalendarWidget_weekdayTextAppearance, -1);
+            if(taId != -1) {
+                monthView.setWeekdayTextAppearance(taId);
+            }
+
+            taId = a.getResourceId(R.styleable.CalendarWidget_dayTextAppearance, -1);
+            if(taId != -1) {
+                monthView.setDayTextAppearance(taId);
+            }
+
+            setShowOtherMonths(a.getBoolean(R.styleable.CalendarWidget_showOtherMonths, false));
+
+        } finally {
+            a.recycle();
+        }
+
         setCurrentDate(new CalendarDay());
         updateUi();
     }
@@ -85,8 +117,6 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         yearView.setMinValue(minDate == null ? 0 : minDate.getYear());
         yearView.setMaxValue(maxDate == null ? 0 : maxDate.getYear());
         yearView.setValue(calendar.getYear());
-
-        setColor(getAccentColor());
     }
 
     private boolean canGoForward() {
@@ -108,7 +138,7 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         return calendar.compareTo(minCal) >= 0;
     }
 
-    private int getAccentColor() {
+    private int getThemeAccentColor() {
         int colorAttr = 0;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             colorAttr = android.R.attr.colorAccent;
@@ -120,10 +150,25 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         return outValue.data;
     }
 
-    public void setColor(int color) {
+    public int getAccentColor() {
+        return accentColor;
+    }
+
+    public void setAccentColor(int color) {
+        accentColor = color;
+        monthView.setAccentColor(color);
+        invalidate();
+    }
+
+    public int getArrowColor() {
+        return arrowColor;
+    }
+
+    public void setArrowColor(int color) {
+        arrowColor = color;
         buttonPast.setColor(color);
         buttonFuture.setColor(color);
-        monthView.setColor(color);
+        invalidate();
     }
 
     @Override
@@ -182,6 +227,14 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     public void setMaximumDate(Calendar calendar) {
         maxDate = calendar == null ? null : new CalendarDay(calendar);
         updateUi();
+    }
+
+    public void setShowOtherMonths(boolean showOtherMonths) {
+        monthView.setShowOtherMonths(showOtherMonths);
+    }
+
+    public boolean getShowOtherMonths() {
+        return monthView.getShowOtherMonths();
     }
 
     @Override

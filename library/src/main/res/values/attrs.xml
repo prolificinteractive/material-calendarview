@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CalendarWidget">
+
+        <attr name="dayTextAppearance" format="reference" />
+        <attr name="weekdayTextAppearance" format="reference" />
+        <attr name="headerTextAppearance" format="reference" />
+
+        <attr name="arrowColor" format="color" />
+        <attr name="selectionColor" format="color" />
+
+        <attr name="showOtherMonths" format="boolean" />
+
+    </declare-styleable>
+
+</resources>

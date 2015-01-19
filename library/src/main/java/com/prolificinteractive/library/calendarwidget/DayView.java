@@ -15,6 +15,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.CheckedTextView;
 
 /**
@@ -23,33 +24,16 @@ import android.widget.CheckedTextView;
 public class DayView extends CheckedTextView {
 
     private CalendarDay date = new CalendarDay();
-    private int color = Color.GRAY;
+    private int selectionColor = Color.GRAY;
 
     public DayView(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public DayView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
 
-    public DayView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public DayView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
-
-    private void init() {
-        setColor(this.color);
-
-        setTextColor(getResources().getColorStateList(R.color.cw__indicator_text));
+        setSelectionColor(this.selectionColor);
 
         int size = getResources().getDimensionPixelSize(R.dimen.cw__default_day_size);
         setMinimumWidth(size);
@@ -69,9 +53,31 @@ public class DayView extends CheckedTextView {
         setText(String.valueOf(date.getDay()));
     }
 
-    public void setColor(int color) {
-        this.color = color;
+    public void setSelectionColor(int color) {
+        this.selectionColor = color;
         setBackgroundDrawable(generateBackground(color));
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private static Drawable generateRippleDrawable(final int color) {
+        ColorStateList list = ColorStateList.valueOf(color);
+        Drawable mask = generateCircleDrawable(Color.WHITE);
+        return new RippleDrawable(list, null, mask);
+    }
+
+    public CalendarDay getDate() {
+        return date;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+    }
+
+    protected void setupSelection(boolean showOtherMonths, boolean inRange, boolean inMonth) {
+        boolean enabled = inMonth && inRange;
+        setEnabled(enabled);
+        setVisibility(enabled || showOtherMonths ? View.VISIBLE : View.INVISIBLE);
     }
 
     private static Drawable generateBackground(int color) {
@@ -96,16 +102,5 @@ public class DayView extends CheckedTextView {
             }
         });
         return drawable;
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static Drawable generateRippleDrawable(final int color) {
-        ColorStateList list = ColorStateList.valueOf(color);
-        Drawable mask = generateCircleDrawable(Color.WHITE);
-        return new RippleDrawable(list, null, mask);
-    }
-
-    public CalendarDay getDate() {
-        return date;
     }
 }
