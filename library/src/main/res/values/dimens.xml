@@ -2,5 +2,7 @@
 <resources>
 
     <dimen name="cw__default_day_size">44dp</dimen>
+    <dimen name="cw__default_month_width">308dp</dimen>
+    <dimen name="cw__default_month_height">308dp</dimen>
 
 </resources>

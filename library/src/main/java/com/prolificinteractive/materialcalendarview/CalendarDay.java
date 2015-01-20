@@ -84,12 +84,18 @@ public final class CalendarDay implements Parcelable {
     }
 
     public boolean isBefore(CalendarDay other) {
+        if(other == null) {
+            throw new IllegalArgumentException("other cannot be null");
+        }
         return (year == other.year) ?
                 ((month == other.month) ? (day < other.day) : (month < other.month)) :
                 (year < other.year);
     }
 
     public boolean isAfter(CalendarDay other) {
+        if(other == null) {
+            throw new IllegalArgumentException("other cannot be null");
+        }
         return (year == other.year) ?
                 ((month == other.month) ? (day > other.day) : (month > other.month)) :
                 (year > other.year);

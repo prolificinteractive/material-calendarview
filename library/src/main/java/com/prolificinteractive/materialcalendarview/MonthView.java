@@ -128,6 +128,12 @@ class MonthView extends GridLayout implements View.OnClickListener {
         updateUi();
     }
 
+    public void setDate(CalendarDay month) {
+        month.copyTo(calendarOfRecord);
+        calendarOfRecord.setToFirstDay();
+        updateUi();
+    }
+
     public void setDate(CalendarWrapper calendar) {
         CalendarWrapper.copyDateTo(calendar, calendarOfRecord);
         calendarOfRecord.setToFirstDay();

@@ -45,9 +45,10 @@
 
     </LinearLayout>
 
-    <include
-        android:id="@+id/cw__calendar_widget_month"
-        layout="@layout/cw__month_view"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/cw__pager"
+        android:layout_width="@dimen/cw__default_month_width"
+        android:layout_height="@dimen/cw__default_month_height"
         />
 
 </LinearLayout>

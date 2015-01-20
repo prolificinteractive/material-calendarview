@@ -1,13 +1,18 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
+import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,8 +20,10 @@ import com.prolificinteractive.library.calendarwidget.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Locale;
 
 /**
@@ -32,10 +39,41 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
     private final TextView title;
     private final DirectionButton buttonPast;
     private final DirectionButton buttonFuture;
-    private final MonthView monthView;
+    private final ViewPager pager;
+    private final MonthPagerAdapter adapter;
 
-    private CalendarWrapper calendar = CalendarWrapper.getInstance();
-    private CalendarDay selectedDate = null;
+    private CalendarDay currentMonth;
+
+    private final ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageSelected(int position) {
+            currentMonth = adapter.getItem(position);
+            updateUi(currentMonth);
+        }
+
+        @Override public void onPageScrollStateChanged(int state) {}
+
+        @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+    };
+
+    private final DataSetObserver dataObserver = new DataSetObserver() {
+        @Override
+        public void onInvalidated() {
+            super.onInvalidated();
+            thing();
+        }
+
+        @Override
+        public void onChanged() {
+            super.onChanged();
+            thing();
+        }
+
+        private void thing() {
+            pager.setCurrentItem(adapter.getIndexForDay(currentMonth));
+        }
+    };
+
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
 
@@ -51,8 +89,6 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
     public MaterialCalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        calendar.setToFirstDay();
-
         setOrientation(VERTICAL);
         setClipChildren(false);
         setClipToPadding(false);
@@ -62,48 +98,54 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
         title = (TextView) findViewById(R.id.cw__calendar_widget_title);
         buttonPast = (DirectionButton) findViewById(R.id.cw__calendar_widget_button_backwards);
         buttonFuture = (DirectionButton) findViewById(R.id.cw__calendar_widget_button_forward);
-        monthView = (MonthView) findViewById(R.id.cw__calendar_widget_month);
+        pager = (ViewPager) findViewById(R.id.cw__pager);
 
         title.setOnClickListener(this);
         buttonPast.setOnClickListener(this);
         buttonFuture.setOnClickListener(this);
 
-        monthView.setCallbacks(this);
+        adapter = new MonthPagerAdapter(getContext());
+        pager.setAdapter(adapter);
+        pager.setOnPageChangeListener(pageChangeListener);
+
+        adapter.setCallbacks(this);
+        adapter.registerDataSetObserver(dataObserver);
 
         TypedArray a =
-                context.getTheme().obtainStyledAttributes(attrs, R.styleable.MaterialCalendarView, 0, 0);
+            context.getTheme()
+                .obtainStyledAttributes(attrs, R.styleable.MaterialCalendarView, 0, 0);
         try {
             setArrowColor(a.getColor(R.styleable.MaterialCalendarView_arrowColor, Color.BLACK));
             setSelectionColor(
-                    a.getColor(
-                            R.styleable.MaterialCalendarView_selectionColor,
-                            getThemeAccentColor(context)
-                    )
+                a.getColor(
+                    R.styleable.MaterialCalendarView_selectionColor,
+                    getThemeAccentColor(context)
+                )
             );
 
             int taId = a.getResourceId(R.styleable.MaterialCalendarView_headerTextAppearance, -1);
-            if(taId != -1) {
+            if (taId != -1) {
                 setHeaderTextAppearance(taId);
             }
 
             taId = a.getResourceId(R.styleable.MaterialCalendarView_weekDayTextAppearance, -1);
-            if(taId != -1) {
+            if (taId != -1) {
                 setWeekDayTextAppearance(taId);
             }
 
             taId = a.getResourceId(R.styleable.MaterialCalendarView_dateTextAppearance, -1);
-            if(taId != -1) {
+            if (taId != -1) {
                 setDateTextAppearance(taId);
             }
 
-            setShowOtherMonths(a.getBoolean(R.styleable.MaterialCalendarView_showOtherMonths, false));
-
+            setShowOtherMonths(
+                a.getBoolean(R.styleable.MaterialCalendarView_showOtherMonths, false));
         } finally {
             a.recycle();
         }
 
-        setCurrentDate(new CalendarDay());
-        updateUi();
+        currentMonth = new CalendarDay();
+        setCurrentDate(currentMonth);
     }
 
     @Override
@@ -119,11 +161,9 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
     public void onClick(View v) {
         int id = v.getId();
         if(id == R.id.cw__calendar_widget_button_forward) {
-            calendar.add(Calendar.MONTH, 1);
-            updateUi();
+            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
         } else if(id == R.id.cw__calendar_widget_button_backwards) {
-            calendar.add(Calendar.MONTH, -1);
-            updateUi();
+            pager.setCurrentItem(pager.getCurrentItem() - 1, true);
         }
     }
 
@@ -136,12 +176,8 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
         this.listener = listener;
     }
 
-    private void updateUi() {
-        title.setText(TITLE_FORMAT.format(calendar.getTime()));
-        monthView.setMinimumDate(minDate);
-        monthView.setMaximumDate(maxDate);
-        monthView.setSelectedDate(selectedDate);
-        monthView.setDate(calendar);
+    private void updateUi(CalendarDay day) {
+        title.setText(TITLE_FORMAT.format(day.getDate()));
         buttonPast.setEnabled(canGoBack());
         buttonFuture.setEnabled(canGoForward());
     }
@@ -152,13 +188,7 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
      * @return true if there is a future month that can be shown
      */
     private boolean canGoForward() {
-        if(maxDate == null) {
-            return true;
-        }
-
-        Calendar maxCal = maxDate.getCalendar();
-        maxCal.add(Calendar.MONTH, -1);
-        return calendar.compareTo(maxCal) < 0;
+        return pager.getCurrentItem() < (adapter.getCount() - 1);
     }
 
     /**
@@ -167,12 +197,7 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
      * @return true if there is a previous month that can be shown
      */
     private boolean canGoBack() {
-        if(minDate == null) {
-            return true;
-        }
-
-        Calendar minCal = minDate.getCalendar();
-        return calendar.compareTo(minCal) >= 0;
+        return pager.getCurrentItem() > 0;
     }
 
     /**
@@ -187,7 +212,7 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
      */
     public void setSelectionColor(int color) {
         accentColor = color;
-        monthView.setSelectionColor(color);
+        adapter.setSelectionColor(color);
         invalidate();
     }
 
@@ -219,21 +244,21 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
      * @param resourceId The text appearance resource id.
      */
     public void setDateTextAppearance(int resourceId) {
-        monthView.setDateTextAppearance(resourceId);
+        adapter.setDateTextAppearance(resourceId);
     }
 
     /**
      * @param resourceId The text appearance resource id.
      */
     public void setWeekDayTextAppearance(int resourceId) {
-        monthView.setWeekDayTextAppearance(resourceId);
+        adapter.setWeekDayTextAppearance(resourceId);
     }
 
     /**
      * @return the currently selected day, or null if no selection
      */
     public CalendarDay getSelectedDate() {
-        return selectedDate;
+        return adapter.getSelectedDate();
     }
 
     /**
@@ -254,7 +279,7 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
      * @param day a CalendarDay to set as selected
      */
     public void setSelectedDate(CalendarDay day) {
-        selectedDate = day;
+        adapter.setSelectedDate(day);
         setCurrentDate(day);
     }
 
@@ -276,9 +301,9 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
      * @param day a CalendarDay to focus the calendar on
      */
     public void setCurrentDate(CalendarDay day) {
-        day.copyTo(calendar);
-        calendar.setToFirstDay();
-        updateUi();
+        int index = adapter.getIndexForDay(day);
+        pager.setCurrentItem(index);
+        updateUi(day);
     }
 
     /**
@@ -293,7 +318,7 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
      */
     public void setMinimumDate(Calendar calendar) {
         minDate = calendar == null ? null : new CalendarDay(calendar);
-        updateUi();
+        adapter.setRangeDates(minDate, maxDate);
     }
 
     /**
@@ -308,31 +333,21 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
      */
     public void setMaximumDate(Calendar calendar) {
         maxDate = calendar == null ? null : new CalendarDay(calendar);
-        updateUi();
+        adapter.setRangeDates(minDate, maxDate);
     }
 
     /**
      * @param showOtherMonths show days from the previous and next months, default is false
      */
     public void setShowOtherMonths(boolean showOtherMonths) {
-        monthView.setShowOtherMonths(showOtherMonths);
+        adapter.setShowOtherMonths(showOtherMonths);
     }
 
     /**
      * @return true if days from previous or next months are shown, otherwise false.
      */
     public boolean getShowOtherMonths() {
-        return monthView.getShowOtherMonths();
-    }
-
-    private void clampCalendar() {
-        if(maxDate != null && calendar.compareTo(maxDate.getCalendar()) >= 0) {
-            maxDate.copyTo(calendar);
-        }
-        if(minDate != null && calendar.compareTo(minDate.getCalendar()) <= 0) {
-            minDate.copyTo(calendar);
-        }
-        calendar.setToFirstDay();
+        return adapter.getShowOtherMonths();
     }
 
     private static int getThemeAccentColor(Context context) {
@@ -347,4 +362,198 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
         context.getTheme().resolveAttribute(colorAttr, outValue, true);
         return outValue.data;
     }
+
+    private static class MonthPagerAdapter extends PagerAdapter {
+
+        private static final int TAG_ITEM = R.id.cw__pager;
+
+        private final LayoutInflater inflater;
+        private final LinkedList<MonthView> currentViews;
+        private final ArrayList<CalendarDay> months;
+
+        private MonthView.Callbacks callbacks = null;
+        private Integer color = null;
+        private Integer dateTextAppearance = null;
+        private Integer weekDayTextAppearance = null;
+        private Boolean showOtherMonths = null;
+        private CalendarDay minDate = null;
+        private CalendarDay maxDate = null;
+        private CalendarDay selectedDate = null;
+
+        private MonthPagerAdapter(Context context) {
+            this.inflater = LayoutInflater.from(context);
+            currentViews = new LinkedList<>();
+            months = new ArrayList<>();
+            setRangeDates(null, null);
+        }
+
+        @Override
+        public int getCount() {
+            return months.size();
+        }
+
+        public int getIndexForDay(CalendarDay day) {
+            if(minDate != null && day.isBefore(minDate)) {
+                return 0;
+            }
+            if(maxDate != null && day.isAfter(maxDate)) {
+                return getCount() - 1;
+            }
+            for (int i = 0; i < months.size(); i++) {
+                CalendarDay month = months.get(i);
+                if (day.getYear() == month.getYear() && day.getMonth() == month.getMonth()) {
+                    return i;
+                }
+            }
+            return getCount() / 2;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            if(!(object instanceof MonthView)) {
+                return POSITION_NONE;
+            }
+            MonthView monthView = (MonthView) object;
+            CalendarDay month = (CalendarDay) monthView.getTag(TAG_ITEM);
+            if(month == null) {
+                return POSITION_NONE;
+            }
+            int index = months.indexOf(month);
+            if(index < 0) {
+                return POSITION_NONE;
+            }
+            return index;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            CalendarDay month = months.get(position);
+            MonthView monthView =
+                (MonthView) inflater.inflate(R.layout.cw__month_view, container, false);
+            monthView.setTag(TAG_ITEM, month);
+
+            monthView.setCallbacks(callbacks);
+            if(color != null) {
+                monthView.setSelectionColor(color);
+            }
+            if(dateTextAppearance != null) {
+                monthView.setDateTextAppearance(dateTextAppearance);
+            }
+            if(weekDayTextAppearance != null) {
+                monthView.setDateTextAppearance(weekDayTextAppearance);
+            }
+            if(showOtherMonths != null) {
+                monthView.setShowOtherMonths(showOtherMonths);
+            }
+            monthView.setMinimumDate(minDate);
+            monthView.setMaximumDate(maxDate);
+            monthView.setSelectedDate(selectedDate);
+
+            monthView.setDate(month);
+
+            container.addView(monthView);
+            currentViews.add(monthView);
+            return monthView;
+        }
+
+        @Override
+        public void startUpdate(ViewGroup container) {
+            super.startUpdate(container);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            MonthView monthView = (MonthView) object;
+            currentViews.remove(monthView);
+            container.removeView(monthView);
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        public void setCallbacks(MonthView.Callbacks callbacks) {
+            this.callbacks = callbacks;
+            for(MonthView monthView : currentViews) {
+                monthView.setCallbacks(callbacks);
+            }
+        }
+
+        public void setSelectionColor(int color) {
+            this.color = color;
+            for(MonthView monthView : currentViews) {
+                monthView.setSelectionColor(color);
+            }
+        }
+
+        public void setDateTextAppearance(int dateTextAppearance) {
+            this.dateTextAppearance = dateTextAppearance;
+            for(MonthView monthView : currentViews) {
+                monthView.setDateTextAppearance(dateTextAppearance);
+            }
+        }
+
+        public void setShowOtherMonths(boolean showOtherMonths) {
+            this.showOtherMonths = showOtherMonths;
+            for(MonthView monthView : currentViews) {
+                monthView.setShowOtherMonths(showOtherMonths);
+            }
+        }
+
+        public boolean getShowOtherMonths() {
+            return showOtherMonths;
+        }
+
+        public void setWeekDayTextAppearance(int weekDayTextAppearance) {
+            this.weekDayTextAppearance = weekDayTextAppearance;
+            for(MonthView monthView : currentViews) {
+                monthView.setWeekDayTextAppearance(weekDayTextAppearance);
+            }
+        }
+
+        public void setRangeDates(CalendarDay minDate, CalendarDay maxDate) {
+            this.minDate = minDate;
+            this.maxDate = maxDate;
+
+            if(minDate == null) {
+                CalendarWrapper worker = CalendarWrapper.getInstance();
+                worker.add(Calendar.YEAR, -200);
+                minDate = new CalendarDay(worker);
+            }
+
+            if(maxDate == null) {
+                CalendarWrapper worker = CalendarWrapper.getInstance();
+                worker.add(Calendar.YEAR, 200);
+                maxDate = new CalendarDay(worker);
+            }
+
+            CalendarWrapper worker = CalendarWrapper.getInstance();
+            minDate.copyTo(worker);
+            months.clear();
+            CalendarDay workingMonth = new CalendarDay(worker);
+            while (!maxDate.isBefore(workingMonth)) {
+                months.add(new CalendarDay(worker));
+                worker.add(Calendar.MONTH, 1);
+                workingMonth = new CalendarDay(worker);
+            }
+            notifyDataSetChanged();
+        }
+
+        public void setSelectedDate(CalendarDay selectedDate) {
+            this.selectedDate = selectedDate;
+            for(MonthView monthView : currentViews) {
+                monthView.setSelectedDate(selectedDate);
+            }
+        }
+
+        public CalendarDay getItem(int position) {
+            return months.get(position);
+        }
+
+        public CalendarDay getSelectedDate() {
+            return selectedDate;
+        }
+    }
+
 }
