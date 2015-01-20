@@ -40,8 +40,19 @@
         </activity>
 
         <activity
-            android:name=".CustomizationActivity"
-            android:label="@string/title_activity_customization"
+            android:name=".CustomizeXmlActivity"
+            android:label="@string/title_activity_customize_xml"
+            android:parentActivityName=".MainActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.prolificinteractive.library.calendarwidget.sample.MainActivity" />
+
+        </activity>
+
+        <activity
+            android:name=".CustomizeCodeActivity"
+            android:label="@string/title_activity_customize_code"
             android:parentActivityName=".MainActivity" >
 
             <meta-data

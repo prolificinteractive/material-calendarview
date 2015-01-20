@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,10 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity {
 
     private static final List<Route> ROUTES = Arrays.asList(
-        new Route("Basic Example", BasicActivity.class),
-        new Route("Selection Range Example", RangeActivity.class),
-        new Route("XML Customization Example", CustomizationActivity.class)
+        new Route(R.string.title_activity_basic, BasicActivity.class),
+        new Route(R.string.title_activity_range, RangeActivity.class),
+        new Route(R.string.title_activity_customize_xml, CustomizeXmlActivity.class),
+        new Route(R.string.title_activity_customize_code, CustomizeCodeActivity.class)
     );
 
     @Override
@@ -70,11 +70,11 @@ public class MainActivity extends ActionBarActivity {
 
     private static class Route {
 
-        public final String label;
+        public final int label;
         public final Class<? extends Activity> routeTo;
 
-        public Route(String label, Class<? extends Activity> routeTo) {
-            this.label = label;
+        public Route(int labelRes, Class<? extends Activity> routeTo) {
+            this.label = labelRes;
             this.routeTo = routeTo;
         }
     }

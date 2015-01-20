@@ -11,7 +11,7 @@ import com.prolificinteractive.library.calendarwidget.OnDateChangedListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class CustomizationActivity extends ActionBarActivity implements OnDateChangedListener {
+public class CustomizeXmlActivity extends ActionBarActivity implements OnDateChangedListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     private TextView textView;
