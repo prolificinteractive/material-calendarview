@@ -16,7 +16,7 @@ import static java.util.Calendar.SHORT;
 /**
  * Display one day
  */
-public class WeekDayView extends TextView {
+class WeekDayView extends TextView {
 
     public WeekDayView(Context context) {
         super(context);

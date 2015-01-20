@@ -1,42 +1,97 @@
 package com.prolificinteractive.library.calendarwidget.sample;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.widget.Toast;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.prolificinteractive.library.calendarwidget.CalendarDay;
-import com.prolificinteractive.library.calendarwidget.CalendarWidget;
-import com.prolificinteractive.library.calendarwidget.OnDateChangedListener;
+import android.widget.TextView;
+import java.util.Arrays;
+import java.util.List;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+/**
+ * Routing Activity for other samples
+ */
+public class MainActivity extends ActionBarActivity {
 
-
-public class MainActivity extends ActionBarActivity implements OnDateChangedListener {
-
-    private static final DateFormat formatter = SimpleDateFormat.getDateInstance();
+    private static final List<Route> ROUTES = Arrays.asList(
+        new Route("Basic Example", BasicActivity.class),
+        new Route("Selection Range Example", RangeActivity.class),
+        new Route("XML Customization Example", CustomizationActivity.class)
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CalendarWidget widget = (CalendarWidget) findViewById(R.id.calendarView);
-        widget.setOnDateChangedListener(this);
-
-        Calendar calendar = Calendar.getInstance();
-        //widget.setSelectedDate(calendar);
-
-        calendar.set(2014, Calendar.JULY, 31);
-        widget.setMinimumDate(calendar);
-
-        calendar.set(2015, Calendar.MAY, 4);
-        widget.setMaximumDate(calendar);
+        RecyclerView list = (RecyclerView) findViewById(R.id.list);
+        list.setLayoutManager(new LinearLayoutManager(this));
+        list.setAdapter(new RoutesAdapter(this));
     }
 
-    @Override
-    public void onDateChanged(CalendarWidget widget, CalendarDay date) {
-        Toast.makeText(this, formatter.format(date.getDate()), Toast.LENGTH_SHORT).show();
+    private void onRouteClicked(Route route) {
+        startActivity(new Intent(this, route.routeTo));
+    }
+
+    private class RoutesAdapter extends RecyclerView.Adapter<RouteViewHolder> {
+
+        private final LayoutInflater inflater;
+
+        private RoutesAdapter(Context context) {
+            this.inflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public RouteViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view = inflater.inflate(R.layout.item_route, viewGroup, false);
+            return new RouteViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(RouteViewHolder viewHolder, int i) {
+            Route item = ROUTES.get(i);
+            viewHolder.textView.setText(item.label);
+        }
+
+        @Override
+        public int getItemCount() {
+            return ROUTES.size();
+        }
+
+    }
+
+    private static class Route {
+
+        public final String label;
+        public final Class<? extends Activity> routeTo;
+
+        public Route(String label, Class<? extends Activity> routeTo) {
+            this.label = label;
+            this.routeTo = routeTo;
+        }
+    }
+
+    private class RouteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        public final TextView textView;
+
+        public RouteViewHolder(View view) {
+            super(view);
+            this.textView = (TextView) view.findViewById(android.R.id.text1);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onRouteClicked(ROUTES.get(getPosition()));
+        }
     }
 }

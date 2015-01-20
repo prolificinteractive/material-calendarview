@@ -15,7 +15,7 @@ import static java.util.Calendar.YEAR;
 /**
  * Because Calendar can be annoying sometimes
  */
-public class CalendarWrapper implements Cloneable, Serializable, Comparable {
+class CalendarWrapper implements Cloneable, Serializable, Comparable {
 
     final Calendar innerCalendar;
 
