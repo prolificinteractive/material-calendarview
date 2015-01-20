@@ -8,11 +8,11 @@ import android.graphics.PorterDuff;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 /**
- *
+ * An {@linkplain android.widget.ImageView} to pragmatically set the color of arrows
+ * using a {@linkplain android.graphics.ColorFilter}
  */
 class DirectionButton extends ImageView {
 

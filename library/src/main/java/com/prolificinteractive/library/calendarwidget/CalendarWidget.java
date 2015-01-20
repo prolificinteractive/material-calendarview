@@ -23,8 +23,8 @@ import java.util.Locale;
 public class CalendarWidget extends LinearLayout implements View.OnClickListener, MonthView.Callbacks {
 
     private static final DateFormat TITLE_FORMAT = new SimpleDateFormat(
-        "MMMM yyyy",
-        Locale.getDefault()
+            "MMMM yyyy",
+            Locale.getDefault()
     );
 
     private final TextView title;
@@ -69,14 +69,14 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         monthView.setCallbacks(this);
 
         TypedArray a =
-            context.getTheme().obtainStyledAttributes(attrs, R.styleable.CalendarWidget, 0, 0);
+                context.getTheme().obtainStyledAttributes(attrs, R.styleable.CalendarWidget, 0, 0);
         try {
             setArrowColor(a.getColor(R.styleable.CalendarWidget_arrowColor, Color.BLACK));
             setSelectionColor(
-                a.getColor(
-                    R.styleable.CalendarWidget_selectionColor,
-                    getThemeAccentColor(context)
-                )
+                    a.getColor(
+                            R.styleable.CalendarWidget_selectionColor,
+                            getThemeAccentColor(context)
+                    )
             );
 
             int taId = a.getResourceId(R.styleable.CalendarWidget_headerTextAppearance, -1);
@@ -125,6 +125,11 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         }
     }
 
+    /**
+     * Sets the listener to be notified upon selected date change.
+     *
+     * @param listener thing to be notified
+     */
     public void setOnDateChangedListener(OnDateChangedListener listener) {
         this.listener = listener;
     }
@@ -139,6 +144,11 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         buttonFuture.setEnabled(canGoForward());
     }
 
+    /**
+     * TODO should this be public?
+     *
+     * @return true if there is a future month that can be shown
+     */
     private boolean canGoForward() {
         if(maxDate == null) {
             return true;
@@ -149,6 +159,11 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         return calendar.compareTo(maxCal) < 0;
     }
 
+    /**
+     * TODO should this be public?
+     *
+     * @return true if there is a previous month that can be shown
+     */
     private boolean canGoBack() {
         if(minDate == null) {
             return true;
@@ -158,20 +173,32 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         return calendar.compareTo(minCal) >= 0;
     }
 
+    /**
+     * @return the color used for the selection
+     */
     public int getSelectionColor() {
         return accentColor;
     }
 
+    /**
+     * @param color The selection color
+     */
     public void setSelectionColor(int color) {
         accentColor = color;
         monthView.setSelectionColor(color);
         invalidate();
     }
 
+    /**
+     * @return color used to draw arrows
+     */
     public int getArrowColor() {
         return arrowColor;
     }
 
+    /**
+     * @param color the new color for the paging arrows
+     */
     public void setArrowColor(int color) {
         arrowColor = color;
         buttonPast.setColor(color);
@@ -179,71 +206,119 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         invalidate();
     }
 
-    public void setHeaderTextAppearance(int styleRes) {
-        title.setTextAppearance(getContext(), styleRes);
+    /**
+     * @param resourceId The text appearance resource id.
+     */
+    public void setHeaderTextAppearance(int resourceId) {
+        title.setTextAppearance(getContext(), resourceId);
     }
 
-    public void setDateTextAppearance(int styleRes) {
-        monthView.setDateTextAppearance(styleRes);
+    /**
+     * @param resourceId The text appearance resource id.
+     */
+    public void setDateTextAppearance(int resourceId) {
+        monthView.setDateTextAppearance(resourceId);
     }
 
-    public void setWeekDayTextAppearance(int styleRes) {
-        monthView.setWeekDayTextAppearance(styleRes);
+    /**
+     * @param resourceId The text appearance resource id.
+     */
+    public void setWeekDayTextAppearance(int resourceId) {
+        monthView.setWeekDayTextAppearance(resourceId);
     }
 
+    /**
+     * @return the currently selected day, or null if no selection
+     */
     public CalendarDay getSelectedDate() {
         return selectedDate;
     }
 
+    /**
+     * @param calendar a Calendar set to a day to select
+     */
     public void setSelectedDate(Calendar calendar) {
         setSelectedDate(new CalendarDay(calendar));
     }
 
+    /**
+     * @param date a Date to set as selected
+     */
     public void setSelectedDate(Date date) {
         setSelectedDate(new CalendarDay(date));
     }
 
+    /**
+     * @param day a CalendarDay to set as selected
+     */
     public void setSelectedDate(CalendarDay day) {
         selectedDate = day;
         setCurrentDate(day);
     }
 
+    /**
+     * @param calendar a Calendar set to a day to focus the calendar on
+     */
     public void setCurrentDate(Calendar calendar) {
         setCurrentDate(new CalendarDay(calendar));
     }
 
+    /**
+     * @param date a Date to focus the calendar on
+     */
     public void setCurrentDate(Date date) {
         setCurrentDate(new CalendarDay(date));
     }
 
+    /**
+     * @param day a CalendarDay to focus the calendar on
+     */
     public void setCurrentDate(CalendarDay day) {
         day.copyTo(calendar);
         calendar.setToFirstDay();
         updateUi();
     }
 
+    /**
+     * @return the minimum selectable date for the calendar, if any
+     */
     public CalendarDay getMinimumDate() {
         return minDate;
     }
 
+    /**
+     * @param calendar set the minimum selectable date, null for no minimum
+     */
     public void setMinimumDate(Calendar calendar) {
         minDate = calendar == null ? null : new CalendarDay(calendar);
         updateUi();
     }
 
+    /**
+     * @return the maximum selectable date for the calendar, if any
+     */
     public CalendarDay getMaximumDate() {
         return maxDate;
     }
 
+    /**
+     * @param calendar set the maximum selectable date, null for no maximum
+     */
     public void setMaximumDate(Calendar calendar) {
         maxDate = calendar == null ? null : new CalendarDay(calendar);
         updateUi();
     }
 
+    /**
+     * @param showOtherMonths show days from the previous and next months, default is false
+     */
     public void setShowOtherMonths(boolean showOtherMonths) {
         monthView.setShowOtherMonths(showOtherMonths);
     }
 
+    /**
+     * @return true if days from previous or next months are shown, otherwise false.
+     */
     public boolean getShowOtherMonths() {
         return monthView.getShowOtherMonths();
     }

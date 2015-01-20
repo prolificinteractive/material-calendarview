@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -14,7 +13,7 @@ import static java.util.Calendar.DAY_OF_WEEK;
 import static java.util.Calendar.SHORT;
 
 /**
- * Display one day
+ * Display a day of the week
  */
 class WeekDayView extends TextView {
 

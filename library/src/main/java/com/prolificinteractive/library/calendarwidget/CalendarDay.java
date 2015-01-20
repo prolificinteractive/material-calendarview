@@ -5,13 +5,14 @@ import android.os.Parcelable;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
 /**
- *
+ * An imputable representation of a day on a calendar
  */
 public final class CalendarDay implements Parcelable {
 
@@ -41,7 +42,7 @@ public final class CalendarDay implements Parcelable {
         this(CalendarWrapper.getInstance(date));
     }
 
-    public CalendarDay(CalendarWrapper selectedDate) {
+    CalendarDay(CalendarWrapper selectedDate) {
         this(selectedDate.innerCalendar);
     }
 
@@ -77,6 +78,23 @@ public final class CalendarDay implements Parcelable {
         calendar.set(year, month, day);
     }
 
+    public boolean isInRange(CalendarDay minDate, CalendarDay maxDate) {
+        return !(minDate != null && minDate.isAfter(this)) &&
+                !(maxDate != null && maxDate.isBefore(this));
+    }
+
+    public boolean isBefore(CalendarDay other) {
+        return (year == other.year) ?
+                ((month == other.month) ? (day < other.day) : (month < other.month)) :
+                (year < other.year);
+    }
+
+    public boolean isAfter(CalendarDay other) {
+        return (year == other.year) ?
+                ((month == other.month) ? (day > other.day) : (month > other.month)) :
+                (year > other.year);
+    }
+
     @Override
     public boolean equals(Object o) {
         if(this == o) return true;
@@ -97,6 +115,11 @@ public final class CalendarDay implements Parcelable {
         result = 31 * result + month;
         result = 31 * result + day;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(Locale.US, "CalendarDay{%d-%d-%d}", year, month + 1, day);
     }
 
     /*
@@ -128,21 +151,4 @@ public final class CalendarDay implements Parcelable {
             return new CalendarDay[size];
         }
     };
-
-    public boolean isInRange(CalendarDay minDate, CalendarDay maxDate) {
-        return !(minDate != null && minDate.isAfter(this)) &&
-                !(maxDate != null && maxDate.isBefore(this));
-    }
-
-    public boolean isBefore(CalendarDay other) {
-        return (year == other.year) ?
-                ((month == other.month) ? (day < other.day) : (month < other.month)) :
-                (year < other.year);
-    }
-
-    public boolean isAfter(CalendarDay other) {
-        return (year == other.year) ?
-                ((month == other.month) ? (day > other.day) : (month > other.month)) :
-                (year > other.year);
-    }
 }

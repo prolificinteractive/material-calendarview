@@ -12,7 +12,8 @@ import static java.util.Calendar.DAY_OF_WEEK;
 import static java.util.Calendar.SUNDAY;
 
 /**
- * Display a month of days
+ * Display a month of {@linkplain com.prolificinteractive.library.calendarwidget.DayView}s and
+ * seven {@linkplain com.prolificinteractive.library.calendarwidget.WeekDayView}s.
  */
 class MonthView extends GridLayout implements View.OnClickListener {
 

@@ -13,13 +13,12 @@ import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
 
 /**
- * Display one day
+ * Display one day of a {@linkplain com.prolificinteractive.library.calendarwidget.CalendarWidget}
  */
 class DayView extends CheckedTextView {
 
