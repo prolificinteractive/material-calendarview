@@ -24,8 +24,8 @@
         app:selectionColor="#F00"
         app:arrowColor="#00F"
         app:headerTextAppearance="?android:attr/textAppearanceMedium"
-        app:weekdayTextAppearance="?android:attr/textAppearanceSmall"
-        app:dayTextAppearance="?android:attr/textAppearanceSmall"
+        app:weekDayTextAppearance="?android:attr/textAppearanceSmall"
+        app:dateTextAppearance="?android:attr/textAppearanceSmall"
         app:showOtherMonths="true"
         />
 

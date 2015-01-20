@@ -9,7 +9,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -73,21 +72,26 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
             context.getTheme().obtainStyledAttributes(attrs, R.styleable.CalendarWidget, 0, 0);
         try {
             setArrowColor(a.getColor(R.styleable.CalendarWidget_arrowColor, Color.BLACK));
-            setAccentColor(a.getColor(R.styleable.CalendarWidget_selectionColor, getThemeAccentColor(context)));
+            setSelectionColor(
+                a.getColor(
+                    R.styleable.CalendarWidget_selectionColor,
+                    getThemeAccentColor(context)
+                )
+            );
 
             int taId = a.getResourceId(R.styleable.CalendarWidget_headerTextAppearance, -1);
             if(taId != -1) {
                 setHeaderTextAppearance(taId);
             }
 
-            taId = a.getResourceId(R.styleable.CalendarWidget_weekdayTextAppearance, -1);
+            taId = a.getResourceId(R.styleable.CalendarWidget_weekDayTextAppearance, -1);
             if(taId != -1) {
-                setWeekdayTextAppearance(taId);
+                setWeekDayTextAppearance(taId);
             }
 
-            taId = a.getResourceId(R.styleable.CalendarWidget_dayTextAppearance, -1);
+            taId = a.getResourceId(R.styleable.CalendarWidget_dateTextAppearance, -1);
             if(taId != -1) {
-                setDayTextAppearance(taId);
+                setDateTextAppearance(taId);
             }
 
             setShowOtherMonths(a.getBoolean(R.styleable.CalendarWidget_showOtherMonths, false));
@@ -154,13 +158,13 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         return calendar.compareTo(minCal) >= 0;
     }
 
-    public int getAccentColor() {
+    public int getSelectionColor() {
         return accentColor;
     }
 
-    public void setAccentColor(int color) {
+    public void setSelectionColor(int color) {
         accentColor = color;
-        monthView.setAccentColor(color);
+        monthView.setSelectionColor(color);
         invalidate();
     }
 
@@ -179,12 +183,12 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         title.setTextAppearance(getContext(), styleRes);
     }
 
-    public void setDayTextAppearance(int styleRes) {
-        monthView.setDayTextAppearance(styleRes);
+    public void setDateTextAppearance(int styleRes) {
+        monthView.setDateTextAppearance(styleRes);
     }
 
-    public void setWeekdayTextAppearance(int styleRes) {
-        monthView.setWeekdayTextAppearance(styleRes);
+    public void setWeekDayTextAppearance(int styleRes) {
+        monthView.setWeekDayTextAppearance(styleRes);
     }
 
     public CalendarDay getSelectedDate() {

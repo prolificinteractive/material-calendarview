@@ -3,8 +3,8 @@
 
     <declare-styleable name="CalendarWidget">
 
-        <attr name="dayTextAppearance" format="reference" />
-        <attr name="weekdayTextAppearance" format="reference" />
+        <attr name="dateTextAppearance" format="reference" />
+        <attr name="weekDayTextAppearance" format="reference" />
         <attr name="headerTextAppearance" format="reference" />
 
         <attr name="arrowColor" format="color" />

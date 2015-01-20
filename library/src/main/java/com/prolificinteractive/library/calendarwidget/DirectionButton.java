@@ -50,4 +50,10 @@ class DirectionButton extends ImageView {
     public void setColor(int color) {
         setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
     }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        setAlpha(enabled ? 1f : 0.1f);
+    }
 }

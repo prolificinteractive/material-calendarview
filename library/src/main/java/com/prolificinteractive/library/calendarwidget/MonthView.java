@@ -68,13 +68,13 @@ class MonthView extends GridLayout implements View.OnClickListener {
         setSelectedDate(new CalendarDay());
     }
 
-    public void setWeekdayTextAppearance(int taId) {
+    public void setWeekDayTextAppearance(int taId) {
         for(WeekDayView weekDayView : weekDayViews) {
             weekDayView.setTextAppearance(getContext(), taId);
         }
     }
 
-    public void setDayTextAppearance(int taId) {
+    public void setDateTextAppearance(int taId) {
         for(DayView dayView : monthDayViews) {
             dayView.setTextAppearance(getContext(), taId);
         }
@@ -89,7 +89,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
         return showOtherMonths;
     }
 
-    public void setAccentColor(int color) {
+    public void setSelectionColor(int color) {
         for(DayView dayView : monthDayViews) {
             dayView.setSelectionColor(color);
         }

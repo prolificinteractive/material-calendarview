@@ -54,13 +54,6 @@ public class DayView extends CheckedTextView {
         setBackgroundDrawable(generateBackground(color));
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static Drawable generateRippleDrawable(final int color) {
-        ColorStateList list = ColorStateList.valueOf(color);
-        Drawable mask = generateCircleDrawable(Color.WHITE);
-        return new RippleDrawable(list, null, mask);
-    }
-
     public CalendarDay getDate() {
         return date;
     }
@@ -98,5 +91,12 @@ public class DayView extends CheckedTextView {
             }
         });
         return drawable;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private static Drawable generateRippleDrawable(final int color) {
+        ColorStateList list = ColorStateList.valueOf(color);
+        Drawable mask = generateCircleDrawable(Color.WHITE);
+        return new RippleDrawable(list, null, mask);
     }
 }
