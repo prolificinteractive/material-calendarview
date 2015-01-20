@@ -5,7 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.CalendarWidget;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
 
 import java.text.DateFormat;
@@ -27,7 +27,7 @@ public class RangeActivity extends ActionBarActivity implements OnDateChangedLis
 
         textView = (TextView) findViewById(R.id.textView);
 
-        CalendarWidget widget = (CalendarWidget) findViewById(R.id.calendarView);
+        MaterialCalendarView widget = (MaterialCalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
 
         Calendar calendar = Calendar.getInstance();
@@ -41,7 +41,7 @@ public class RangeActivity extends ActionBarActivity implements OnDateChangedLis
     }
 
     @Override
-    public void onDateChanged(CalendarWidget widget, CalendarDay date) {
+    public void onDateChanged(MaterialCalendarView widget, CalendarDay date) {
         textView.setText(FORMATTER.format(date.getDate()));
     }
 }

@@ -22,7 +22,7 @@ import java.util.Locale;
 /**
  *
  */
-public class CalendarWidget extends LinearLayout implements View.OnClickListener, MonthView.Callbacks {
+public class MaterialCalendarView extends LinearLayout implements View.OnClickListener, MonthView.Callbacks {
 
     private static final DateFormat TITLE_FORMAT = new SimpleDateFormat(
             "MMMM yyyy",
@@ -44,11 +44,11 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
     private int accentColor = 0;
     private int arrowColor = Color.BLACK;
 
-    public CalendarWidget(Context context) {
+    public MaterialCalendarView(Context context) {
         this(context, null);
     }
 
-    public CalendarWidget(Context context, AttributeSet attrs) {
+    public MaterialCalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         calendar.setToFirstDay();
@@ -71,32 +71,32 @@ public class CalendarWidget extends LinearLayout implements View.OnClickListener
         monthView.setCallbacks(this);
 
         TypedArray a =
-                context.getTheme().obtainStyledAttributes(attrs, R.styleable.CalendarWidget, 0, 0);
+                context.getTheme().obtainStyledAttributes(attrs, R.styleable.MaterialCalendarView, 0, 0);
         try {
-            setArrowColor(a.getColor(R.styleable.CalendarWidget_arrowColor, Color.BLACK));
+            setArrowColor(a.getColor(R.styleable.MaterialCalendarView_arrowColor, Color.BLACK));
             setSelectionColor(
                     a.getColor(
-                            R.styleable.CalendarWidget_selectionColor,
+                            R.styleable.MaterialCalendarView_selectionColor,
                             getThemeAccentColor(context)
                     )
             );
 
-            int taId = a.getResourceId(R.styleable.CalendarWidget_headerTextAppearance, -1);
+            int taId = a.getResourceId(R.styleable.MaterialCalendarView_headerTextAppearance, -1);
             if(taId != -1) {
                 setHeaderTextAppearance(taId);
             }
 
-            taId = a.getResourceId(R.styleable.CalendarWidget_weekDayTextAppearance, -1);
+            taId = a.getResourceId(R.styleable.MaterialCalendarView_weekDayTextAppearance, -1);
             if(taId != -1) {
                 setWeekDayTextAppearance(taId);
             }
 
-            taId = a.getResourceId(R.styleable.CalendarWidget_dateTextAppearance, -1);
+            taId = a.getResourceId(R.styleable.MaterialCalendarView_dateTextAppearance, -1);
             if(taId != -1) {
                 setDateTextAppearance(taId);
             }
 
-            setShowOtherMonths(a.getBoolean(R.styleable.CalendarWidget_showOtherMonths, false));
+            setShowOtherMonths(a.getBoolean(R.styleable.MaterialCalendarView_showOtherMonths, false));
 
         } finally {
             a.recycle();

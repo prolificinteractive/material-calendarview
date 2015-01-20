@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.CheckedTextView;
 
 /**
- * Display one day of a {@linkplain CalendarWidget}
+ * Display one day of a {@linkplain MaterialCalendarView}
  */
 class DayView extends CheckedTextView {
 

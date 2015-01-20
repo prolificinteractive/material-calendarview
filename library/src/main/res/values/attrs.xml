@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="CalendarWidget">
+    <declare-styleable name="MaterialCalendarView">
 
-        <attr name="dateTextAppearance" format="reference" />
-        <attr name="weekDayTextAppearance" format="reference" />
-        <attr name="headerTextAppearance" format="reference" />
+        <attr name="dateTextAppearance" format="reference"/>
+        <attr name="weekDayTextAppearance" format="reference"/>
+        <attr name="headerTextAppearance" format="reference"/>
 
-        <attr name="arrowColor" format="color" />
-        <attr name="selectionColor" format="color" />
+        <attr name="arrowColor" format="color"/>
+        <attr name="selectionColor" format="color"/>
 
-        <attr name="showOtherMonths" format="boolean" />
+        <attr name="showOtherMonths" format="boolean"/>
 
     </declare-styleable>
 
