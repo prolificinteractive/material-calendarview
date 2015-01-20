@@ -1,4 +1,4 @@
-package com.prolificinteractive.library.calendarwidget;
+package com.prolificinteractive.materialcalendarview;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.CheckedTextView;
 
 /**
- * Display one day of a {@linkplain com.prolificinteractive.library.calendarwidget.CalendarWidget}
+ * Display one day of a {@linkplain CalendarWidget}
  */
 class DayView extends CheckedTextView {
 

@@ -1,13 +1,13 @@
-package com.prolificinteractive.library.calendarwidget.sample;
+package com.prolificinteractive.materialcalendarview.sample;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.TextView;
-import com.prolificinteractive.library.calendarwidget.CalendarDay;
-import com.prolificinteractive.library.calendarwidget.CalendarWidget;
-import com.prolificinteractive.library.calendarwidget.OnDateChangedListener;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarWidget;
+import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 

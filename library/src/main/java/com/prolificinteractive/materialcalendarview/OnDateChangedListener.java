@@ -1,4 +1,4 @@
-package com.prolificinteractive.library.calendarwidget;
+package com.prolificinteractive.materialcalendarview;
 
 /**
  * The callback used to indicate the user changes the date

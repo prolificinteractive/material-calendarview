@@ -1,4 +1,4 @@
-package com.prolificinteractive.library.calendarwidget;
+package com.prolificinteractive.materialcalendarview;
 
 import java.io.Serializable;
 import java.util.Calendar;

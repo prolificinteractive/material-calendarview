@@ -1,4 +1,4 @@
-package com.prolificinteractive.library.calendarwidget;
+package com.prolificinteractive.materialcalendarview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.prolificinteractive.library.calendarwidget.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

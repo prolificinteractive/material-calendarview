@@ -1,4 +1,4 @@
-package com.prolificinteractive.library.calendarwidget;
+package com.prolificinteractive.materialcalendarview;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -12,8 +12,8 @@ import static java.util.Calendar.DAY_OF_WEEK;
 import static java.util.Calendar.SUNDAY;
 
 /**
- * Display a month of {@linkplain com.prolificinteractive.library.calendarwidget.DayView}s and
- * seven {@linkplain com.prolificinteractive.library.calendarwidget.WeekDayView}s.
+ * Display a month of {@linkplain DayView}s and
+ * seven {@linkplain WeekDayView}s.
  */
 class MonthView extends GridLayout implements View.OnClickListener {
 

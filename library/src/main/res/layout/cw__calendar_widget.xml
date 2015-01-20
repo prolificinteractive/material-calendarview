@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         >
 
-        <com.prolificinteractive.library.calendarwidget.DirectionButton
+        <com.prolificinteractive.materialcalendarview.DirectionButton
             android:src="@drawable/cw__action_previous"
             android:layout_width="@dimen/cw__default_day_size"
             android:layout_height="@dimen/cw__default_day_size"
@@ -34,7 +34,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
-        <com.prolificinteractive.library.calendarwidget.DirectionButton
+        <com.prolificinteractive.materialcalendarview.DirectionButton
             android:src="@drawable/cw__action_next"
             android:layout_width="@dimen/cw__default_day_size"
             android:layout_height="@dimen/cw__default_day_size"

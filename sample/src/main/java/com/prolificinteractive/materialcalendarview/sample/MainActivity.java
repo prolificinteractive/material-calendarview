@@ -1,4 +1,4 @@
-package com.prolificinteractive.library.calendarwidget.sample;
+package com.prolificinteractive.materialcalendarview.sample;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,8 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,10 +21,10 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity {
 
     private static final List<Route> ROUTES = Arrays.asList(
-        new Route(R.string.title_activity_basic, BasicActivity.class),
-        new Route(R.string.title_activity_range, RangeActivity.class),
-        new Route(R.string.title_activity_customize_xml, CustomizeXmlActivity.class),
-        new Route(R.string.title_activity_customize_code, CustomizeCodeActivity.class)
+            new Route(R.string.title_activity_basic, BasicActivity.class),
+            new Route(R.string.title_activity_range, RangeActivity.class),
+            new Route(R.string.title_activity_customize_xml, CustomizeXmlActivity.class),
+            new Route(R.string.title_activity_customize_code, CustomizeCodeActivity.class)
     );
 
     @Override
