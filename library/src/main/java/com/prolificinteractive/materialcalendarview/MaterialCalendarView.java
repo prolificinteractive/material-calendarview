@@ -29,7 +29,7 @@ import java.util.Locale;
 /**
  *
  */
-public class MaterialCalendarView extends LinearLayout implements View.OnClickListener, MonthView.Callbacks {
+public class MaterialCalendarView extends LinearLayout {
 
     private static final DateFormat TITLE_FORMAT = new SimpleDateFormat(
             "MMMM yyyy",
@@ -41,8 +41,30 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
     private final DirectionButton buttonFuture;
     private final ViewPager pager;
     private final MonthPagerAdapter adapter;
-
     private CalendarDay currentMonth;
+
+    private final MonthView.Callbacks monthViewCallbacks = new MonthView.Callbacks() {
+        @Override
+        public void onDateChanged(CalendarDay date) {
+            setSelectedDate(date);
+
+            if(listener != null) {
+                listener.onDateChanged(MaterialCalendarView.this, date);
+            }
+        }
+    };
+
+    private final OnClickListener onClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int id = v.getId();
+            if(id == R.id.cw__calendar_widget_button_forward) {
+                pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+            } else if(id == R.id.cw__calendar_widget_button_backwards) {
+                pager.setCurrentItem(pager.getCurrentItem() - 1, true);
+            }
+        }
+    };
 
     private final ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
@@ -100,15 +122,15 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
         buttonFuture = (DirectionButton) findViewById(R.id.cw__calendar_widget_button_forward);
         pager = (ViewPager) findViewById(R.id.cw__pager);
 
-        title.setOnClickListener(this);
-        buttonPast.setOnClickListener(this);
-        buttonFuture.setOnClickListener(this);
+        title.setOnClickListener(onClickListener);
+        buttonPast.setOnClickListener(onClickListener);
+        buttonFuture.setOnClickListener(onClickListener);
 
         adapter = new MonthPagerAdapter(getContext());
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(pageChangeListener);
 
-        adapter.setCallbacks(this);
+        adapter.setCallbacks(monthViewCallbacks);
         adapter.registerDataSetObserver(dataObserver);
 
         TypedArray a =
@@ -146,25 +168,6 @@ public class MaterialCalendarView extends LinearLayout implements View.OnClickLi
 
         currentMonth = new CalendarDay();
         setCurrentDate(currentMonth);
-    }
-
-    @Override
-    public void onDateChanged(CalendarDay date) {
-        setSelectedDate(date);
-
-        if(listener != null) {
-            listener.onDateChanged(this, date);
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if(id == R.id.cw__calendar_widget_button_forward) {
-            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-        } else if(id == R.id.cw__calendar_widget_button_backwards) {
-            pager.setCurrentItem(pager.getCurrentItem() - 1, true);
-        }
     }
 
     /**
