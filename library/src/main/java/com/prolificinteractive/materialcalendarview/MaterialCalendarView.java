@@ -1,7 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Color;
@@ -27,7 +26,22 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 /**
+ * <p>
+ * This class is a calendar widget for displaying and selecting dates.
+ * The range of dates supported by this calendar is configurable.
+ * A user can select a date by taping on it and can page the calendar to a desired date.
+ * </p>
+ * <p>
+ * By default, the range of dates shown is from 200 years in the past to 200 years in the future.
+ * This can be extended or shortened by configuring the minimum and maximum dates.
+ * </p>
  *
+ * @attr ref R.styleable.MaterialCalendarView_arrowColor
+ * @attr ref R.styleable.MaterialCalendarView_selectionColor
+ * @attr ref R.styleable.MaterialCalendarView_headerTextAppearance
+ * @attr ref R.styleable.MaterialCalendarView_dateTextAppearance
+ * @attr ref R.styleable.MaterialCalendarView_weekDayTextAppearance
+ * @attr ref R.styleable.MaterialCalendarView_showOtherMonths
  */
 public class MaterialCalendarView extends LinearLayout {
 
@@ -80,16 +94,16 @@ public class MaterialCalendarView extends LinearLayout {
         @Override
         public void onInvalidated() {
             super.onInvalidated();
-            thing();
+            somethingChanged();
         }
 
         @Override
         public void onChanged() {
             super.onChanged();
-            thing();
+            somethingChanged();
         }
 
-        private void thing() {
+        private void somethingChanged() {
             pager.setCurrentItem(adapter.getIndexForDay(currentMonth));
         }
     };
