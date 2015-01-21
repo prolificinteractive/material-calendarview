@@ -100,7 +100,9 @@ class MonthView extends GridLayout implements View.OnClickListener {
         CalendarWrapper.copyDateTo(calendarOfRecord, tempWorkingCalendar);
         int dow = tempWorkingCalendar.getDayOfWeek();
         int delta = firstDayOfWeek - dow;
-        if(delta >= 0) {
+        //If the delta is positive, we want to remove a week
+        boolean removeRow = showOtherMonths ? delta >= 0 : delta > 0;
+        if(removeRow) {
             delta -= 7;
         }
         tempWorkingCalendar.add(DATE, delta);
