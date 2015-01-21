@@ -1,7 +1,61 @@
 Material Calendar View
 ======================
 
-This isn't ready for public consumption. If you want to test it out, you'll need to download the source.
+A better looking implementation of android's CalendarView. The goal is to have a more Material look
+and feel, rather than 100% parity with the platform's implementation.
+
+Usage
+-----
+
+1. Import the library into your project. Currently you will need to copy source.
+2. Add `MaterialCalendarView` into your layouts or view hierarchy.
+3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
+
+Customization
+-------------
+
+One of the aims of this library is to be customizable. Below is an example of custom xml attributes
+available
+
+```
+<com.prolificinteractive.materialcalendarview.MaterialCalendarView
+    android:id="@+id/calendarView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:showOtherMonths="boolean"
+    app:arrowColor="color"
+    app:selectionColor="color"
+    app:headerTextAppearance="style"
+    app:dateTextAppearance="style"
+    app:weekDayTextAppearance="style"
+    />
+```
+
+### showOtherMonths
+
+By default, only days of one month are shown. If this is set true,
+then days from the previous and next months are used to fill the empty space.
+
+### arrowColor
+
+Set the color of the arrows used to page the calendar. Black by default.
+
+### selectionColor
+
+Set the color of the date selector. By default this is the color set by
+`?android:attr/colorPrimary` on 5.0+ or `?attr/colorPrimary` from the AppCompat library.
+
+### headerTextAppearance
+
+Override the text appearance of the month-year indicator at the top
+
+### weekDayTextAppearance
+
+Override the text appearance of the week day indicators
+
+### dateTextAppearance
+
+Override the text appearance of the dates
 
 License
 =======
