@@ -3,12 +3,19 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.android.tools.build:gradle:1.0.1'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url 'https://api.bitbucket.org/1.0/repositories/prolificinteractive/pibrary-android/raw/master/maven-repo'
+            credentials {
+                username getProperty('bitbucket.username')
+                password getProperty('bitbucket.password')
+            }
+        }
     }
 }

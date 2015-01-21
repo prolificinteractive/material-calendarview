@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 21
@@ -13,5 +14,25 @@ android {
 }
 
 dependencies {
-    provided 'com.android.support:support-v4:+'
+    provided 'com.android.support:support-v4:21.0.3'
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        def deployPath = file(getProperty('aar.pibraryPath'))
+        repository(url: "file://${deployPath.absolutePath}")
+        pom.project {
+            groupId 'com.prolificinteractive'
+            artifactId 'materialcalendarview'
+            version android.defaultConfig.versionName
+
+            dependencies {
+                dependency {
+                    groupId 'com.android.support'
+                    artifactId 'support-v4'
+                    version '[21.0.0,)'
+                }
+            }
+        }
+    }
 }

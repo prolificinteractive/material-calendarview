@@ -7,7 +7,9 @@ and feel, rather than 100% parity with the platform's implementation.
 Usage
 -----
 
-1. Import the library into your project. Currently you will need to copy source.
+1. Import the library into your project. Currently only available to Prolific P's.
+    1. Setup the PiBrary-Android repo for you and your project
+    2. Add `compile 'com.prolificinteractive:materialcalendarview:+'`
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
 
@@ -15,7 +17,7 @@ Customization
 -------------
 
 One of the aims of this library is to be customizable. Below is an example of custom xml attributes
-available
+available.
 
 ```
 <com.prolificinteractive.materialcalendarview.MaterialCalendarView
