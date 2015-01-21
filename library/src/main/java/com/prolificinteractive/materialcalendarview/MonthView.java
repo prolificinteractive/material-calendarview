@@ -35,7 +35,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
 
-    private boolean showOtherMonths = false;
+    private boolean showOtherDates = false;
 
     public MonthView(Context context) {
         this(context, null);
@@ -81,13 +81,13 @@ class MonthView extends GridLayout implements View.OnClickListener {
         }
     }
 
-    public void setShowOtherMonths(boolean showOtherMonths) {
-        this.showOtherMonths = showOtherMonths;
+    public void setShowOtherDates(boolean show) {
+        this.showOtherDates = show;
         updateUi();
     }
 
-    public boolean getShowOtherMonths() {
-        return showOtherMonths;
+    public boolean getShowOtherDates() {
+        return showOtherDates;
     }
 
     public void setSelectionColor(int color) {
@@ -101,7 +101,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
         int dow = tempWorkingCalendar.getDayOfWeek();
         int delta = firstDayOfWeek - dow;
         //If the delta is positive, we want to remove a week
-        boolean removeRow = showOtherMonths ? delta >= 0 : delta > 0;
+        boolean removeRow = showOtherDates ? delta >= 0 : delta > 0;
         if(removeRow) {
             delta -= 7;
         }
@@ -158,7 +158,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
         for(DayView dayView : monthDayViews) {
             CalendarDay day = new CalendarDay(calendar);
             dayView.setDay(day);
-            dayView.setupSelection(showOtherMonths, day.isInRange(minDate, maxDate), day.getMonth() == ourMonth);
+            dayView.setupSelection(showOtherDates, day.isInRange(minDate, maxDate), day.getMonth() == ourMonth);
             dayView.setChecked(day.equals(selection));
             calendar.add(DATE, 1);
         }

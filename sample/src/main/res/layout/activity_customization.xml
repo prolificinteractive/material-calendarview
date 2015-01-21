@@ -15,7 +15,7 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:showOtherMonths="true"
+        app:showOtherDates="true"
         app:arrowColor="?attr/colorPrimary"
         app:selectionColor="?attr/colorPrimary"
         app:headerTextAppearance="?android:attr/textAppearanceMedium"

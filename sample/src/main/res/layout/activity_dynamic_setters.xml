@@ -32,8 +32,8 @@
             />
 
         <CheckBox
-            android:id="@+id/check_other_months"
-            android:text="Show Other Months"
+            android:id="@+id/check_other_dates"
+            android:text="Show Other Dates"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />

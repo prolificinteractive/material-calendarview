@@ -39,8 +39,8 @@ public class DynamicSettersActivity extends ActionBarActivity implements OnDateC
         textView.setText(FORMATTER.format(date.getDate()));
     }
 
-    @OnCheckedChanged(R.id.check_other_months) void onOtherMonthsChecked(boolean checked) {
-        widget.setShowOtherMonths(checked);
+    @OnCheckedChanged(R.id.check_other_dates) void onOtherMonthsChecked(boolean checked) {
+        widget.setShowOtherDates(checked);
     }
 
     @OnCheckedChanged(R.id.check_text_appearance) void onTextAppearanceChecked(boolean checked) {
@@ -54,7 +54,7 @@ public class DynamicSettersActivity extends ActionBarActivity implements OnDateC
             widget.setDateTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_Date);
             widget.setWeekDayTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_WeekDay);
         }
-        widget.setShowOtherMonths(checked);
+        widget.setShowOtherDates(checked);
     }
 
     @OnClick(R.id.button_min_date) void onMinClicked() {

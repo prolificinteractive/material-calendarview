@@ -10,7 +10,7 @@
         <attr name="arrowColor" format="color"/>
         <attr name="selectionColor" format="color"/>
 
-        <attr name="showOtherMonths" format="boolean"/>
+        <attr name="showOtherDates" format="boolean"/>
 
     </declare-styleable>
 

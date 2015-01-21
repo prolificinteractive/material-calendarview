@@ -26,7 +26,7 @@ public class CustomizeCodeActivity extends ActionBarActivity implements OnDateCh
         MaterialCalendarView widget = (MaterialCalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
 
-        widget.setShowOtherMonths(true);
+        widget.setShowOtherDates(true);
         widget.setArrowColor(getResources().getColor(R.color.sample_primary));
         widget.setSelectionColor(getResources().getColor(R.color.sample_primary));
         widget.setHeaderTextAppearance(R.style.TextAppearance_AppCompat_Medium);

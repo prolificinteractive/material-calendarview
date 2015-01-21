@@ -24,7 +24,7 @@ available.
     android:id="@+id/calendarView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:showOtherMonths="boolean"
+    app:showOtherDates="boolean"
     app:arrowColor="color"
     app:selectionColor="color"
     app:headerTextAppearance="style"
@@ -33,10 +33,11 @@ available.
     />
 ```
 
-### showOtherMonths
+### showOtherDates
 
 By default, only days of one month are shown. If this is set true,
 then days from the previous and next months are used to fill the empty space.
+This also controls showing dates outside of the min-max range.
 
 ### arrowColor
 

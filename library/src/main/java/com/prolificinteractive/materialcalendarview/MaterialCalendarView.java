@@ -44,7 +44,7 @@ import java.util.Locale;
  * @attr ref R.styleable.MaterialCalendarView_headerTextAppearance
  * @attr ref R.styleable.MaterialCalendarView_dateTextAppearance
  * @attr ref R.styleable.MaterialCalendarView_weekDayTextAppearance
- * @attr ref R.styleable.MaterialCalendarView_showOtherMonths
+ * @attr ref R.styleable.MaterialCalendarView_showOtherDates
  */
 public class MaterialCalendarView extends FrameLayout {
 
@@ -162,8 +162,8 @@ public class MaterialCalendarView extends FrameLayout {
                 R.styleable.MaterialCalendarView_dateTextAppearance,
                 R.style.TextAppearance_MaterialCalendarWidget_Date
             ));
-            setShowOtherMonths(a.getBoolean(
-                R.styleable.MaterialCalendarView_showOtherMonths,
+            setShowOtherDates(a.getBoolean(
+                R.styleable.MaterialCalendarView_showOtherDates,
                 false
             ));
         }
@@ -379,17 +379,22 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     /**
-     * @param showOtherMonths show days from the previous and next months, default is false
+     *
+     * By default, only days of one month are shown. If this is set true,
+     * then days from the previous and next months are used to fill the empty space.
+     * This also controls showing dates outside of the min-max range.
+     *
+     * @param showOtherDates show other days, default is false
      */
-    public void setShowOtherMonths(boolean showOtherMonths) {
-        adapter.setShowOtherMonths(showOtherMonths);
+    public void setShowOtherDates(boolean showOtherDates) {
+        adapter.setShowOtherDates(showOtherDates);
     }
 
     /**
      * @return true if days from previous or next months are shown, otherwise false.
      */
-    public boolean getShowOtherMonths() {
-        return adapter.getShowOtherMonths();
+    public boolean getShowOtherDates() {
+        return adapter.getShowOtherDates();
     }
 
     @Override
@@ -398,7 +403,7 @@ public class MaterialCalendarView extends FrameLayout {
         ss.color = getSelectionColor();
         ss.dateTextAppearance = adapter.getDateTextAppearance();
         ss.weekDayTextAppearance = adapter.getWeekDayTextAppearance();
-        ss.showOtherMonths = getShowOtherMonths();
+        ss.showOtherDates = getShowOtherDates();
         ss.minDate = getMinimumDate();
         ss.maxDate = getMaximumDate();
         ss.selectedDate = getSelectedDate();
@@ -412,7 +417,7 @@ public class MaterialCalendarView extends FrameLayout {
         setSelectionColor(ss.color);
         setDateTextAppearance(ss.dateTextAppearance);
         setWeekDayTextAppearance(ss.weekDayTextAppearance);
-        setShowOtherMonths(ss.showOtherMonths);
+        setShowOtherDates(ss.showOtherDates);
         setRangeDates(ss.minDate, ss.maxDate);
         setSelectedDate(ss.selectedDate);
     }
@@ -442,7 +447,7 @@ public class MaterialCalendarView extends FrameLayout {
         int color = 0;
         int dateTextAppearance = 0;
         int weekDayTextAppearance = 0;
-        boolean showOtherMonths = false;
+        boolean showOtherDates = false;
         CalendarDay minDate = null;
         CalendarDay maxDate = null;
         CalendarDay selectedDate = null;
@@ -457,7 +462,7 @@ public class MaterialCalendarView extends FrameLayout {
             out.writeInt(color);
             out.writeInt(dateTextAppearance);
             out.writeInt(weekDayTextAppearance);
-            out.writeInt(showOtherMonths ? 1 : 0);
+            out.writeInt(showOtherDates ? 1 : 0);
             out.writeParcelable(minDate, 0);
             out.writeParcelable(maxDate, 0);
             out.writeParcelable(selectedDate, 0);
@@ -479,7 +484,7 @@ public class MaterialCalendarView extends FrameLayout {
             color = in.readInt();
             dateTextAppearance = in.readInt();
             weekDayTextAppearance = in.readInt();
-            showOtherMonths = in.readInt() == 1;
+            showOtherDates = in.readInt() == 1;
             ClassLoader loader = CalendarDay.class.getClassLoader();
             minDate = in.readParcelable(loader);
             maxDate = in.readParcelable(loader);
@@ -513,7 +518,7 @@ public class MaterialCalendarView extends FrameLayout {
         private Integer color = null;
         private Integer dateTextAppearance = null;
         private Integer weekDayTextAppearance = null;
-        private Boolean showOtherMonths = null;
+        private Boolean showOtherDates = null;
         private CalendarDay minDate = null;
         private CalendarDay maxDate = null;
         private CalendarDay selectedDate = null;
@@ -584,8 +589,8 @@ public class MaterialCalendarView extends FrameLayout {
             if(weekDayTextAppearance != null) {
                 monthView.setWeekDayTextAppearance(weekDayTextAppearance);
             }
-            if(showOtherMonths != null) {
-                monthView.setShowOtherMonths(showOtherMonths);
+            if(showOtherDates != null) {
+                monthView.setShowOtherDates(showOtherDates);
             }
             monthView.setMinimumDate(minDate);
             monthView.setMaximumDate(maxDate);
@@ -636,15 +641,15 @@ public class MaterialCalendarView extends FrameLayout {
             }
         }
 
-        public void setShowOtherMonths(boolean show) {
-            this.showOtherMonths = show;
+        public void setShowOtherDates(boolean show) {
+            this.showOtherDates = show;
             for(MonthView monthView : currentViews) {
-                monthView.setShowOtherMonths(show);
+                monthView.setShowOtherDates(show);
             }
         }
 
-        public boolean getShowOtherMonths() {
-            return showOtherMonths;
+        public boolean getShowOtherDates() {
+            return showOtherDates;
         }
 
         public void setWeekDayTextAppearance(int taId) {
