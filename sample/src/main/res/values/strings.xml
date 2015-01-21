@@ -8,5 +8,6 @@
     <string name="title_activity_range">Selection Range Example</string>
     <string name="title_activity_customize_xml">XML Customization Example</string>
     <string name="title_activity_customize_code">Programmatic Customization Example</string>
+    <string name="title_activity_dynamic_setters">Dynamic Setters Test</string>
 
 </resources>

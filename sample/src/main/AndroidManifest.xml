@@ -61,6 +61,17 @@
 
         </activity>
 
+        <activity
+            android:name="com.prolificinteractive.materialcalendarview.sample.DynamicSettersActivity"
+            android:label="@string/title_activity_dynamic_setters"
+            android:parentActivityName="com.prolificinteractive.materialcalendarview.sample.MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
+
+        </activity>
+
     </application>
 
 </manifest>

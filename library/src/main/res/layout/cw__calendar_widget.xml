@@ -31,7 +31,7 @@
             android:gravity="center"
             tools:text="January 2014"
             android:id="@+id/cw__calendar_widget_title"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="@style/TextAppearance.MaterialCalendarWidget.Header"
             />
 
         <com.prolificinteractive.materialcalendarview.DirectionButton
