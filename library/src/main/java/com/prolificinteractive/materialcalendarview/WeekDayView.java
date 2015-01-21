@@ -24,8 +24,6 @@ class WeekDayView extends TextView {
 
         setGravity(Gravity.CENTER);
 
-        setTextAppearance(context, R.style.TextAppearance_MaterialCalendarWidget_WeekDay);
-
         if(isInEditMode()) {
             setText("Mon");
         }

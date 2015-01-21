@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:enterFadeDuration="@android:integer/config_shortAnimTime"
+    android:exitFadeDuration="@android:integer/config_shortAnimTime">
+
+    <item
+        android:state_checked="true"
+        android:color="@android:color/white"
+        />
+
+    <item
+        android:state_pressed="true"
+        android:color="@android:color/white"
+        />
+
+    <item
+        android:state_enabled="false"
+        android:color="#808080"
+        />
+
+    <item
+        android:color="@android:color/black"
+        />
+
+
+</selector>

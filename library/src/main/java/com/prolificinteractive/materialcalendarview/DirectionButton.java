@@ -1,9 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -17,34 +15,13 @@ import android.widget.ImageView;
 class DirectionButton extends ImageView {
 
     public DirectionButton(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public DirectionButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
 
-    public DirectionButton(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public DirectionButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
-
-    private void init() {
-        setColor(Color.GRAY);
-
-        TypedValue out = new TypedValue();
-        Resources.Theme theme = getContext().getTheme();
-        if(theme.resolveAttribute(android.R.attr.selectableItemBackground, out, true)) {
-            setBackgroundResource(out.resourceId);
-        }
+        setBackgroundResource(getThemeSelectableBackgroundId(context));
     }
 
     public void setColor(int color) {
@@ -55,5 +32,23 @@ class DirectionButton extends ImageView {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         setAlpha(enabled ? 1f : 0.1f);
+    }
+
+    private static int getThemeSelectableBackgroundId(Context context) {
+            //Get selectableItemBackgroundBorderless defined for AppCompat
+        int colorAttr = context.getResources().getIdentifier(
+                "selectableItemBackgroundBorderless", "attr", context.getPackageName());
+
+        if(colorAttr == 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                colorAttr = android.R.attr.selectableItemBackgroundBorderless;
+            } else {
+                colorAttr = android.R.attr.selectableItemBackground;
+            }
+        }
+
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(colorAttr, outValue, true);
+        return outValue.resourceId;
     }
 }

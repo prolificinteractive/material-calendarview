@@ -26,6 +26,8 @@ class DayView extends CheckedTextView {
     private CalendarDay date = new CalendarDay();
     private int selectionColor = Color.GRAY;
 
+    private final int fadeTime;
+
     public DayView(Context context) {
         this(context, null);
     }
@@ -33,11 +35,11 @@ class DayView extends CheckedTextView {
     public DayView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        fadeTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
         setSelectionColor(this.selectionColor);
 
         setGravity(Gravity.CENTER);
-
-        setTextAppearance(context, R.style.TextAppearance_MaterialCalendarWidget_Date);
 
         if(isInEditMode()) {
             setText("99");
@@ -51,7 +53,7 @@ class DayView extends CheckedTextView {
 
     public void setSelectionColor(int color) {
         this.selectionColor = color;
-        setBackgroundDrawable(generateBackground(color));
+        setBackgroundDrawable(generateBackground(color, fadeTime));
     }
 
     public CalendarDay getDate() {
@@ -69,9 +71,9 @@ class DayView extends CheckedTextView {
         setVisibility(enabled || showOtherMonths ? View.VISIBLE : View.INVISIBLE);
     }
 
-    private static Drawable generateBackground(int color) {
+    private static Drawable generateBackground(int color, int fadeTime) {
         StateListDrawable drawable = new StateListDrawable();
-        drawable.setExitFadeDuration(200);
+        drawable.setExitFadeDuration(fadeTime);
         drawable.addState(new int[] { android.R.attr.state_checked }, generateCircleDrawable(color));
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             drawable.addState(new int[] { android.R.attr.state_pressed }, generateRippleDrawable(color));

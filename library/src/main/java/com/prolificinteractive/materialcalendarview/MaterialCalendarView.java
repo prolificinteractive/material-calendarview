@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -125,14 +126,23 @@ public class MaterialCalendarView extends FrameLayout {
         adapter = new MonthPagerAdapter(this);
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(pageChangeListener);
+        pager.setPageTransformer(false, new ViewPager.PageTransformer() {
+            @Override
+            public void transformPage(View page, float position) {
+                position = (float) Math.sqrt(1 - Math.abs(position));
+                page.setAlpha(position);
+            }
+        });
 
         adapter.setCallbacks(monthViewCallbacks);
 
-        TypedArray a =
-            context.getTheme()
+        TypedArray a = context.getTheme()
                 .obtainStyledAttributes(attrs, R.styleable.MaterialCalendarView, 0, 0);
         try {
-            setArrowColor(a.getColor(R.styleable.MaterialCalendarView_arrowColor, Color.BLACK));
+            setArrowColor(a.getColor(
+                R.styleable.MaterialCalendarView_arrowColor,
+                Color.BLACK
+            ));
             setSelectionColor(
                 a.getColor(
                     R.styleable.MaterialCalendarView_selectionColor,
@@ -140,24 +150,27 @@ public class MaterialCalendarView extends FrameLayout {
                 )
             );
 
-            int taId = a.getResourceId(R.styleable.MaterialCalendarView_headerTextAppearance, -1);
-            if (taId != -1) {
-                setHeaderTextAppearance(taId);
-            }
-
-            taId = a.getResourceId(R.styleable.MaterialCalendarView_weekDayTextAppearance, -1);
-            if (taId != -1) {
-                setWeekDayTextAppearance(taId);
-            }
-
-            taId = a.getResourceId(R.styleable.MaterialCalendarView_dateTextAppearance, -1);
-            if (taId != -1) {
-                setDateTextAppearance(taId);
-            }
-
-            setShowOtherMonths(
-                a.getBoolean(R.styleable.MaterialCalendarView_showOtherMonths, false));
-        } finally {
+            setHeaderTextAppearance(a.getResourceId(
+                R.styleable.MaterialCalendarView_headerTextAppearance,
+                R.style.TextAppearance_MaterialCalendarWidget_Header
+            ));
+            setWeekDayTextAppearance(a.getResourceId(
+                R.styleable.MaterialCalendarView_weekDayTextAppearance,
+                R.style.TextAppearance_MaterialCalendarWidget_WeekDay
+            ));
+            setDateTextAppearance(a.getResourceId(
+                R.styleable.MaterialCalendarView_dateTextAppearance,
+                R.style.TextAppearance_MaterialCalendarWidget_Date
+            ));
+            setShowOtherMonths(a.getBoolean(
+                R.styleable.MaterialCalendarView_showOtherMonths,
+                false
+            ));
+        }
+        catch (Exception e) {
+            Log.e("Attr Error", "error" , e);
+        }
+        finally {
             a.recycle();
         }
 
@@ -569,7 +582,7 @@ public class MaterialCalendarView extends FrameLayout {
                 monthView.setDateTextAppearance(dateTextAppearance);
             }
             if(weekDayTextAppearance != null) {
-                monthView.setDateTextAppearance(weekDayTextAppearance);
+                monthView.setWeekDayTextAppearance(weekDayTextAppearance);
             }
             if(showOtherMonths != null) {
                 monthView.setShowOtherMonths(showOtherMonths);
