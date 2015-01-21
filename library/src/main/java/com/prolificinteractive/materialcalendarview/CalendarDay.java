@@ -20,10 +20,16 @@ public final class CalendarDay implements Parcelable {
     private final int month;
     private final int day;
 
+    /**
+     * Initialized to the current day
+     */
     public CalendarDay() {
         this(Calendar.getInstance());
     }
 
+    /**
+     * @param calendar source to pull date information from for this instance
+     */
     public CalendarDay(Calendar calendar) {
         this(
                 calendar.get(YEAR),
@@ -32,12 +38,20 @@ public final class CalendarDay implements Parcelable {
         );
     }
 
+    /**
+     * @param year new instance's year
+     * @param month new instance's month as defined by {@linkplain java.util.Calendar}
+     * @param day new instance's day of month
+     */
     public CalendarDay(int year, int month, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
     }
 
+    /**
+     * @param date source to pull date information from for this instance
+     */
     public CalendarDay(Date date) {
         this(CalendarWrapper.getInstance(date));
     }
@@ -46,28 +60,46 @@ public final class CalendarDay implements Parcelable {
         this(selectedDate.innerCalendar);
     }
 
+    /**
+     * @return the year for this day
+     */
     public int getYear() {
         return year;
     }
 
+    /**
+     * @return the month of the year as defined by {@linkplain java.util.Calendar}
+     */
     public int getMonth() {
         return month;
     }
 
+    /**
+     * @return the day of the month for this day
+     */
     public int getDay() {
         return day;
     }
 
+    /**
+     * @return a date with this days information
+     */
     public Date getDate() {
         return getCalendar().getTime();
     }
 
+    /**
+     * @return a new calendar instance with this day information
+     */
     public Calendar getCalendar() {
         Calendar calendar = Calendar.getInstance();
         copyTo(calendar);
         return calendar;
     }
 
+    /**
+     * @param calendar calendar to set date information to
+     */
     public void copyTo(Calendar calendar) {
         calendar.clear();
         calendar.set(year, month, day);
@@ -78,11 +110,20 @@ public final class CalendarDay implements Parcelable {
         calendar.set(year, month, day);
     }
 
+    /**
+     * @param minDate the earliest day, may be null
+     * @param maxDate the latest day, may be null
+     * @return true if the between (inclusive) the min and max dates.
+     */
     public boolean isInRange(CalendarDay minDate, CalendarDay maxDate) {
         return !(minDate != null && minDate.isAfter(this)) &&
                 !(maxDate != null && maxDate.isBefore(this));
     }
 
+    /**
+     * @param other the other day to test
+     * @return true if this is before other, false if equal or after
+     */
     public boolean isBefore(CalendarDay other) {
         if(other == null) {
             throw new IllegalArgumentException("other cannot be null");
@@ -92,6 +133,10 @@ public final class CalendarDay implements Parcelable {
                 (year < other.year);
     }
 
+    /**
+     * @param other the other day to test
+     * @return true if this is after other, false if equal or before
+     */
     public boolean isAfter(CalendarDay other) {
         if(other == null) {
             throw new IllegalArgumentException("other cannot be null");
