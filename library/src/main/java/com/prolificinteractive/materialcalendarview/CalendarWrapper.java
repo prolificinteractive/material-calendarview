@@ -21,7 +21,9 @@ class CalendarWrapper implements Cloneable, Serializable, Comparable {
 
     private CalendarWrapper(Date date) {
         this();
-        innerCalendar.setTime(date);
+        if(date != null) {
+            innerCalendar.setTime(date);
+        }
     }
 
     private CalendarWrapper() {
