@@ -162,6 +162,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
             dayView.setChecked(day.equals(selection));
             calendar.add(DATE, 1);
         }
+        postInvalidate();
     }
 
     public void setCallbacks(Callbacks callbacks) {

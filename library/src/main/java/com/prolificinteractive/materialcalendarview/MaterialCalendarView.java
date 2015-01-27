@@ -38,6 +38,11 @@ import java.util.Locale;
  * By default, the range of dates shown is from 200 years in the past to 200 years in the future.
  * This can be extended or shortened by configuring the minimum and maximum dates.
  * </p>
+ * <p>
+ * When selecting a date out of range, or when the range changes so the selection becomes outside,
+ * The date closest to the previous selection will become selected. This will also trigger the
+ * {@linkplain com.prolificinteractive.materialcalendarview.OnDateChangedListener}
+ * </p>
  *
  * @attr ref R.styleable.MaterialCalendarView_arrowColor
  * @attr ref R.styleable.MaterialCalendarView_selectionColor
@@ -691,14 +696,34 @@ public class MaterialCalendarView extends FrameLayout {
                 worker.add(Calendar.MONTH, 1);
                 workingMonth = new CalendarDay(worker);
             }
+            CalendarDay prevDate = selectedDate;
             notifyDataSetChanged();
+            setSelectedDate(prevDate);
+            if(prevDate != null) {
+                if(!prevDate.equals(selectedDate)) {
+                    callbacks.onDateChanged(selectedDate);
+                }
+            }
         }
 
         public void setSelectedDate(CalendarDay date) {
-            this.selectedDate = date;
+            this.selectedDate = getValidSelectedDate(date);
             for(MonthView monthView : currentViews) {
-                monthView.setSelectedDate(date);
+                monthView.setSelectedDate(selectedDate);
             }
+        }
+
+        private CalendarDay getValidSelectedDate(CalendarDay date) {
+            if(date == null) {
+                return null;
+            }
+            if(minDate != null && minDate.isAfter(date)) {
+                return minDate;
+            }
+            if(maxDate != null && maxDate.isBefore(date)) {
+                return maxDate;
+            }
+            return date;
         }
 
         public CalendarDay getItem(int position) {
