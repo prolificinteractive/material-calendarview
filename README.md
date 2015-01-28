@@ -1,6 +1,8 @@
 Material Calendar View
 ======================
 
+![Demo Screen Capture](/images/screencast.gif)
+
 A better looking implementation of android's CalendarView. The goal is to have a more Material look
 and feel, rather than 100% parity with the platform's implementation.
 
