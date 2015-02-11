@@ -16,7 +16,6 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
-import com.prolificinteractive.library.calendarwidget.R;
 
 /**
  * Display one day of a {@linkplain MaterialCalendarView}

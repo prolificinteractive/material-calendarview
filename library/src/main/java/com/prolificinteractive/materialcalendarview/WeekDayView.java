@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.TextView;
-import com.prolificinteractive.library.calendarwidget.R;
 import java.util.Locale;
 
 import static java.util.Calendar.DAY_OF_WEEK;

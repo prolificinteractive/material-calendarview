@@ -17,9 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
-import com.prolificinteractive.library.calendarwidget.R;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,12 +41,12 @@ import java.util.Locale;
  * {@linkplain com.prolificinteractive.materialcalendarview.OnDateChangedListener}
  * </p>
  *
- * @see R.styleable.MaterialCalendarView_arrowColor
- * @see R.styleable.MaterialCalendarView_selectionColor
- * @see R.styleable.MaterialCalendarView_headerTextAppearance
- * @see R.styleable.MaterialCalendarView_dateTextAppearance
- * @see R.styleable.MaterialCalendarView_weekDayTextAppearance
- * @see R.styleable.MaterialCalendarView_showOtherDates
+ * @see R.styleable#MaterialCalendarView_arrowColor
+ * @see R.styleable#MaterialCalendarView_selectionColor
+ * @see R.styleable#MaterialCalendarView_headerTextAppearance
+ * @see R.styleable#MaterialCalendarView_dateTextAppearance
+ * @see R.styleable#MaterialCalendarView_weekDayTextAppearance
+ * @see R.styleable#MaterialCalendarView_showOtherDates
  */
 public class MaterialCalendarView extends FrameLayout {
 
