@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 android {
     compileSdkVersion 21
@@ -8,31 +9,74 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 1
-        versionName "0.2.0"
+        versionCode project.ext.versionCodeInt
+        versionName version
     }
 }
 
 dependencies {
-    provided 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:support-v4:21.0.3'
+}
+
+task sourcesJar(type: Jar) {
+  from android.sourceSets.main.java.srcDirs
+  classifier = 'sources'
+}
+
+artifacts {
+  archives sourcesJar
+}
+
+signing {
+  sign configurations.archives
 }
 
 uploadArchives {
-    repositories.mavenDeployer {
-        def deployPath = file(getProperty('aar.pibraryPath'))
-        repository(url: "file://${deployPath.absolutePath}")
-        pom.project {
-            groupId 'com.prolificinteractive'
-            artifactId 'materialcalendarview'
-            version android.defaultConfig.versionName
+  repositories.mavenDeployer {
+    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            dependencies {
-                dependency {
-                    groupId 'com.android.support'
-                    artifactId 'support-v4'
-                    version '[21.0.0,)'
-                }
-            }
-        }
+    repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+      authentication(userName: sonatypeUsername, password: sonatypePassword)
     }
+
+    snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
+      authentication(userName: sonatypeUsername, password: sonatypePassword)
+    }
+
+    pom.groupId = GROUP
+    pom.version = version
+    pom.artifactId = POM_ARTIFACT_ID
+
+    pom {
+      project {
+        name POM_NAME
+        packaging POM_PACKAGING
+        description POM_DESCRIPTION
+        url POM_URL
+
+        scm {
+          url POM_SCM_URL
+          connection POM_SCM_CONNECTION
+          developerConnection POM_SCM_DEV_CONNECTION
+        }
+
+        licenses {
+          license {
+            name POM_LICENCE_NAME
+            url POM_LICENCE_URL
+            distribution POM_LICENCE_DIST
+          }
+        }
+
+        developers {
+          developer {
+            id POM_DEVELOPER_ID
+            name POM_DEVELOPER_NAME
+            email POM_DEVELOPER_EMAIL
+          }
+        }
+
+      }
+    }
+  }
 }

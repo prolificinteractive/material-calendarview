@@ -4,18 +4,16 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.1'
+      classpath 'com.github.dcendents:android-maven-plugin:1.2'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url 'https://api.bitbucket.org/1.0/repositories/prolificinteractive/pibrary-android/raw/master/maven-repo'
-            credentials {
-                username getProperty('bitbucket.username')
-                password getProperty('bitbucket.password')
-            }
-        }
     }
+  // Is Release Build?
+  ext.isReleaseVersion = has("release")
+  ext.versionCodeInt = getProperty('VERSION_CODE').toInteger()
+  version = VERSION_NAME
 }

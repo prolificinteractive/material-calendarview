@@ -44,12 +44,12 @@ import java.util.Locale;
  * {@linkplain com.prolificinteractive.materialcalendarview.OnDateChangedListener}
  * </p>
  *
- * @attr ref R.styleable.MaterialCalendarView_arrowColor
- * @attr ref R.styleable.MaterialCalendarView_selectionColor
- * @attr ref R.styleable.MaterialCalendarView_headerTextAppearance
- * @attr ref R.styleable.MaterialCalendarView_dateTextAppearance
- * @attr ref R.styleable.MaterialCalendarView_weekDayTextAppearance
- * @attr ref R.styleable.MaterialCalendarView_showOtherDates
+ * @see R.styleable.MaterialCalendarView_arrowColor
+ * @see R.styleable.MaterialCalendarView_selectionColor
+ * @see R.styleable.MaterialCalendarView_headerTextAppearance
+ * @see R.styleable.MaterialCalendarView_dateTextAppearance
+ * @see R.styleable.MaterialCalendarView_weekDayTextAppearance
+ * @see R.styleable.MaterialCalendarView_showOtherDates
  */
 public class MaterialCalendarView extends FrameLayout {
 
