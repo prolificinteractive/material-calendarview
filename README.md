@@ -5,7 +5,7 @@ Material Calendar View
 
 ![Demo Screen Capture](/images/screencast.gif)
 
-A better looking implementation of android's CalendarView. The goal is to have a more Material look
+A better looking implementation of Android's CalendarView. The goal is to have a more Material look
 and feel, rather than 100% parity with the platform's implementation.
 
 Usage
@@ -21,7 +21,7 @@ Customization
 One of the aims of this library is to be customizable. Below is an example of custom xml attributes
 available.
 
-```
+```xml
 <com.prolificinteractive.materialcalendarview.MaterialCalendarView
     android:id="@+id/calendarView"
     android:layout_width="match_parent"
@@ -37,7 +37,7 @@ available.
 
 ### showOtherDates
 
-By default, only days of one month are shown. If this is set true,
+By default, only days of one month are shown. If this is set `true`,
 then days from the previous and next months are used to fill the empty space.
 This also controls showing dates outside of the min-max range.
 
@@ -52,15 +52,15 @@ Set the color of the date selector. By default this is the color set by
 
 ### headerTextAppearance
 
-Override the text appearance of the month-year indicator at the top
+Override the text appearance of the month-year indicator at the top.
 
 ### weekDayTextAppearance
 
-Override the text appearance of the week day indicators
+Override the text appearance of the week day indicators.
 
 ### dateTextAppearance
 
-Override the text appearance of the dates
+Override the text appearance of the dates.
 
 License
 =======
