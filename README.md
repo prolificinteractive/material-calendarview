@@ -62,6 +62,11 @@ Override the text appearance of the week day indicators.
 
 Override the text appearance of the dates.
 
+Contributing
+============
+
+Would you like to contribute? Fork us and send a pull request! Be sure to checkout our issues first.
+
 License
 =======
 
