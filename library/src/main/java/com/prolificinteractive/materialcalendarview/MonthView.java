@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.GridLayout;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_WEEK;
@@ -64,6 +65,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
             }
         }
         setFirstDayOfWeek(firstDayOfWeek);
+        setSelectedDate(new Date().getTime());
     }
 
     public void setWeekDayTextAppearance(int taId) {
