@@ -374,7 +374,7 @@ public class MaterialCalendarView extends FrameLayout {
      * @param forceUpdate whether or not to force an update in the UI
      */
     public void setShowOtherDates(boolean showOtherDates, boolean forceUpdate) {
-        adapter.setShowOtherDates(showOtherDates, forceUpdate);
+        adapter.setShowOtherDates(showOtherDates);
     }
 
     /**
@@ -619,10 +619,8 @@ public class MaterialCalendarView extends FrameLayout {
             }
         }
 
-        public void setShowOtherDates(boolean show, boolean forceUpdate) {
+        public void setShowOtherDates(boolean show) {
             this.showOtherDates = show;
-            if(!forceUpdate)
-                return;
             for(MonthView monthView : currentViews) {
                 monthView.setShowOtherDates(show);
             }
