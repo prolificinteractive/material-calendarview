@@ -143,7 +143,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
         long calendar = resetAndGetWorkingCalendar();
         for(DayView dayView : monthDayViews) {
             dayView.setDay(calendar);
-            dayView.setupSelection(showOtherDates, CalendarHelper.isInRange(calendar, minDate, maxDate), CalendarHelper.getMonth(calendar) == ourMonth);
+            dayView.setupSelection(showOtherDates, CalendarHelper.isBetween(calendar, minDate, maxDate), CalendarHelper.getMonth(calendar) == ourMonth);
             dayView.setChecked(calendar == selection);
             calendar = CalendarHelper.add(calendar, DATE, 1);
         }
