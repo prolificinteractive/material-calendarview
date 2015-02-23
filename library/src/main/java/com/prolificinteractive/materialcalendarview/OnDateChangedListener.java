@@ -11,5 +11,5 @@ public interface OnDateChangedListener {
      * @param widget the view associated with this listener
      * @param date   the date picked
      */
-    public void onDateChanged(MaterialCalendarView widget, CalendarDay date);
+    public void onDateChanged(MaterialCalendarView widget, long date);
 }
