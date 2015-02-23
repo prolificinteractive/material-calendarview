@@ -12,14 +12,14 @@ import static java.util.Calendar.DAY_OF_WEEK;
 import static java.util.Calendar.SUNDAY;
 
 /**
- * Display a month of {@linkplain DayView}s and
- * seven {@linkplain WeekDayView}s.
+ * Display a month of {@linkplain com.prolificinteractive.materialcalendarview.DayView}s and
+ * seven {@linkplain com.prolificinteractive.materialcalendarview.WeekDayView}s.
  */
 class MonthView extends GridLayout implements View.OnClickListener {
 
     public static interface Callbacks {
 
-        public void onDateChanged(CalendarDay date);
+        public void onDateChanged(long date);
     }
 
     private Callbacks callbacks;
@@ -27,13 +27,12 @@ class MonthView extends GridLayout implements View.OnClickListener {
     private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
     private final ArrayList<DayView> monthDayViews = new ArrayList<>();
 
-    private final CalendarWrapper calendarOfRecord = CalendarWrapper.getInstance();
-    private final CalendarWrapper tempWorkingCalendar = CalendarWrapper.getInstance();
+    private long calendarOfRecord;
     private int firstDayOfWeek = SUNDAY;
 
-    private CalendarDay selection = null;
-    private CalendarDay minDate = null;
-    private CalendarDay maxDate = null;
+    private long selection = 0;
+    private long minDate = 0;
+    private long maxDate = 0;
 
     private boolean showOtherDates = false;
 
@@ -54,7 +53,6 @@ class MonthView extends GridLayout implements View.OnClickListener {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-
         int children = getChildCount();
         for(int i = 0; i < children; i++) {
             View child = getChildAt(i);
@@ -66,7 +64,6 @@ class MonthView extends GridLayout implements View.OnClickListener {
             }
         }
         setFirstDayOfWeek(firstDayOfWeek);
-        setSelectedDate(new CalendarDay());
     }
 
     public void setWeekDayTextAppearance(int taId) {
@@ -96,71 +93,57 @@ class MonthView extends GridLayout implements View.OnClickListener {
         }
     }
 
-    private CalendarWrapper resetAndGetWorkingCalendar() {
-        CalendarWrapper.copyDateTo(calendarOfRecord, tempWorkingCalendar);
-        int dow = tempWorkingCalendar.getDayOfWeek();
+    private long resetAndGetWorkingCalendar() {
+        long tempWorkingCalendar = calendarOfRecord;
+        int dow = CalendarHelper.getDayOfWeek(tempWorkingCalendar);
         int delta = firstDayOfWeek - dow;
         //If the delta is positive, we want to remove a week
         boolean removeRow = showOtherDates ? delta >= 0 : delta > 0;
         if(removeRow) {
             delta -= 7;
         }
-        tempWorkingCalendar.add(DATE, delta);
+        tempWorkingCalendar = CalendarHelper.add(tempWorkingCalendar, DATE, delta);
         return tempWorkingCalendar;
     }
 
     public void setFirstDayOfWeek(int dayOfWeek) {
         this.firstDayOfWeek = dayOfWeek;
-
-        CalendarWrapper calendar = resetAndGetWorkingCalendar();
-        calendar.set(DAY_OF_WEEK, dayOfWeek);
+        long calendar  = calendarOfRecord;
+        calendar = CalendarHelper.set(calendar, DAY_OF_WEEK, dayOfWeek);
         for(WeekDayView dayView : weekDayViews) {
-            dayView.setDayOfWeek(calendar.getDayOfWeek());
-            calendar.add(DATE, 1);
+            dayView.setDayOfWeek(CalendarHelper.getDayOfWeek(calendar));
+            calendar = CalendarHelper.add(calendar, DATE, 1);
         }
     }
 
-    public void setMinimumDate(CalendarDay minDate) {
+    public void set(long minDate, long maxDate, long date, long selected, boolean showOtherDates) {
         this.minDate = minDate;
+        this.maxDate = maxDate;
+        calendarOfRecord = date;
+        selection = selected;
+        this.showOtherDates = showOtherDates;
         updateUi();
     }
 
-    public void setMaximumDate(CalendarDay maxDate) {
+    public void setRanges(long minDate, long maxDate){
+        this.minDate = minDate;
         this.maxDate = maxDate;
         updateUi();
     }
 
-    public void setDate(CalendarDay month) {
-        month.copyTo(calendarOfRecord);
-        calendarOfRecord.setToFirstDay();
+    public void setSelectedDate(long selectedDate){
+        this.selection = selectedDate;
         updateUi();
     }
 
-    public void setDate(CalendarWrapper calendar) {
-        CalendarWrapper.copyDateTo(calendar, calendarOfRecord);
-        calendarOfRecord.setToFirstDay();
-        updateUi();
-    }
-
-
-    public void setSelectedDate(CalendarWrapper cal) {
-        setSelectedDate(cal == null ? null : new CalendarDay(cal));
-    }
-
-    public void setSelectedDate(CalendarDay cal) {
-        selection = cal;
-        updateUi();
-    }
-
-    private void updateUi() {
-        int ourMonth = calendarOfRecord.getMonth();
-        CalendarWrapper calendar = resetAndGetWorkingCalendar();
+    public void updateUi() {
+        int ourMonth = CalendarHelper.getMonth(calendarOfRecord);
+        long calendar = resetAndGetWorkingCalendar();
         for(DayView dayView : monthDayViews) {
-            CalendarDay day = new CalendarDay(calendar);
-            dayView.setDay(day);
-            dayView.setupSelection(showOtherDates, day.isInRange(minDate, maxDate), day.getMonth() == ourMonth);
-            dayView.setChecked(day.equals(selection));
-            calendar.add(DATE, 1);
+            dayView.setDay(calendar);
+            dayView.setupSelection(showOtherDates, CalendarHelper.isInRange(calendar, minDate, maxDate), CalendarHelper.getMonth(calendar) == ourMonth);
+            dayView.setChecked(calendar == selection);
+            calendar = CalendarHelper.add(calendar, DATE, 1);
         }
         postInvalidate();
     }
@@ -178,8 +161,8 @@ class MonthView extends GridLayout implements View.OnClickListener {
             DayView dayView = (DayView) v;
             dayView.setChecked(true);
 
-            CalendarDay date = dayView.getDate();
-            if(date.equals(selection)) {
+            long date = dayView.getDate();
+            if(date == selection) {
                 return;
             }
             selection = date;

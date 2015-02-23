@@ -18,11 +18,11 @@ import android.view.View;
 import android.widget.CheckedTextView;
 
 /**
- * Display one day of a {@linkplain MaterialCalendarView}
+ * Display one day of a {@linkplain com.prolificinteractive.materialcalendarview.MaterialCalendarView}
  */
 class DayView extends CheckedTextView {
 
-    private CalendarDay date = new CalendarDay();
+    private long date;
     private int selectionColor = Color.GRAY;
 
     private final int fadeTime;
@@ -45,9 +45,9 @@ class DayView extends CheckedTextView {
         }
     }
 
-    public void setDay(CalendarDay date) {
+    public void setDay(long date) {
         this.date = date;
-        setText(String.valueOf(date.getDay()));
+        setText(String.valueOf(CalendarHelper.getDayOfMonth(date)));
     }
 
     public void setSelectionColor(int color) {
@@ -55,7 +55,7 @@ class DayView extends CheckedTextView {
         setBackgroundDrawable(generateBackground(color, fadeTime));
     }
 
-    public CalendarDay getDate() {
+    public long getDate() {
         return date;
     }
 
