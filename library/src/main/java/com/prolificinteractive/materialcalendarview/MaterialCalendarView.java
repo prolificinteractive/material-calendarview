@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.IntDef;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -291,7 +290,7 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     /**
-     * @param day a CalendarDay to set as selected
+     * @param day a day in ms to set as selected
      */
     public void setSelectedDate(long day) {
         adapter.setSelectedDate(day);
@@ -313,7 +312,7 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     /**
-     * @param day a CalendarDay to focus the calendar on
+     * @param day a day in ms to focus the calendar on
      */
     public void setCurrentDate(long day) {
         int index = adapter.getIndexForDay(day);
@@ -352,6 +351,7 @@ public class MaterialCalendarView extends FrameLayout {
      * This also controls showing dates outside of the min-max range.
      *
      * @param showOtherDates show other days, default is false
+     * @param forceUpdate whether or not to force an update in the UI
      */
     public void setShowOtherDates(boolean showOtherDates, boolean forceUpdate) {
         adapter.setShowOtherDates(showOtherDates, forceUpdate);
