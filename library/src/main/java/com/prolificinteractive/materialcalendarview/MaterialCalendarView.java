@@ -327,9 +327,19 @@ public class MaterialCalendarView extends FrameLayout {
         return minDate;
     }
 
+    /**
+     * * @param minDate set the minimum selectable date in ms, 0 for no minimum
+     */
     public void setMinimumDate(long minDate) {
         this.minDate = minDate;
         setRangeDates(minDate, maxDate);
+    }
+
+    /**
+     * * @param minDate set the minimum selectable date, null for no maximum
+     */
+    public void setMinimumDate(Date minDate) {
+        setMinimumDate(minDate == null ? 0 : minDate.getTime());
     }
 
     /**
@@ -339,9 +349,19 @@ public class MaterialCalendarView extends FrameLayout {
         return maxDate;
     }
 
+    /**
+     * @param maxDate set the maximum selectable date in ms, 0 for no maximum
+     */
     public void setMaximumDate(long maxDate) {
         this.maxDate = maxDate;
         setRangeDates(minDate, maxDate);
+    }
+
+    /**
+     * * @param maxDate set the maximum selectable date, null for no maximum
+     */
+    public void setMaximumDate(Date maxDate) {
+        setMaximumDate(maxDate == null ? 0 : maxDate.getTime());
     }
 
     /**
