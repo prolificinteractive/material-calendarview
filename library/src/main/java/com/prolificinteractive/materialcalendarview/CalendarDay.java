@@ -7,10 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import static java.util.Calendar.DATE;
-import static java.util.Calendar.MONTH;
-import static java.util.Calendar.YEAR;
-
 /**
  * An imputable representation of a day on a calendar
  */
@@ -24,7 +20,7 @@ public final class CalendarDay implements Parcelable {
      * Initialized to the current day
      */
     public CalendarDay() {
-        this(Calendar.getInstance());
+        this(CalendarUtils.getInstance());
     }
 
     /**
@@ -32,9 +28,9 @@ public final class CalendarDay implements Parcelable {
      */
     public CalendarDay(Calendar calendar) {
         this(
-                calendar.get(YEAR),
-                calendar.get(MONTH),
-                calendar.get(DATE)
+                CalendarUtils.getYear(calendar),
+                CalendarUtils.getMonth(calendar),
+                CalendarUtils.getDay(calendar)
         );
     }
 
@@ -53,11 +49,7 @@ public final class CalendarDay implements Parcelable {
      * @param date source to pull date information from for this instance
      */
     public CalendarDay(Date date) {
-        this(CalendarWrapper.getInstance(date));
-    }
-
-    CalendarDay(CalendarWrapper selectedDate) {
-        this(selectedDate.innerCalendar);
+        this(CalendarUtils.getInstance(date));
     }
 
     /**
@@ -92,7 +84,7 @@ public final class CalendarDay implements Parcelable {
      * @return a new calendar instance with this day information
      */
     public Calendar getCalendar() {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = CalendarUtils.getInstance();
         copyTo(calendar);
         return calendar;
     }
@@ -101,11 +93,6 @@ public final class CalendarDay implements Parcelable {
      * @param calendar calendar to set date information to
      */
     public void copyTo(Calendar calendar) {
-        calendar.clear();
-        calendar.set(year, month, day);
-    }
-
-    void copyTo(CalendarWrapper calendar) {
         calendar.clear();
         calendar.set(year, month, day);
     }

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -673,18 +674,18 @@ public class MaterialCalendarView extends FrameLayout {
             }
 
             if(min == null) {
-                CalendarWrapper worker = CalendarWrapper.getInstance();
+                Calendar worker = CalendarUtils.getInstance();
                 worker.add(Calendar.YEAR, -200);
                 min = new CalendarDay(worker);
             }
 
             if(max == null) {
-                CalendarWrapper worker = CalendarWrapper.getInstance();
+                Calendar worker = CalendarUtils.getInstance();
                 worker.add(Calendar.YEAR, 200);
                 max = new CalendarDay(worker);
             }
 
-            CalendarWrapper worker = CalendarWrapper.getInstance();
+            Calendar worker = CalendarUtils.getInstance();
             min.copyTo(worker);
             months.clear();
             CalendarDay workingMonth = new CalendarDay(worker);

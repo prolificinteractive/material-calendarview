@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.TextView;
+
+import java.util.Calendar;
 import java.util.Locale;
 
 import static java.util.Calendar.DAY_OF_WEEK;
@@ -29,7 +31,7 @@ class WeekDayView extends TextView {
     }
 
     public void setDayOfWeek(int dayOfWeek) {
-        CalendarWrapper calendar = CalendarWrapper.getInstance();
+        Calendar calendar = CalendarUtils.getInstance();
         calendar.set(DAY_OF_WEEK, dayOfWeek);
         String name = calendar.getDisplayName(DAY_OF_WEEK, SHORT, Locale.getDefault());
         setText(name);
