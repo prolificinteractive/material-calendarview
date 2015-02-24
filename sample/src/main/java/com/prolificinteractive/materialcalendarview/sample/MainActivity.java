@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +22,8 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity {
 
     private static final List<Route> ROUTES = Arrays.asList(
-            new Route(R.string.title_activity_basic, BasicActivity.class),
+        new Route(R.string.title_activity_old_calendar, OldCalendarViewActivity.class),
+        new Route(R.string.title_activity_basic, BasicActivity.class),
             new Route(R.string.title_activity_range, RangeActivity.class),
             new Route(R.string.title_activity_dynamic_setters, DynamicSettersActivity.class),
             new Route(R.string.title_activity_customize_xml, CustomizeXmlActivity.class),

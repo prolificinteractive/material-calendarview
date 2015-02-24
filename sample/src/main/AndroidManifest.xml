@@ -17,16 +17,27 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.prolificinteractive.materialcalendarview.sample.BasicActivity"
-            android:label="@string/title_activity_basic"
-            android:parentActivityName="com.prolificinteractive.materialcalendarview.sample.MainActivity">
+      <activity
+          android:name="com.prolificinteractive.materialcalendarview.sample.OldCalendarViewActivity"
+          android:label="@string/title_activity_old_calendar"
+          android:parentActivityName="com.prolificinteractive.materialcalendarview.sample.MainActivity">
 
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
 
-        </activity>
+      </activity>
+
+      <activity
+          android:name="com.prolificinteractive.materialcalendarview.sample.BasicActivity"
+          android:label="@string/title_activity_basic"
+          android:parentActivityName="com.prolificinteractive.materialcalendarview.sample.MainActivity">
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
+
+      </activity>
 
         <activity
             android:name="com.prolificinteractive.materialcalendarview.sample.RangeActivity"
