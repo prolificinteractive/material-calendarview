@@ -13,19 +13,34 @@ import static java.util.Calendar.YEAR;
  */
 public class CalendarUtils {
 
+    /**
+     * @return a new Calendar instance with the date set to the provided date. Time set to zero.
+     */
     public static Calendar getInstance(Date date) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        copyDateTo(calendar, calendar);
+        if(date != null) {
+            calendar.setTime(date);
+        }
+        int year = getYear(calendar);
+        int month = getMonth(calendar);
+        int day = getDay(calendar);
+        calendar.clear();
+        calendar.set(year, month, day);
         return calendar;
     }
 
+    /**
+     * @return a new Calendar instance with the date set to today. Time set to zero.
+     */
     public static Calendar getInstance() {
         Calendar calendar = Calendar.getInstance();
         copyDateTo(calendar, calendar);
         return calendar;
     }
 
+    /**
+     * Set the provided calendar to the first day of the month. Also clears all time information.
+     */
     public static void setToFirstDay(Calendar calendar) {
         int year = getYear(calendar);
         int month = getMonth(calendar);
@@ -34,6 +49,9 @@ public class CalendarUtils {
         calendar.getTimeInMillis();
     }
 
+    /**
+     * Copy <i>only</i> date information to a new calendar.
+     */
     public static void copyDateTo(Calendar from, Calendar to) {
         to.clear();
         to.set(
