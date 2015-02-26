@@ -15,8 +15,14 @@ public class CalendarUtils {
 
     public static Calendar getInstance(Date date) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        copyDateTo(calendar, calendar);
+        if(date != null) {
+            calendar.setTime(date);
+        }
+        int year = getYear(calendar);
+        int month = getMonth(calendar);
+        int day = getDay(calendar);
+        calendar.clear();
+        calendar.set(year, month, day);
         return calendar;
     }
 
