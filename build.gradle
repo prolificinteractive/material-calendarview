@@ -11,6 +11,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        //maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
   // Is Release Build?
   ext.isReleaseVersion = has("release")
