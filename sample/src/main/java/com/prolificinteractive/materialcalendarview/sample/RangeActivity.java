@@ -31,13 +31,13 @@ public class RangeActivity extends ActionBarActivity implements OnDateChangedLis
         widget.setOnDateChangedListener(this);
 
         Calendar calendar = Calendar.getInstance();
-        widget.setSelectedDate(calendar);
+        widget.setSelectedDate(calendar.getTime());
 
         calendar.set(calendar.get(Calendar.YEAR), Calendar.JANUARY, 1);
-        widget.setMinimumDate(calendar);
+        widget.setMinimumDate(calendar.getTime());
 
         calendar.set(calendar.get(Calendar.YEAR) + 2, Calendar.OCTOBER, 31);
-        widget.setMaximumDate(calendar);
+        widget.setMaximumDate(calendar.getTime());
     }
 
     @Override
