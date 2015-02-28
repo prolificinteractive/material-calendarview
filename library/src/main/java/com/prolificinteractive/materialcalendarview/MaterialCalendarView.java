@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
+import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -410,6 +411,15 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     /**
+     * Set a formatter for weekday labels.
+     *
+     * @param formatter the new formatter, null for default
+     */
+    public void setWeekDayFormatter(WeekDayFormatter formatter) {
+        adapter.setWeekDayFormatter(formatter == null ? WeekDayFormatter.DEFAULT : formatter);
+    }
+
+    /**
      * @return true if days from previous or next months are shown, otherwise false.
      */
     public boolean getShowOtherDates() {
@@ -550,6 +560,7 @@ public class MaterialCalendarView extends FrameLayout {
         private CalendarDay minDate = null;
         private CalendarDay maxDate = null;
         private CalendarDay selectedDate = null;
+        private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
 
         private MonthPagerAdapter(MaterialCalendarView view) {
             this.view = view;
@@ -607,6 +618,7 @@ public class MaterialCalendarView extends FrameLayout {
                 (MonthView) inflater.inflate(R.layout.cw__month_view, container, false);
             monthView.setTag(TAG_ITEM, month);
 
+            monthView.setWeekDayFormatter(weekDayFormatter);
             monthView.setCallbacks(callbacks);
             if(color != null) {
                 monthView.setSelectionColor(color);
@@ -673,6 +685,13 @@ public class MaterialCalendarView extends FrameLayout {
             this.showOtherDates = show;
             for(MonthView monthView : currentViews) {
                 monthView.setShowOtherDates(show);
+            }
+        }
+
+        public void setWeekDayFormatter(WeekDayFormatter formatter) {
+            this.weekDayFormatter = formatter;
+            for(MonthView monthView : currentViews) {
+                monthView.setWeekDayFormatter(formatter);
             }
         }
 

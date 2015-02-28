@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.GridLayout;
 
+import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -118,6 +120,12 @@ class MonthView extends GridLayout implements View.OnClickListener {
         for(WeekDayView dayView : weekDayViews) {
             dayView.setDayOfWeek(CalendarUtils.getDayOfWeek(calendar));
             calendar.add(DATE, 1);
+        }
+    }
+
+    public void setWeekDayFormatter(WeekDayFormatter formatter) {
+        for(WeekDayView dayView : weekDayViews) {
+            dayView.setWeekDayFormatter(formatter);
         }
     }
 

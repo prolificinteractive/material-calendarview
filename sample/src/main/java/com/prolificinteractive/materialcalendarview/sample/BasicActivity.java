@@ -7,7 +7,8 @@ import android.widget.TextView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
-import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
+import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
+import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,10 +30,12 @@ public class BasicActivity extends ActionBarActivity implements OnDateChangedLis
 
         MaterialCalendarView widget = (MaterialCalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
-        widget.setTitleFormatter(new DateFormatTitleFormatter(SimpleDateFormat.getDateInstance()));
-//        widget.setTitleFormatter(new MonthArrayTitleFormatter(new CharSequence[] {
-//                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "JULY!!!", "Aug", "Sept", "OCt", "NOV", "DEC"
-//        }));
+        widget.setTitleFormatter(new MonthArrayTitleFormatter(new CharSequence[] {
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "JULY!!!", "Aug", "Sept", "OCt", "NOV", "DEC"
+        }));
+        widget.setWeekDayFormatter(new ArrayWeekDayFormatter(new String[] {
+                "S", "M", "T", "W", "T", "F", "S"
+        }));
     }
 
     @Override
