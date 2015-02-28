@@ -21,11 +21,7 @@ public class CalendarUtils {
         if(date != null) {
             calendar.setTime(date);
         }
-        int year = getYear(calendar);
-        int month = getMonth(calendar);
-        int day = getDay(calendar);
-        calendar.clear();
-        calendar.set(year, month, day);
+        copyDateTo(calendar, calendar);
         return calendar;
     }
 
@@ -53,13 +49,11 @@ public class CalendarUtils {
      * Copy <i>only</i> date information to a new calendar.
      */
     public static void copyDateTo(Calendar from, Calendar to) {
+        int year = getYear(from);
+        int month = getMonth(from);
+        int day = getDay(from);
         to.clear();
-        to.set(
-                getYear(from),
-                getMonth(from),
-                getDay(from)
-        );
-        to.setTimeZone(from.getTimeZone());
+        to.set(year, month, day);
         to.getTimeInMillis();
     }
 
