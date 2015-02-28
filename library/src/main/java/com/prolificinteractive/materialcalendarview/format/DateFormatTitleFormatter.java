@@ -13,12 +13,18 @@ public class DateFormatTitleFormatter implements TitleFormatter {
 
     private final DateFormat dateFormat;
 
+    /**
+     * Uses "MMMM yyyy" for formatting
+     */
     public DateFormatTitleFormatter() {
         this.dateFormat = new SimpleDateFormat(
                 "MMMM yyyy", Locale.getDefault()
         );
     }
 
+    /**
+     * @param format the format to use
+     */
     public DateFormatTitleFormatter(DateFormat format) {
         this.dateFormat = format;
     }

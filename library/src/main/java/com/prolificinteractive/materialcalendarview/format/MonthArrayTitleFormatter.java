@@ -5,12 +5,15 @@ import android.text.SpannableStringBuilder;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 /**
- * Created by adamk on 2/27/15.
+ * Use an array to generate a month/year label
  */
 public class MonthArrayTitleFormatter implements TitleFormatter {
 
     private final CharSequence[] monthLabels;
 
+    /**
+     * @param monthLabels an array of 12 labels to use for months, starting with January
+     */
     public MonthArrayTitleFormatter(CharSequence[] monthLabels) {
         if(monthLabels == null) {
             throw new IllegalArgumentException("Label array cannot be null");
