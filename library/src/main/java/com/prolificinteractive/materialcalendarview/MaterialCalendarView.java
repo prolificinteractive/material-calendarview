@@ -18,7 +18,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
+import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
@@ -154,9 +156,19 @@ public class MaterialCalendarView extends FrameLayout {
                 )
             );
 
+            CharSequence[] array = a.getTextArray(R.styleable.MaterialCalendarView_weekDayLabels);
+            if(array != null) {
+                setWeekDayFormatter(new ArrayWeekDayFormatter(array));
+            }
+
+            array = a.getTextArray(R.styleable.MaterialCalendarView_monthLabels);
+            if(array != null) {
+                setTitleFormatter(new MonthArrayTitleFormatter(array));
+            }
+
             setHeaderTextAppearance(a.getResourceId(
-                R.styleable.MaterialCalendarView_headerTextAppearance,
-                R.style.TextAppearance_MaterialCalendarWidget_Header
+                    R.styleable.MaterialCalendarView_headerTextAppearance,
+                    R.style.TextAppearance_MaterialCalendarWidget_Header
             ));
             setWeekDayTextAppearance(a.getResourceId(
                 R.styleable.MaterialCalendarView_weekDayTextAppearance,
