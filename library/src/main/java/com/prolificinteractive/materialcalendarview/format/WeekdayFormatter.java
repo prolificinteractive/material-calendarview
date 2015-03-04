@@ -3,7 +3,7 @@ package com.prolificinteractive.materialcalendarview.format;
 import com.prolificinteractive.materialcalendarview.CalendarUtils;
 
 /**
- *
+ * Supply labels for a given day of the week
  */
 public interface WeekDayFormatter {
     /**
