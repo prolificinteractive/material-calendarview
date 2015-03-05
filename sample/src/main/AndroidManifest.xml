@@ -3,6 +3,7 @@
           package="com.prolificinteractive.materialcalendarview.sample">
 
     <application
+        android:supportsRtl="true"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
