@@ -1,6 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -24,6 +25,10 @@ class WeekDayView extends TextView {
         super(context, attrs);
 
         setGravity(Gravity.CENTER);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            setTextAlignment(TEXT_ALIGNMENT_CENTER);
+        }
 
         if(isInEditMode()) {
             setText("Mon");
