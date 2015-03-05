@@ -116,7 +116,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
         Calendar calendar = resetAndGetWorkingCalendar();
         calendar.set(DAY_OF_WEEK, dayOfWeek);
         for(WeekDayView dayView : weekDayViews) {
-            dayView.setDayOfWeek(CalendarUtils.getDayOfWeek(calendar));
+            dayView.setDayOfWeek(calendar);
             calendar.add(DATE, 1);
         }
     }

@@ -35,9 +35,7 @@ class WeekDayView extends TextView {
         }
     }
 
-    public void setDayOfWeek(int dayOfWeek) {
-        Calendar calendar = CalendarUtils.getInstance();
-        calendar.set(DAY_OF_WEEK, dayOfWeek);
+    public void setDayOfWeek(Calendar calendar) {
         String name = calendar.getDisplayName(DAY_OF_WEEK, SHORT, Locale.getDefault());
         setText(name);
     }
