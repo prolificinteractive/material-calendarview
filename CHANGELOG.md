@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.2.4 *(2015-03-06)*
+----------------------------
+
+ * Bugfix: Full fix issue that was supposed to be fixed in 0.2.2
+ * Bugfix: Text didn't center on RTL apps, default the text alignment to center
+
 Version 0.2.2 *(2015-02-26)*
 ----------------------------
 
