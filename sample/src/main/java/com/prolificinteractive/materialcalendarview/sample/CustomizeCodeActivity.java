@@ -7,6 +7,8 @@ import android.widget.TextView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
+import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
+import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,6 +34,8 @@ public class CustomizeCodeActivity extends ActionBarActivity implements OnDateCh
         widget.setHeaderTextAppearance(R.style.TextAppearance_AppCompat_Medium);
         widget.setWeekDayTextAppearance(R.style.TextAppearance_AppCompat_Medium);
         widget.setDateTextAppearance(R.style.TextAppearance_AppCompat_Medium);
+        widget.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
+        widget.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
     }
 
     @Override

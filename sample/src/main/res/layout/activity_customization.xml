@@ -21,6 +21,8 @@
         app:headerTextAppearance="?android:attr/textAppearanceMedium"
         app:dateTextAppearance="?android:attr/textAppearanceMedium"
         app:weekDayTextAppearance="?android:attr/textAppearanceMedium"
+        app:weekDayLabels="@array/custom_weekdays"
+        app:monthLabels="@array/custom_months"
         />
 
     <TextView

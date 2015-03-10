@@ -6,16 +6,17 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.TextView;
 
-import java.util.Calendar;
-import java.util.Locale;
+import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
-import static java.util.Calendar.DAY_OF_WEEK;
-import static java.util.Calendar.SHORT;
+import java.util.Calendar;
 
 /**
  * Display a day of the week
  */
 class WeekDayView extends TextView {
+
+    private WeekDayFormatter formatter = WeekDayFormatter.DEFAULT;
+    private int dayOfWeek;
 
     public WeekDayView(Context context) {
         this(context, null);
@@ -30,13 +31,20 @@ class WeekDayView extends TextView {
             setTextAlignment(TEXT_ALIGNMENT_CENTER);
         }
 
-        if(isInEditMode()) {
-            setText("Mon");
-        }
+        setDayOfWeek(Calendar.MONDAY);
     }
 
+    public void setWeekDayFormatter(WeekDayFormatter formatter) {
+        this.formatter = formatter == null ? WeekDayFormatter.DEFAULT : formatter;
+        setDayOfWeek(dayOfWeek);
+    }
+
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+        setText(formatter.format(dayOfWeek));
+    }
+    
     public void setDayOfWeek(Calendar calendar) {
-        String name = calendar.getDisplayName(DAY_OF_WEEK, SHORT, Locale.getDefault());
-        setText(name);
+        setDayOfWeek(CalendarUtils.getDayOfWeek(calendar));
     }
 }

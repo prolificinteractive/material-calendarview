@@ -12,6 +12,9 @@
 
         <attr name="showOtherDates" format="boolean"/>
 
+        <attr name="weekDayLabels" format="reference" />
+        <attr name="monthLabels" format="reference" />
+
     </declare-styleable>
 
 </resources>
