@@ -26,6 +26,7 @@ available.
     android:id="@+id/calendarView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     app:showOtherDates="boolean"
     app:arrowColor="color"
     app:selectionColor="color"
