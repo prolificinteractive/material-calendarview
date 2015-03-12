@@ -19,11 +19,11 @@
         >
 
         <com.prolificinteractive.materialcalendarview.DirectionButton
-            android:src="@drawable/cw__action_previous"
-            android:layout_width="@dimen/cw__default_day_size"
-            android:layout_height="@dimen/cw__default_day_size"
+            android:src="@drawable/mcv_action_previous"
+            android:layout_width="@dimen/mcv_default_day_size"
+            android:layout_height="@dimen/mcv_default_day_size"
             android:scaleType="centerInside"
-            android:id="@+id/cw__calendar_widget_button_backwards"
+            android:id="@+id/mcv_calendar_widget_button_backwards"
             />
 
         <TextView
@@ -33,24 +33,24 @@
             android:layout_weight="1"
             android:gravity="center"
             tools:text="January 2014"
-            android:id="@+id/cw__calendar_widget_title"
+            android:id="@+id/mcv_calendar_widget_title"
             android:textAppearance="@style/TextAppearance.MaterialCalendarWidget.Header"
             />
 
         <com.prolificinteractive.materialcalendarview.DirectionButton
-            android:src="@drawable/cw__action_next"
-            android:layout_width="@dimen/cw__default_day_size"
-            android:layout_height="@dimen/cw__default_day_size"
+            android:src="@drawable/mcv_action_next"
+            android:layout_width="@dimen/mcv_default_day_size"
+            android:layout_height="@dimen/mcv_default_day_size"
             android:scaleType="centerInside"
-            android:id="@+id/cw__calendar_widget_button_forward"
+            android:id="@+id/mcv_calendar_widget_button_forward"
             />
 
     </LinearLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/cw__pager"
-        android:layout_width="@dimen/cw__default_month_width"
-        android:layout_height="@dimen/cw__default_month_height"
+        android:id="@+id/mcv_pager"
+        android:layout_width="@dimen/mcv_default_month_width"
+        android:layout_height="@dimen/mcv_default_month_height"
         />
 
 </LinearLayout>

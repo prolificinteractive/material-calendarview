@@ -3,17 +3,17 @@
 
     <declare-styleable name="MaterialCalendarView">
 
-        <attr name="dateTextAppearance" format="reference"/>
-        <attr name="weekDayTextAppearance" format="reference"/>
-        <attr name="headerTextAppearance" format="reference"/>
+        <attr name="mcv_dateTextAppearance" format="reference"/>
+        <attr name="mcv_weekDayTextAppearance" format="reference"/>
+        <attr name="mcv_headerTextAppearance" format="reference"/>
 
-        <attr name="arrowColor" format="color"/>
-        <attr name="selectionColor" format="color"/>
+        <attr name="mcv_arrowColor" format="color"/>
+        <attr name="mcv_selectionColor" format="color"/>
 
-        <attr name="showOtherDates" format="boolean"/>
+        <attr name="mcv_showOtherDates" format="boolean"/>
 
-        <attr name="weekDayLabels" format="reference" />
-        <attr name="monthLabels" format="reference" />
+        <attr name="mcv_weekDayLabels" format="reference" />
+        <attr name="mcv_monthLabels" format="reference" />
 
     </declare-styleable>
 

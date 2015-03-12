@@ -15,14 +15,14 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:showOtherDates="true"
-        app:arrowColor="?attr/colorPrimary"
-        app:selectionColor="?attr/colorPrimary"
-        app:headerTextAppearance="?android:attr/textAppearanceMedium"
-        app:dateTextAppearance="?android:attr/textAppearanceMedium"
-        app:weekDayTextAppearance="?android:attr/textAppearanceMedium"
-        app:weekDayLabels="@array/custom_weekdays"
-        app:monthLabels="@array/custom_months"
+        app:mcv_showOtherDates="true"
+        app:mcv_arrowColor="?attr/colorPrimary"
+        app:mcv_selectionColor="?attr/colorPrimary"
+        app:mcv_headerTextAppearance="?android:attr/textAppearanceMedium"
+        app:mcv_dateTextAppearance="?android:attr/textAppearanceMedium"
+        app:mcv_weekDayTextAppearance="?android:attr/textAppearanceMedium"
+        app:mcv_weekDayLabels="@array/custom_weekdays"
+        app:mcv_monthLabels="@array/custom_months"
         />
 
     <TextView
