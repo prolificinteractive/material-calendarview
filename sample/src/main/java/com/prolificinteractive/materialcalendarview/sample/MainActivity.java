@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,7 +29,8 @@ public class MainActivity extends ActionBarActivity {
             new Route(R.string.title_activity_range, RangeActivity.class),
             new Route(R.string.title_activity_dynamic_setters, DynamicSettersActivity.class),
             new Route(R.string.title_activity_customize_xml, CustomizeXmlActivity.class),
-            new Route(R.string.title_activity_customize_code, CustomizeCodeActivity.class)
+            new Route(R.string.title_activity_customize_code, CustomizeCodeActivity.class),
+            new Route(R.string.title_activity_dialogs, DialogsActivity.class)
     );
 
     @Override

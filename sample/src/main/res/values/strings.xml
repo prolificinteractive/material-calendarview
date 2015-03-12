@@ -10,6 +10,7 @@
     <string name="title_activity_customize_code">Programmatic Customization Example</string>
     <string name="title_activity_dynamic_setters">Dynamic Setters Test</string>
     <string name="title_activity_old_calendar">Old CalendarView</string>
+    <string name="title_activity_dialogs">Calendar in Dialogs</string>
 
     <string-array name="custom_weekdays">
         <item>Su</item>

@@ -84,6 +84,17 @@
 
         </activity>
 
+        <activity
+            android:name=".DialogsActivity"
+            android:label="@string/title_activity_dialogs"
+            android:parentActivityName="com.prolificinteractive.materialcalendarview.sample.MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
+
+        </activity>
+
     </application>
 
 </manifest>
