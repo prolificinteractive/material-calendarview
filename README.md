@@ -51,7 +51,7 @@ Set the color of the arrows used to page the calendar. Black by default.
 ### selectionColor
 
 Set the color of the date selector. By default this is the color set by
-`?android:attr/colorPrimary` on 5.0+ or `?attr/colorPrimary` from the AppCompat library.
+`?android:attr/colorAccent` on 5.0+ or `?attr/colorAccent` from the AppCompat library.
 
 ### headerTextAppearance
 
