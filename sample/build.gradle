@@ -17,7 +17,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile project(':library')
-    //compile 'com.prolificinteractive:material-calendarview:0.2.4'
+    //compile 'com.prolificinteractive:material-calendarview:0.2.5'
     compile 'com.jakewharton:butterknife:6.0.0'
     compile 'com.robbypond:material-dialogs:1.0.0'
 }

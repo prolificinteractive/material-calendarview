@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.2.5 *(2015-03-11)*
+----------------------------
+
+ * New: Customize labels for weekdays and months
+
 Version 0.2.4 *(2015-03-06)*
 ----------------------------
 
