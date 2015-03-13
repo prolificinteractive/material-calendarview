@@ -720,8 +720,7 @@ public class MaterialCalendarView extends FrameLayout {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             CalendarDay month = months.get(position);
-            MonthView monthView =
-                (MonthView) inflater.inflate(R.layout.mcv_month_view, container, false);
+            MonthView monthView = new MonthView(container.getContext());
             monthView.setTag(TAG_ITEM, month);
 
             monthView.setWeekDayFormatter(weekDayFormatter);
