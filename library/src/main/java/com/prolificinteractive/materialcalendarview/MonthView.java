@@ -1,7 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.GridLayout;
 
@@ -20,9 +19,9 @@ import static java.util.Calendar.SUNDAY;
  */
 class MonthView extends GridLayout implements View.OnClickListener {
 
-    public static interface Callbacks {
+    public interface Callbacks {
 
-        public void onDateChanged(CalendarDay date);
+        void onDateChanged(CalendarDay date);
     }
 
     private Callbacks callbacks;
@@ -41,33 +40,27 @@ class MonthView extends GridLayout implements View.OnClickListener {
     private boolean showOtherDates = false;
 
     public MonthView(Context context) {
-        this(context, null);
-    }
-
-    public MonthView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        super(context);
 
         setColumnCount(7);
         setRowCount(7);
 
         setClipChildren(false);
         setClipToPadding(false);
-    }
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-
-        int children = getChildCount();
-        for(int i = 0; i < children; i++) {
-            View child = getChildAt(i);
-            if(child instanceof WeekDayView) {
-                weekDayViews.add((WeekDayView) child);
-            } else if(child instanceof DayView) {
-                monthDayViews.add((DayView) child);
-                child.setOnClickListener(this);
-            }
+        int buttonSize = context.getResources().getDimensionPixelSize(R.dimen.mcv_default_day_size);
+        for (int i = 0; i < 7; i++) {
+            WeekDayView weekDayView = new WeekDayView(context);
+            addView(weekDayView, buttonSize, buttonSize);
+            weekDayViews.add(weekDayView);
         }
+        for (int i = 0; i < 49; i++) {
+            DayView dayView = new DayView(context);
+            dayView.setOnClickListener(this);
+            addView(dayView, buttonSize, buttonSize);
+            monthDayViews.add(dayView);
+        }
+
         setFirstDayOfWeek(firstDayOfWeek);
         setSelectedDate(new CalendarDay());
     }
