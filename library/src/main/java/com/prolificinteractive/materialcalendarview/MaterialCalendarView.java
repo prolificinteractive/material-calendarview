@@ -13,10 +13,13 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
@@ -46,12 +49,12 @@ import java.util.LinkedList;
  * {@linkplain com.prolificinteractive.materialcalendarview.OnDateChangedListener}
  * </p>
  *
- * @see R.styleable#MaterialCalendarView_arrowColor
- * @see R.styleable#MaterialCalendarView_selectionColor
- * @see R.styleable#MaterialCalendarView_headerTextAppearance
- * @see R.styleable#MaterialCalendarView_dateTextAppearance
- * @see R.styleable#MaterialCalendarView_weekDayTextAppearance
- * @see R.styleable#MaterialCalendarView_showOtherDates
+ * @see R.styleable#MaterialCalendarView_mcv_arrowColor
+ * @see R.styleable#MaterialCalendarView_mcv_selectionColor
+ * @see R.styleable#MaterialCalendarView_mcv_headerTextAppearance
+ * @see R.styleable#MaterialCalendarView_mcv_dateTextAppearance
+ * @see R.styleable#MaterialCalendarView_mcv_weekDayTextAppearance
+ * @see R.styleable#MaterialCalendarView_mcv_showOtherDates
  */
 public class MaterialCalendarView extends FrameLayout {
 
@@ -79,10 +82,9 @@ public class MaterialCalendarView extends FrameLayout {
     private final OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            int id = v.getId();
-            if(id == R.id.mcv_calendar_widget_button_forward) {
+            if(v == buttonFuture) {
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-            } else if(id == R.id.mcv_calendar_widget_button_backwards) {
+            } else if(v == buttonPast) {
                 pager.setCurrentItem(pager.getCurrentItem() - 1, true);
             }
         }
@@ -119,12 +121,12 @@ public class MaterialCalendarView extends FrameLayout {
         setClipChildren(false);
         setClipToPadding(false);
 
-        LayoutInflater.from(getContext()).inflate(R.layout.mcv_calendar_widget, this);
+        buttonPast = new DirectionButton(getContext());
+        title = new TextView(getContext());
+        buttonFuture = new DirectionButton(getContext());
+        pager = new ViewPager(getContext());
 
-        title = (TextView) findViewById(R.id.mcv_calendar_widget_title);
-        buttonPast = (DirectionButton) findViewById(R.id.mcv_calendar_widget_button_backwards);
-        buttonFuture = (DirectionButton) findViewById(R.id.mcv_calendar_widget_button_forward);
-        pager = (ViewPager) findViewById(R.id.mcv_pager);
+        setupChildren();
 
         title.setOnClickListener(onClickListener);
         buttonPast.setOnClickListener(onClickListener);
@@ -193,6 +195,45 @@ public class MaterialCalendarView extends FrameLayout {
 
         currentMonth = new CalendarDay();
         setCurrentDate(currentMonth);
+    }
+
+    private void setupChildren() {
+        int buttonSize = getResources().getDimensionPixelSize(R.dimen.mcv_default_day_size);
+
+        LinearLayout root = new LinearLayout(getContext());
+        root.setOrientation(LinearLayout.VERTICAL);
+        root.setClipChildren(false);
+        root.setClipToPadding(false);
+        LayoutParams p = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        p.gravity = Gravity.CENTER;
+        addView(root, p);
+
+        LinearLayout topbar = new LinearLayout(getContext());
+        topbar.setOrientation(LinearLayout.HORIZONTAL);
+        topbar.setClipChildren(false);
+        topbar.setClipToPadding(false);
+        LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        root.addView(topbar, p1);
+
+        buttonPast.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        buttonPast.setImageResource(R.drawable.mcv_action_previous);
+        LinearLayout.LayoutParams p2 = new LinearLayout.LayoutParams(buttonSize, buttonSize);
+        topbar.addView(buttonPast, p2);
+
+        title.setGravity(Gravity.CENTER);
+        p2 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT);
+        p2.weight = 1;
+        topbar.addView(title, p2);
+
+        buttonFuture.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        buttonFuture.setImageResource(R.drawable.mcv_action_next);
+        p2 = new LinearLayout.LayoutParams(buttonSize, buttonSize);
+        topbar.addView(buttonFuture, p2);
+
+        pager.setId(R.id.mcv_pager);
+        pager.setOffscreenPageLimit(1);
+        LayoutParams p3 = new LayoutParams(buttonSize * 7, buttonSize * 7);
+        root.addView(pager, p3);
     }
 
     /**
