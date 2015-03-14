@@ -27,14 +27,15 @@ available.
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:showOtherDates="boolean"
-    app:arrowColor="color"
-    app:selectionColor="color"
-    app:headerTextAppearance="style"
-    app:dateTextAppearance="style"
-    app:weekDayTextAppearance="style"
-    app:weekDayLabels="array"
-    app:monthLabels="array"
+    app:mcv_showOtherDates="boolean"
+    app:mcv_arrowColor="color"
+    app:mcv_selectionColor="color"
+    app:mcv_headerTextAppearance="style"
+    app:mcv_dateTextAppearance="style"
+    app:mcv_weekDayTextAppearance="style"
+    app:mcv_weekDayLabels="array"
+    app:mcv_monthLabels="array"
+    app:mcv_tileSize="dimension"
     />
 ```
 
@@ -75,6 +76,11 @@ The default uses Java's `Calendar` class to get a `SHORT` display name.
 Supply custom labels for the months of the year. This sets a `MonthArrayTitleFormatter` on the `CalendarView`.
 The default implementation formats using `SimpleDateFormat` with a `"MMMM yyyy"` format.
 
+### tileSize
+
+Set a custom size for each tile. Each day of the calendar is 1 tile, and the top bar is 1 tile high.
+The default tile size is `44dp`.
+
 Contributing
 ============
 
@@ -83,7 +89,7 @@ Would you like to contribute? Fork us and send a pull request! Be sure to checko
 License
 =======
 
->Copyright 2014 Prolific Interactive
+>Copyright 2015 Prolific Interactive
 >
 >Licensed under the Apache License, Version 2.0 (the "License");
 >you may not use this file except in compliance with the License.
