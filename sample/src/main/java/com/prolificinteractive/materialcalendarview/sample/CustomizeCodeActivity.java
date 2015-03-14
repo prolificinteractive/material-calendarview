@@ -2,6 +2,7 @@ package com.prolificinteractive.materialcalendarview.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -33,9 +34,10 @@ public class CustomizeCodeActivity extends ActionBarActivity implements OnDateCh
         widget.setSelectionColor(getResources().getColor(R.color.sample_primary));
         widget.setHeaderTextAppearance(R.style.TextAppearance_AppCompat_Medium);
         widget.setWeekDayTextAppearance(R.style.TextAppearance_AppCompat_Medium);
-        widget.setDateTextAppearance(R.style.TextAppearance_AppCompat_Medium);
+        widget.setDateTextAppearance(R.style.CustomDayTextAppearance);
         widget.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
         widget.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
+        widget.setTileSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics()));
     }
 
     @Override

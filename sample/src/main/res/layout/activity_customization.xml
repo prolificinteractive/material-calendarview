@@ -19,10 +19,11 @@
         app:mcv_arrowColor="?attr/colorPrimary"
         app:mcv_selectionColor="?attr/colorPrimary"
         app:mcv_headerTextAppearance="?android:attr/textAppearanceMedium"
-        app:mcv_dateTextAppearance="?android:attr/textAppearanceMedium"
+        app:mcv_dateTextAppearance="@style/CustomDayTextAppearance"
         app:mcv_weekDayTextAppearance="?android:attr/textAppearanceMedium"
         app:mcv_weekDayLabels="@array/custom_weekdays"
         app:mcv_monthLabels="@array/custom_months"
+        app:mcv_tileSize="36dp"
         />
 
     <TextView
