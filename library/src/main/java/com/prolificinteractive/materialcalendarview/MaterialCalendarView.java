@@ -374,7 +374,7 @@ public class MaterialCalendarView extends FrameLayout {
      * @return The current day shown, will be set to first day of the month
      */
     public CalendarDay getCurrentDate() {
-        return currentDate;
+        return adapter.getItem(pager.getCurrentItem());
     }
 
     /**
