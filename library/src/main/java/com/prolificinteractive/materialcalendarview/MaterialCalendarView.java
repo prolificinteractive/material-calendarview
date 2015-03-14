@@ -256,12 +256,23 @@ public class MaterialCalendarView extends FrameLayout {
         buttonFuture.setEnabled(canGoForward());
     }
 
+    /**
+     * Set the size of each tile that makes up the calendar.
+     * Each day is 1 tile, so the widget is 7 tiles wide and 8 tiles tall.
+     *
+     * @param size the new size for each tile in pixels
+     */
     public void setTileSize(int size) {
         LayoutParams p = new LayoutParams(size * 7, size * 8);
         p.gravity = Gravity.CENTER;
         root.setLayoutParams(p);
     }
 
+    /**
+     * @see #setTileSize(int)
+     *
+     * @param tileSizeDp the new size for each tile in dips
+     */
     public void setTileSizeDp(int tileSizeDp) {
         setTileSize((int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, tileSizeDp, getResources().getDisplayMetrics()
