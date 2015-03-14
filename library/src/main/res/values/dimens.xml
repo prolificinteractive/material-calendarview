@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="mcv_default_day_size">44dp</dimen>
-    <dimen name="mcv_default_month_width">308dp</dimen>
-    <dimen name="mcv_default_month_height">308dp</dimen>
+    <dimen name="mcv_default_tile_size">44dp</dimen>
 
 </resources>
