@@ -110,6 +110,7 @@ public class MaterialCalendarView extends FrameLayout {
     private int accentColor = 0;
     private int arrowColor = Color.BLACK;
     private CalendarDay currentDate;
+    private LinearLayout root;
 
     public MaterialCalendarView(Context context) {
         this(context, null);
@@ -148,6 +149,12 @@ public class MaterialCalendarView extends FrameLayout {
         TypedArray a = context.getTheme()
                 .obtainStyledAttributes(attrs, R.styleable.MaterialCalendarView, 0, 0);
         try {
+
+            int tileSize = a.getDimensionPixelSize(R.styleable.MaterialCalendarView_mcv_tileSize, -1);
+            if(tileSize > 0) {
+                setTileSize(tileSize);
+            }
+
             setArrowColor(a.getColor(
                 R.styleable.MaterialCalendarView_mcv_arrowColor,
                 Color.BLACK
@@ -198,9 +205,9 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     private void setupChildren() {
-        int buttonSize = getResources().getDimensionPixelSize(R.dimen.mcv_default_day_size);
+        int buttonSize = getResources().getDimensionPixelSize(R.dimen.mcv_default_tile_size);
 
-        LinearLayout root = new LinearLayout(getContext());
+        root = new LinearLayout(getContext());
         root.setOrientation(LinearLayout.VERTICAL);
         root.setWeightSum(8);
         root.setClipChildren(false);
@@ -247,6 +254,12 @@ public class MaterialCalendarView extends FrameLayout {
         }
         buttonPast.setEnabled(canGoBack());
         buttonFuture.setEnabled(canGoForward());
+    }
+
+    public void setTileSize(int size) {
+        LayoutParams p = new LayoutParams(size * 7, size * 8);
+        p.gravity = Gravity.CENTER;
+        root.setLayoutParams(p);
     }
 
     /**
