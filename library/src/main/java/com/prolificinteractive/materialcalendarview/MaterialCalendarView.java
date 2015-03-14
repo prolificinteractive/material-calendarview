@@ -202,38 +202,34 @@ public class MaterialCalendarView extends FrameLayout {
 
         LinearLayout root = new LinearLayout(getContext());
         root.setOrientation(LinearLayout.VERTICAL);
+        root.setWeightSum(8);
         root.setClipChildren(false);
         root.setClipToPadding(false);
-        LayoutParams p = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        LayoutParams p = new LayoutParams(buttonSize * 7, buttonSize * 8);
         p.gravity = Gravity.CENTER;
         addView(root, p);
 
         LinearLayout topbar = new LinearLayout(getContext());
         topbar.setOrientation(LinearLayout.HORIZONTAL);
+        topbar.setWeightSum(7);
         topbar.setClipChildren(false);
         topbar.setClipToPadding(false);
-        LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        root.addView(topbar, p1);
+        root.addView(topbar, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, 1));
 
         buttonPast.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         buttonPast.setImageResource(R.drawable.mcv_action_previous);
-        LinearLayout.LayoutParams p2 = new LinearLayout.LayoutParams(buttonSize, buttonSize);
-        topbar.addView(buttonPast, p2);
+        topbar.addView(buttonPast, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
 
         title.setGravity(Gravity.CENTER);
-        p2 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT);
-        p2.weight = 1;
-        topbar.addView(title, p2);
+        topbar.addView(title, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 5));
 
         buttonFuture.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         buttonFuture.setImageResource(R.drawable.mcv_action_next);
-        p2 = new LinearLayout.LayoutParams(buttonSize, buttonSize);
-        topbar.addView(buttonFuture, p2);
+        topbar.addView(buttonFuture, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
 
         pager.setId(R.id.mcv_pager);
         pager.setOffscreenPageLimit(1);
-        LayoutParams p3 = new LayoutParams(buttonSize * 7, buttonSize * 7);
-        root.addView(pager, p3);
+        root.addView(pager, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, 7));
     }
 
     /**
