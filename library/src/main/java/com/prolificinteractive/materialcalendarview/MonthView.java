@@ -2,7 +2,7 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.GridLayout;
+import android.widget.LinearLayout;
 
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
@@ -17,7 +17,7 @@ import static java.util.Calendar.SUNDAY;
  * Display a month of {@linkplain DayView}s and
  * seven {@linkplain WeekDayView}s.
  */
-class MonthView extends GridLayout implements View.OnClickListener {
+class MonthView extends LinearLayout implements View.OnClickListener {
 
     public interface Callbacks {
 
@@ -42,27 +42,38 @@ class MonthView extends GridLayout implements View.OnClickListener {
     public MonthView(Context context) {
         super(context);
 
-        setColumnCount(7);
-        setRowCount(7);
+        setOrientation(VERTICAL);
+        setWeightSum(7);
 
         setClipChildren(false);
         setClipToPadding(false);
 
-        int buttonSize = context.getResources().getDimensionPixelSize(R.dimen.mcv_default_day_size);
+        LinearLayout row = makeRow(this);
         for (int i = 0; i < 7; i++) {
             WeekDayView weekDayView = new WeekDayView(context);
-            addView(weekDayView, buttonSize, buttonSize);
             weekDayViews.add(weekDayView);
+            row.addView(weekDayView, new LayoutParams(0, LayoutParams.MATCH_PARENT, 1f));
         }
-        for (int i = 0; i < 49; i++) {
-            DayView dayView = new DayView(context);
-            dayView.setOnClickListener(this);
-            addView(dayView, buttonSize, buttonSize);
-            monthDayViews.add(dayView);
+        for(int r = 0; r < 6; r++) {
+            row = makeRow(this);
+            for(int i = 0; i < 7; i++) {
+                DayView dayView = new DayView(context);
+                dayView.setOnClickListener(this);
+                monthDayViews.add(dayView);
+                row.addView(dayView, new LayoutParams(0, LayoutParams.MATCH_PARENT, 1f));
+            }
         }
 
         setFirstDayOfWeek(firstDayOfWeek);
         setSelectedDate(new CalendarDay());
+    }
+
+    private static LinearLayout makeRow(LinearLayout parent) {
+        LinearLayout row = new LinearLayout(parent.getContext());
+        row.setOrientation(HORIZONTAL);
+        row.setWeightSum(7);
+        parent.addView(row, new LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f));
+        return row;
     }
 
     public void setWeekDayTextAppearance(int taId) {
