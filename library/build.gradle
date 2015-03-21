@@ -5,7 +5,9 @@ apply plugin: 'signing'
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
+      lintOptions {
+          abortOnError false
+      }
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 21
@@ -28,7 +30,8 @@ artifacts {
 }
 
 signing {
-  sign configurations.archives
+   required { gradle.taskGraph.hasTask("uploadArchives") }
+   sign configurations.archives
 }
 
 def getRepositoryUsername() {
