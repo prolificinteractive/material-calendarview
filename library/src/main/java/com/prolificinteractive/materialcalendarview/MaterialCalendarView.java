@@ -205,7 +205,11 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     private void setupChildren() {
-        int tileSize = getResources().getDimensionPixelSize(R.dimen.mcv_default_tile_size);
+        int tileSize = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                getResources().getInteger(R.integer.mcv_default_tile_size),
+                getResources().getDisplayMetrics()
+        );
 
         root = new LinearLayout(getContext());
         root.setOrientation(LinearLayout.VERTICAL);

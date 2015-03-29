@@ -10,16 +10,19 @@ import android.support.v7.app.ActionBarActivity;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Random;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Random;
 
 public class DynamicSettersActivity extends ActionBarActivity implements OnDateChangedListener {
 
@@ -27,13 +30,15 @@ public class DynamicSettersActivity extends ActionBarActivity implements OnDateC
 
     @InjectView(R.id.textView) TextView textView;
     @InjectView(R.id.calendarView) MaterialCalendarView widget;
-    private int currentTileSize = 44;
+    private int currentTileSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynamic_setters);
         ButterKnife.inject(this);
+
+        currentTileSize = getResources().getInteger(R.integer.mcv_default_tile_size);
 
         widget.setOnDateChangedListener(this);
     }
