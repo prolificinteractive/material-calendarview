@@ -19,6 +19,10 @@ import static java.util.Calendar.SUNDAY;
  */
 class MonthView extends LinearLayout implements View.OnClickListener {
 
+    protected static final int DEFAULT_DAYS_IN_WEEK = 7;
+    protected static final int DEFAULT_MAX_WEEKS = 6;
+    protected static final int DEFAULT_MONTH_TILE_HEIGHT = DEFAULT_MAX_WEEKS + 1;
+
     public interface Callbacks {
 
         void onDateChanged(CalendarDay date);
@@ -43,20 +47,19 @@ class MonthView extends LinearLayout implements View.OnClickListener {
         super(context);
 
         setOrientation(VERTICAL);
-        setWeightSum(7);
 
         setClipChildren(false);
         setClipToPadding(false);
 
         LinearLayout row = makeRow(this);
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < DEFAULT_DAYS_IN_WEEK; i++) {
             WeekDayView weekDayView = new WeekDayView(context);
             weekDayViews.add(weekDayView);
             row.addView(weekDayView, new LayoutParams(0, LayoutParams.MATCH_PARENT, 1f));
         }
-        for(int r = 0; r < 6; r++) {
+        for(int r = 0; r < DEFAULT_MAX_WEEKS; r++) {
             row = makeRow(this);
-            for(int i = 0; i < 7; i++) {
+            for(int i = 0; i < DEFAULT_DAYS_IN_WEEK; i++) {
                 DayView dayView = new DayView(context);
                 dayView.setOnClickListener(this);
                 monthDayViews.add(dayView);
@@ -71,7 +74,6 @@ class MonthView extends LinearLayout implements View.OnClickListener {
     private static LinearLayout makeRow(LinearLayout parent) {
         LinearLayout row = new LinearLayout(parent.getContext());
         row.setOrientation(HORIZONTAL);
-        row.setWeightSum(7);
         parent.addView(row, new LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f));
         return row;
     }
@@ -110,7 +112,7 @@ class MonthView extends LinearLayout implements View.OnClickListener {
         //If the delta is positive, we want to remove a week
         boolean removeRow = showOtherDates ? delta >= 0 : delta > 0;
         if(removeRow) {
-            delta -= 7;
+            delta -= DEFAULT_DAYS_IN_WEEK;
         }
         tempWorkingCalendar.add(DATE, delta);
         return tempWorkingCalendar;
