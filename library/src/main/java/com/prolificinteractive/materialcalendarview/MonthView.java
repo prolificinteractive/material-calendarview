@@ -9,6 +9,7 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_WEEK;
@@ -40,6 +41,9 @@ class MonthView extends GridLayout implements View.OnClickListener {
 
     private boolean showOtherDates = false;
 
+    private Map<String,DayViewDecorator> dayViewDecorators;
+
+
     public MonthView(Context context) {
         this(context, null);
     }
@@ -70,6 +74,11 @@ class MonthView extends GridLayout implements View.OnClickListener {
         }
         setFirstDayOfWeek(firstDayOfWeek);
         setSelectedDate(new CalendarDay());
+    }
+
+    public void setDayViewDecorators(Map<String, DayViewDecorator> dayViewDecorators) {
+        this.dayViewDecorators = dayViewDecorators;
+        updateUi();
     }
 
     public void setWeekDayTextAppearance(int taId) {
@@ -158,6 +167,13 @@ class MonthView extends GridLayout implements View.OnClickListener {
             dayView.setDay(day);
             dayView.setupSelection(showOtherDates, day.isInRange(minDate, maxDate), day.getMonth() == ourMonth);
             dayView.setChecked(day.equals(selection));
+
+            if(dayViewDecorators != null) {
+                if (dayViewDecorators.containsKey(calendar.getTime().toString())) {
+                    dayViewDecorators.get(calendar.getTime().toString()).decorate(dayView,getContext());
+                }
+            }
+
             calendar.add(DATE, 1);
         }
         postInvalidate();

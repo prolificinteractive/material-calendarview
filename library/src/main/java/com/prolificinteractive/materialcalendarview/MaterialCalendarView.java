@@ -28,7 +28,10 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -64,6 +67,8 @@ public class MaterialCalendarView extends FrameLayout {
     private final MonthPagerAdapter adapter;
     private CalendarDay currentMonth;
     private TitleFormatter titleFormatter = DEFAULT_TITLE_FORMATTER;
+
+    private Map<String,DayViewDecorator> dayViewDecorators;
 
     private final MonthView.Callbacks monthViewCallbacks = new MonthView.Callbacks() {
         @Override
@@ -626,6 +631,8 @@ public class MaterialCalendarView extends FrameLayout {
         private CalendarDay maxDate = null;
         private CalendarDay selectedDate = null;
         private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
+        private Map<String,DayViewDecorator> decorators;
+
 
         private MonthPagerAdapter(MaterialCalendarView view) {
             this.view = view;
@@ -633,6 +640,11 @@ public class MaterialCalendarView extends FrameLayout {
             currentViews = new LinkedList<>();
             months = new ArrayList<>();
             setRangeDates(null, null);
+        }
+
+
+        public void setDecorators(Map<String,DayViewDecorator> decorators){
+            this.decorators = decorators;
         }
 
         @Override
@@ -705,6 +717,11 @@ public class MaterialCalendarView extends FrameLayout {
 
             container.addView(monthView);
             currentViews.add(monthView);
+
+            if(decorators!=null) {
+                monthView.setDayViewDecorators(decorators);
+            }
+
             return monthView;
         }
 
@@ -848,6 +865,18 @@ public class MaterialCalendarView extends FrameLayout {
         protected int getWeekDayTextAppearance() {
             return weekDayTextAppearance == null ? 0 : weekDayTextAppearance;
         }
+    }
+
+
+    public void addDayViewDecorators(DayViewDecorator decorator, List<Date> days){
+
+        if(dayViewDecorators == null)
+            dayViewDecorators = new HashMap<>();
+
+        for(Date c : days)
+            dayViewDecorators.put(c.toString(),decorator);
+
+        adapter.setDecorators(dayViewDecorators);
     }
 
 }
