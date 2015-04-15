@@ -13,7 +13,7 @@ and feel, rather than 100% parity with the platform's implementation.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:0.2.5'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:0.3.0'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
 
@@ -81,7 +81,7 @@ The default implementation formats using `SimpleDateFormat` with a `"MMMM yyyy"`
 ### tileSize
 
 Set a custom size for each tile. Each day of the calendar is 1 tile, and the top bar is 1 tile high.
-The default tile size is `44dp`.
+The entire widget is 7 tiles by 8 tiles. The default tile size is `44dp`.
 
 Contributing
 ============
