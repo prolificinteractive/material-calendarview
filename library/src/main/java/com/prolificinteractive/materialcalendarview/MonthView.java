@@ -9,6 +9,7 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Map;
 
 import static java.util.Calendar.DATE;
@@ -41,7 +42,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
 
     private boolean showOtherDates = false;
 
-    private Map<String,DayViewDecorator> dayViewDecorators;
+    private Collection<DayViewDecorator> dayViewDecorators;
 
 
     public MonthView(Context context) {
@@ -76,7 +77,7 @@ class MonthView extends GridLayout implements View.OnClickListener {
         setSelectedDate(new CalendarDay());
     }
 
-    public void setDayViewDecorators(Map<String, DayViewDecorator> dayViewDecorators) {
+    public void setDayViewDecorators(Collection<DayViewDecorator> dayViewDecorators) {
         this.dayViewDecorators = dayViewDecorators;
         updateUi();
     }
@@ -159,7 +160,9 @@ class MonthView extends GridLayout implements View.OnClickListener {
         updateUi();
     }
 
-    private void updateUi() {
+
+
+    protected void updateUi() {
         int ourMonth = CalendarUtils.getMonth(calendarOfRecord);
         Calendar calendar = resetAndGetWorkingCalendar();
         for(DayView dayView : monthDayViews) {
@@ -167,16 +170,21 @@ class MonthView extends GridLayout implements View.OnClickListener {
             dayView.setDay(day);
             dayView.setupSelection(showOtherDates, day.isInRange(minDate, maxDate), day.getMonth() == ourMonth);
             dayView.setChecked(day.equals(selection));
-
-            if(dayViewDecorators != null) {
-                if (dayViewDecorators.containsKey(calendar.getTime().toString())) {
-                    dayViewDecorators.get(calendar.getTime().toString()).decorate(dayView,getContext());
-                }
-            }
-
+            applyDecorators(dayView,day);
             calendar.add(DATE, 1);
         }
         postInvalidate();
+    }
+
+
+    private void applyDecorators(DayView dayView, CalendarDay day){
+        if(dayViewDecorators != null) {
+            for(DayViewDecorator decorator : dayViewDecorators){
+                if(decorator.shouldDecorate(day)){
+                    decorator.decorate(dayView);
+                }
+            }
+        }
     }
 
     public void setCallbacks(Callbacks callbacks) {

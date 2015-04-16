@@ -7,6 +7,8 @@ import android.content.Context;
  */
 public interface DayViewDecorator {
 
-    public void decorate(DayView view, Context ctx);
+    public boolean shouldDecorate(CalendarDay day);
+
+    public void decorate(DayView view);
 
 }

@@ -8,8 +8,9 @@ import android.widget.TextView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
-import com.prolificinteractive.materialcalendarview.decorators.HighlightDecorator;
-import com.prolificinteractive.materialcalendarview.decorators.TextDecorator;
+import com.prolificinteractive.materialcalendarview.sample.decorators.HighlightWeekendsDecorator;
+import com.prolificinteractive.materialcalendarview.sample.decorators.OneDayDecorator;
+import com.prolificinteractive.materialcalendarview.sample.decorators.TextDecorator;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,8 @@ public class BasicActivityDecorated extends ActionBarActivity implements OnDateC
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     private TextView textView;
+    private OneDayDecorator oneDayDecorator;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,22 +62,26 @@ public class BasicActivityDecorated extends ActionBarActivity implements OnDateC
         Calendar d5 = Calendar.getInstance();
         d5.set(d5.get(Calendar.YEAR), Calendar.APRIL, 22, 0, 0, 0);
 
-        Calendar d7 = Calendar.getInstance();
-        d7.set(d7.get(Calendar.YEAR), Calendar.APRIL, 27, 0, 0, 0);
-
-        Calendar d8 = Calendar.getInstance();
-        d8.set(d8.get(Calendar.YEAR), Calendar.APRIL, 28, 0, 0, 0);
-
-
-        widget.addDayViewDecorators(new HighlightDecorator(), Arrays.asList(d1.getTime(), d2.getTime()));
-        widget.addDayViewDecorators(new TextDecorator(), Arrays.asList(d3.getTime(), d4.getTime()));
-        widget.addDayViewDecorators(new HighlightDecorator(Color.parseColor("#4FC3F7")), Arrays.asList(d5.getTime()));
-        widget.addDayViewDecorators(new TextDecorator("✔"), Arrays.asList(d7.getTime(), d8.getTime()));
+        widget.addDecorators(
+                new HighlightWeekendsDecorator(),
+                new TextDecorator("●", Arrays.asList(d1.getTime(), d2.getTime(), d3.getTime())),
+                new TextDecorator("✔", Arrays.asList(d4.getTime(), d5.getTime()))
+        );
 
     }
 
     @Override
     public void onDateChanged(MaterialCalendarView widget, CalendarDay date) {
+
+        if(oneDayDecorator == null){
+            oneDayDecorator = new OneDayDecorator("★",date.getDate());
+            widget.addDecorators(oneDayDecorator);
+        }else{
+            oneDayDecorator.setDate(date.getDate());
+            widget.invalidateDecorators();
+        }
+
+
         textView.setText(FORMATTER.format(date.getDate()));
     }
 }
