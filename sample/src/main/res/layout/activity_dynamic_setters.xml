@@ -66,6 +66,13 @@
             android:layout_height="wrap_content"
             />
 
+        <Button
+            android:id="@+id/button_set_tile_size"
+            android:text="Set Tile Size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
         <CheckBox
             android:id="@+id/check_text_appearance"
             android:text="Use Large Text"

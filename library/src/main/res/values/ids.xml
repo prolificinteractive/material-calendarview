@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="mcv_default_tile_size">44</integer>
+    <item name="mcv_pager" type="id" />
 
 </resources>

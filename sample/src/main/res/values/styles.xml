@@ -7,4 +7,8 @@
         <item name="colorAccent">@color/sample_accent</item>
     </style>
 
+    <style name="CustomDayTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/mcv_text_date_light</item>
+    </style>
+
 </resources>
