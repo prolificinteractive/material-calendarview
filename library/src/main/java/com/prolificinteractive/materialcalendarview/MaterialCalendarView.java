@@ -71,7 +71,7 @@ public class MaterialCalendarView extends FrameLayout {
     private CalendarDay currentMonth;
     private TitleFormatter titleFormatter = DEFAULT_TITLE_FORMATTER;
 
-    Set<DayViewDecorator> dayViewDecorators;
+    List<DayViewDecorator> dayViewDecorators;
 
     private final MonthView.Callbacks monthViewCallbacks = new MonthView.Callbacks() {
         @Override
@@ -879,7 +879,7 @@ public class MaterialCalendarView extends FrameLayout {
 
     public void addDecorators(DayViewDecorator... decorators){
         if(dayViewDecorators == null){
-            dayViewDecorators = new HashSet<>();
+            dayViewDecorators = new ArrayList<>();
         }
 
         for(DayViewDecorator decorator : decorators) {
@@ -892,7 +892,7 @@ public class MaterialCalendarView extends FrameLayout {
 
     public void addDecorator(DayViewDecorator decorator){
         if(dayViewDecorators == null){
-            dayViewDecorators = new HashSet<>();
+            dayViewDecorators = new ArrayList<>();
         }
         dayViewDecorators.add(decorator);
         adapter.setDecorators(dayViewDecorators);
@@ -902,6 +902,12 @@ public class MaterialCalendarView extends FrameLayout {
     public void removeDecorators(){
         dayViewDecorators = null;
         adapter.setDecorators(null);
+        invalidateDecorators();
+    }
+
+    public void removeDecorator(DayViewDecorator decorator){
+        dayViewDecorators.remove(decorator);
+        adapter.setDecorators(dayViewDecorators);
         invalidateDecorators();
     }
 
