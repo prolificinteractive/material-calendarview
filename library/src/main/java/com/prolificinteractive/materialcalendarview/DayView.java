@@ -19,7 +19,7 @@ import android.widget.CheckedTextView;
 /**
  * Display one day of a {@linkplain MaterialCalendarView}
  */
-class DayView extends CheckedTextView {
+public class DayView extends CheckedTextView {
 
     private CalendarDay date = new CalendarDay();
     private int selectionColor = Color.GRAY;

@@ -8,6 +8,8 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Map;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_WEEK;
@@ -43,6 +45,9 @@ class MonthView extends LinearLayout implements View.OnClickListener {
 
     private boolean showOtherDates = false;
 
+    private Collection<DayViewDecorator> dayViewDecorators;
+
+
     public MonthView(Context context) {
         super(context);
 
@@ -69,6 +74,12 @@ class MonthView extends LinearLayout implements View.OnClickListener {
 
         setFirstDayOfWeek(firstDayOfWeek);
         setSelectedDate(new CalendarDay());
+    }
+
+
+    public void setDayViewDecorators(Collection<DayViewDecorator> dayViewDecorators) {
+        this.dayViewDecorators = dayViewDecorators;
+        updateUi();
     }
 
     private static LinearLayout makeRow(LinearLayout parent) {
@@ -156,7 +167,9 @@ class MonthView extends LinearLayout implements View.OnClickListener {
         updateUi();
     }
 
-    private void updateUi() {
+
+
+    protected void updateUi() {
         int ourMonth = CalendarUtils.getMonth(calendarOfRecord);
         Calendar calendar = resetAndGetWorkingCalendar();
         for(DayView dayView : monthDayViews) {
@@ -164,9 +177,21 @@ class MonthView extends LinearLayout implements View.OnClickListener {
             dayView.setDay(day);
             dayView.setupSelection(showOtherDates, day.isInRange(minDate, maxDate), day.getMonth() == ourMonth);
             dayView.setChecked(day.equals(selection));
+            applyDecorators(dayView,day);
             calendar.add(DATE, 1);
         }
         postInvalidate();
+    }
+
+
+    private void applyDecorators(DayView dayView, CalendarDay day){
+        if(dayViewDecorators != null) {
+            for(DayViewDecorator decorator : dayViewDecorators){
+                if(decorator.shouldDecorate(day)){
+                    decorator.decorate(dayView);
+                }
+            }
+        }
     }
 
     public void setCallbacks(Callbacks callbacks) {
