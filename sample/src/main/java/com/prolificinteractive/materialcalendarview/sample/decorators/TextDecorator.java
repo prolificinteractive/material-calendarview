@@ -5,23 +5,21 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.DayView;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
 import java.util.Collection;
 import java.util.Date;
 
 /**
- * Created by castrelo on 11/04/15.
+ * Decorate several days with a symbol
  */
-public class TextDecorator implements DayViewDecorator{
+public class TextDecorator implements DayViewDecorator {
 
-
-    Collection<Date> dates;
+    Collection<? extends Date> dates;
     CharSequence symbol;
 
-
-    public TextDecorator(CharSequence symbol, Collection<Date> dates) {
+    public TextDecorator(CharSequence symbol, Collection<? extends Date> dates) {
         this.symbol = symbol;
         this.dates = dates;
     }
@@ -36,7 +34,7 @@ public class TextDecorator implements DayViewDecorator{
     }
 
     @Override
-    public void decorate(DayView view) {
+    public void decorate(DayViewFacade view) {
         CharSequence text = view.getText();
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#CE93D8"));
         SpannableString spannableString = new SpannableString(symbol + " " + text);

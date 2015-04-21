@@ -8,8 +8,7 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_WEEK;
@@ -45,7 +44,7 @@ class MonthView extends LinearLayout implements View.OnClickListener {
 
     private boolean showOtherDates = false;
 
-    private Collection<DayViewDecorator> dayViewDecorators;
+    private List<DayViewDecorator> dayViewDecorators;
 
 
     public MonthView(Context context) {
@@ -77,7 +76,7 @@ class MonthView extends LinearLayout implements View.OnClickListener {
     }
 
 
-    public void setDayViewDecorators(Collection<DayViewDecorator> dayViewDecorators) {
+    public void setDayViewDecorators(List<DayViewDecorator> dayViewDecorators) {
         this.dayViewDecorators = dayViewDecorators;
         updateUi();
     }
@@ -186,9 +185,11 @@ class MonthView extends LinearLayout implements View.OnClickListener {
 
     private void applyDecorators(DayView dayView, CalendarDay day){
         if(dayViewDecorators != null) {
+            DayViewFacade facade = new DayViewFacade();
             for(DayViewDecorator decorator : dayViewDecorators){
                 if(decorator.shouldDecorate(day)){
-                    decorator.decorate(dayView);
+                    facade.setDayView(dayView);
+                    decorator.decorate(facade);
                 }
             }
         }

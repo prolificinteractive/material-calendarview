@@ -19,12 +19,13 @@ import android.widget.CheckedTextView;
 /**
  * Display one day of a {@linkplain MaterialCalendarView}
  */
-public class DayView extends CheckedTextView {
+class DayView extends CheckedTextView {
 
     private CalendarDay date = new CalendarDay();
     private int selectionColor = Color.GRAY;
 
     private final int fadeTime;
+    private Drawable customBackground = null;
 
     public DayView(Context context) {
         super(context);
@@ -51,7 +52,12 @@ public class DayView extends CheckedTextView {
 
     public void setSelectionColor(int color) {
         this.selectionColor = color;
-        setBackgroundDrawable(generateBackground(color, fadeTime));
+        regenerateBackground();
+    }
+
+    public void setCustomBackground(Drawable customBackground) {
+        this.customBackground = customBackground;
+        regenerateBackground();
     }
 
     public CalendarDay getDate() {
@@ -69,16 +75,27 @@ public class DayView extends CheckedTextView {
         setVisibility(enabled || showOtherDates ? View.VISIBLE : View.INVISIBLE);
     }
 
-    private static Drawable generateBackground(int color, int fadeTime) {
+    private void regenerateBackground() {
+        setBackgroundDrawable(generateBackground(selectionColor, fadeTime, customBackground));
+    }
+
+    private static Drawable generateBackground(int color, int fadeTime, Drawable customBackground) {
         StateListDrawable drawable = new StateListDrawable();
         drawable.setExitFadeDuration(fadeTime);
-        drawable.addState(new int[] { android.R.attr.state_checked }, generateCircleDrawable(color));
+        drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color));
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             drawable.addState(new int[] { android.R.attr.state_pressed }, generateRippleDrawable(color));
         } else {
             drawable.addState(new int[] { android.R.attr.state_pressed }, generateCircleDrawable(color));
         }
-        drawable.addState(new int[] { }, generateCircleDrawable(Color.TRANSPARENT));
+
+        if(customBackground == null) {
+            drawable.addState(new int[]{}, generateCircleDrawable(Color.TRANSPARENT));
+        }
+        else {
+            drawable.addState(new int[]{}, customBackground);
+        }
+
         return drawable;
     }
 
