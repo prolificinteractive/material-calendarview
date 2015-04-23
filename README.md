@@ -13,7 +13,7 @@ and feel, rather than 100% parity with the platform's implementation.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:0.3.0'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:0.3.1'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
 
@@ -63,6 +63,15 @@ Options only available in Java:
 | setMinimumDate()  | Set the earliest visible date on the calendar                               |
 | setMaximumDate()  | Set the latest visible date on the calendar                                 |
 | setSelectedDate() | Set the date to show as selected. Must be within minimum and maximum dates. |
+
+### DayViewDecorator
+
+If you want to customize individual days, say to show days with events, you can now add DayViewDecorators
+to MaterialCalendarView. The `shouldDecorate()` method is called to check if the `decorate()` method
+needs to be called for individual days. The `DayViewFacade` abstracts some of the complexities of decorating
+a DayView (i.e. using `setBackgroundUnselected()` to set the background, but still allow selection).
+
+If your decorators change after adding them, make sure to call `MaterialCalendarView.invalidateDecorators()`.
 
 Contributing
 ============

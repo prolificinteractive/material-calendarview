@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.3.1 *(2015-04-23)*
+----------------------------
+
+ * New: Added DayViewDecorator and DayViewFacade to allow for day decorating
+
 Version 0.3.0 *(2015-04-15)*
 ----------------------------
 
