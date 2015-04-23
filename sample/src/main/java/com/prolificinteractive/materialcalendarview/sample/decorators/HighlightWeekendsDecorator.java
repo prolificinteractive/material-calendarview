@@ -8,16 +8,15 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.DayView;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
 import java.util.Calendar;
 
 /**
- * Created by castrelo on 11/04/15.
+ * Highlight Saturdays and Sundays with a background
  */
-public class HighlightWeekendsDecorator implements DayViewDecorator{
-
+public class HighlightWeekendsDecorator implements DayViewDecorator {
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
@@ -26,12 +25,11 @@ public class HighlightWeekendsDecorator implements DayViewDecorator{
     }
 
     @Override
-    public void decorate(DayView view) {
-        view.setBackgroundDrawable(generateBackgroundDrawable());
+    public void decorate(DayViewFacade view) {
+        view.setBackgroundUnselected(generateBackgroundDrawable());
     }
 
     private static Drawable generateBackgroundDrawable() {
-
         final int r = 0;
         final float[] outerR = new float[] {r, r, r, r, r, r, r, r};
         final int color = Color.parseColor("#228BC34A");

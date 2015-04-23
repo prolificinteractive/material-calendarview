@@ -1,14 +1,18 @@
 package com.prolificinteractive.materialcalendarview;
 
-import android.content.Context;
-
 /**
- * Created by castrelo on 11/04/15.
+ * Decorate Day views with drawables and text manipulation
  */
 public interface DayViewDecorator {
 
-    public boolean shouldDecorate(CalendarDay day);
+    /**
+     * @return true if this decorator should be applied to the provided day
+     */
+    boolean shouldDecorate(CalendarDay day);
 
-    public void decorate(DayView view);
+    /**
+     * @param view View to decorate
+     */
+    void decorate(DayViewFacade view);
 
 }

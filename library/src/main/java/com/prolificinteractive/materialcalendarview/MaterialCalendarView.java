@@ -30,14 +30,9 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * <p>
@@ -713,7 +708,7 @@ public class MaterialCalendarView extends FrameLayout {
         private CalendarDay maxDate = null;
         private CalendarDay selectedDate = null;
         private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
-        private Collection<DayViewDecorator> decorators;
+        private List<DayViewDecorator> decorators;
 
 
         private MonthPagerAdapter(MaterialCalendarView view) {
@@ -725,7 +720,7 @@ public class MaterialCalendarView extends FrameLayout {
         }
 
 
-        public void setDecorators(Collection<DayViewDecorator> decorators){
+        public void setDecorators(List<DayViewDecorator> decorators){
             this.decorators = decorators;
         }
 
