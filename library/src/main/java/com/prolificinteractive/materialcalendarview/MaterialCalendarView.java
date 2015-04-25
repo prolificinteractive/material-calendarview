@@ -195,6 +195,10 @@ public class MaterialCalendarView extends FrameLayout {
                     R.styleable.MaterialCalendarView_mcv_showOtherDates,
                     false
             ));
+            setFirstDayOfTheWeek(a.getInt(
+                    R.styleable.MaterialCalendarView_mcv_firstDayOfWeek,
+                    Calendar.SUNDAY
+            ));
         }
         catch (Exception e) {
             Log.e("Attr Error", "error" , e);
@@ -690,6 +694,14 @@ public class MaterialCalendarView extends FrameLayout {
         return outValue.data;
     }
 
+    public void setFirstDayOfTheWeek(int day) {
+        adapter.setFirstDayOfTheWeek(day);
+    }
+
+    public int getFirstDayOfTheWeek() {
+        return adapter.firstDayOfTheWeek;
+    }
+
     private static class MonthPagerAdapter extends PagerAdapter {
 
         private static final int TAG_ITEM = R.id.mcv_pager;
@@ -709,6 +721,7 @@ public class MaterialCalendarView extends FrameLayout {
         private CalendarDay selectedDate = null;
         private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
         private List<DayViewDecorator> decorators;
+        private int firstDayOfTheWeek;
 
 
         private MonthPagerAdapter(MaterialCalendarView view) {
@@ -777,6 +790,7 @@ public class MaterialCalendarView extends FrameLayout {
             MonthView monthView = new MonthView(container.getContext());
             monthView.setTag(TAG_ITEM, month);
 
+            monthView.setFirstDayOfWeek(firstDayOfTheWeek);
             monthView.setWeekDayFormatter(weekDayFormatter);
             monthView.setCallbacks(callbacks);
             if(color != null) {
@@ -807,7 +821,12 @@ public class MaterialCalendarView extends FrameLayout {
             return monthView;
         }
 
-
+        public void setFirstDayOfTheWeek(int day) {
+            firstDayOfTheWeek = day;
+            for(MonthView monthView : currentViews) {
+                monthView.setFirstDayOfWeek(firstDayOfTheWeek);
+            }
+        }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
