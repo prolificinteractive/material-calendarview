@@ -21,7 +21,7 @@ import android.widget.CheckedTextView;
  */
 class DayView extends CheckedTextView {
 
-    private CalendarDay date = new CalendarDay();
+    private CalendarDay date = CalendarDay.today();
     private int selectionColor = Color.GRAY;
 
     private final int fadeTime;

@@ -27,7 +27,7 @@ public class TextDecorator implements DayViewDecorator {
     @Override
     public boolean shouldDecorate(CalendarDay day) {
         for(Date date : dates)
-            if(day.equals(new CalendarDay(date))){
+            if(day.equals(CalendarDay.from(date))){
                 return true;
             }
         return false;

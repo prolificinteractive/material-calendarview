@@ -1,5 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.support.annotation.NonNull;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,7 +30,7 @@ public class CalendarUtils {
     /**
      * @return a new Calendar instance with the date set to today. Time set to zero.
      */
-    public static Calendar getInstance() {
+    public static @NonNull Calendar getInstance() {
         Calendar calendar = Calendar.getInstance();
         copyDateTo(calendar, calendar);
         return calendar;

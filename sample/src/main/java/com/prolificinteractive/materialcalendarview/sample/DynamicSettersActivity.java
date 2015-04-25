@@ -126,7 +126,7 @@ public class DynamicSettersActivity extends ActionBarActivity implements OnDateC
     public static void showDatePickerDialog(Context context, CalendarDay day,
         DatePickerDialog.OnDateSetListener callback) {
         if(day == null) {
-            day = new CalendarDay();
+            day = CalendarDay.today();
         }
         DatePickerDialog dialog = new DatePickerDialog(
             context, 0, callback, day.getYear(), day.getMonth(), day.getDay()

@@ -72,7 +72,7 @@ class MonthView extends LinearLayout implements View.OnClickListener {
         }
 
         setFirstDayOfWeek(firstDayOfWeek);
-        setSelectedDate(new CalendarDay());
+        setSelectedDate(CalendarDay.today());
     }
 
 
@@ -172,7 +172,7 @@ class MonthView extends LinearLayout implements View.OnClickListener {
         int ourMonth = CalendarUtils.getMonth(calendarOfRecord);
         Calendar calendar = resetAndGetWorkingCalendar();
         for(DayView dayView : monthDayViews) {
-            CalendarDay day = new CalendarDay(calendar);
+            CalendarDay day = CalendarDay.from(calendar);
             dayView.setDay(day);
             dayView.setupSelection(showOtherDates, day.isInRange(minDate, maxDate), day.getMonth() == ourMonth);
             dayView.setChecked(day.equals(selection));
