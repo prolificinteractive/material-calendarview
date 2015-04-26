@@ -195,7 +195,7 @@ public class MaterialCalendarView extends FrameLayout {
                     R.styleable.MaterialCalendarView_mcv_showOtherDates,
                     false
             ));
-            setFirstDayOfTheWeek(a.getInt(
+            setFirstDayOfWeek(a.getInt(
                     R.styleable.MaterialCalendarView_mcv_firstDayOfWeek,
                     Calendar.SUNDAY
             ));
@@ -694,11 +694,23 @@ public class MaterialCalendarView extends FrameLayout {
         return outValue.data;
     }
 
-    public void setFirstDayOfTheWeek(int day) {
-        adapter.setFirstDayOfTheWeek(day);
+    /**
+     * Sets the first day of the week.
+     *
+     * Uses the java.util.Calendar day constants.
+     * @see java.util.Calendar
+     *
+     * @param day The first day of the week as a java.util.Calendar day constant.
+     */
+    public void setFirstDayOfWeek(int day) {
+        adapter.setFirstDayOfWeek(day);
     }
 
-    public int getFirstDayOfTheWeek() {
+    /**
+     *
+     * @return The first day of the week as a java.util.Calendar day constant.
+     */
+    public int getFirstDayOfWeek() {
         return adapter.firstDayOfTheWeek;
     }
 
@@ -821,7 +833,7 @@ public class MaterialCalendarView extends FrameLayout {
             return monthView;
         }
 
-        public void setFirstDayOfTheWeek(int day) {
+        public void setFirstDayOfWeek(int day) {
             firstDayOfTheWeek = day;
             for(MonthView monthView : currentViews) {
                 monthView.setFirstDayOfWeek(firstDayOfTheWeek);
