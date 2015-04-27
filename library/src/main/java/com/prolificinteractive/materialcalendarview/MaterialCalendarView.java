@@ -195,6 +195,10 @@ public class MaterialCalendarView extends FrameLayout {
                     R.styleable.MaterialCalendarView_mcv_showOtherDates,
                     false
             ));
+            setFirstDayOfWeek(a.getInt(
+                    R.styleable.MaterialCalendarView_mcv_firstDayOfWeek,
+                    Calendar.SUNDAY
+            ));
         }
         catch (Exception e) {
             Log.e("Attr Error", "error" , e);
@@ -690,6 +694,26 @@ public class MaterialCalendarView extends FrameLayout {
         return outValue.data;
     }
 
+    /**
+     * Sets the first day of the week.
+     *
+     * Uses the java.util.Calendar day constants.
+     * @see java.util.Calendar
+     *
+     * @param day The first day of the week as a java.util.Calendar day constant.
+     */
+    public void setFirstDayOfWeek(int day) {
+        adapter.setFirstDayOfWeek(day);
+    }
+
+    /**
+     *
+     * @return The first day of the week as a java.util.Calendar day constant.
+     */
+    public int getFirstDayOfWeek() {
+        return adapter.firstDayOfTheWeek;
+    }
+
     private static class MonthPagerAdapter extends PagerAdapter {
 
         private static final int TAG_ITEM = R.id.mcv_pager;
@@ -709,6 +733,7 @@ public class MaterialCalendarView extends FrameLayout {
         private CalendarDay selectedDate = null;
         private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
         private List<DayViewDecorator> decorators;
+        private int firstDayOfTheWeek;
 
 
         private MonthPagerAdapter(MaterialCalendarView view) {
@@ -777,6 +802,7 @@ public class MaterialCalendarView extends FrameLayout {
             MonthView monthView = new MonthView(container.getContext());
             monthView.setTag(TAG_ITEM, month);
 
+            monthView.setFirstDayOfWeek(firstDayOfTheWeek);
             monthView.setWeekDayFormatter(weekDayFormatter);
             monthView.setCallbacks(callbacks);
             if(color != null) {
@@ -807,7 +833,12 @@ public class MaterialCalendarView extends FrameLayout {
             return monthView;
         }
 
-
+        public void setFirstDayOfWeek(int day) {
+            firstDayOfTheWeek = day;
+            for(MonthView monthView : currentViews) {
+                monthView.setFirstDayOfWeek(firstDayOfTheWeek);
+            }
+        }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
