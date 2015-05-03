@@ -13,7 +13,7 @@ and feel, rather than 100% parity with the platform's implementation.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:0.3.1'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:0.3.2'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
 
@@ -34,6 +34,7 @@ Example:
     app:mcv_weekDayLabels="array"
     app:mcv_monthLabels="array"
     app:mcv_tileSize="dimension"
+    app:mcv_firstDayOfWeek="enum"
     />
 ```
 
@@ -55,6 +56,7 @@ Options available in Java and as XML attributes:
 | weekDayLabels         | array     | Supply custom labels for the days of the week. This sets an `ArrayWeekDayFormatter` on the `CalendarView`.The default uses Java's `Calendar` class to get a `SHORT` display name.                               |
 | monthLabels           | array     | Supply custom labels for the months of the year. This sets a `MonthArrayTitleFormatter` on the `CalendarView`.The default implementation formats using `SimpleDateFormat` with a `"MMMM yyyy"` format.          |
 | tileSize              | dimension | Set a custom size for each tile. Each day of the calendar is 1 tile, and the top bar is 1 tile high.The entire widget is 7 tiles by 8 tiles. The default tile size is `44dp`.                                   |
+| firstDayOfWeek        | enum      | Set the first day of the month                                                                                                                                                                                  |
 
 Options only available in Java:
 
@@ -65,6 +67,8 @@ Options only available in Java:
 | setSelectedDate() | Set the date to show as selected. Must be within minimum and maximum dates. |
 
 ### DayViewDecorator
+
+**NOTE: Due to performance issues, this API may change soon!**
 
 If you want to customize individual days, say to show days with events, you can now add DayViewDecorators
 to MaterialCalendarView. The `shouldDecorate()` method is called to check if the `decorate()` method
