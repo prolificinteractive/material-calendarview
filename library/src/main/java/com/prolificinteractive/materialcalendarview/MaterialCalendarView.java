@@ -14,7 +14,6 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -98,6 +97,10 @@ public class MaterialCalendarView extends FrameLayout {
         public void onPageSelected(int position) {
             currentMonth = adapter.getItem(position);
             updateUi();
+
+            if(monthListener != null) {
+                monthListener.onMonthChanged(MaterialCalendarView.this, currentMonth);
+            }
         }
 
         @Override public void onPageScrollStateChanged(int state) {}
@@ -109,6 +112,7 @@ public class MaterialCalendarView extends FrameLayout {
     private CalendarDay maxDate = null;
 
     private OnDateChangedListener listener;
+    private OnMonthChangedListener monthListener;
 
     private int accentColor = 0;
     private int arrowColor = Color.BLACK;
@@ -256,12 +260,21 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     /**
-     * Sets the listener to be notified upon selected date change.
+     * Sets the listener to be notified upon selected date changes.
      *
      * @param listener thing to be notified
      */
     public void setOnDateChangedListener(OnDateChangedListener listener) {
         this.listener = listener;
+    }
+
+    /**
+     * Sets the listener to be notified upon month changes.
+     *
+     * @param listener thing to be notified
+     */
+    public void setOnMonthChangedListener(OnMonthChangedListener listener) {
+        this.monthListener = listener;
     }
 
     private void updateUi() {
@@ -719,7 +732,6 @@ public class MaterialCalendarView extends FrameLayout {
         private static final int TAG_ITEM = R.id.mcv_pager;
 
         private final MaterialCalendarView view;
-        private final LayoutInflater inflater;
         private final LinkedList<MonthView> currentViews;
         private final ArrayList<CalendarDay> months;
 
@@ -738,7 +750,6 @@ public class MaterialCalendarView extends FrameLayout {
 
         private MonthPagerAdapter(MaterialCalendarView view) {
             this.view = view;
-            this.inflater = LayoutInflater.from(view.getContext());
             currentViews = new LinkedList<>();
             months = new ArrayList<>();
             setRangeDates(null, null);
@@ -926,6 +937,7 @@ public class MaterialCalendarView extends FrameLayout {
 
             Calendar worker = CalendarUtils.getInstance();
             min.copyTo(worker);
+            CalendarUtils.setToFirstDay(worker);
             months.clear();
             CalendarDay workingMonth = new CalendarDay(worker);
             while (!max.isBefore(workingMonth)) {
