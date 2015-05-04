@@ -294,9 +294,11 @@ public class MaterialCalendarView extends FrameLayout {
                         getResources().getDimensionPixelSize(R.dimen.mcv_default_title_y_translation)
                                 * (previousMonth.isBefore(currentMonth) ? 1 : -1);
                 final DecelerateInterpolator interpolator = new DecelerateInterpolator(2f);
+                final int duration = getResources().getInteger(R.integer.mcv_default_title_y_translation_duration);
                 title.animate()
                         .translationY(yTranslation * -1)
                         .alpha(0)
+                        .setDuration(duration)
                         .setInterpolator(interpolator)
                         .setListener(new AnimatorListener() {
                             @Override public void onAnimationEnd(Animator animator) {
@@ -305,6 +307,7 @@ public class MaterialCalendarView extends FrameLayout {
                                 title.animate()
                                         .translationY(0)
                                         .alpha(1)
+                                        .setDuration(duration)
                                         .setInterpolator(interpolator)
                                         .setListener(new AnimatorListener())
                                         .start();
