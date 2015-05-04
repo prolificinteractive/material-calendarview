@@ -2,5 +2,6 @@
 <resources>
 
     <integer name="mcv_default_tile_size">44</integer>
+    <dimen name="mcv_default_title_y_translation">20dp</dimen>
 
 </resources>
