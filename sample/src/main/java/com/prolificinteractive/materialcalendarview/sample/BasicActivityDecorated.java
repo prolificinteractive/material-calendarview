@@ -34,7 +34,7 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
 
         MaterialCalendarView widget = (MaterialCalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
-
+        widget.setShowOtherDates(true);
 
         Calendar calendar = Calendar.getInstance();
         widget.setSelectedDate(calendar.getTime());

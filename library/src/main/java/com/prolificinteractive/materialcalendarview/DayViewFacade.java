@@ -2,15 +2,25 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.graphics.drawable.Drawable;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Abstraction layer to help in decorating Day views
  */
 public final class DayViewFacade {
 
-    private DayView dayView;
-    private CharSequence initialText;
+    private boolean isReset;
+
+    private Drawable unselectedBackground = null;
+    private Drawable background = null;
+    private final LinkedList<Span> spans = new LinkedList<>();
 
     public DayViewFacade() {
+        isReset = true;
     }
 
     /**
@@ -19,43 +29,66 @@ public final class DayViewFacade {
      * @param drawable Drawable to use, null for default
      */
     public void setBackgroundUnselected(Drawable drawable) {
-        dayView.setCustomBackground(drawable);
+        this.unselectedBackground = drawable;
+        isReset = false;
     }
 
     /**
-     * Set the entire background drawable of the Day view
+     * Set the entire background drawable of the Day view.
+     * This will take precedent over {@linkplain #setBackgroundUnselected(Drawable)}
      *
      * @param drawable the drawable for the Day view
      */
     public void setBackground(Drawable drawable) {
-        dayView.setBackgroundDrawable(drawable);
+        background = drawable;
+        isReset = false;
     }
 
     /**
-     * @return the text to be decorated. This will always be the same
-     * even if after you call {@linkplain #setText(CharSequence)}
+     * Add a span to the entire text of a day
+     *
+     * @param span text span instance
      */
-    public CharSequence getText() {
-        return initialText;
+    public void addSpan(Object span) {
+        if(spans != null) {
+            this.spans.add(new Span(span));
+            isReset = false;
+        }
     }
 
-    /**
-     * Set the text on the Day view
-     * @param text Text to display
-     */
-    public void setText(CharSequence text) {
-        dayView.setText(text);
+    protected void reset() {
+        unselectedBackground = null;
+        background = null;
+        spans.clear();
+        isReset = true;
     }
 
-    /**
-     * @return The {@linkplain CalendarDay} for the Day view being decorated
-     */
-    public CalendarDay getDate() {
-        return dayView.getDate();
+    public boolean isReset() {
+        return isReset;
     }
 
-    protected void setDayView(DayView dayView) {
-        this.dayView = dayView;
-        this.initialText = dayView.getText();
+    protected Drawable getBackground() {
+        return background;
+    }
+
+    protected Drawable getUnselectedBackground() {
+        return unselectedBackground;
+    }
+
+    protected List<Span> getSpans() {
+        return Collections.unmodifiableList(spans);
+    }
+
+    protected static class Span {
+        final Object span;
+
+        /**
+         * False == Start, True == End, Null == All
+         */
+        final Boolean position = null;
+
+        public Span(Object span) {
+            this.span  = span;
+        }
     }
 }

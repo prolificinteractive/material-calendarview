@@ -1,11 +1,10 @@
 package com.prolificinteractive.materialcalendarview.sample.decorators;
 
-import android.text.SpannableStringBuilder;
-
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.spans.SymbolSpan;
 
 import java.util.Date;
 
@@ -15,9 +14,9 @@ import java.util.Date;
 public class OneDayDecorator implements DayViewDecorator {
 
     Date date;
-    CharSequence symbol;
+    String symbol;
 
-    public OneDayDecorator(CharSequence symbol) {
+    public OneDayDecorator(String symbol) {
         this.symbol = symbol;
     }
 
@@ -28,9 +27,7 @@ public class OneDayDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.setText(
-            new SpannableStringBuilder().append(symbol).append(" ").append(view.getText())
-        );
+        view.addSpan(new SymbolSpan(symbol));
     }
 
     /**

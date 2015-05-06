@@ -13,6 +13,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -47,7 +48,11 @@ class DayView extends CheckedTextView {
 
     public void setDay(CalendarDay date) {
         this.date = date;
-        setText(String.valueOf(date.getDay()));
+        setText(getLabel());
+    }
+
+    public @NonNull String getLabel() {
+        return String.valueOf(date.getDay());
     }
 
     public void setSelectionColor(int color) {
