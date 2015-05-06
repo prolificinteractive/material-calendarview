@@ -28,7 +28,9 @@ import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -68,7 +70,7 @@ public class MaterialCalendarView extends FrameLayout {
     private CalendarDay currentMonth;
     private TitleFormatter titleFormatter = DEFAULT_TITLE_FORMATTER;
 
-    List<DayViewDecorator> dayViewDecorators;
+    private final ArrayList<DayViewDecorator> dayViewDecorators = new ArrayList<>();
 
     private final MonthView.Callbacks monthViewCallbacks = new MonthView.Callbacks() {
         @Override
@@ -724,12 +726,45 @@ public class MaterialCalendarView extends FrameLayout {
      * @return The first day of the week as a java.util.Calendar day constant.
      */
     public int getFirstDayOfWeek() {
-        return adapter.firstDayOfTheWeek;
+        return adapter.getFirstDayOfWeek();
+    }
+
+    public void addDecorators(Collection<? extends DayViewDecorator> decorators) {
+        if(decorators == null) {
+            return;
+        }
+
+        dayViewDecorators.addAll(decorators);
+        adapter.setDecorators(dayViewDecorators);
+    }
+
+    public void addDecorators(DayViewDecorator... decorators) {
+        addDecorators(Arrays.asList(decorators));
+    }
+
+    public void addDecorator(DayViewDecorator decorator) {
+        if(decorator == null) {
+            return;
+        }
+        dayViewDecorators.add(decorator);
+        adapter.setDecorators(dayViewDecorators);
+    }
+
+    public void removeDecorators() {
+        dayViewDecorators.clear();
+        adapter.setDecorators(dayViewDecorators);
+    }
+
+    public void removeDecorator(DayViewDecorator decorator) {
+        dayViewDecorators.remove(decorator);
+        adapter.setDecorators(dayViewDecorators);
+    }
+
+    public void invalidateDecorators() {
+        adapter.invalidateDecorators();
     }
 
     private static class MonthPagerAdapter extends PagerAdapter {
-
-        private static final int TAG_ITEM = R.id.mcv_pager;
 
         private final MaterialCalendarView view;
         private final LinkedList<MonthView> currentViews;
@@ -744,8 +779,8 @@ public class MaterialCalendarView extends FrameLayout {
         private CalendarDay maxDate = null;
         private CalendarDay selectedDate = null;
         private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
-        private List<DayViewDecorator> decorators;
-        private int firstDayOfTheWeek;
+        private List<DayViewDecorator> decorators = null;
+        private int firstDayOfTheWeek = Calendar.SUNDAY;
 
 
         private MonthPagerAdapter(MaterialCalendarView view) {
@@ -758,11 +793,12 @@ public class MaterialCalendarView extends FrameLayout {
 
         public void setDecorators(List<DayViewDecorator> decorators){
             this.decorators = decorators;
+            invalidateDecorators();
         }
 
         public void invalidateDecorators() {
             for(MonthView monthView : currentViews) {
-                monthView.updateUi();
+                monthView.setDayViewDecorators(decorators);
             }
         }
 
@@ -796,7 +832,7 @@ public class MaterialCalendarView extends FrameLayout {
                 return POSITION_NONE;
             }
             MonthView monthView = (MonthView) object;
-            CalendarDay month = (CalendarDay) monthView.getTag(TAG_ITEM);
+            CalendarDay month = monthView.getMonth();
             if(month == null) {
                 return POSITION_NONE;
             }
@@ -810,10 +846,8 @@ public class MaterialCalendarView extends FrameLayout {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             CalendarDay month = months.get(position);
-            MonthView monthView = new MonthView(container.getContext());
-            monthView.setTag(TAG_ITEM, month);
+            MonthView monthView = new MonthView(container.getContext(), month, firstDayOfTheWeek);
 
-            monthView.setFirstDayOfWeek(firstDayOfTheWeek);
             monthView.setWeekDayFormatter(weekDayFormatter);
             monthView.setCallbacks(callbacks);
             if(color != null) {
@@ -832,12 +866,10 @@ public class MaterialCalendarView extends FrameLayout {
             monthView.setMaximumDate(maxDate);
             monthView.setSelectedDate(selectedDate);
 
-            monthView.setDate(month);
-
             container.addView(monthView);
             currentViews.add(monthView);
 
-            if(decorators!=null) {
+            if(decorators != null) {
                 monthView.setDayViewDecorators(decorators);
             }
 
@@ -991,44 +1023,9 @@ public class MaterialCalendarView extends FrameLayout {
             return weekDayTextAppearance == null ? 0 : weekDayTextAppearance;
         }
 
-    }
-
-    public void addDecorators(DayViewDecorator... decorators){
-        if(dayViewDecorators == null){
-            dayViewDecorators = new ArrayList<>();
+        public int getFirstDayOfWeek() {
+            return firstDayOfTheWeek;
         }
-
-        for(DayViewDecorator decorator : decorators) {
-            dayViewDecorators.add(decorator);
-        }
-
-        adapter.setDecorators(dayViewDecorators);
-        invalidateDecorators();
-    }
-
-    public void addDecorator(DayViewDecorator decorator){
-        if(dayViewDecorators == null){
-            dayViewDecorators = new ArrayList<>();
-        }
-        dayViewDecorators.add(decorator);
-        adapter.setDecorators(dayViewDecorators);
-        invalidateDecorators();
-    }
-
-    public void removeDecorators(){
-        dayViewDecorators = null;
-        adapter.setDecorators(null);
-        invalidateDecorators();
-    }
-
-    public void removeDecorator(DayViewDecorator decorator){
-        dayViewDecorators.remove(decorator);
-        adapter.setDecorators(dayViewDecorators);
-        invalidateDecorators();
-    }
-
-    public void invalidateDecorators(){
-        adapter.invalidateDecorators();
     }
 
 }

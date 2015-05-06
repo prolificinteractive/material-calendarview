@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.view.Gravity;
@@ -12,12 +13,13 @@ import java.util.Calendar;
 /**
  * Display a day of the week
  */
+@SuppressLint("ViewConstructor")
 class WeekDayView extends TextView {
 
     private WeekDayFormatter formatter = WeekDayFormatter.DEFAULT;
     private int dayOfWeek;
 
-    public WeekDayView(Context context) {
+    public WeekDayView(Context context, int dayOfWeek) {
         super(context);
 
         setGravity(Gravity.CENTER);
@@ -38,7 +40,7 @@ class WeekDayView extends TextView {
         this.dayOfWeek = dayOfWeek;
         setText(formatter.format(dayOfWeek));
     }
-    
+
     public void setDayOfWeek(Calendar calendar) {
         setDayOfWeek(CalendarUtils.getDayOfWeek(calendar));
     }
