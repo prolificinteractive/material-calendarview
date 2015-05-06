@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -17,6 +18,7 @@ import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 import butterknife.ButterKnife;
@@ -28,7 +30,6 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
-    @InjectView(R.id.textView) TextView textView;
     @InjectView(R.id.calendarView) MaterialCalendarView widget;
     private int currentTileSize;
 
@@ -45,7 +46,7 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
 
     @Override
     public void onDateChanged(MaterialCalendarView widget, CalendarDay date) {
-        textView.setText(FORMATTER.format(date.getDate()));
+        Toast.makeText(this, FORMATTER.format(date.getDate()), Toast.LENGTH_SHORT).show();
     }
 
     @OnCheckedChanged(R.id.check_other_dates) void onOtherMonthsChecked(boolean checked) {
@@ -121,6 +122,21 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
                     }
                 })
                 .show();
+    }
+
+    private static final int[] DAYS_OF_WEEK = {
+            Calendar.SUNDAY,
+            Calendar.MONDAY,
+            Calendar.TUESDAY,
+            Calendar.WEDNESDAY,
+            Calendar.THURSDAY,
+            Calendar.FRIDAY,
+            Calendar.SATURDAY,
+    };
+
+    @OnClick(R.id.button_set_first_day) void onFirstDayOfWeekClicked() {
+        int index = random.nextInt(DAYS_OF_WEEK.length);
+        widget.setFirstDayOfWeek(DAYS_OF_WEEK[index]);
     }
 
     public static void showDatePickerDialog(Context context, CalendarDay day,

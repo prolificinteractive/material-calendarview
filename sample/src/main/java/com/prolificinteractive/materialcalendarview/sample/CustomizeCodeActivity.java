@@ -13,6 +13,7 @@ import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormat
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class CustomizeCodeActivity extends AppCompatActivity implements OnDateChangedListener {
 
@@ -38,6 +39,7 @@ public class CustomizeCodeActivity extends AppCompatActivity implements OnDateCh
         widget.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
         widget.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
         widget.setTileSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics()));
+        widget.setFirstDayOfWeek(Calendar.THURSDAY);
     }
 
     @Override
