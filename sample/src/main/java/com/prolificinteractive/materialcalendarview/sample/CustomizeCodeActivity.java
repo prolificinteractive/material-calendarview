@@ -1,7 +1,7 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.widget.TextView;
 
@@ -14,7 +14,7 @@ import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormat
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class CustomizeCodeActivity extends ActionBarActivity implements OnDateChangedListener {
+public class CustomizeCodeActivity extends AppCompatActivity implements OnDateChangedListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     private TextView textView;

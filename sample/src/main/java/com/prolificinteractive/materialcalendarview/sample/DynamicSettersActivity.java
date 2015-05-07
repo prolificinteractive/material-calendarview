@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -24,7 +24,7 @@ import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-public class DynamicSettersActivity extends ActionBarActivity implements OnDateChangedListener {
+public class DynamicSettersActivity extends AppCompatActivity implements OnDateChangedListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
