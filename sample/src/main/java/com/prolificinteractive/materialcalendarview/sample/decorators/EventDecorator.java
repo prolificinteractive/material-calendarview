@@ -8,14 +8,14 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 import java.util.Collection;
 
 /**
- * Decorate several days with a symbol
+ * Decorate several days with a dot
  */
-public class TextDecorator implements DayViewDecorator {
+public class EventDecorator implements DayViewDecorator {
 
     private int color;
     private Collection<CalendarDay> dates;
 
-    public TextDecorator(int color, Collection<CalendarDay> dates) {
+    public EventDecorator(int color, Collection<CalendarDay> dates) {
         this.color = color;
         this.dates = dates;
     }

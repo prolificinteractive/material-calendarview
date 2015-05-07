@@ -9,9 +9,9 @@ import android.widget.TextView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
+import com.prolificinteractive.materialcalendarview.sample.decorators.EventDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.HighlightWeekendsDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.OneDayDecorator;
-import com.prolificinteractive.materialcalendarview.sample.decorators.TextDecorator;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -100,7 +100,7 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
                 return;
             }
 
-            widget.addDecorator(new TextDecorator(Color.RED, calendarDays));
+            widget.addDecorator(new EventDecorator(Color.RED, calendarDays));
         }
     }
 }
