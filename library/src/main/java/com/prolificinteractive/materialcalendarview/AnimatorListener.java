@@ -2,7 +2,7 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.animation.Animator;
 
-public class AnimatorListener implements Animator.AnimatorListener {
+class AnimatorListener implements Animator.AnimatorListener {
   @Override public void onAnimationStart(Animator animator) { }
 
   @Override public void onAnimationEnd(Animator animator) { }

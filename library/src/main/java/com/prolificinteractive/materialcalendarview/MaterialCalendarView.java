@@ -294,13 +294,24 @@ public class MaterialCalendarView extends FrameLayout {
                         getResources().getDimensionPixelSize(R.dimen.mcv_default_title_y_translation)
                                 * (previousMonth.isBefore(currentMonth) ? 1 : -1);
                 final DecelerateInterpolator interpolator = new DecelerateInterpolator(2f);
-                final int duration = getResources().getInteger(R.integer.mcv_default_title_y_translation_duration);
+                final int duration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+                final int startDelay = getResources().getInteger(R.integer.mcv_default_title_start_delay);
+
+                title.animate().cancel();
+                title.setTranslationY(0);
                 title.animate()
                         .translationY(yTranslation * -1)
                         .alpha(0)
                         .setDuration(duration)
+                        .setStartDelay(startDelay)
                         .setInterpolator(interpolator)
                         .setListener(new AnimatorListener() {
+
+                            @Override public void onAnimationCancel(Animator animator) {
+                                title.setTranslationY(0);
+                                title.setAlpha(1);
+                            }
+
                             @Override public void onAnimationEnd(Animator animator) {
                                 title.setText(titleFormatter.format(currentMonth));
                                 title.setTranslationY(yTranslation);
