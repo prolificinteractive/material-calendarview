@@ -1,6 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -13,8 +14,8 @@ public final class DayViewFacade {
 
     private boolean isDirty;
 
-    private Drawable unselectedBackground = null;
-    private Drawable background = null;
+    private Drawable backgroundDrawable = null;
+    private Drawable selectionDrawable = null;
     private final LinkedList<Span> spans = new LinkedList<>();
 
     public DayViewFacade() {
@@ -22,23 +23,30 @@ public final class DayViewFacade {
     }
 
     /**
-     * Set the drawable to use in the 'normal' state of the Day view
+     * Set a drawable to draw behind everything else
      *
-     * @param drawable Drawable to use, null for default
+     * @param drawable Drawable to draw behind everything
      */
-    public void setBackgroundUnselected(Drawable drawable) {
-        this.unselectedBackground = drawable;
+    public void setBackgroundDrawable(@NonNull Drawable drawable) {
+        if(drawable == null) {
+            throw new IllegalArgumentException("Cannot be null");
+        }
+        this.backgroundDrawable = drawable;
         isDirty = true;
     }
 
     /**
-     * Set the entire background drawable of the Day view.
-     * This will take precedent over {@linkplain #setBackgroundUnselected(Drawable)}
+     * Set a custom selection drawable
      *
-     * @param drawable the drawable for the Day view
+     * TODO: define states that can/should be used in StateListDrawables
+     *
+     * @param drawable the drawable for selection
      */
-    public void setBackground(Drawable drawable) {
-        background = drawable;
+    public void setSelectionDrawable(@NonNull Drawable drawable) {
+        if(drawable == null) {
+            throw new IllegalArgumentException("Cannot be null");
+        }
+        selectionDrawable = drawable;
         isDirty = true;
     }
 
@@ -47,7 +55,7 @@ public final class DayViewFacade {
      *
      * @param span text span instance
      */
-    public void addSpan(Object span) {
+    public void addSpan(@NonNull Object span) {
         if(spans != null) {
             this.spans.add(new Span(span));
             isDirty = true;
@@ -55,37 +63,37 @@ public final class DayViewFacade {
     }
 
     protected void reset() {
-        unselectedBackground = null;
-        background = null;
+        backgroundDrawable = null;
+        selectionDrawable = null;
         spans.clear();
         isDirty = false;
     }
 
     /**
      * Apply things set this to other
-     * @param other
+     * @param other facade to apply our data to
      */
     protected void applyTo(DayViewFacade other) {
-        if(background != null) {
-            other.setBackground(background);
+        if(selectionDrawable != null) {
+            other.setSelectionDrawable(selectionDrawable);
         }
-        if(unselectedBackground != null) {
-            other.setBackgroundUnselected(unselectedBackground);
+        if(backgroundDrawable != null) {
+            other.setBackgroundDrawable(backgroundDrawable);
         }
         other.spans.addAll(spans);
         other.isDirty |= this.isDirty;
     }
 
-    public boolean isReset() {
-        return !isDirty;
+    protected boolean isDirty() {
+        return isDirty;
     }
 
-    protected Drawable getBackground() {
-        return background;
+    protected Drawable getSelectionDrawable() {
+        return selectionDrawable;
     }
 
-    protected Drawable getUnselectedBackground() {
-        return unselectedBackground;
+    protected Drawable getBackgroundDrawable() {
+        return backgroundDrawable;
     }
 
     protected List<Span> getSpans() {
@@ -93,12 +101,8 @@ public final class DayViewFacade {
     }
 
     protected static class Span {
-        final Object span;
 
-        /**
-         * False == Start, True == End, Null == All
-         */
-        final Boolean position = null;
+        final Object span;
 
         public Span(Object span) {
             this.span  = span;
