@@ -14,9 +14,13 @@ import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
+
+import java.util.List;
 
 /**
  * Display one day of a {@linkplain MaterialCalendarView}
@@ -120,5 +124,37 @@ class DayView extends CheckedTextView {
         ColorStateList list = ColorStateList.valueOf(color);
         Drawable mask = generateCircleDrawable(Color.WHITE);
         return new RippleDrawable(list, null, mask);
+    }
+
+    void applyFacade(DayViewFacade facade) {
+        if(facade.isReset()) {
+            regenerateBackground();
+            setText(getLabel());
+            return;
+        }
+
+        Drawable background = facade.getBackground();
+        Drawable unselectedBackground = facade.getUnselectedBackground();
+        if (background != null) {
+            setBackgroundDrawable(background);
+        } else if (unselectedBackground != null) {
+            setCustomBackground(unselectedBackground);
+        }
+        else {
+            regenerateBackground();
+        }
+
+        List<DayViewFacade.Span> spans = facade.getSpans();
+        if(!spans.isEmpty()) {
+            String label = getLabel();
+            SpannableString formattedLabel = new SpannableString(getLabel());
+            for(DayViewFacade.Span span : spans) {
+                formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            setText(formattedLabel);
+        }
+        else {
+            setText(getLabel());
+        }
     }
 }

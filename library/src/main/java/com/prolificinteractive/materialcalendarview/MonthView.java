@@ -2,10 +2,6 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -17,8 +13,6 @@ import java.util.List;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_WEEK;
-import static java.util.Calendar.PM;
-import static java.util.Calendar.SUNDAY;
 
 /**
  * Display a month of {@linkplain DayView}s and
@@ -52,7 +46,7 @@ class MonthView extends LinearLayout implements View.OnClickListener {
 
     private boolean showOtherDates = false;
 
-    private List<DayViewDecorator> dayViewDecorators;
+    private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
 
 
     public MonthView(Context context, CalendarDay month, int firstDayOfWeek) {
@@ -94,9 +88,12 @@ class MonthView extends LinearLayout implements View.OnClickListener {
     }
 
 
-    public void setDayViewDecorators(List<DayViewDecorator> dayViewDecorators) {
-        this.dayViewDecorators = dayViewDecorators;
-        applyDecorators();
+    void setDayViewDecorators(List<DecoratorResult> results) {
+        this.decoratorResults.clear();
+        if(results != null) {
+            this.decoratorResults.addAll(results);
+        }
+        invalidateDecorators();
     }
 
     private static LinearLayout makeRow(LinearLayout parent) {
@@ -202,42 +199,16 @@ class MonthView extends LinearLayout implements View.OnClickListener {
         postInvalidate();
     }
 
-    private void applyDecorators() {
-        if(dayViewDecorators == null || dayViewDecorators.isEmpty()) {
-            return;
-        }
-
-        final DayViewFacade facade = new DayViewFacade();
+    private void invalidateDecorators() {
+        final DayViewFacade facadeAccumulator = new DayViewFacade();
         for(DayView dayView : monthDayViews) {
-            for(DayViewDecorator decorator : dayViewDecorators) {
-                if(decorator.shouldDecorate(dayView.getDate())) {
-                    decorator.decorate(facade);
+            facadeAccumulator.reset();
+            for(DecoratorResult result : decoratorResults) {
+                if(result.decorator.shouldDecorate(dayView.getDate())) {
+                    result.result.applyTo(facadeAccumulator);
                 }
             }
-            Drawable background = facade.getBackground();
-            if(background != null) {
-                dayView.setBackgroundDrawable(background);
-            } else {
-                background = facade.getUnselectedBackground();
-                if(background != null) {
-                    dayView.setCustomBackground(background);
-                }
-            }
-
-            List<DayViewFacade.Span> spans = facade.getSpans();
-            if(!spans.isEmpty()) {
-                String label = dayView.getLabel();
-                SpannableString formattedLabel = new SpannableString(dayView.getLabel());
-                for(DayViewFacade.Span span : spans) {
-                    formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-                dayView.setText(formattedLabel);
-            }
-            else {
-                dayView.setText(dayView.getLabel());
-            }
-
-            facade.reset();
+            dayView.applyFacade(facadeAccumulator);
         }
     }
 
