@@ -1,6 +1,8 @@
 package com.prolificinteractive.materialcalendarview.sample.decorators;
 
-import android.text.style.UnderlineSpan;
+import android.graphics.Typeface;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -10,7 +12,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import java.util.Date;
 
 /**
- * Decorate a day with a symbol in front of text
+ * Decorate a day by making the text big and bold
  */
 public class OneDayDecorator implements DayViewDecorator {
 
@@ -27,7 +29,8 @@ public class OneDayDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.addSpan(new UnderlineSpan());
+        view.addSpan(new StyleSpan(Typeface.BOLD));
+        view.addSpan(new RelativeSizeSpan(1.4f));
     }
 
     /**
