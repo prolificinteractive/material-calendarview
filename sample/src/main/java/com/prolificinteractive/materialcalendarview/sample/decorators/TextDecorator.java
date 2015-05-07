@@ -1,32 +1,29 @@
 package com.prolificinteractive.materialcalendarview.sample.decorators;
 
-import android.graphics.Color;
-
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
-import com.prolificinteractive.materialcalendarview.spans.SymbolSpan;
+import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * Decorate several days with a symbol
  */
 public class TextDecorator implements DayViewDecorator {
 
-    Collection<? extends Date> dates;
-    String symbol;
+    private int color;
+    private Collection<CalendarDay> dates;
 
-    public TextDecorator(String symbol, Collection<? extends Date> dates) {
-        this.symbol = symbol;
+    public TextDecorator(int color, Collection<CalendarDay> dates) {
+        this.color = color;
         this.dates = dates;
     }
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        for(Date date : dates)
-            if(day.equals(new CalendarDay(date))){
+        for(CalendarDay date : dates)
+            if(day.equals(date)){
                 return true;
             }
         return false;
@@ -34,6 +31,6 @@ public class TextDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.addSpan(new SymbolSpan(symbol, Color.parseColor("#CE93D8")));
+        view.addSpan(new DotSpan(5, color));
     }
 }
