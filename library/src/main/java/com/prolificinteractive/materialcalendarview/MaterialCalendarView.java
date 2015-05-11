@@ -802,7 +802,7 @@ public class MaterialCalendarView extends FrameLayout {
             for(DayViewDecorator decorator : decorators) {
                 DayViewFacade facade = new DayViewFacade();
                 decorator.decorate(facade);
-                if(facade.isDirty()) {
+                if(facade.isDecorated()) {
                     decoratorResults.add(new DecoratorResult(decorator, facade));
                 }
             }

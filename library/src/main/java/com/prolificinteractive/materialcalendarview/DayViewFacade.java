@@ -12,14 +12,14 @@ import java.util.List;
  */
 public final class DayViewFacade {
 
-    private boolean isDirty;
+    private boolean isDecorated;
 
     private Drawable backgroundDrawable = null;
     private Drawable selectionDrawable = null;
     private final LinkedList<Span> spans = new LinkedList<>();
 
     public DayViewFacade() {
-        isDirty = false;
+        isDecorated = false;
     }
 
     /**
@@ -32,7 +32,7 @@ public final class DayViewFacade {
             throw new IllegalArgumentException("Cannot be null");
         }
         this.backgroundDrawable = drawable;
-        isDirty = true;
+        isDecorated = true;
     }
 
     /**
@@ -47,7 +47,7 @@ public final class DayViewFacade {
             throw new IllegalArgumentException("Cannot be null");
         }
         selectionDrawable = drawable;
-        isDirty = true;
+        isDecorated = true;
     }
 
     /**
@@ -58,7 +58,7 @@ public final class DayViewFacade {
     public void addSpan(@NonNull Object span) {
         if(spans != null) {
             this.spans.add(new Span(span));
-            isDirty = true;
+            isDecorated = true;
         }
     }
 
@@ -66,7 +66,7 @@ public final class DayViewFacade {
         backgroundDrawable = null;
         selectionDrawable = null;
         spans.clear();
-        isDirty = false;
+        isDecorated = false;
     }
 
     /**
@@ -81,11 +81,11 @@ public final class DayViewFacade {
             other.setBackgroundDrawable(backgroundDrawable);
         }
         other.spans.addAll(spans);
-        other.isDirty |= this.isDirty;
+        other.isDecorated |= this.isDecorated;
     }
 
-    protected boolean isDirty() {
-        return isDirty;
+    protected boolean isDecorated() {
+        return isDecorated;
     }
 
     protected Drawable getSelectionDrawable() {
