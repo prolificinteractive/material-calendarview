@@ -1,5 +1,7 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -7,14 +9,16 @@ import android.widget.TextView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
+import com.prolificinteractive.materialcalendarview.sample.decorators.EventDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.HighlightWeekendsDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.OneDayDecorator;
-import com.prolificinteractive.materialcalendarview.sample.decorators.TextDecorator;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.Executors;
 
 /**
  * Shows off the most basic usage
@@ -23,7 +27,8 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     private TextView textView;
-    private OneDayDecorator oneDayDecorator = new OneDayDecorator("★");
+    private OneDayDecorator oneDayDecorator = new OneDayDecorator();
+    private MaterialCalendarView widget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +37,9 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
 
         textView = (TextView) findViewById(R.id.textView);
 
-        MaterialCalendarView widget = (MaterialCalendarView) findViewById(R.id.calendarView);
+        widget = (MaterialCalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
-
+        widget.setShowOtherDates(true);
 
         Calendar calendar = Calendar.getInstance();
         widget.setSelectedDate(calendar.getTime());
@@ -42,38 +47,60 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
         calendar.set(calendar.get(Calendar.YEAR), Calendar.JANUARY, 1);
         widget.setMinimumDate(calendar.getTime());
 
-        calendar.set(calendar.get(Calendar.YEAR) + 2, Calendar.OCTOBER, 31);
+        calendar.set(calendar.get(Calendar.YEAR), Calendar.DECEMBER, 31);
         widget.setMaximumDate(calendar.getTime());
-
-        Calendar d1 = Calendar.getInstance();
-        d1.set(d1.get(Calendar.YEAR), Calendar.APRIL, 3, 0, 0, 0);
-
-        Calendar d2 = Calendar.getInstance();
-        d2.set(d2.get(Calendar.YEAR), Calendar.APRIL, 5, 0, 0, 0);
-
-        Calendar d3 = Calendar.getInstance();
-        d3.set(d3.get(Calendar.YEAR), Calendar.APRIL, 7, 0, 0, 0);
-
-        Calendar d4 = Calendar.getInstance();
-        d4.set(d4.get(Calendar.YEAR), Calendar.APRIL, 20, 0, 0, 0);
-
-        Calendar d5 = Calendar.getInstance();
-        d5.set(d5.get(Calendar.YEAR), Calendar.APRIL, 22, 0, 0, 0);
 
         widget.addDecorators(
                 new HighlightWeekendsDecorator(),
-                oneDayDecorator,
-                new TextDecorator("●", Arrays.asList(d1.getTime(), d2.getTime(), d3.getTime())),
-                new TextDecorator("✔", Arrays.asList(d4.getTime(), d5.getTime()))
+                oneDayDecorator
         );
 
+        new ApiSimulator().executeOnExecutor(Executors.newSingleThreadExecutor());
     }
 
     @Override
     public void onDateChanged(MaterialCalendarView widget, CalendarDay date) {
+
+        //If you change a decorate, you need to invalidate decorators
         oneDayDecorator.setDate(date.getDate());
         widget.invalidateDecorators();
 
         textView.setText(FORMATTER.format(date.getDate()));
+    }
+
+    /**
+     * Simulate an API call to show how to add decorators
+     */
+    private class ApiSimulator extends AsyncTask<Void, Void, List<CalendarDay>> {
+
+        @Override
+        protected List<CalendarDay> doInBackground(Void... voids) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, -2);
+            ArrayList<CalendarDay> dates = new ArrayList<>();
+            for (int i = 0; i < 30; i++) {
+                CalendarDay day = new CalendarDay(calendar);
+                dates.add(day);
+                calendar.add(Calendar.DATE, 5);
+            }
+
+            return dates;
+        }
+
+        @Override
+        protected void onPostExecute(List<CalendarDay> calendarDays) {
+            super.onPostExecute(calendarDays);
+
+            if(isFinishing()) {
+                return;
+            }
+
+            widget.addDecorator(new EventDecorator(Color.RED, calendarDays));
+        }
     }
 }

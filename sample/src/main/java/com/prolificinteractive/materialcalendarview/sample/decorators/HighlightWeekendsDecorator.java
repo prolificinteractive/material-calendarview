@@ -18,15 +18,23 @@ import java.util.Calendar;
  */
 public class HighlightWeekendsDecorator implements DayViewDecorator {
 
+    private final Calendar calendar = Calendar.getInstance();
+    private final Drawable highlightDrawable;
+
+    public HighlightWeekendsDecorator() {
+        highlightDrawable = generateBackgroundDrawable();
+    }
+
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        int weekDay = day.getCalendar().get(Calendar.DAY_OF_WEEK);
+        day.copyTo(calendar);
+        int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
         return weekDay == Calendar.SATURDAY || weekDay == Calendar.SUNDAY;
     }
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.setBackgroundUnselected(generateBackgroundDrawable());
+        view.setBackgroundDrawable(highlightDrawable);
     }
 
     private static Drawable generateBackgroundDrawable() {
