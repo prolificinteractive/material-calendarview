@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
+import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
@@ -534,6 +535,15 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     /**
+     * Set a formatter for day labels.
+     *
+     * @param formatter the new formatter, null for default
+     */
+    public void setDayFormatter(DayFormatter formatter) {
+        adapter.setDayFormatter(formatter == null ? DayFormatter.DEFAULT : formatter);
+    }
+
+    /**
      * Set a {@linkplain com.prolificinteractive.materialcalendarview.format.WeekDayFormatter}
      * with the provided week day labels
      *
@@ -779,6 +789,7 @@ public class MaterialCalendarView extends FrameLayout {
         private CalendarDay maxDate = null;
         private CalendarDay selectedDate = null;
         private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
+        private DayFormatter dayFormatter = DayFormatter.DEFAULT;
         private List<DayViewDecorator> decorators = null;
         private List<DecoratorResult> decoratorResults = null;
         private int firstDayOfTheWeek = Calendar.SUNDAY;
@@ -858,6 +869,7 @@ public class MaterialCalendarView extends FrameLayout {
             MonthView monthView = new MonthView(container.getContext(), month, firstDayOfTheWeek);
 
             monthView.setWeekDayFormatter(weekDayFormatter);
+            monthView.setDayFormatter(dayFormatter);
             monthView.setCallbacks(callbacks);
             if(color != null) {
                 monthView.setSelectionColor(color);
@@ -937,6 +949,13 @@ public class MaterialCalendarView extends FrameLayout {
             this.weekDayFormatter = formatter;
             for(MonthView monthView : currentViews) {
                 monthView.setWeekDayFormatter(formatter);
+            }
+        }
+
+        public void setDayFormatter(DayFormatter formatter) {
+            this.dayFormatter = formatter;
+            for(MonthView monthView : currentViews) {
+                monthView.setDayFormatter(formatter);
             }
         }
 
