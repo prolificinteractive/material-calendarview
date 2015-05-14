@@ -2,7 +2,7 @@
 <resources>
 
     <integer name="mcv_default_tile_size">44</integer>
-    <integer name="mcv_default_title_start_delay">50</integer>
+    <integer name="mcv_default_title_anim_delay">200</integer>
     <dimen name="mcv_default_title_y_translation">20dp</dimen>
 
 </resources>
