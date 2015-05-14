@@ -296,6 +296,7 @@ public class MaterialCalendarView extends FrameLayout {
                 title.setText(titleFormatter.format(currentMonth));
             } else if (currentTime - lastAnimTime < animDelay) {
                 title.animate().cancel();
+                title.setAlpha(1);
                 title.setTranslationY(0);
                 title.setText(titleFormatter.format(currentMonth));
                 lastAnimTime = currentTime;
