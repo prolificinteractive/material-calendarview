@@ -13,7 +13,7 @@ and feel, rather than 100% parity with the platform's implementation.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:0.3.2'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:0.4.0'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
 
@@ -68,14 +68,34 @@ Options only available in Java:
 
 ### DayViewDecorator
 
-**NOTE: Due to performance issues, this API may change soon!**
+Decorators allow you to change several aspects of each day's appearance.
+To do so, you need to make a new instance of `DayViewDecorator` and implement `shouldDecorate()` and `decorate()`.
+Decorating is done via a `DayViewFacade` that is passed to the `decorate()` method.
+All calls to the `DayViewFacade` will be applied to every day `shouldDecorate()` returns true.
 
-If you want to customize individual days, say to show days with events, you can now add DayViewDecorators
-to MaterialCalendarView. The `shouldDecorate()` method is called to check if the `decorate()` method
-needs to be called for individual days. The `DayViewFacade` abstracts some of the complexities of decorating
-a DayView (i.e. using `setBackgroundUnselected()` to set the background, but still allow selection).
+`DayViewFacade` has three methods to allow decoration:
 
-If your decorators change after adding them, make sure to call `MaterialCalendarView.invalidateDecorators()`.
+1. `setBackgroundDrawable()` set a drawable to draw behind everything else. This also responds to state changes.
+2. `setSelectionDrawable()` allows customizes the selection indicator for specific days.
+3. `addSpan()` sets a span on the entire day label.
+    * `DotSpan` was added to show a dot centered below the label
+    * For an introduction to spans, see [this article](http://androidcocktail.blogspot.com/2014/03/android-spannablestring-example.html).
+    * If you want to learn more about custom spans, check out [this article](http://flavienlaurent.com/blog/2014/01/31/spans/).
+
+If one of your decorators changes after it's been added to the calendar view, make sure you call `MaterialCalendarView.invalidateDecorators()` to have those changes reflected.
+
+When implementing a `DayViewDecorator`, make sure that they are as efficent as possible.
+Remember that `shouldDecorate()` needs to be called 42 times for each month view.
+An easy way to be more efficent is to convert your data to `CalendarDay`s outside of `shouldDecorate()`.
+
+#### Migrating from 0.3 to 0.4
+
+To make decorating more efficent, the following changes were made to `DayViewFacade`:
+
+* Removed `getDate()`. Decorations to a facade will be applied to all days for the decorator. Use multiple decorators for different decorating.
+* Replaced `setBackground()` with `setSelectionBackground()` to be more clear on functionality.
+* Replaced `setBackgroundUnselected()` with `setBackgroundDrawable()`. The drawable will now be draw below everything else on the day view.
+* Removed `setText()`. Instead you should use `addSpan()` to add a span to the entire day label. See above for information on spans.
 
 Contributing
 ============

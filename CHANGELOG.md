@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.4.0 *(2015-05-18)*
+----------------------------
+
+* Change: Revamp DayViewDecorators to be more efficent. See README for differences.
+
 Version 0.3.2 *(2015-05-03)*
 ----------------------------
 
