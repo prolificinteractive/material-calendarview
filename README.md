@@ -69,7 +69,7 @@ Options only available in Java:
 ### DayViewDecorator
 
 Decorators allow you to change several aspects of each day's appearance.
-To do so, you need to make a new instance of `DayViewDecorator` and implement `shouldDecorate()` and `decorate()`.
+To do so, you need to make a new instance of `DayViewDecorator` and add it to the calendar with `addDecorator()`.
 Decorating is done via a `DayViewFacade` that is passed to the `decorate()` method.
 All calls to the `DayViewFacade` will be applied to every day `shouldDecorate()` returns true.
 
