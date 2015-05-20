@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Shows off the most basic usage
+ * Show off setting min and max dates
  */
 public class RangeActivity extends AppCompatActivity implements OnDateChangedListener {
 
