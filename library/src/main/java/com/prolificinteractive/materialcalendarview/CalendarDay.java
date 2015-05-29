@@ -62,12 +62,12 @@ public final class CalendarDay implements Parcelable {
     /**
      * Cache for calls to {@linkplain #getCalendar()}
      */
-    private Calendar _calendar;
+    private transient Calendar _calendar;
 
     /**
      * Cache for calls to {@linkplain #getDate()}
      */
-    private Date _date;
+    private transient Date _date;
 
     /**
      * Initialized to the current day
