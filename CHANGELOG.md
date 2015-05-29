@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+Version 0.4.0 *(2015-05-18)*
+----------------------------
+
+* Change: Revamp DayViewDecorators to be more efficent. See README for differences.
+
+Version 0.3.2 *(2015-05-03)*
+----------------------------
+
+ * New: Added ability to change the first day of the month
+ * New: Added month change listener
+
 Version 0.3.1 *(2015-04-23)*
 ----------------------------
 

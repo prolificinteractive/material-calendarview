@@ -5,7 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_basic">Basic Example</string>
-    <string name="title_activity_range">Selection Range Example</string>
+    <string name="title_activity_range">Min &amp; Max Date Example</string>
     <string name="title_activity_customize_xml">XML Customization Example</string>
     <string name="title_activity_customize_code">Programmatic Customization Example</string>
     <string name="title_activity_dynamic_setters">Dynamic Setters Test</string>

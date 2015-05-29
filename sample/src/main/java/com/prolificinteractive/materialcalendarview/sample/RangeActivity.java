@@ -1,7 +1,7 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -13,9 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Shows off the most basic usage
+ * Show off setting min and max dates
  */
-public class RangeActivity extends ActionBarActivity implements OnDateChangedListener {
+public class RangeActivity extends AppCompatActivity implements OnDateChangedListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     private TextView textView;

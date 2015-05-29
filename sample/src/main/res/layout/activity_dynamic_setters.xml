@@ -22,63 +22,101 @@
             android:layout_height="wrap_content"
             />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_margin="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            />
-
-        <CheckBox
-            android:id="@+id/check_other_dates"
-            android:text="Show Other Dates"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            >
 
-        <Button
-            android:id="@+id/button_min_date"
-            android:text="Set Min Date"
+            <CheckBox
+                android:id="@+id/check_other_dates"
+                android:text="Show Other Dates"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+            <CheckBox
+                android:id="@+id/check_text_appearance"
+                android:text="Use Large Text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            >
 
-        <Button
-            android:id="@+id/button_max_date"
-            android:text="Set Max Date"
+            <Button
+                android:id="@+id/button_min_date"
+                android:text="Set Min Date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+            <Button
+                android:id="@+id/button_max_date"
+                android:text="Set Max Date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            >
 
-        <Button
-            android:id="@+id/button_selected_date"
-            android:text="Set Selected Date"
+            <Button
+                android:id="@+id/button_selected_date"
+                android:text="Set Selected Date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+            <Button
+                android:id="@+id/button_set_first_day"
+                android:text="Random First Day"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            >
 
-        <Button
-            android:id="@+id/button_set_colors"
-            android:text="Set Random Colors"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <Button
+                android:id="@+id/button_set_tile_size"
+                android:text="Set Tile Size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
 
-        <Button
-            android:id="@+id/button_set_tile_size"
-            android:text="Set Tile Size"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <Button
+                android:id="@+id/button_set_colors"
+                android:text="Random Colors"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
 
-        <CheckBox
-            android:id="@+id/check_text_appearance"
-            android:text="Use Large Text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -1,7 +1,7 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.widget.TextView;
 
@@ -13,8 +13,9 @@ import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormat
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-public class CustomizeCodeActivity extends ActionBarActivity implements OnDateChangedListener {
+public class CustomizeCodeActivity extends AppCompatActivity implements OnDateChangedListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     private TextView textView;
@@ -38,6 +39,7 @@ public class CustomizeCodeActivity extends ActionBarActivity implements OnDateCh
         widget.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
         widget.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
         widget.setTileSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics()));
+        widget.setFirstDayOfWeek(Calendar.THURSDAY);
     }
 
     @Override

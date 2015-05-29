@@ -5,7 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +24,7 @@ import butterknife.OnClick;
 /**
  * Shows off the most basic usage
  */
-public class DialogsActivity extends ActionBarActivity {
+public class DialogsActivity extends AppCompatActivity {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     private TextView textView;
