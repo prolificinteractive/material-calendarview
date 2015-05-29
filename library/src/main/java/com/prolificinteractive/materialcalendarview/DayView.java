@@ -61,6 +61,11 @@ class DayView extends CheckedTextView {
         setText(getLabel());
     }
 
+    /**
+     * Set the new label formatter and reformat the current label. This preserves current spans.
+     *
+     * @param formatter new label formatter
+     */
     public void setDayFormatter(DayFormatter formatter) {
         this.formatter = formatter == null ? DayFormatter.DEFAULT : formatter;
         CharSequence currentLabel = getText();
