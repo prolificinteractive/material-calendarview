@@ -15,6 +15,7 @@ public final class CalendarDay implements Parcelable {
     private final int year;
     private final int month;
     private final int day;
+    private final int week;
 
     /**
      * Initialized to the current day
@@ -30,19 +31,21 @@ public final class CalendarDay implements Parcelable {
         this(
                 CalendarUtils.getYear(calendar),
                 CalendarUtils.getMonth(calendar),
+                CalendarUtils.getWeek(calendar),
                 CalendarUtils.getDay(calendar)
         );
     }
 
     /**
      * @param year new instance's year
-     * @param month new instance's month as defined by {@linkplain java.util.Calendar}
+     * @param month new instance's month as defined by {@linkplain Calendar}
      * @param day new instance's day of month
      */
-    public CalendarDay(int year, int month, int day) {
+    public CalendarDay(int year, int month, int week, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
+        this.week = week;
     }
 
     /**
@@ -60,7 +63,7 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
-     * @return the month of the year as defined by {@linkplain java.util.Calendar}
+     * @return the month of the year as defined by {@linkplain Calendar}
      */
     public int getMonth() {
         return month;
@@ -71,6 +74,13 @@ public final class CalendarDay implements Parcelable {
      */
     public int getDay() {
         return day;
+    }
+    
+    /**
+     * @return the week of the month for this day
+     */
+    public int getWeek() {
+        return week;
     }
 
     /**
@@ -116,7 +126,7 @@ public final class CalendarDay implements Parcelable {
             throw new IllegalArgumentException("other cannot be null");
         }
         return (year == other.year) ?
-                ((month == other.month) ? (day < other.day) : (month < other.month)) :
+                ((month == other.month) ? ((week == other.week) ? (day < other.day) :(week < other.week)) : (month < other.month)) :
                 (year < other.year);
     }
 
@@ -129,7 +139,7 @@ public final class CalendarDay implements Parcelable {
             throw new IllegalArgumentException("other cannot be null");
         }
         return (year == other.year) ?
-                ((month == other.month) ? (day > other.day) : (month > other.month)) :
+                ((month == other.month) ?  ((week == other.week) ? (day > other.day) :(week > other.week)) : (month > other.month)) :
                 (year > other.year);
     }
 
@@ -165,7 +175,7 @@ public final class CalendarDay implements Parcelable {
      */
 
     public CalendarDay(Parcel in) {
-        this(in.readInt(), in.readInt(), in.readInt());
+        this(in.readInt(), in.readInt(), in.readInt(), in.readInt());
     }
 
     @Override
@@ -178,6 +188,7 @@ public final class CalendarDay implements Parcelable {
         dest.writeInt(year);
         dest.writeInt(month);
         dest.writeInt(day);
+        dest.writeInt(week);
     }
 
     public static final Creator<CalendarDay> CREATOR = new Creator<CalendarDay>() {
@@ -190,3 +201,4 @@ public final class CalendarDay implements Parcelable {
         }
     };
 }
+
