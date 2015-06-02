@@ -69,6 +69,10 @@ public class CalendarUtils {
         return calendar.get(DATE);
     }
 
+	public static int getWeek(Calendar calendar) {
+        return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
+
     public static int getDayOfWeek(Calendar calendar) {
         return calendar.get(DAY_OF_WEEK);
     }

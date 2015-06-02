@@ -55,7 +55,7 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
                 oneDayDecorator
         );
 
-        new ApiSimulator().executeOnExecutor(Executors.newSingleThreadExecutor());
+//        new ApiSimulator().executeOnExecutor(Executors.newSingleThreadExecutor());
     }
 
     @Override
