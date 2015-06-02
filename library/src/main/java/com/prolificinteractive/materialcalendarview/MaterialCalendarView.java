@@ -165,7 +165,6 @@ public class MaterialCalendarView extends FrameLayout {
 
         adapter.setCallbacks(weekViewCallbacks);
 
-        setSelectedDate(new Date());
         setShowOtherDates(true);
 
         TypedArray a = context.getTheme()
