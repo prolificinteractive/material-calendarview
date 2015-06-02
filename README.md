@@ -1,14 +1,12 @@
 Material Calendar View
 ======================
 
-[![Join the chat at https://gitter.im/prolificinteractive/material-calendarview](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/prolificinteractive/material-calendarview?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+A Material design back port of Android's CalendarView. The goal is to have a Material look
+and feel, rather than 100% parity with the platform's implementation.
+
+<img src="/images/screencast.gif" alt="Demo Screen Capture" width="300px" />
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Material%20Calendar%20View-blue.svg?style=flat)](https://android-arsenal.com/details/1/1531)
-
-![Demo Screen Capture](/images/screencast.gif)
-
-A better looking implementation of Android's CalendarView. The goal is to have a more Material look
-and feel, rather than 100% parity with the platform's implementation.
 
 Usage
 -----
