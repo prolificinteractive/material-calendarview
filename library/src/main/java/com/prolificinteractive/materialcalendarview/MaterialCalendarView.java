@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.os.Parcelable;
 import android.support.annotation.ArrayRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -16,6 +18,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -67,8 +70,10 @@ public class MaterialCalendarView extends FrameLayout {
     private final DirectionButton buttonFuture;
     private final ViewPager pager;
     private final MonthPagerAdapter adapter;
+    private CalendarDay previousMonth;
     private CalendarDay currentMonth;
     private TitleFormatter titleFormatter = DEFAULT_TITLE_FORMATTER;
+    private long lastAnimTime = 0;
 
     private final ArrayList<DayViewDecorator> dayViewDecorators = new ArrayList<>();
 
@@ -97,6 +102,7 @@ public class MaterialCalendarView extends FrameLayout {
     private final ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageSelected(int position) {
+            previousMonth = currentMonth;
             currentMonth = adapter.getItem(position);
             updateUi();
 
@@ -280,8 +286,59 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     private void updateUi() {
-        if(currentMonth != null) {
-            title.setText(titleFormatter.format(currentMonth));
+        if (currentMonth != null
+                && (TextUtils.isEmpty(title.getText())
+                || previousMonth.getMonth() != currentMonth.getMonth())) {
+            long currentTime = System.currentTimeMillis();
+            final int animDelay = getResources().getInteger(R.integer.mcv_default_title_anim_delay);
+
+            if (TextUtils.isEmpty(title.getText())) {
+                title.setText(titleFormatter.format(currentMonth));
+            } else if (currentTime - lastAnimTime < animDelay) {
+                title.animate().cancel();
+                title.setAlpha(1);
+                title.setTranslationY(0);
+                title.setText(titleFormatter.format(currentMonth));
+                lastAnimTime = currentTime;
+            } else {
+                lastAnimTime = currentTime;
+
+                final int yTranslation =
+                        getResources().getDimensionPixelSize(R.dimen.mcv_default_title_y_translation)
+                                * (previousMonth.isBefore(currentMonth) ? 1 : -1);
+                final DecelerateInterpolator interpolator = new DecelerateInterpolator(2f);
+                final int duration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+                title.animate().cancel();
+                title.setTranslationY(0);
+                title.animate()
+                        .translationY(yTranslation * -1)
+                        .alpha(0)
+                        .setDuration(duration)
+                        .setInterpolator(interpolator)
+                        .setListener(new AnimatorListener() {
+
+                            @Override
+                            public void onAnimationCancel(Animator animator) {
+                                title.setTranslationY(0);
+                                title.setAlpha(1);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animator) {
+                                title.setText(titleFormatter.format(currentMonth));
+                                title.setTranslationY(yTranslation);
+                                title.animate()
+                                        .translationY(0)
+                                        .alpha(1)
+                                        .setDuration(duration)
+                                        .setInterpolator(interpolator)
+                                        .setListener(new AnimatorListener())
+                                        .start();
+                            }
+                        }).start();
+            }
+            previousMonth = currentMonth;
         }
         buttonPast.setEnabled(canGoBack());
         buttonFuture.setEnabled(canGoForward());
