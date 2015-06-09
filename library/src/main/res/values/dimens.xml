@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <integer name="mcv_default_tile_size">44</integer>
-    <integer name="mcv_default_title_anim_delay">400</integer>
-    <dimen name="mcv_default_title_y_translation">20dp</dimen>
-
-</resources>

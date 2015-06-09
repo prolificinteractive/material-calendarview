@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -39,7 +38,7 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
         setContentView(R.layout.activity_dynamic_setters);
         ButterKnife.inject(this);
 
-        currentTileSize = getResources().getInteger(R.integer.mcv_default_tile_size);
+        currentTileSize = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
 
         widget.setOnDateChangedListener(this);
     }
