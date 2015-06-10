@@ -1,7 +1,10 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,14 +31,26 @@ public class BasicActivity extends AppCompatActivity implements OnDateChangedLis
 
         textView = (TextView) findViewById(R.id.textView);
 
-        MaterialCalendarView widget = (MaterialCalendarView) findViewById(R.id.calendarView);
+        final MaterialCalendarView widget = (MaterialCalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
         widget.setOnMonthChangedListener(this);
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                widget.clearSelection();
+            }
+        });
     }
 
     @Override
-    public void onDateChanged(MaterialCalendarView widget, CalendarDay date) {
-        textView.setText(FORMATTER.format(date.getDate()));
+    public void onDateChanged(@NonNull MaterialCalendarView widget, @Nullable CalendarDay date) {
+        if(date == null) {
+            textView.setText(null);
+        }
+        else {
+            textView.setText(FORMATTER.format(date.getDate()));
+        }
     }
 
     @Override

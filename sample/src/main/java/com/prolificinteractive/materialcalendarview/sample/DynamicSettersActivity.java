@@ -6,10 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -45,8 +46,8 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
     }
 
     @Override
-    public void onDateChanged(MaterialCalendarView widget, CalendarDay date) {
-        Toast.makeText(this, FORMATTER.format(date.getDate()), Toast.LENGTH_SHORT).show();
+    public void onDateChanged(@NonNull MaterialCalendarView widget, @Nullable CalendarDay date) {
+        Toast.makeText(this, date == null ? "Unselected" : FORMATTER.format(date.getDate()), Toast.LENGTH_SHORT).show();
     }
 
     @OnCheckedChanged(R.id.check_other_dates) void onOtherMonthsChecked(boolean checked) {
@@ -122,6 +123,10 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
                     }
                 })
                 .show();
+    }
+
+    @OnClick(R.id.button_clear_selection) void onClearSelection() {
+        widget.clearSelection();
     }
 
     private static final int[] DAYS_OF_WEEK = {
