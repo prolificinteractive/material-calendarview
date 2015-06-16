@@ -1,5 +1,7 @@
 package com.prolificinteractive.materialcalendarview.format;
 
+import android.support.annotation.NonNull;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.text.SimpleDateFormat;
@@ -12,7 +14,7 @@ public interface DayFormatter {
      * @param day the day
      * @return a label for the day
      */
-    String format(CalendarDay day);
+    @NonNull String format(@NonNull CalendarDay day);
 
     public static final DayFormatter DEFAULT = new DateFormatDayFormatter();
 }
