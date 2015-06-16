@@ -470,23 +470,21 @@ public class MaterialCalendarView extends FrameLayout {
     /**
      * @param calendar set the minimum selectable date, null for no minimum
      */
-    public void setMinimumDate(Calendar calendar) {
+    public void setMinimumDate(@Nullable Calendar calendar) {
         setMinimumDate(CalendarDay.from(calendar));
-        setRangeDates(minDate, maxDate);
     }
 
     /**
      * @param date set the minimum selectable date, null for no minimum
      */
-    public void setMinimumDate(Date date) {
+    public void setMinimumDate(@Nullable Date date) {
         setMinimumDate(CalendarDay.from(date));
-        setRangeDates(minDate, maxDate);
     }
 
     /**
      * @param calendar set the minimum selectable date, null for no minimum
      */
-    public void setMinimumDate(CalendarDay calendar) {
+    public void setMinimumDate(@Nullable CalendarDay calendar) {
         minDate = calendar;
         setRangeDates(minDate, maxDate);
     }
@@ -501,23 +499,21 @@ public class MaterialCalendarView extends FrameLayout {
     /**
      * @param calendar set the maximum selectable date, null for no maximum
      */
-    public void setMaximumDate(Calendar calendar) {
+    public void setMaximumDate(@Nullable Calendar calendar) {
         setMaximumDate(CalendarDay.from(calendar));
-        setRangeDates(minDate, maxDate);
     }
 
     /**
      * @param date set the maximum selectable date, null for no maximum
      */
-    public void setMaximumDate(Date date) {
+    public void setMaximumDate(@Nullable Date date) {
         setMaximumDate(CalendarDay.from(date));
-        setRangeDates(minDate, maxDate);
     }
 
     /**
      * @param calendar set the maximum selectable date, null for no maximum
      */
-    public void setMaximumDate(CalendarDay calendar) {
+    public void setMaximumDate(@Nullable CalendarDay calendar) {
         maxDate = calendar;
         setRangeDates(minDate, maxDate);
     }
