@@ -3,6 +3,7 @@ package com.prolificinteractive.materialcalendarview;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -34,7 +35,7 @@ public final class CalendarDay implements Parcelable {
     /**
      * @return CalendarDay set to the specified date
      */
-    public static CalendarDay from(Calendar calendar) {
+    public static CalendarDay from(@Nullable Calendar calendar) {
         if(calendar == null) {
             return null;
         }
@@ -48,7 +49,7 @@ public final class CalendarDay implements Parcelable {
     /**
      * @return CalendarDay set to the specified date
      */
-    public static CalendarDay from(Date date) {
+    public static CalendarDay from(@Nullable Date date) {
         if(date == null) {
             return null;
         }
