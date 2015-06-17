@@ -7,10 +7,10 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ArrayRes;
+import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -217,7 +217,7 @@ public class MaterialCalendarView extends FrameLayout {
             ));
         }
         catch (Exception e) {
-            Log.e("Attr Error", "error" , e);
+            e.printStackTrace();
         }
         finally {
             a.recycle();
@@ -407,38 +407,45 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     /**
-     * @param calendar a Calendar set to a day to select
+     * Clear the current selection
      */
-    public void setSelectedDate(Calendar calendar) {
+    public void clearSelection() {
+        setSelectedDate((CalendarDay) null);
+    }
+
+    /**
+     * @param calendar a Calendar set to a day to select. Null to clear selection
+     */
+    public void setSelectedDate(@Nullable Calendar calendar) {
         setSelectedDate(CalendarDay.from(calendar));
     }
 
     /**
-     * @param date a Date to set as selected
+     * @param date a Date to set as selected. Null to clear selection
      */
-    public void setSelectedDate(Date date) {
+    public void setSelectedDate(@Nullable Date date) {
         setSelectedDate(CalendarDay.from(date));
     }
 
     /**
-     * @param day a CalendarDay to set as selected
+     * @param day a CalendarDay to set as selected. Null to clear selection
      */
-    public void setSelectedDate(CalendarDay day) {
+    public void setSelectedDate(@Nullable CalendarDay day) {
         adapter.setSelectedDate(day);
         setCurrentDate(day);
     }
 
     /**
-     * @param calendar a Calendar set to a day to focus the calendar on
+     * @param calendar a Calendar set to a day to focus the calendar on. Null will do nothing
      */
-    public void setCurrentDate(Calendar calendar) {
+    public void setCurrentDate(@Nullable Calendar calendar) {
         setCurrentDate(CalendarDay.from(calendar));
     }
 
     /**
-     * @param date a Date to focus the calendar on
+     * @param date a Date to focus the calendar on. Null will do nothing
      */
-    public void setCurrentDate(Date date) {
+    public void setCurrentDate(@Nullable Date date) {
         setCurrentDate(CalendarDay.from(date));
     }
 
@@ -450,9 +457,12 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     /**
-     * @param day a CalendarDay to focus the calendar on
+     * @param day a CalendarDay to focus the calendar on. Null will do nothing
      */
-    public void setCurrentDate(CalendarDay day) {
+    public void setCurrentDate(@Nullable CalendarDay day) {
+        if(day == null) {
+            return;
+        }
         int index = adapter.getIndexForDay(day);
         pager.setCurrentItem(index);
         updateUi();
@@ -468,23 +478,21 @@ public class MaterialCalendarView extends FrameLayout {
     /**
      * @param calendar set the minimum selectable date, null for no minimum
      */
-    public void setMinimumDate(Calendar calendar) {
+    public void setMinimumDate(@Nullable Calendar calendar) {
         setMinimumDate(CalendarDay.from(calendar));
-        setRangeDates(minDate, maxDate);
     }
 
     /**
      * @param date set the minimum selectable date, null for no minimum
      */
-    public void setMinimumDate(Date date) {
+    public void setMinimumDate(@Nullable Date date) {
         setMinimumDate(CalendarDay.from(date));
-        setRangeDates(minDate, maxDate);
     }
 
     /**
      * @param calendar set the minimum selectable date, null for no minimum
      */
-    public void setMinimumDate(CalendarDay calendar) {
+    public void setMinimumDate(@Nullable CalendarDay calendar) {
         minDate = calendar;
         setRangeDates(minDate, maxDate);
     }
@@ -499,23 +507,21 @@ public class MaterialCalendarView extends FrameLayout {
     /**
      * @param calendar set the maximum selectable date, null for no maximum
      */
-    public void setMaximumDate(Calendar calendar) {
+    public void setMaximumDate(@Nullable Calendar calendar) {
         setMaximumDate(CalendarDay.from(calendar));
-        setRangeDates(minDate, maxDate);
     }
 
     /**
      * @param date set the maximum selectable date, null for no maximum
      */
-    public void setMaximumDate(Date date) {
+    public void setMaximumDate(@Nullable Date date) {
         setMaximumDate(CalendarDay.from(date));
-        setRangeDates(minDate, maxDate);
     }
 
     /**
      * @param calendar set the maximum selectable date, null for no maximum
      */
-    public void setMaximumDate(CalendarDay calendar) {
+    public void setMaximumDate(@Nullable CalendarDay calendar) {
         maxDate = calendar;
         setRangeDates(minDate, maxDate);
     }
@@ -1020,10 +1026,15 @@ public class MaterialCalendarView extends FrameLayout {
             }
         }
 
-        public void setSelectedDate(CalendarDay date) {
+        public void setSelectedDate(@Nullable CalendarDay date) {
+            CalendarDay prevDate = selectedDate;
             this.selectedDate = getValidSelectedDate(date);
             for(MonthView monthView : currentViews) {
                 monthView.setSelectedDate(selectedDate);
+            }
+
+            if(date == null && prevDate != null) {
+                callbacks.onDateChanged(null);
             }
         }
 
