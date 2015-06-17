@@ -84,7 +84,7 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
             calendar.add(Calendar.MONTH, -2);
             ArrayList<CalendarDay> dates = new ArrayList<>();
             for (int i = 0; i < 30; i++) {
-                CalendarDay day = new CalendarDay(calendar);
+                CalendarDay day = CalendarDay.from(calendar);
                 dates.add(day);
                 calendar.add(Calendar.DATE, 5);
             }

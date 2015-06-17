@@ -74,7 +74,7 @@ class MonthView extends LinearLayout implements View.OnClickListener {
         for(int r = 0; r < DEFAULT_MAX_WEEKS; r++) {
             row = makeRow(this);
             for(int i = 0; i < DEFAULT_DAYS_IN_WEEK; i++) {
-                CalendarDay day = new CalendarDay(calendar);
+                CalendarDay day = CalendarDay.from(calendar);
                 DayView dayView = new DayView(context, day);
                 dayView.setOnClickListener(this);
                 monthDayViews.add(dayView);
@@ -84,7 +84,7 @@ class MonthView extends LinearLayout implements View.OnClickListener {
             }
         }
 
-        setSelectedDate(new CalendarDay());
+        setSelectedDate(CalendarDay.today());
     }
 
 
@@ -160,7 +160,7 @@ class MonthView extends LinearLayout implements View.OnClickListener {
 
         calendar = resetAndGetWorkingCalendar();
         for(DayView dayView : monthDayViews) {
-            CalendarDay day = new CalendarDay(calendar);
+            CalendarDay day = CalendarDay.from(calendar);
             dayView.setDay(day);
             calendar.add(DATE, 1);
         }

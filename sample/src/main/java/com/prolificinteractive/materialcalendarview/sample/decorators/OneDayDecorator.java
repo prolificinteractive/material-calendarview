@@ -19,7 +19,7 @@ public class OneDayDecorator implements DayViewDecorator {
     private CalendarDay date;
 
     public OneDayDecorator() {
-        date = new CalendarDay();
+        date = CalendarDay.today();
     }
 
     @Override
@@ -37,6 +37,6 @@ public class OneDayDecorator implements DayViewDecorator {
      * We're changing the internals, so make sure to call {@linkplain MaterialCalendarView#invalidateDecorators()}
      */
     public void setDate(Date date) {
-        this.date = new CalendarDay(date);
+        this.date = CalendarDay.from(date);
     }
 }

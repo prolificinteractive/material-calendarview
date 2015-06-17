@@ -222,7 +222,7 @@ public class MaterialCalendarView extends FrameLayout {
             a.recycle();
         }
 
-        currentMonth = new CalendarDay();
+        currentMonth = CalendarDay.today();
         setCurrentDate(currentMonth);
     }
 
@@ -409,14 +409,14 @@ public class MaterialCalendarView extends FrameLayout {
      * @param calendar a Calendar set to a day to select
      */
     public void setSelectedDate(Calendar calendar) {
-        setSelectedDate(new CalendarDay(calendar));
+        setSelectedDate(CalendarDay.from(calendar));
     }
 
     /**
      * @param date a Date to set as selected
      */
     public void setSelectedDate(Date date) {
-        setSelectedDate(new CalendarDay(date));
+        setSelectedDate(CalendarDay.from(date));
     }
 
     /**
@@ -431,14 +431,14 @@ public class MaterialCalendarView extends FrameLayout {
      * @param calendar a Calendar set to a day to focus the calendar on
      */
     public void setCurrentDate(Calendar calendar) {
-        setCurrentDate(new CalendarDay(calendar));
+        setCurrentDate(CalendarDay.from(calendar));
     }
 
     /**
      * @param date a Date to focus the calendar on
      */
     public void setCurrentDate(Date date) {
-        setCurrentDate(new CalendarDay(date));
+        setCurrentDate(CalendarDay.from(date));
     }
 
     /**
@@ -468,7 +468,7 @@ public class MaterialCalendarView extends FrameLayout {
      * @param calendar set the minimum selectable date, null for no minimum
      */
     public void setMinimumDate(Calendar calendar) {
-        setMinimumDate(calendar == null ? null : new CalendarDay(calendar));
+        setMinimumDate(CalendarDay.from(calendar));
         setRangeDates(minDate, maxDate);
     }
 
@@ -476,7 +476,7 @@ public class MaterialCalendarView extends FrameLayout {
      * @param date set the minimum selectable date, null for no minimum
      */
     public void setMinimumDate(Date date) {
-        setMinimumDate(date == null ? null : new CalendarDay(date));
+        setMinimumDate(CalendarDay.from(date));
         setRangeDates(minDate, maxDate);
     }
 
@@ -499,7 +499,7 @@ public class MaterialCalendarView extends FrameLayout {
      * @param calendar set the maximum selectable date, null for no maximum
      */
     public void setMaximumDate(Calendar calendar) {
-        setMaximumDate(calendar == null ? null : new CalendarDay(calendar));
+        setMaximumDate(CalendarDay.from(calendar));
         setRangeDates(minDate, maxDate);
     }
 
@@ -507,7 +507,7 @@ public class MaterialCalendarView extends FrameLayout {
      * @param date set the maximum selectable date, null for no maximum
      */
     public void setMaximumDate(Date date) {
-        setMaximumDate(date == null ? null : new CalendarDay(date));
+        setMaximumDate(CalendarDay.from(date));
         setRangeDates(minDate, maxDate);
     }
 
@@ -972,24 +972,24 @@ public class MaterialCalendarView extends FrameLayout {
             if(min == null) {
                 Calendar worker = CalendarUtils.getInstance();
                 worker.add(Calendar.YEAR, -200);
-                min = new CalendarDay(worker);
+                min = CalendarDay.from(worker);
             }
 
             if(max == null) {
                 Calendar worker = CalendarUtils.getInstance();
                 worker.add(Calendar.YEAR, 200);
-                max = new CalendarDay(worker);
+                max = CalendarDay.from(worker);
             }
 
             Calendar worker = CalendarUtils.getInstance();
             min.copyTo(worker);
             CalendarUtils.setToFirstDay(worker);
             months.clear();
-            CalendarDay workingMonth = new CalendarDay(worker);
+            CalendarDay workingMonth = CalendarDay.from(worker);
             while (!max.isBefore(workingMonth)) {
-                months.add(new CalendarDay(worker));
+                months.add(CalendarDay.from(worker));
                 worker.add(Calendar.MONTH, 1);
-                workingMonth = new CalendarDay(worker);
+                workingMonth = CalendarDay.from(worker);
             }
             CalendarDay prevDate = selectedDate;
             notifyDataSetChanged();

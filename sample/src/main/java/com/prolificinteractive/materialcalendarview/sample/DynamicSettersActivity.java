@@ -70,7 +70,7 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
         showDatePickerDialog(this, widget.getMinimumDate(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                widget.setMinimumDate(new CalendarDay(year, monthOfYear, dayOfMonth));
+                widget.setMinimumDate(CalendarDay.from(year, monthOfYear, dayOfMonth));
             }
         });
     }
@@ -79,7 +79,7 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
         showDatePickerDialog(this, widget.getMaximumDate(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                widget.setMaximumDate(new CalendarDay(year, monthOfYear, dayOfMonth));
+                widget.setMaximumDate(CalendarDay.from(year, monthOfYear, dayOfMonth));
             }
         });
     }
@@ -88,7 +88,7 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
         showDatePickerDialog(this, widget.getSelectedDate(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                widget.setSelectedDate(new CalendarDay(year, monthOfYear, dayOfMonth));
+                widget.setSelectedDate(CalendarDay.from(year, monthOfYear, dayOfMonth));
             }
         });
     }
@@ -141,7 +141,7 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
     public static void showDatePickerDialog(Context context, CalendarDay day,
         DatePickerDialog.OnDateSetListener callback) {
         if(day == null) {
-            day = new CalendarDay();
+            day = CalendarDay.today();
         }
         DatePickerDialog dialog = new DatePickerDialog(
             context, 0, callback, day.getYear(), day.getMonth(), day.getDay()
