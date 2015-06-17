@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.5.0 *(2015-06-17)*
+----------------------------
+
+* Change: There are several factory methods on `CalendarDay` which should be used in place of the now deprecated constructors
+* Bugfix: You can now clear the selected date. Either by passing null or calling `clearSelection()`
+* New: You can now supply a custom `DayFormatter` to format day labels.
+
 Version 0.4.0 *(2015-05-18)*
 ----------------------------
 
