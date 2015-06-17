@@ -36,6 +36,8 @@ Example:
     />
 ```
 
+[Javadoc Available Here](http://prolificinteractive.github.io/material-calendarview/)
+
 Customization
 -------------
 
