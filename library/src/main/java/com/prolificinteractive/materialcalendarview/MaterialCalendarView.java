@@ -51,13 +51,6 @@ import java.util.List;
  * The date closest to the previous selection will become selected. This will also trigger the
  * {@linkplain com.prolificinteractive.materialcalendarview.OnDateChangedListener}
  * </p>
- *
- * @see R.styleable#MaterialCalendarView_mcv_arrowColor
- * @see R.styleable#MaterialCalendarView_mcv_selectionColor
- * @see R.styleable#MaterialCalendarView_mcv_headerTextAppearance
- * @see R.styleable#MaterialCalendarView_mcv_dateTextAppearance
- * @see R.styleable#MaterialCalendarView_mcv_weekDayTextAppearance
- * @see R.styleable#MaterialCalendarView_mcv_showOtherDates
  */
 public class MaterialCalendarView extends FrameLayout {
 
