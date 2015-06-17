@@ -15,6 +15,8 @@ Usage
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
 
+[Javadoc Available Here](http://prolificinteractive.github.io/material-calendarview/)
+
 Example:
 
 ```xml
@@ -35,8 +37,6 @@ Example:
     app:mcv_firstDayOfWeek="enum"
     />
 ```
-
-[Javadoc Available Here](http://prolificinteractive.github.io/material-calendarview/)
 
 Customization
 -------------
