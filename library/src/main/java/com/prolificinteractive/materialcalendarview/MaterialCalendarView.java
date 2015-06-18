@@ -3,6 +3,7 @@ package com.prolificinteractive.materialcalendarview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -118,6 +119,8 @@ public class MaterialCalendarView extends FrameLayout {
 
     private int accentColor = 0;
     private int arrowColor = Color.BLACK;
+    private Drawable leftArrowMask;
+    private Drawable rightArrowMask;
 
     private LinearLayout root;
 
@@ -171,6 +174,21 @@ public class MaterialCalendarView extends FrameLayout {
                 R.styleable.MaterialCalendarView_mcv_arrowColor,
                 Color.BLACK
             ));
+            Drawable leftMask = a.getDrawable(
+                R.styleable.MaterialCalendarView_mcv_leftArrowMask
+            );
+            if (leftMask == null) {
+                leftMask = getResources().getDrawable(R.drawable.mcv_action_previous);
+            }
+            setLeftArrowMask(leftMask);
+            Drawable rightMask = a.getDrawable(
+                R.styleable.MaterialCalendarView_mcv_rightArrowMask
+            );
+            if (rightMask == null) {
+                rightMask = getResources().getDrawable(R.drawable.mcv_action_next);
+            }
+            setRightArrowMask(rightMask);
+
             setSelectionColor(
                 a.getColor(
                     R.styleable.MaterialCalendarView_mcv_selectionColor,
@@ -369,6 +387,36 @@ public class MaterialCalendarView extends FrameLayout {
         buttonPast.setColor(color);
         buttonFuture.setColor(color);
         invalidate();
+    }
+
+    /**
+     * @return icon used for the left arrow
+     */
+    public Drawable getLeftArrowMask() {
+        return leftArrowMask;
+    }
+
+    /**
+     * @param icon the new icon to use for the left paging arrow
+     */
+    public void setLeftArrowMask(Drawable icon) {
+        leftArrowMask = icon;
+        buttonPast.setImageDrawable(icon);
+    }
+
+    /**
+     * @return icon used for the right arrow
+     */
+    public Drawable getRightArrowMask() {
+        return rightArrowMask;
+    }
+
+    /**
+     * @param icon the new icon to use for the right paging arrow
+     */
+    public void setRightArrowMask(Drawable icon) {
+        rightArrowMask = icon;
+        buttonFuture.setImageDrawable(icon);
     }
 
     /**
