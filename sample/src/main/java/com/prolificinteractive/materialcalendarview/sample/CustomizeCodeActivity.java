@@ -32,8 +32,8 @@ public class CustomizeCodeActivity extends AppCompatActivity implements OnDateCh
 
         widget.setShowOtherDates(true);
         widget.setArrowColor(getResources().getColor(R.color.sample_primary));
-        widget.setLeftArrowDrawable(getResources().getDrawable(R.drawable.ic_navigation_arrow_back));
-        widget.setRightArrowDrawable(getResources().getDrawable(R.drawable.ic_navigation_arrow_forward));
+        widget.setLeftArrowMask(getResources().getDrawable(R.drawable.ic_navigation_arrow_back));
+        widget.setRightArrowMask(getResources().getDrawable(R.drawable.ic_navigation_arrow_forward));
         widget.setSelectionColor(getResources().getColor(R.color.sample_primary));
         widget.setHeaderTextAppearance(R.style.TextAppearance_AppCompat_Medium);
         widget.setWeekDayTextAppearance(R.style.TextAppearance_AppCompat_Medium);

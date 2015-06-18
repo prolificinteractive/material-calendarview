@@ -119,8 +119,8 @@ public class MaterialCalendarView extends FrameLayout {
 
     private int accentColor = 0;
     private int arrowColor = Color.BLACK;
-    private Drawable leftArrowDrawable;
-    private Drawable rightArrowDrawable;
+    private Drawable leftArrowMask;
+    private Drawable rightArrowMask;
 
     private LinearLayout root;
 
@@ -174,20 +174,20 @@ public class MaterialCalendarView extends FrameLayout {
                 R.styleable.MaterialCalendarView_mcv_arrowColor,
                 Color.BLACK
             ));
-            Drawable leftDrawable = a.getDrawable(
-                R.styleable.MaterialCalendarView_mcv_leftArrowDrawable
+            Drawable leftMask = a.getDrawable(
+                R.styleable.MaterialCalendarView_mcv_leftArrowMask
             );
-            if (leftDrawable == null) {
-                leftDrawable = getResources().getDrawable(R.drawable.mcv_action_previous);
+            if (leftMask == null) {
+                leftMask = getResources().getDrawable(R.drawable.mcv_action_previous);
             }
-            setLeftArrowDrawable(leftDrawable);
-            Drawable rightDrawable = a.getDrawable(
-                R.styleable.MaterialCalendarView_mcv_rightArrowDrawable
+            setLeftArrowMask(leftMask);
+            Drawable rightMask = a.getDrawable(
+                R.styleable.MaterialCalendarView_mcv_rightArrowMask
             );
-            if (rightDrawable == null) {
-                rightDrawable = getResources().getDrawable(R.drawable.mcv_action_next);
+            if (rightMask == null) {
+                rightMask = getResources().getDrawable(R.drawable.mcv_action_next);
             }
-            setRightArrowDrawable(rightDrawable);
+            setRightArrowMask(rightMask);
 
             setSelectionColor(
                 a.getColor(
@@ -392,30 +392,30 @@ public class MaterialCalendarView extends FrameLayout {
     /**
      * @return icon used for the left arrow
      */
-    public Drawable getLeftArrowDrawable() {
-        return leftArrowDrawable;
+    public Drawable getLeftArrowMask() {
+        return leftArrowMask;
     }
 
     /**
      * @param icon the new icon to use for the left paging arrow
      */
-    public void setLeftArrowDrawable(Drawable icon) {
-        leftArrowDrawable = icon;
+    public void setLeftArrowMask(Drawable icon) {
+        leftArrowMask = icon;
         buttonPast.setImageDrawable(icon);
     }
 
     /**
      * @return icon used for the right arrow
      */
-    public Drawable getRightArrowDrawable() {
-        return rightArrowDrawable;
+    public Drawable getRightArrowMask() {
+        return rightArrowMask;
     }
 
     /**
      * @param icon the new icon to use for the right paging arrow
      */
-    public void setRightArrowDrawable(Drawable icon) {
-        rightArrowDrawable = icon;
+    public void setRightArrowMask(Drawable icon) {
+        rightArrowMask = icon;
         buttonFuture.setImageDrawable(icon);
     }
 
