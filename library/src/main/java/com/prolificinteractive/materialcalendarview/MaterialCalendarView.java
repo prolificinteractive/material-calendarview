@@ -3,6 +3,7 @@ package com.prolificinteractive.materialcalendarview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -118,6 +119,8 @@ public class MaterialCalendarView extends FrameLayout {
 
     private int accentColor = 0;
     private int arrowColor = Color.BLACK;
+    private Drawable leftArrowDrawable;
+    private Drawable rightArrowDrawable;
 
     private LinearLayout root;
 
@@ -171,6 +174,21 @@ public class MaterialCalendarView extends FrameLayout {
                 R.styleable.MaterialCalendarView_mcv_arrowColor,
                 Color.BLACK
             ));
+            Drawable leftDrawable = a.getDrawable(
+                R.styleable.MaterialCalendarView_mcv_leftArrowDrawable
+            );
+            if (leftDrawable == null) {
+                leftDrawable = getResources().getDrawable(R.drawable.mcv_action_previous);
+            }
+            setLeftArrowDrawable(leftDrawable);
+            Drawable rightDrawable = a.getDrawable(
+                R.styleable.MaterialCalendarView_mcv_rightArrowDrawable
+            );
+            if (rightDrawable == null) {
+                rightDrawable = getResources().getDrawable(R.drawable.mcv_action_next);
+            }
+            setRightArrowDrawable(rightDrawable);
+
             setSelectionColor(
                 a.getColor(
                     R.styleable.MaterialCalendarView_mcv_selectionColor,
@@ -369,6 +387,36 @@ public class MaterialCalendarView extends FrameLayout {
         buttonPast.setColor(color);
         buttonFuture.setColor(color);
         invalidate();
+    }
+
+    /**
+     * @return icon used for the left arrow
+     */
+    public Drawable getLeftArrowDrawable() {
+        return leftArrowDrawable;
+    }
+
+    /**
+     * @param icon the new icon to use for the left paging arrow
+     */
+    public void setLeftArrowDrawable(Drawable icon) {
+        leftArrowDrawable = icon;
+        buttonPast.setImageDrawable(icon);
+    }
+
+    /**
+     * @return icon used for the right arrow
+     */
+    public Drawable getRightArrowDrawable() {
+        return rightArrowDrawable;
+    }
+
+    /**
+     * @param icon the new icon to use for the right paging arrow
+     */
+    public void setRightArrowDrawable(Drawable icon) {
+        rightArrowDrawable = icon;
+        buttonFuture.setImageDrawable(icon);
     }
 
     /**
