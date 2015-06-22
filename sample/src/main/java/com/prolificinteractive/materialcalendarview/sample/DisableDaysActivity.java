@@ -17,7 +17,7 @@ import java.util.Calendar;
 /**
  * Show off setting min and max dates and disabling individual days
  */
-public class RangeActivity extends AppCompatActivity implements OnDateChangedListener {
+public class DisableDaysActivity extends AppCompatActivity implements OnDateChangedListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     private TextView textView;

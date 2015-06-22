@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static final List<Route> ROUTES = Arrays.asList(
         new Route(R.string.title_activity_old_calendar, OldCalendarViewActivity.class),
         new Route(R.string.title_activity_basic, BasicActivity.class),
-            new Route(R.string.title_activity_range, RangeActivity.class),
+            new Route(R.string.title_activity_disable, DisableDaysActivity.class),
             new Route(R.string.title_activity_dynamic_setters, DynamicSettersActivity.class),
             new Route(R.string.title_activity_customize_xml, CustomizeXmlActivity.class),
             new Route(R.string.title_activity_customize_code, CustomizeCodeActivity.class),
