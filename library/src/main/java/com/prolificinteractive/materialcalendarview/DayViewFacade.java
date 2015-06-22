@@ -17,6 +17,7 @@ public final class DayViewFacade {
     private Drawable backgroundDrawable = null;
     private Drawable selectionDrawable = null;
     private final LinkedList<Span> spans = new LinkedList<>();
+    private boolean daysDisabled = false;
 
     public DayViewFacade() {
         isDecorated = false;
@@ -62,11 +63,23 @@ public final class DayViewFacade {
         }
     }
 
+    /**
+     * <p>Set days to be in a disabled state, or re-enabled.</p>
+     *
+     * <p>Note, passing true here will <b>not</b> override minimum and maximum dates, if set.
+     * This will only re-enable disabled dates.</p>
+     */
+    public void setDaysDisabled(boolean daysDisabled) {
+        this.daysDisabled = daysDisabled;
+        this.isDecorated = true;
+    }
+
     protected void reset() {
         backgroundDrawable = null;
         selectionDrawable = null;
         spans.clear();
         isDecorated = false;
+        daysDisabled = false;
     }
 
     /**
@@ -82,6 +95,7 @@ public final class DayViewFacade {
         }
         other.spans.addAll(spans);
         other.isDecorated |= this.isDecorated;
+        other.daysDisabled = daysDisabled;
     }
 
     protected boolean isDecorated() {
@@ -98,6 +112,10 @@ public final class DayViewFacade {
 
     protected List<Span> getSpans() {
         return Collections.unmodifiableList(spans);
+    }
+
+    public boolean areDaysDisabled() {
+        return daysDisabled;
     }
 
     protected static class Span {
