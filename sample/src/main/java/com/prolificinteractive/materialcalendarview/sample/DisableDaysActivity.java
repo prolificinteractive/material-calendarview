@@ -31,7 +31,6 @@ public class DisableDaysActivity extends AppCompatActivity implements OnDateChan
 
         MaterialCalendarView widget = (MaterialCalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
-        widget.setShowOtherDates(true);
 
         // Add a decorator to disable prime numbered days
         widget.addDecorator(new PrimeDayDisableDecorator());
