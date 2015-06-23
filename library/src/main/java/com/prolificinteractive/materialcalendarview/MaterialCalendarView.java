@@ -69,6 +69,7 @@ public class MaterialCalendarView extends FrameLayout {
     private final ViewPager pager;
     private final MonthPagerAdapter adapter;
     private CalendarDay currentMonth;
+    private LinearLayout topbar;
 
     private final ArrayList<DayViewDecorator> dayViewDecorators = new ArrayList<>();
 
@@ -147,7 +148,6 @@ public class MaterialCalendarView extends FrameLayout {
 
         titleChanger = new TitleChanger(title);
         titleChanger.setTitleFormatter(DEFAULT_TITLE_FORMATTER);
-
         adapter = new MonthPagerAdapter(this);
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(pageChangeListener);
@@ -256,7 +256,7 @@ public class MaterialCalendarView extends FrameLayout {
         p.gravity = Gravity.CENTER;
         addView(root, p);
 
-        LinearLayout topbar = new LinearLayout(getContext());
+        topbar = new LinearLayout(getContext());
         topbar.setOrientation(LinearLayout.HORIZONTAL);
         topbar.setClipChildren(false);
         topbar.setClipToPadding(false);
@@ -663,6 +663,20 @@ public class MaterialCalendarView extends FrameLayout {
      */
     public void setTitleMonths(@ArrayRes int arrayRes) {
         setTitleMonths(getResources().getTextArray(arrayRes));
+    }
+
+    /**
+     * Sets the visibility {@link #topbar}, which contains
+     * the previous month button {@link #buttonPast}, next month button {@link #buttonFuture},
+     * and the month title {@link #title}.
+     *
+     * @param visible Boolean indicating if the topbar is visible
+     */
+    public void setTopbarVisibility(boolean visible) {
+        if (visible)
+            topbar.setVisibility(View.VISIBLE);
+        else
+            topbar.setVisibility(View.GONE);
     }
 
     @Override
@@ -1112,5 +1126,4 @@ public class MaterialCalendarView extends FrameLayout {
             return firstDayOfTheWeek;
         }
     }
-
 }
