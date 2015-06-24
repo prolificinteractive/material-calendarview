@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.6.0 *(2015-06-24)*
+----------------------------
+
+* New: DayViewDecorators now support disabling individual days
+* New: You can set custom masks for arrows
+* New: You can now set the top bar (arrows and title) as no visible
+
 Version 0.5.0 *(2015-06-17)*
 ----------------------------
 
