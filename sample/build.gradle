@@ -17,7 +17,7 @@ dependencies {
     // You should use the commented out line below in you're application.
     // We depend on the source directly here so that development is easier.
     compile project(':library')
-    //compile 'com.prolificinteractive:material-calendarview:0.5.0'
+    //compile 'com.prolificinteractive:material-calendarview:0.5.1'
 
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.0'

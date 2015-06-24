@@ -11,7 +11,7 @@ and feel, rather than 100% parity with the platform's implementation.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:0.5.0'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:0.5.1'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
 
@@ -35,6 +35,8 @@ Example:
     app:mcv_monthLabels="array"
     app:mcv_tileSize="dimension"
     app:mcv_firstDayOfWeek="enum"
+    app:mcv_leftArrowMask="drawable"
+    app:mcv_rightArrowMask="drawable"
     />
 ```
 
@@ -57,6 +59,8 @@ Options available in Java and as XML attributes:
 | monthLabels           | array     | Supply custom labels for the months of the year. This sets a `MonthArrayTitleFormatter` on the `CalendarView`.The default implementation formats using `SimpleDateFormat` with a `"MMMM yyyy"` format.          |
 | tileSize              | dimension | Set a custom size for each tile. Each day of the calendar is 1 tile, and the top bar is 1 tile high.The entire widget is 7 tiles by 8 tiles. The default tile size is `44dp`.                                   |
 | firstDayOfWeek        | enum      | Set the first day of the month                                                                                                                                                                                  |
+| leftArrowMask         | drawable  | Supply a different drawable mask for the left arrow                                                                                                                                                             |
+| rightArrowMask        | drawable  | Supply a different drawable mask for the right arrow                                                                                                                                                            |
 
 Options only available in Java:
 
@@ -81,6 +85,7 @@ All calls to the `DayViewFacade` will be applied to every day `shouldDecorate()`
     * `DotSpan` was added to show a dot centered below the label
     * For an introduction to spans, see [this article](http://androidcocktail.blogspot.com/2014/03/android-spannablestring-example.html).
     * If you want to learn more about custom spans, check out [this article](http://flavienlaurent.com/blog/2014/01/31/spans/).
+4. `setDaysDisabled()` allows you to disable and re-enable days. This will not affect minimum and maximum dates.
 
 If one of your decorators changes after it's been added to the calendar view, make sure you call `MaterialCalendarView.invalidateDecorators()` to have those changes reflected.
 
