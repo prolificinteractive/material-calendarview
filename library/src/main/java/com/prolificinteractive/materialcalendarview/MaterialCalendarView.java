@@ -716,6 +716,9 @@ public class MaterialCalendarView extends FrameLayout {
         ss.minDate = getMinimumDate();
         ss.maxDate = getMaximumDate();
         ss.selectedDate = getSelectedDate();
+        ss.firstDayOfWeek = getFirstDayOfWeek();
+        ss.tileSizePx = getTileSize();
+        ss.topbarVisible = getTopbarVisible();
         return ss;
     }
 
@@ -729,6 +732,9 @@ public class MaterialCalendarView extends FrameLayout {
         setShowOtherDates(ss.showOtherDates);
         setRangeDates(ss.minDate, ss.maxDate);
         setSelectedDate(ss.selectedDate);
+        setFirstDayOfWeek(ss.firstDayOfWeek);
+        setTileSize(ss.tileSizePx);
+        setTopbarVisible(ss.topbarVisible);
     }
 
     @Override
@@ -760,6 +766,9 @@ public class MaterialCalendarView extends FrameLayout {
         CalendarDay minDate = null;
         CalendarDay maxDate = null;
         CalendarDay selectedDate = null;
+        int firstDayOfWeek = Calendar.SUNDAY;
+        int tileSizePx = 0;
+        boolean topbarVisible = true;
 
         SavedState(Parcelable superState) {
             super(superState);
@@ -775,6 +784,9 @@ public class MaterialCalendarView extends FrameLayout {
             out.writeParcelable(minDate, 0);
             out.writeParcelable(maxDate, 0);
             out.writeParcelable(selectedDate, 0);
+            out.writeInt(firstDayOfWeek);
+            out.writeInt(tileSizePx);
+            out.writeInt(topbarVisible ? 1 : 0);
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR
@@ -798,6 +810,9 @@ public class MaterialCalendarView extends FrameLayout {
             minDate = in.readParcelable(loader);
             maxDate = in.readParcelable(loader);
             selectedDate = in.readParcelable(loader);
+            firstDayOfWeek = in.readInt();
+            tileSizePx = in.readInt();
+            topbarVisible = in.readInt() == 1;
         }
     }
 
