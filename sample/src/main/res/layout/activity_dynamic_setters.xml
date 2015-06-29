@@ -132,7 +132,9 @@
                 android:layout_weight="1"
                 />
 
-            <Space
+            <Button
+                android:id="@+id/button_toggle_topbar"
+                android:text="Toggle Topbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

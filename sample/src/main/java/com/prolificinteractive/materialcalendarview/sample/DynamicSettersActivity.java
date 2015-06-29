@@ -95,6 +95,10 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
         });
     }
 
+    @OnClick(R.id.button_toggle_topbar) void onToggleTopBarClicked() {
+        widget.setTopbarVisible(!widget.getTopbarVisible());
+    }
+
     Random random = new Random();
 
     @OnClick(R.id.button_set_colors) void onColorsClicked() {
