@@ -308,15 +308,24 @@ public class MaterialCalendarView extends FrameLayout {
 
     /**
      * Set the size of each tile that makes up the calendar.
-     * Each day is 1 tile, so the widget is 7 tiles wide and 8 tiles tall.
+     * Each day is 1 tile, so the widget is 7 tiles wide and 7 or 8 tiles tall
+     * depending on the visibility of the {@link #topbar}.
      *
      * @param size the new size for each tile in pixels
      */
     public void setTileSize(int size) {
-        LayoutParams p = new LayoutParams(
-                size * MonthView.DEFAULT_DAYS_IN_WEEK,
-                size * (MonthView.DEFAULT_MONTH_TILE_HEIGHT + 1)
-        );
+        LayoutParams p;
+        if (topbar.getVisibility() == View.VISIBLE) {
+            p = new LayoutParams(
+                    size * MonthView.DEFAULT_DAYS_IN_WEEK,
+                    size * (MonthView.DEFAULT_MONTH_TILE_HEIGHT + 1)
+            );
+        } else { // topbar.getVisibility() == View.GONE
+            p = new LayoutParams(
+                    size * MonthView.DEFAULT_DAYS_IN_WEEK,
+                    size * (MonthView.DEFAULT_MONTH_TILE_HEIGHT)
+            );
+        }
         p.gravity = Gravity.CENTER;
         root.setLayoutParams(p);
     }
@@ -673,10 +682,12 @@ public class MaterialCalendarView extends FrameLayout {
      * @param visible Boolean indicating if the topbar is visible
      */
     public void setTopbarVisible(boolean visible) {
+        int tileSize = root.getLayoutParams().width / MonthView.DEFAULT_DAYS_IN_WEEK;
         if (visible)
             topbar.setVisibility(View.VISIBLE);
         else
             topbar.setVisibility(View.GONE);
+        setTileSize(tileSize);
     }
 
     @Override
