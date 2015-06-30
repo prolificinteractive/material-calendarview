@@ -56,7 +56,7 @@ import java.util.List;
 public class MaterialCalendarView extends FrameLayout {
 
     /**
-     *
+     * Default tile size in DIPs
      */
     public static final int DEFAULT_TILE_SIZE_DP = 44;
 

@@ -33,6 +33,8 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     * @param calendar {@linkplain Calendar} to pull date information from. Passing null will return null
+     *
      * @return CalendarDay set to the specified date
      */
     public static CalendarDay from(@Nullable Calendar calendar) {
@@ -47,6 +49,8 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     * @param date {@linkplain Date} to pull date information from. Passing null will return null.
+     *
      * @return CalendarDay set to the specified date
      */
     public static CalendarDay from(@Nullable Date date) {

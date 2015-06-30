@@ -6,6 +6,8 @@ package com.prolificinteractive.materialcalendarview;
 public interface DayViewDecorator {
 
     /**
+     * @param day {@linkplain CalendarDay} to possibly decorate
+     *
      * @return true if this decorator should be applied to the provided day
      */
     boolean shouldDecorate(CalendarDay day);

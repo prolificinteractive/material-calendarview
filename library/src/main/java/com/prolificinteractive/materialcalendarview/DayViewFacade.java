@@ -68,6 +68,8 @@ public final class DayViewFacade {
      *
      * <p>Note, passing true here will <b>not</b> override minimum and maximum dates, if set.
      * This will only re-enable disabled dates.</p>
+     *
+     * @param daysDisabled true to disable days, false to re-enable days
      */
     public void setDaysDisabled(boolean daysDisabled) {
         this.daysDisabled = daysDisabled;

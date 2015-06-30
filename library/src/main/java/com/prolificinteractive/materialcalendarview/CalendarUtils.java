@@ -1,6 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -16,9 +17,11 @@ import static java.util.Calendar.YEAR;
 public class CalendarUtils {
 
     /**
+     * @param date {@linkplain Date} to pull date information from
+     *
      * @return a new Calendar instance with the date set to the provided date. Time set to zero.
      */
-    public static Calendar getInstance(Date date) {
+    public static Calendar getInstance(@Nullable Date date) {
         Calendar calendar = Calendar.getInstance();
         if(date != null) {
             calendar.setTime(date);
@@ -38,6 +41,8 @@ public class CalendarUtils {
 
     /**
      * Set the provided calendar to the first day of the month. Also clears all time information.
+     *
+     * @param calendar {@linkplain Calendar} to modify to be at the first fay of the month
      */
     public static void setToFirstDay(Calendar calendar) {
         int year = getYear(calendar);
@@ -49,6 +54,9 @@ public class CalendarUtils {
 
     /**
      * Copy <i>only</i> date information to a new calendar.
+     *
+     * @param from calendar to copy from
+     * @param to calendar to copy to
      */
     public static void copyDateTo(Calendar from, Calendar to) {
         int year = getYear(from);
