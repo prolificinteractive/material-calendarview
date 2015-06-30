@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.6.1 *(2015-06-29)*
+----------------------------
+
+* Fix: Hidding top bar will no longer distort the calendar
+* Change: top bar visibility, first day of the week, and tile size are now saved during rotation
+
 Version 0.6.0 *(2015-06-24)*
 ----------------------------
 
