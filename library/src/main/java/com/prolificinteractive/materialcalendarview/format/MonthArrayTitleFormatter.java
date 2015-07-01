@@ -12,6 +12,8 @@ public class MonthArrayTitleFormatter implements TitleFormatter {
     private final CharSequence[] monthLabels;
 
     /**
+     * Format using an array of month labels
+     *
      * @param monthLabels an array of 12 labels to use for months, starting with January
      */
     public MonthArrayTitleFormatter(CharSequence[] monthLabels) {
@@ -24,6 +26,9 @@ public class MonthArrayTitleFormatter implements TitleFormatter {
         this.monthLabels = monthLabels;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CharSequence format(CalendarDay day) {
         return new SpannableStringBuilder()
