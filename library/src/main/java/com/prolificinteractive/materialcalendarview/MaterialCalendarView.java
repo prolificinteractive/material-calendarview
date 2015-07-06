@@ -900,7 +900,7 @@ public class MaterialCalendarView extends FrameLayout {
         private CalendarDay selectedDate = null;
         private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
         private DayFormatter dayFormatter = DayFormatter.DEFAULT;
-        private List<DayViewDecorator> decorators = null;
+        private List<DayViewDecorator> decorators = new ArrayList<>();
         private List<DecoratorResult> decoratorResults = null;
         private int firstDayOfTheWeek = Calendar.SUNDAY;
 
