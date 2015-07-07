@@ -109,10 +109,15 @@ class DayView extends CheckedTextView {
     }
 
     /**
-     * @param customBackground background to draw behind everything else
+     * @param drawable background to draw behind everything else
      */
-    public void setCustomBackground(Drawable customBackground) {
-        this.customBackground = customBackground;
+    public void setCustomBackground(Drawable drawable) {
+        if(drawable == null) {
+            this.customBackground = null;
+        }
+        else {
+            this.customBackground = drawable.getConstantState().newDrawable(getResources());
+        }
         invalidate();
     }
 
