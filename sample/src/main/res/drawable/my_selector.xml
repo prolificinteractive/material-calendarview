@@ -3,12 +3,12 @@
 
     <item
         android:state_checked="true"
-        android:drawable="@mipmap/ic_my_selector"
+        android:drawable="@drawable/ic_my_selector"
         />
 
     <item
         android:state_pressed="true"
-        android:drawable="@mipmap/ic_my_selector"
+        android:drawable="@drawable/ic_my_selector"
         />
 
     <item
