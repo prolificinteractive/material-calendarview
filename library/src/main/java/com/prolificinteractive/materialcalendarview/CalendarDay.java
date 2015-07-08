@@ -15,6 +15,8 @@ import java.util.Locale;
 public final class CalendarDay implements Parcelable {
 
     /**
+     * Get a new instance set to today
+     *
      * @return CalendarDay set to today's date
      */
     public static @NonNull CalendarDay today() {
@@ -22,6 +24,7 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     * Get a new instance set to the specified day
      *
      * @param year new instance's year
      * @param month new instance's month as defined by {@linkplain java.util.Calendar}
@@ -33,6 +36,10 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     * Get a new instance set to the specified day
+     *
+     * @param calendar {@linkplain Calendar} to pull date information from. Passing null will return null
+     *
      * @return CalendarDay set to the specified date
      */
     public static CalendarDay from(@Nullable Calendar calendar) {
@@ -47,6 +54,10 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     * Get a new instance set to the specified day
+     *
+     * @param date {@linkplain Date} to pull date information from. Passing null will return null.
+     *
      * @return CalendarDay set to the specified date
      */
     public static CalendarDay from(@Nullable Date date) {
@@ -119,6 +130,8 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     * Get the year
+     *
      * @return the year for this day
      */
     public int getYear() {
@@ -126,13 +139,17 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
-     * @return the month of the year as defined by {@linkplain java.util.Calendar}
+     * Get the month, represented by values from {@linkplain Calendar}
+     *
+     * @return the month of the year as defined by {@linkplain Calendar}
      */
     public int getMonth() {
         return month;
     }
 
     /**
+     * Get the day
+     *
      * @return the day of the month for this day
      */
     public int getDay() {
@@ -140,6 +157,8 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     * Get this day as a {@linkplain Date}
+     *
      * @return a date with this days information
      */
     public @NonNull Date getDate() {
@@ -150,6 +169,8 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     * Get this day as a {@linkplain Calendar}
+     *
      * @return a new calendar instance with this day information
      */
     public @NonNull Calendar getCalendar() {
@@ -161,24 +182,30 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     * Copy this day's information to the given calendar instance
+     *
      * @param calendar calendar to set date information to
      */
-    public void copyTo(Calendar calendar) {
+    public void copyTo(@NonNull Calendar calendar) {
         calendar.clear();
         calendar.set(year, month, day);
     }
 
     /**
+     * Determine if this day is within a specified range
+     *
      * @param minDate the earliest day, may be null
      * @param maxDate the latest day, may be null
      * @return true if the between (inclusive) the min and max dates.
      */
-    public boolean isInRange(CalendarDay minDate, CalendarDay maxDate) {
+    public boolean isInRange(@Nullable CalendarDay minDate, @Nullable CalendarDay maxDate) {
         return !(minDate != null && minDate.isAfter(this)) &&
                 !(maxDate != null && maxDate.isBefore(this));
     }
 
     /**
+     * Determine if this day is before the given instance
+     *
      * @param other the other day to test
      * @return true if this is before other, false if equal or after
      */
@@ -195,6 +222,8 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     * Determine if this day is after the given instance
+     *
      * @param other the other day to test
      * @return true if this is after other, false if equal or before
      */

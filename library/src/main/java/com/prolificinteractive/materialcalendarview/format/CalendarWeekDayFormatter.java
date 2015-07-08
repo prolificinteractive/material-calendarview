@@ -15,16 +15,24 @@ public class CalendarWeekDayFormatter implements WeekDayFormatter {
     private final Calendar calendar;
 
     /**
+     * Format with a specific calendar
+     *
      * @param calendar Calendar to retrieve formatting information from
      */
     public CalendarWeekDayFormatter(Calendar calendar) {
         this.calendar = calendar;
     }
 
+    /**
+     * Format with a default calendar
+     */
     public CalendarWeekDayFormatter() {
         calendar = CalendarUtils.getInstance();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CharSequence format(int dayOfWeek) {
         calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);

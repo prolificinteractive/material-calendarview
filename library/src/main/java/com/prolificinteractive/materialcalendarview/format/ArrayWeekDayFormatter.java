@@ -20,6 +20,9 @@ public class ArrayWeekDayFormatter implements WeekDayFormatter {
         this.weekDayLabels = weekDayLabels;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CharSequence format(int dayOfWeek) {
         return weekDayLabels[dayOfWeek - 1];

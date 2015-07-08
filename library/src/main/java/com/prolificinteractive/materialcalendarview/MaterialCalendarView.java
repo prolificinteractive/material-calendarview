@@ -56,7 +56,7 @@ import java.util.List;
 public class MaterialCalendarView extends FrameLayout {
 
     /**
-     *
+     * Default tile size in DIPs
      */
     public static final int DEFAULT_TILE_SIZE_DP = 44;
 
@@ -507,7 +507,7 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     /**
-     * @return The current day shown, will be set to first day of the month
+     * @return The current month shown, will be set to first day of the month
      */
     public CalendarDay getCurrentDate() {
         return adapter.getItem(pager.getCurrentItem());
@@ -843,12 +843,17 @@ public class MaterialCalendarView extends FrameLayout {
 
     /**
      *
-     * @return The first day of the week as a java.util.Calendar day constant.
+     * @return The first day of the week as a {@linkplain Calendar} day constant.
      */
     public int getFirstDayOfWeek() {
         return adapter.getFirstDayOfWeek();
     }
 
+    /**
+     * Add a collection of day decorators
+     *
+     * @param decorators decorators to add
+     */
     public void addDecorators(Collection<? extends DayViewDecorator> decorators) {
         if(decorators == null) {
             return;
@@ -858,10 +863,20 @@ public class MaterialCalendarView extends FrameLayout {
         adapter.setDecorators(dayViewDecorators);
     }
 
+    /**
+     * Add several day decorators
+     *
+     * @param decorators decorators to add
+     */
     public void addDecorators(DayViewDecorator... decorators) {
         addDecorators(Arrays.asList(decorators));
     }
 
+    /**
+     * Add a day decorator
+     *
+     * @param decorator decorator to add
+     */
     public void addDecorator(DayViewDecorator decorator) {
         if(decorator == null) {
             return;
@@ -870,16 +885,28 @@ public class MaterialCalendarView extends FrameLayout {
         adapter.setDecorators(dayViewDecorators);
     }
 
+    /**
+     * Remove all decorators
+     */
     public void removeDecorators() {
         dayViewDecorators.clear();
         adapter.setDecorators(dayViewDecorators);
     }
 
+    /**
+     * Remove a specific decorator instance. Same rules as {@linkplain List#remove(Object)}
+     *
+     * @param decorator decorator to remove
+     */
     public void removeDecorator(DayViewDecorator decorator) {
         dayViewDecorators.remove(decorator);
         adapter.setDecorators(dayViewDecorators);
     }
 
+    /**
+     * Invalidate decorators after one has changed internally. That is, if a decorator mutates, you
+     * should call this method to update the widget.
+     */
     public void invalidateDecorators() {
         adapter.invalidateDecorators();
     }
