@@ -517,11 +517,19 @@ public class MaterialCalendarView extends FrameLayout {
      * @param day a CalendarDay to focus the calendar on. Null will do nothing
      */
     public void setCurrentDate(@Nullable CalendarDay day) {
+        setCurrentDate(day, true);
+    }
+
+    /**
+     * @param day a CalendarDay to focus the calendar on. Null will do nothing
+     * @param useSmoothScroll use smooth scroll when changing months.
+     */
+    public void setCurrentDate(@Nullable CalendarDay day, boolean useSmoothScroll) {
         if(day == null) {
             return;
         }
         int index = adapter.getIndexForDay(day);
-        pager.setCurrentItem(index);
+        pager.setCurrentItem(index, useSmoothScroll);
         updateUi();
     }
 
