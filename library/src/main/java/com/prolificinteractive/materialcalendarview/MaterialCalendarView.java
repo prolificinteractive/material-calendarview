@@ -223,10 +223,15 @@ public class MaterialCalendarView extends FrameLayout {
                     R.styleable.MaterialCalendarView_mcv_showOtherDates,
                     false
             ));
-            setFirstDayOfWeek(a.getInt(
+
+            int firstDayOfWeek = a.getInt(
                     R.styleable.MaterialCalendarView_mcv_firstDayOfWeek,
-                    Calendar.getInstance(Locale.getDefault()).getFirstDayOfWeek()
-            ));
+                    -1
+            );
+            if(firstDayOfWeek < 0) {
+                firstDayOfWeek = CalendarUtils.getInstance().getFirstDayOfWeek();
+            }
+            setFirstDayOfWeek(firstDayOfWeek);
         }
         catch (Exception e) {
             e.printStackTrace();
