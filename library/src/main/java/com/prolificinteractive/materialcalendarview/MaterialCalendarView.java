@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * <p>
@@ -224,7 +225,7 @@ public class MaterialCalendarView extends FrameLayout {
             ));
             setFirstDayOfWeek(a.getInt(
                     R.styleable.MaterialCalendarView_mcv_firstDayOfWeek,
-                    Calendar.SUNDAY
+                    Calendar.getInstance(Locale.getDefault()).getFirstDayOfWeek()
             ));
         }
         catch (Exception e) {
