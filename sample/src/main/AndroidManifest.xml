@@ -27,6 +27,11 @@
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
 
+          <intent-filter>
+              <action android:name="android.intent.action.RUN" />
+              <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
+          </intent-filter>
+
       </activity>
 
       <activity
@@ -37,6 +42,11 @@
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
+
+          <intent-filter>
+              <action android:name="android.intent.action.RUN" />
+              <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
+          </intent-filter>
 
       </activity>
 
@@ -49,6 +59,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
 
+            <intent-filter>
+                <action android:name="android.intent.action.RUN" />
+                <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
+            </intent-filter>
+
         </activity>
 
         <activity
@@ -59,6 +74,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
+
+            <intent-filter>
+                <action android:name="android.intent.action.RUN" />
+                <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
+            </intent-filter>
 
         </activity>
 
@@ -71,6 +91,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
 
+            <intent-filter>
+                <action android:name="android.intent.action.RUN" />
+                <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
+            </intent-filter>
+
         </activity>
 
         <activity
@@ -81,6 +106,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
+
+            <intent-filter>
+                <action android:name="android.intent.action.RUN" />
+                <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
+            </intent-filter>
 
         </activity>
 
@@ -93,16 +123,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
 
+            <intent-filter>
+                <action android:name="android.intent.action.RUN" />
+                <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
+            </intent-filter>
+
         </activity>
 
         <activity
-            android:name=".DialogsActivity"
+            android:name="com.prolificinteractive.materialcalendarview.sample.DialogsActivity"
             android:label="@string/title_activity_dialogs"
             android:parentActivityName="com.prolificinteractive.materialcalendarview.sample.MainActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"/>
+
+            <intent-filter>
+                <action android:name="android.intent.action.RUN" />
+                <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
+            </intent-filter>
 
         </activity>
 
