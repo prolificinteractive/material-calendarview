@@ -96,18 +96,28 @@ class DayView extends CheckedTextView {
     }
 
     /**
-     * @param selectionDrawable custom selection drawable
+     * @param drawable custom selection drawable
      */
-    public void setSelectionDrawable(Drawable selectionDrawable) {
-        this.selectionDrawable = selectionDrawable;
-        invalidate();
+    public void setSelectionDrawable(Drawable drawable) {
+        if(drawable == null) {
+            this.selectionDrawable = null;
+        }
+        else {
+            this.selectionDrawable = drawable.getConstantState().newDrawable(getResources());
+        }
+        regenerateBackground();
     }
 
     /**
-     * @param customBackground background to draw behind everything else
+     * @param drawable background to draw behind everything else
      */
-    public void setCustomBackground(Drawable customBackground) {
-        this.customBackground = customBackground;
+    public void setCustomBackground(Drawable drawable) {
+        if(drawable == null) {
+            this.customBackground = null;
+        }
+        else {
+            this.customBackground = drawable.getConstantState().newDrawable(getResources());
+        }
         invalidate();
     }
 
