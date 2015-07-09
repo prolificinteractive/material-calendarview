@@ -27,13 +27,12 @@ import butterknife.OnClick;
 public class DialogsActivity extends AppCompatActivity {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
-    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialogs);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     @OnClick(R.id.button_normal_dialog)
@@ -80,7 +79,7 @@ public class DialogsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onDateChanged(MaterialCalendarView widget, CalendarDay date) {
+        public void onDateChanged(@NonNull MaterialCalendarView widget, CalendarDay date) {
             textView.setText(FORMATTER.format(date.getDate()));
         }
     }

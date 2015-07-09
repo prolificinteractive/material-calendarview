@@ -22,8 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
@@ -31,14 +31,14 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
-    @InjectView(R.id.calendarView) MaterialCalendarView widget;
+    @Bind(R.id.calendarView) MaterialCalendarView widget;
     private int currentTileSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynamic_setters);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         currentTileSize = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
 
@@ -121,7 +121,7 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull DialogInterface dialog, int which) {
                         currentTileSize = view.getValue();
                         widget.setTileSizeDp(currentTileSize);
                     }

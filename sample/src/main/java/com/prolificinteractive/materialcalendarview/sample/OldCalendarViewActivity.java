@@ -8,6 +8,9 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Shows off the most basic usage
  */
@@ -15,16 +18,16 @@ public class OldCalendarViewActivity extends AppCompatActivity
     implements CalendarView.OnDateChangeListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
-    private TextView textView;
+
+    @Bind(R.id.calendarView) CalendarView widget;
+    @Bind(R.id.textView) TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_old_calendarview);
+        ButterKnife.bind(this);
 
-        textView = (TextView) findViewById(R.id.textView);
-
-        CalendarView widget = (CalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangeListener(this);
     }
 
