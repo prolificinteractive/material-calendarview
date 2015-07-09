@@ -11,7 +11,7 @@ and feel, rather than 100% parity with the platform's implementation.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:0.6.1'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:0.7.0'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
 

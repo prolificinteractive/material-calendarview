@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+Version 0.7.0 *(2015-07-09)*
+----------------------------
+
+* Fix: Being in certain timezones only showed the last week of the month
+* Fix: Decorating with a custom selection drawable now works correctly
+* Change: Now detect the first day of the week based off of Locale
+* New: You can now change the current month without animating using `setCurrentDate(day, false)`
+* Fix: Null pointer when trying to remove decorators when none have been added
+* Fix: Improve Javadoc
+
 Version 0.6.1 *(2015-06-29)*
 ----------------------------
 
