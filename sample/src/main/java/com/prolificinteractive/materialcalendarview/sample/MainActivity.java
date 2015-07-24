@@ -1,10 +1,13 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,16 +23,7 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static final List<Route> ROUTES = Arrays.asList(
-        new Route(R.string.title_activity_old_calendar, OldCalendarViewActivity.class),
-        new Route(R.string.title_activity_basic, BasicActivity.class),
-            new Route(R.string.title_activity_disable, DisableDaysActivity.class),
-            new Route(R.string.title_activity_dynamic_setters, DynamicSettersActivity.class),
-            new Route(R.string.title_activity_customize_xml, CustomizeXmlActivity.class),
-            new Route(R.string.title_activity_customize_code, CustomizeCodeActivity.class),
-            new Route(R.string.title_activity_dialogs, DialogsActivity.class),
-            new Route(R.string.title_activity_decorators, BasicActivityDecorated.class)
-    );
+    private static final String CATEGORY_SAMPLE = "com.prolificinteractive.materialcalendarview.sample.SAMPLE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,75 +32,66 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView list = (RecyclerView) findViewById(R.id.list);
         list.setLayoutManager(new LinearLayoutManager(this));
-        list.setAdapter(new RoutesAdapter(this));
+        list.setAdapter(new ResolveInfoAdapter(this, getAllSampleActivities()));
     }
 
-    private void onRouteClicked(Route route) {
-        startActivity(new Intent(this, route.routeTo));
+    private List<ResolveInfo> getAllSampleActivities() {
+        Intent filter = new Intent();
+        filter.setAction(Intent.ACTION_RUN);
+        filter.addCategory(CATEGORY_SAMPLE);
+        return getPackageManager().queryIntentActivities(filter, 0);
     }
 
-    private class RoutesAdapter extends RecyclerView.Adapter<RouteViewHolder> {
+    private void onRouteClicked(ResolveInfo route) {
+        ActivityInfo activity= route.activityInfo;
+        ComponentName name = new ComponentName(activity.applicationInfo.packageName, activity.name);
+        startActivity(new Intent(Intent.ACTION_VIEW).setComponent(name));
+    }
 
+    class ResolveInfoAdapter extends RecyclerView.Adapter<ResolveInfoAdapter.ResolveInfoViewHolder> {
+
+        private final PackageManager pm;
         private final LayoutInflater inflater;
+        private final List<ResolveInfo> samples;
 
-        private RoutesAdapter(Context context) {
+        private ResolveInfoAdapter(Context context, List<ResolveInfo> resolveInfos) {
+            this.samples = resolveInfos;
             this.inflater = LayoutInflater.from(context);
+            this.pm = context.getPackageManager();
         }
 
         @Override
-        public RouteViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        public ResolveInfoViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             View view = inflater.inflate(R.layout.item_route, viewGroup, false);
-            return new RouteViewHolder(view);
+            return new ResolveInfoViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(RouteViewHolder viewHolder, int i) {
-            Route item = ROUTES.get(i);
-            viewHolder.textView.setText(item.label);
+        public void onBindViewHolder(ResolveInfoViewHolder viewHolder, int i) {
+            ResolveInfo item = samples.get(i);
+            viewHolder.textView.setText(item.loadLabel(pm));
         }
 
         @Override
         public int getItemCount() {
-            return ROUTES.size();
+            return samples.size();
         }
 
-    }
+        class ResolveInfoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private static class Route {
+            public final TextView textView;
 
-        public final int label;
-        public final Class<? extends Activity> routeTo;
+            public ResolveInfoViewHolder(View view) {
+                super(view);
+                this.textView = (TextView) view.findViewById(android.R.id.text1);
+                view.setOnClickListener(this);
+            }
 
-        public Route(int labelRes, Class<? extends Activity> routeTo) {
-            this.label = labelRes;
-            this.routeTo = routeTo;
-        }
-    }
-
-    private class RouteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        public final TextView textView;
-
-        public RouteViewHolder(View view) {
-            super(view);
-            this.textView = (TextView) view.findViewById(android.R.id.text1);
-            view.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            onRouteClicked(ROUTES.get(getAdapterPosition()));
+            @Override
+            public void onClick(@NonNull View v) {
+                onRouteClicked(samples.get(getAdapterPosition()));
+            }
         }
     }
 
-    public static void showDatePickerDialog(Context context, CalendarDay day,
-        DatePickerDialog.OnDateSetListener callback) {
-        if(day == null) {
-            day = CalendarDay.today();
-        }
-        DatePickerDialog dialog = new DatePickerDialog(
-            context, 0, callback, day.getYear(), day.getMonth(), day.getDay()
-        );
-        dialog.show();
-    }
 }

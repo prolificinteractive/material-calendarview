@@ -22,24 +22,27 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Shows off the most basic usage
  */
 public class BasicActivityDecorated extends AppCompatActivity implements OnDateChangedListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
-    private TextView textView;
-    private OneDayDecorator oneDayDecorator = new OneDayDecorator();
-    private MaterialCalendarView widget;
+
+    private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
+
+    @Bind(R.id.calendarView) MaterialCalendarView widget;
+    @Bind(R.id.textView) TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
+        ButterKnife.bind(this);
 
-        textView = (TextView) findViewById(R.id.textView);
-
-        widget = (MaterialCalendarView) findViewById(R.id.calendarView);
         widget.setOnDateChangedListener(this);
         widget.setShowOtherDates(true);
 
@@ -77,7 +80,7 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
     private class ApiSimulator extends AsyncTask<Void, Void, List<CalendarDay>> {
 
         @Override
-        protected List<CalendarDay> doInBackground(Void... voids) {
+        protected List<CalendarDay> doInBackground(@NonNull Void... voids) {
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -96,7 +99,7 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
         }
 
         @Override
-        protected void onPostExecute(List<CalendarDay> calendarDays) {
+        protected void onPostExecute(@NonNull List<CalendarDay> calendarDays) {
             super.onPostExecute(calendarDays);
 
             if(isFinishing()) {
