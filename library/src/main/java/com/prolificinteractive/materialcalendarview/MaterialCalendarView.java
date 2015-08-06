@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ArrayRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -15,7 +16,9 @@ import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,8 +52,14 @@ import java.util.List;
  * The date closest to the previous selection will become selected. This will also trigger the
  * {@linkplain com.prolificinteractive.materialcalendarview.OnDateChangedListener}
  * </p>
+ * <p>
+ * <strong>Note:</strong> if this view's size isn't divisible by 7,
+ * the contents will be centered inside such that the days in the calendar are equally square.
+ * For example, 600px isn't divisible by 7, so a tile size of 85 is choosen, making the calendar
+ * 595px wide. The extra 5px are distributed left and right to get to 600px.
+ * </p>
  */
-public class MaterialCalendarView extends FrameLayout {
+public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Default tile size in DIPs
@@ -119,8 +128,7 @@ public class MaterialCalendarView extends FrameLayout {
     private int arrowColor = Color.BLACK;
     private Drawable leftArrowMask;
     private Drawable rightArrowMask;
-
-    private LinearLayout root;
+    private int tileSize = -1;
 
     public MaterialCalendarView(Context context) {
         this(context, null);
@@ -253,28 +261,14 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     private void setupChildren() {
-        int tileSize = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                DEFAULT_TILE_SIZE_DP,
-                getResources().getDisplayMetrics()
-        );
-
-        root = new LinearLayout(getContext());
-        root.setOrientation(LinearLayout.VERTICAL);
-        root.setClipChildren(false);
-        root.setClipToPadding(false);
-        LayoutParams p = new LayoutParams(
-                tileSize * MonthView.DEFAULT_DAYS_IN_WEEK,
-                tileSize * (MonthView.DEFAULT_MONTH_TILE_HEIGHT + 1)
-        );
-        p.gravity = Gravity.CENTER;
-        addView(root, p);
+        setClipChildren(false);
+        setClipToPadding(false);
 
         topbar = new LinearLayout(getContext());
         topbar.setOrientation(LinearLayout.HORIZONTAL);
         topbar.setClipChildren(false);
         topbar.setClipToPadding(false);
-        root.addView(topbar, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, 1));
+        addView(topbar, new LayoutParams(1));
 
         buttonPast.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         buttonPast.setImageResource(R.drawable.mcv_action_previous);
@@ -291,9 +285,7 @@ public class MaterialCalendarView extends FrameLayout {
 
         pager.setId(R.id.mcv_pager);
         pager.setOffscreenPageLimit(1);
-        root.addView(pager, new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, 0, MonthView.DEFAULT_MONTH_TILE_HEIGHT
-        ));
+        addView(pager, new LayoutParams(MonthView.DEFAULT_MONTH_TILE_HEIGHT));
     }
 
     /**
@@ -324,7 +316,7 @@ public class MaterialCalendarView extends FrameLayout {
      * @return the size of tiles in pixels
      */
     public int getTileSize() {
-        return root.getLayoutParams().width / MonthView.DEFAULT_DAYS_IN_WEEK;
+        return tileSize;
     }
 
     /**
@@ -335,20 +327,8 @@ public class MaterialCalendarView extends FrameLayout {
      * @param size the new size for each tile in pixels
      */
     public void setTileSize(int size) {
-        LayoutParams p;
-        if (getTopbarVisible()) {
-            p = new LayoutParams(
-                    size * MonthView.DEFAULT_DAYS_IN_WEEK,
-                    size * (MonthView.DEFAULT_MONTH_TILE_HEIGHT + 1)
-            );
-        } else { // topbar.getVisibility() == View.GONE
-            p = new LayoutParams(
-                    size * MonthView.DEFAULT_DAYS_IN_WEEK,
-                    size * (MonthView.DEFAULT_MONTH_TILE_HEIGHT)
-            );
-        }
-        p.gravity = Gravity.CENTER;
-        root.setLayoutParams(p);
+        this.tileSize = size;
+        requestLayout();
     }
 
     /**
@@ -357,9 +337,13 @@ public class MaterialCalendarView extends FrameLayout {
      * @param tileSizeDp the new size for each tile in dips
      */
     public void setTileSizeDp(int tileSizeDp) {
-        setTileSize((int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, tileSizeDp, getResources().getDisplayMetrics()
-        ));
+        setTileSize(dpToPx(tileSizeDp));
+    }
+
+    private int dpToPx(int dp) {
+        return (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics()
+        );
     }
 
     /**
@@ -765,13 +749,13 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     @Override
-    protected void dispatchSaveInstanceState(SparseArray<Parcelable> container) {
+    protected void dispatchSaveInstanceState(@NonNull SparseArray<Parcelable> container) {
         //super.dispatchSaveInstanceState(container);
         super.dispatchFreezeSelfOnly(container);
     }
 
     @Override
-    protected void dispatchRestoreInstanceState(SparseArray<Parcelable> container) {
+    protected void dispatchRestoreInstanceState(@NonNull SparseArray<Parcelable> container) {
         //super.dispatchRestoreInstanceState(container);
         super.dispatchThawSelfOnly(container);
     }
@@ -794,7 +778,7 @@ public class MaterialCalendarView extends FrameLayout {
         CalendarDay maxDate = null;
         CalendarDay selectedDate = null;
         int firstDayOfWeek = Calendar.SUNDAY;
-        int tileSizePx = 0;
+        int tileSizePx = -1;
         boolean topbarVisible = true;
 
         SavedState(Parcelable superState) {
@@ -936,5 +920,205 @@ public class MaterialCalendarView extends FrameLayout {
      */
     public void invalidateDecorators() {
         adapter.invalidateDecorators();
+    }
+
+    /*
+     * Custom ViewGroup Code
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected LayoutParams generateDefaultLayoutParams() {
+        return new LayoutParams(1);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+        final int specWidthSize = MeasureSpec.getSize(widthMeasureSpec);
+        final int specWidthMode = MeasureSpec.getMode(widthMeasureSpec);
+        final int specHeightSize = MeasureSpec.getSize(heightMeasureSpec);
+        final int specHeightMode = MeasureSpec.getMode(heightMeasureSpec);
+
+        //We need to disregard padding for a while. This will be added back later
+        final int desiredWidth = specWidthSize - getPaddingLeft() - getPaddingRight();
+        final int desiredHeight = specHeightSize - getPaddingTop() - getPaddingBottom();
+
+        final int viewTileHieght = getTopbarVisible() ?
+                (MonthView.DEFAULT_MONTH_TILE_HEIGHT + 1) :
+                MonthView.DEFAULT_MONTH_TILE_HEIGHT;
+
+        //Calculate independent tile sizes for later
+        int desiredTileWidth = desiredWidth / MonthView.DEFAULT_DAYS_IN_WEEK;
+        int desiredTileHeight = desiredHeight / viewTileHieght;
+
+        int measureTileSize = -1;
+
+        if(this.tileSize > 0) {
+            //We have a tileSize set, we should use that
+            measureTileSize = this.tileSize;
+        }
+        else if(specWidthMode == MeasureSpec.EXACTLY) {
+            if(specHeightMode == MeasureSpec.EXACTLY) {
+                //Pick the larger of the two explicit sizes
+                measureTileSize = Math.max(desiredTileWidth, desiredTileHeight);
+            }
+            else {
+                //Be the width size the user wants
+                measureTileSize = desiredTileWidth;
+            }
+        }
+        else if(specHeightMode == MeasureSpec.EXACTLY) {
+            //Be the height size the user wants
+            measureTileSize = desiredTileHeight;
+        }
+
+        //Uh oh! We need to default to something, quick!
+        if(measureTileSize <= 0) {
+            measureTileSize = dpToPx(DEFAULT_TILE_SIZE_DP);
+        }
+
+        //Calculate our size based off our measured tile size
+        int measuredWidth = measureTileSize * MonthView.DEFAULT_DAYS_IN_WEEK;
+        int measuredHeight = measureTileSize * viewTileHieght;
+
+        //Put padding back in from when we took it away
+        measuredWidth += getPaddingLeft() + getPaddingRight();
+        measuredHeight += getPaddingTop() + getPaddingBottom();
+
+        //Contract fulfilled, setting out measurements
+        setMeasuredDimension(
+                //We clamp inline because we want to use un-clamped versions on the children
+                clampSize(measuredWidth, widthMeasureSpec),
+                clampSize(measuredHeight, heightMeasureSpec)
+        );
+
+        int count = getChildCount();
+
+        for (int i = 0; i < count; i++) {
+            final View child = getChildAt(i);
+
+            LayoutParams p = (LayoutParams) child.getLayoutParams();
+
+            int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
+                    measuredWidth - getPaddingLeft() - getPaddingRight(),
+                    MeasureSpec.EXACTLY
+            );
+
+            int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
+                    p.height * measureTileSize,
+                    MeasureSpec.EXACTLY
+            );
+
+            child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+        }
+    }
+
+    /**
+     * Clamp the size to the measure spec.
+     * @param size Size we want to be
+     * @param spec Measure spec to clamp against
+     * @return the appropriate size to pass to {@linkplain View#setMeasuredDimension(int, int)}
+     */
+    private static int clampSize(int size, int spec) {
+        int specMode = MeasureSpec.getMode(spec);
+        int specSize = MeasureSpec.getSize(spec);
+        switch (specMode) {
+            case MeasureSpec.EXACTLY: {
+                return specSize;
+            }
+            case MeasureSpec.AT_MOST: {
+                return Math.min(size, specSize);
+            }
+            case MeasureSpec.UNSPECIFIED:
+            default: {
+                return size;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        final int count = getChildCount();
+
+        final int parentWidth = right - left;
+        final int parentLeft = getPaddingLeft();
+
+        int childTop = getPaddingTop();
+
+        for (int i = 0; i < count; i++) {
+            final View child = getChildAt(i);
+
+            final int width = child.getMeasuredWidth();
+            final int height = child.getMeasuredHeight();
+
+            int delta = (parentWidth - width) / 2;
+
+            child.layout(parentLeft + delta, childTop, parentLeft + width, childTop + height);
+
+            childTop += height;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new LayoutParams(1);
+    }
+
+    @Override
+    public boolean shouldDelayChildPressedState() {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
+        return p instanceof LayoutParams;
+    }
+
+    @Override
+    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
+        return new LayoutParams(1);
+    }
+
+
+    @Override
+    public void onInitializeAccessibilityEvent(@NonNull AccessibilityEvent event) {
+        super.onInitializeAccessibilityEvent(event);
+        event.setClassName(MaterialCalendarView.class.getName());
+    }
+
+    @Override
+    public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(info);
+        info.setClassName(MaterialCalendarView.class.getName());
+    }
+
+    /**
+     * Simple layout params for MaterialCalendarView. The only variation for layout is height.
+     */
+    private static class LayoutParams extends MarginLayoutParams {
+
+        /**
+         * Create a layout that matches parent width, and is X number of tiles high
+         *
+         * @param tileHeight view height in number of tiles
+         */
+        public LayoutParams(int tileHeight) {
+            super(MATCH_PARENT, tileHeight);
+        }
+
     }
 }
