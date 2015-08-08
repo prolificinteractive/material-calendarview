@@ -107,6 +107,7 @@ class MonthPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         CalendarDay month = months.get(position);
         MonthView monthView = new MonthView(container.getContext(), month, firstDayOfTheWeek);
+        monthView.setAlpha(0);
 
         monthView.setWeekDayFormatter(weekDayFormatter);
         monthView.setDayFormatter(dayFormatter);
