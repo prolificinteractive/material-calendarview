@@ -261,8 +261,6 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     private void setupChildren() {
-        setClipChildren(false);
-        setClipToPadding(false);
 
         topbar = new LinearLayout(getContext());
         topbar.setOrientation(LinearLayout.HORIZONTAL);
@@ -1005,7 +1003,7 @@ public class MaterialCalendarView extends ViewGroup {
             LayoutParams p = (LayoutParams) child.getLayoutParams();
 
             int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    measuredWidth - getPaddingLeft() - getPaddingRight(),
+                    MonthView.DEFAULT_DAYS_IN_WEEK * measureTileSize,
                     MeasureSpec.EXACTLY
             );
 
@@ -1048,8 +1046,8 @@ public class MaterialCalendarView extends ViewGroup {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         final int count = getChildCount();
 
-        final int parentWidth = right - left;
         final int parentLeft = getPaddingLeft();
+        final int parentWidth = right - left - parentLeft - getPaddingRight();
 
         int childTop = getPaddingTop();
 
@@ -1060,8 +1058,9 @@ public class MaterialCalendarView extends ViewGroup {
             final int height = child.getMeasuredHeight();
 
             int delta = (parentWidth - width) / 2;
+            int childLeft = parentLeft + delta;
 
-            child.layout(parentLeft + delta, childTop, parentLeft + width, childTop + height);
+            child.layout(childLeft, childTop, childLeft + width, childTop + height);
 
             childTop += height;
         }
