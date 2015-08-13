@@ -1,9 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
-import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,7 +27,7 @@ class MonthPagerAdapter extends PagerAdapter {
     private Boolean showOtherDates = null;
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
-    private Indicizer indicizer;
+    private DateRangeIndex rangeIndex;
     private CalendarDay selectedDate = null;
     private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
     private DayFormatter dayFormatter = DayFormatter.DEFAULT;
@@ -65,7 +63,7 @@ class MonthPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return indicizer.getCount();
+        return rangeIndex.getCount();
     }
 
     public int getIndexForDay(CalendarDay day) {
@@ -78,7 +76,7 @@ class MonthPagerAdapter extends PagerAdapter {
         if (maxDate != null && day.isAfter(maxDate)) {
             return getCount() - 1;
         }
-        return indicizer.indexOf(day);
+        return rangeIndex.indexOf(day);
     }
 
     @Override
@@ -91,7 +89,7 @@ class MonthPagerAdapter extends PagerAdapter {
         if (month == null) {
             return POSITION_NONE;
         }
-        int index = indicizer.indexOf(month);
+        int index = rangeIndex.indexOf(month);
         if (index < 0) {
             return POSITION_NONE;
         }
@@ -229,7 +227,7 @@ class MonthPagerAdapter extends PagerAdapter {
             max = CalendarDay.from(worker);
         }
 
-        indicizer = new Indicizer(min, max);
+        rangeIndex = new DateRangeIndex(min, max);
 
         CalendarDay prevDate = selectedDate;
         notifyDataSetChanged();
@@ -267,7 +265,7 @@ class MonthPagerAdapter extends PagerAdapter {
     }
 
     public CalendarDay getItem(int position) {
-        return indicizer.getItem(position);
+        return rangeIndex.getItem(position);
     }
 
     public CalendarDay getSelectedDate() {
@@ -286,50 +284,4 @@ class MonthPagerAdapter extends PagerAdapter {
         return firstDayOfTheWeek;
     }
 
-    private static class Indicizer {
-
-        private final @NonNull CalendarDay min;
-        private final int count;
-
-        private SparseArray<CalendarDay> dayCache = new SparseArray<>();
-
-        public Indicizer(@NonNull CalendarDay min, @NonNull CalendarDay max) {
-            this.min = CalendarDay.from(min.getYear(), min.getMonth(), 1);
-            max = CalendarDay.from(max.getYear(), max.getMonth(), 1);
-            this.count = indexOf(max) + 1;
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        public int indexOf(CalendarDay day) {
-            int yDiff = day.getYear() - min.getYear();
-            int mDiff = day.getMonth() - min.getMonth();
-
-            return (yDiff * 12) + mDiff;
-        }
-
-        public CalendarDay getItem(int position) {
-
-            CalendarDay re = dayCache.get(position);
-            if(re != null) {
-                return re;
-            }
-
-            int numY = position / 12;
-            int numM = position % 12;
-
-            int year = min.getYear() + numY;
-            int month = min.getMonth() + numM;
-            if(month >= 12) {
-                year += 1;
-                month -= 12;
-            }
-
-            re = CalendarDay.from(year, month, 1);
-            dayCache.put(position, re);
-            return re;
-        }
-    }
 }
