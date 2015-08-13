@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+Version FUTURE *(RELEASE_DATE)*
+-------------------------------
+
+* Change: The view now responds better to layout parameters.
+The functionality is similar to how `adjustViewBounds` works with ImageView,
+where the view will try and take up as much space as necessary,
+but we base it on tile size instead of an aspect ratio.
+The exception being that if a `tileSize` is set,
+that will override everything and set the view to that size.
+
 Version 0.7.0 *(2015-07-09)*
 ----------------------------
 
