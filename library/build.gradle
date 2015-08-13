@@ -18,6 +18,8 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:22.2.0'
+
+    testCompile 'junit:junit:4.12'
 }
 
 task sourcesJar(type: Jar) {
