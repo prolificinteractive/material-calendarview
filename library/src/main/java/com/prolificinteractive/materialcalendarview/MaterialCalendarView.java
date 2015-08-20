@@ -1065,6 +1065,11 @@ public class MaterialCalendarView extends FrameLayout {
             return view == object;
         }
 
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return view.titleChanger.getTitleFormatter().format(getItem(position));
+        }
+        
         public void setCallbacks(MonthView.Callbacks callbacks) {
             this.callbacks = callbacks;
             for(MonthView monthView : currentViews) {
