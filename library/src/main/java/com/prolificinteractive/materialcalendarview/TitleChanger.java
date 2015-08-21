@@ -104,6 +104,10 @@ class TitleChanger {
         previousMonth = currentMonth;
     }
 
+    public TitleFormatter getTitleFormatter() {
+        return titleFormatter;
+    }
+    
     public void setTitleFormatter(TitleFormatter titleFormatter) {
         this.titleFormatter = titleFormatter;
     }
