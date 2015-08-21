@@ -8,6 +8,16 @@ and feel, rather than 100% parity with the platform's implementation.
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Material%20Calendar%20View-blue.svg?style=flat)](https://android-arsenal.com/details/1/1531)
 
+Breaking Change in FUTURE *(RELEASE_DATE)*
+------------------------------------------
+
+* Change: The view now responds better to layout parameters.
+The functionality is similar to how `adjustViewBounds` works with ImageView,
+where the view will try and take up as much space as necessary,
+but we base it on tile size instead of an aspect ratio.
+The exception being that if a `tileSize` is set,
+that will override everything and set the view to that size.
+
 Usage
 -----
 
@@ -93,15 +103,6 @@ If one of your decorators changes after it's been added to the calendar view, ma
 When implementing a `DayViewDecorator`, make sure that they are as efficent as possible.
 Remember that `shouldDecorate()` needs to be called 42 times for each month view.
 An easy way to be more efficent is to convert your data to `CalendarDay`s outside of `shouldDecorate()`.
-
-#### Migrating from 0.3.x
-
-To make decorating more efficent, the following changes were made to `DayViewFacade`:
-
-* Removed `getDate()`. Decorations to a facade will be applied to all days for the decorator. Use multiple decorators for different decorating.
-* Replaced `setBackground()` with `setSelectionBackground()` to be more clear on functionality.
-* Replaced `setBackgroundUnselected()` with `setBackgroundDrawable()`. The drawable will now be draw below everything else on the day view.
-* Removed `setText()`. Instead you should use `addSpan()` to add a span to the entire day label. See above for information on spans.
 
 Contributing
 ============

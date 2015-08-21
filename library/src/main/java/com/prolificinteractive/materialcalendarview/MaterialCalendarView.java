@@ -8,8 +8,8 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ArrayRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -17,7 +17,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,9 +35,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * <p>
@@ -53,8 +52,14 @@ import java.util.Locale;
  * The date closest to the previous selection will become selected. This will also trigger the
  * {@linkplain com.prolificinteractive.materialcalendarview.OnDateChangedListener}
  * </p>
+ * <p>
+ * <strong>Note:</strong> if this view's size isn't divisible by 7,
+ * the contents will be centered inside such that the days in the calendar are equally square.
+ * For example, 600px isn't divisible by 7, so a tile size of 85 is choosen, making the calendar
+ * 595px wide. The extra 5px are distributed left and right to get to 600px.
+ * </p>
  */
-public class MaterialCalendarView extends FrameLayout {
+public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Default tile size in DIPs
@@ -123,8 +128,7 @@ public class MaterialCalendarView extends FrameLayout {
     private int arrowColor = Color.BLACK;
     private Drawable leftArrowMask;
     private Drawable rightArrowMask;
-
-    private LinearLayout root;
+    private int tileSize = -1;
 
     public MaterialCalendarView(Context context) {
         this(context, null);
@@ -133,8 +137,15 @@ public class MaterialCalendarView extends FrameLayout {
     public MaterialCalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        setClipChildren(false);
-        setClipToPadding(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //If we're on good Android versions, turn off clipping for cool effects
+            setClipToPadding(false);
+            setClipChildren(false);
+        } else {
+            //Old Android does not like _not_ clipping view pagers, we need to clip
+            setClipChildren(true);
+            setClipToPadding(true);
+        }
 
         buttonPast = new DirectionButton(getContext());
         title = new TextView(getContext());
@@ -149,7 +160,8 @@ public class MaterialCalendarView extends FrameLayout {
 
         titleChanger = new TitleChanger(title);
         titleChanger.setTitleFormatter(DEFAULT_TITLE_FORMATTER);
-        adapter = new MonthPagerAdapter(this);
+        adapter = new MonthPagerAdapter();
+        adapter.setTitleFormatter(DEFAULT_TITLE_FORMATTER);
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(pageChangeListener);
         pager.setPageTransformer(false, new ViewPager.PageTransformer() {
@@ -242,31 +254,25 @@ public class MaterialCalendarView extends FrameLayout {
 
         currentMonth = CalendarDay.today();
         setCurrentDate(currentMonth);
+
+        if(isInEditMode()) {
+            removeView(pager);
+            MonthView monthView = new MonthView(context, currentMonth, getFirstDayOfWeek());
+            monthView.setSelectionColor(getSelectionColor());
+            monthView.setDateTextAppearance(adapter.getDateTextAppearance());
+            monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance());
+            monthView.setShowOtherDates(getShowOtherDates());
+            addView(monthView, new LayoutParams(MonthView.DEFAULT_MONTH_TILE_HEIGHT));
+        }
     }
 
     private void setupChildren() {
-        int tileSize = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                DEFAULT_TILE_SIZE_DP,
-                getResources().getDisplayMetrics()
-        );
-
-        root = new LinearLayout(getContext());
-        root.setOrientation(LinearLayout.VERTICAL);
-        root.setClipChildren(false);
-        root.setClipToPadding(false);
-        LayoutParams p = new LayoutParams(
-                tileSize * MonthView.DEFAULT_DAYS_IN_WEEK,
-                tileSize * (MonthView.DEFAULT_MONTH_TILE_HEIGHT + 1)
-        );
-        p.gravity = Gravity.CENTER;
-        addView(root, p);
 
         topbar = new LinearLayout(getContext());
         topbar.setOrientation(LinearLayout.HORIZONTAL);
         topbar.setClipChildren(false);
         topbar.setClipToPadding(false);
-        root.addView(topbar, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, 1));
+        addView(topbar, new LayoutParams(1));
 
         buttonPast.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         buttonPast.setImageResource(R.drawable.mcv_action_previous);
@@ -283,9 +289,7 @@ public class MaterialCalendarView extends FrameLayout {
 
         pager.setId(R.id.mcv_pager);
         pager.setOffscreenPageLimit(1);
-        root.addView(pager, new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, 0, MonthView.DEFAULT_MONTH_TILE_HEIGHT
-        ));
+        addView(pager, new LayoutParams(MonthView.DEFAULT_MONTH_TILE_HEIGHT));
     }
 
     /**
@@ -316,7 +320,7 @@ public class MaterialCalendarView extends FrameLayout {
      * @return the size of tiles in pixels
      */
     public int getTileSize() {
-        return root.getLayoutParams().width / MonthView.DEFAULT_DAYS_IN_WEEK;
+        return tileSize;
     }
 
     /**
@@ -327,20 +331,8 @@ public class MaterialCalendarView extends FrameLayout {
      * @param size the new size for each tile in pixels
      */
     public void setTileSize(int size) {
-        LayoutParams p;
-        if (getTopbarVisible()) {
-            p = new LayoutParams(
-                    size * MonthView.DEFAULT_DAYS_IN_WEEK,
-                    size * (MonthView.DEFAULT_MONTH_TILE_HEIGHT + 1)
-            );
-        } else { // topbar.getVisibility() == View.GONE
-            p = new LayoutParams(
-                    size * MonthView.DEFAULT_DAYS_IN_WEEK,
-                    size * (MonthView.DEFAULT_MONTH_TILE_HEIGHT)
-            );
-        }
-        p.gravity = Gravity.CENTER;
-        root.setLayoutParams(p);
+        this.tileSize = size;
+        requestLayout();
     }
 
     /**
@@ -349,9 +341,13 @@ public class MaterialCalendarView extends FrameLayout {
      * @param tileSizeDp the new size for each tile in dips
      */
     public void setTileSizeDp(int tileSizeDp) {
-        setTileSize((int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, tileSizeDp, getResources().getDisplayMetrics()
-        ));
+        setTileSize(dpToPx(tileSizeDp));
+    }
+
+    private int dpToPx(int dp) {
+        return (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics()
+        );
     }
 
     /**
@@ -384,7 +380,12 @@ public class MaterialCalendarView extends FrameLayout {
      */
     public void setSelectionColor(int color) {
         if(color == 0) {
-            return;
+            if(!isInEditMode()) {
+                return;
+            }
+            else {
+                color = Color.GRAY;
+            }
         }
         accentColor = color;
         adapter.setSelectionColor(color);
@@ -665,7 +666,11 @@ public class MaterialCalendarView extends FrameLayout {
      * @param titleFormatter new formatter to use, null to use default formatter
      */
     public void setTitleFormatter(TitleFormatter titleFormatter) {
-        titleChanger.setTitleFormatter(titleFormatter == null ? DEFAULT_TITLE_FORMATTER : titleFormatter);
+        if(titleFormatter == null) {
+            titleFormatter = DEFAULT_TITLE_FORMATTER;
+        }
+        titleChanger.setTitleFormatter(titleFormatter);
+        adapter.setTitleFormatter(titleFormatter);
         updateUi();
     }
 
@@ -752,15 +757,13 @@ public class MaterialCalendarView extends FrameLayout {
     }
 
     @Override
-    protected void dispatchSaveInstanceState(SparseArray<Parcelable> container) {
-        //super.dispatchSaveInstanceState(container);
-        super.dispatchFreezeSelfOnly(container);
+    protected void dispatchSaveInstanceState(@NonNull SparseArray<Parcelable> container) {
+        dispatchFreezeSelfOnly(container);
     }
 
     @Override
-    protected void dispatchRestoreInstanceState(SparseArray<Parcelable> container) {
-        //super.dispatchRestoreInstanceState(container);
-        super.dispatchThawSelfOnly(container);
+    protected void dispatchRestoreInstanceState(@NonNull SparseArray<Parcelable> container) {
+        dispatchThawSelfOnly(container);
     }
 
     private void setRangeDates(CalendarDay min, CalendarDay max) {
@@ -781,7 +784,7 @@ public class MaterialCalendarView extends FrameLayout {
         CalendarDay maxDate = null;
         CalendarDay selectedDate = null;
         int firstDayOfWeek = Calendar.SUNDAY;
-        int tileSizePx = 0;
+        int tileSizePx = -1;
         boolean topbarVisible = true;
 
         SavedState(Parcelable superState) {
@@ -925,295 +928,204 @@ public class MaterialCalendarView extends FrameLayout {
         adapter.invalidateDecorators();
     }
 
-    private static class MonthPagerAdapter extends PagerAdapter {
+    /*
+     * Custom ViewGroup Code
+     */
 
-        private final MaterialCalendarView view;
-        private final LinkedList<MonthView> currentViews;
-        private final ArrayList<CalendarDay> months;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected LayoutParams generateDefaultLayoutParams() {
+        return new LayoutParams(1);
+    }
 
-        private MonthView.Callbacks callbacks = null;
-        private Integer color = null;
-        private Integer dateTextAppearance = null;
-        private Integer weekDayTextAppearance = null;
-        private Boolean showOtherDates = null;
-        private CalendarDay minDate = null;
-        private CalendarDay maxDate = null;
-        private CalendarDay selectedDate = null;
-        private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
-        private DayFormatter dayFormatter = DayFormatter.DEFAULT;
-        private List<DayViewDecorator> decorators = new ArrayList<>();
-        private List<DecoratorResult> decoratorResults = null;
-        private int firstDayOfTheWeek = Calendar.SUNDAY;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+        final int specWidthSize = MeasureSpec.getSize(widthMeasureSpec);
+        final int specWidthMode = MeasureSpec.getMode(widthMeasureSpec);
+        final int specHeightSize = MeasureSpec.getSize(heightMeasureSpec);
+        final int specHeightMode = MeasureSpec.getMode(heightMeasureSpec);
 
+        //We need to disregard padding for a while. This will be added back later
+        final int desiredWidth = specWidthSize - getPaddingLeft() - getPaddingRight();
+        final int desiredHeight = specHeightSize - getPaddingTop() - getPaddingBottom();
 
-        private MonthPagerAdapter(MaterialCalendarView view) {
-            this.view = view;
-            currentViews = new LinkedList<>();
-            months = new ArrayList<>();
-            setRangeDates(null, null);
+        final int viewTileHieght = getTopbarVisible() ?
+                (MonthView.DEFAULT_MONTH_TILE_HEIGHT + 1) :
+                MonthView.DEFAULT_MONTH_TILE_HEIGHT;
+
+        //Calculate independent tile sizes for later
+        int desiredTileWidth = desiredWidth / MonthView.DEFAULT_DAYS_IN_WEEK;
+        int desiredTileHeight = desiredHeight / viewTileHieght;
+
+        int measureTileSize = -1;
+
+        if(this.tileSize > 0) {
+            //We have a tileSize set, we should use that
+            measureTileSize = this.tileSize;
         }
-
-
-        public void setDecorators(List<DayViewDecorator> decorators){
-            this.decorators = decorators;
-            invalidateDecorators();
-        }
-
-        public void invalidateDecorators() {
-            decoratorResults = new ArrayList<>();
-            for(DayViewDecorator decorator : decorators) {
-                DayViewFacade facade = new DayViewFacade();
-                decorator.decorate(facade);
-                if(facade.isDecorated()) {
-                    decoratorResults.add(new DecoratorResult(decorator, facade));
-                }
+        else if(specWidthMode == MeasureSpec.EXACTLY) {
+            if(specHeightMode == MeasureSpec.EXACTLY) {
+                //Pick the larger of the two explicit sizes
+                measureTileSize = Math.max(desiredTileWidth, desiredTileHeight);
             }
-            for(MonthView monthView : currentViews) {
-                monthView.setDayViewDecorators(decoratorResults);
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return months.size();
-        }
-
-        public int getIndexForDay(CalendarDay day) {
-            if(day == null) {
-                return getCount() / 2;
-            }
-            if(minDate != null && day.isBefore(minDate)) {
-                return 0;
-            }
-            if(maxDate != null && day.isAfter(maxDate)) {
-                return getCount() - 1;
-            }
-            for (int i = 0; i < months.size(); i++) {
-                CalendarDay month = months.get(i);
-                if (day.getYear() == month.getYear() && day.getMonth() == month.getMonth()) {
-                    return i;
-                }
-            }
-            return getCount() / 2;
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            if(!(object instanceof MonthView)) {
-                return POSITION_NONE;
-            }
-            MonthView monthView = (MonthView) object;
-            CalendarDay month = monthView.getMonth();
-            if(month == null) {
-                return POSITION_NONE;
-            }
-            int index = months.indexOf(month);
-            if(index < 0) {
-                return POSITION_NONE;
-            }
-            return index;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            CalendarDay month = months.get(position);
-            MonthView monthView = new MonthView(container.getContext(), month, firstDayOfTheWeek);
-
-            monthView.setWeekDayFormatter(weekDayFormatter);
-            monthView.setDayFormatter(dayFormatter);
-            monthView.setCallbacks(callbacks);
-            if(color != null) {
-                monthView.setSelectionColor(color);
-            }
-            if(dateTextAppearance != null) {
-                monthView.setDateTextAppearance(dateTextAppearance);
-            }
-            if(weekDayTextAppearance != null) {
-                monthView.setWeekDayTextAppearance(weekDayTextAppearance);
-            }
-            if(showOtherDates != null) {
-                monthView.setShowOtherDates(showOtherDates);
-            }
-            monthView.setMinimumDate(minDate);
-            monthView.setMaximumDate(maxDate);
-            monthView.setSelectedDate(selectedDate);
-
-            container.addView(monthView);
-            currentViews.add(monthView);
-
-            monthView.setDayViewDecorators(decoratorResults);
-
-            return monthView;
-        }
-
-        public void setFirstDayOfWeek(int day) {
-            firstDayOfTheWeek = day;
-            for(MonthView monthView : currentViews) {
-                monthView.setFirstDayOfWeek(firstDayOfTheWeek);
+            else {
+                //Be the width size the user wants
+                measureTileSize = desiredTileWidth;
             }
         }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            MonthView monthView = (MonthView) object;
-            currentViews.remove(monthView);
-            container.removeView(monthView);
+        else if(specHeightMode == MeasureSpec.EXACTLY) {
+            //Be the height size the user wants
+            measureTileSize = desiredTileHeight;
         }
 
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
+        //Uh oh! We need to default to something, quick!
+        if(measureTileSize <= 0) {
+            measureTileSize = dpToPx(DEFAULT_TILE_SIZE_DP);
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return view.titleChanger.getTitleFormatter().format(getItem(position));
-        }
-        
-        public void setCallbacks(MonthView.Callbacks callbacks) {
-            this.callbacks = callbacks;
-            for(MonthView monthView : currentViews) {
-                monthView.setCallbacks(callbacks);
-            }
-        }
+        //Calculate our size based off our measured tile size
+        int measuredWidth = measureTileSize * MonthView.DEFAULT_DAYS_IN_WEEK;
+        int measuredHeight = measureTileSize * viewTileHieght;
 
-        public void setSelectionColor(int color) {
-            this.color = color;
-            for(MonthView monthView : currentViews) {
-                monthView.setSelectionColor(color);
-            }
-        }
+        //Put padding back in from when we took it away
+        measuredWidth += getPaddingLeft() + getPaddingRight();
+        measuredHeight += getPaddingTop() + getPaddingBottom();
 
-        public void setDateTextAppearance(int taId) {
-            if(taId == 0) {
-                return;
-            }
-            this.dateTextAppearance = taId;
-            for(MonthView monthView : currentViews) {
-                monthView.setDateTextAppearance(taId);
-            }
-        }
+        //Contract fulfilled, setting out measurements
+        setMeasuredDimension(
+                //We clamp inline because we want to use un-clamped versions on the children
+                clampSize(measuredWidth, widthMeasureSpec),
+                clampSize(measuredHeight, heightMeasureSpec)
+        );
 
-        public void setShowOtherDates(boolean show) {
-            this.showOtherDates = show;
-            for(MonthView monthView : currentViews) {
-                monthView.setShowOtherDates(show);
-            }
-        }
+        int count = getChildCount();
 
-        public void setWeekDayFormatter(WeekDayFormatter formatter) {
-            this.weekDayFormatter = formatter;
-            for(MonthView monthView : currentViews) {
-                monthView.setWeekDayFormatter(formatter);
-            }
-        }
+        for (int i = 0; i < count; i++) {
+            final View child = getChildAt(i);
 
-        public void setDayFormatter(DayFormatter formatter) {
-            this.dayFormatter = formatter;
-            for(MonthView monthView : currentViews) {
-                monthView.setDayFormatter(formatter);
-            }
-        }
+            LayoutParams p = (LayoutParams) child.getLayoutParams();
 
-        public boolean getShowOtherDates() {
-            return showOtherDates;
-        }
+            int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
+                    MonthView.DEFAULT_DAYS_IN_WEEK * measureTileSize,
+                    MeasureSpec.EXACTLY
+            );
 
-        public void setWeekDayTextAppearance(int taId) {
-            if(taId == 0) {
-                return;
+            int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
+                    p.height * measureTileSize,
+                    MeasureSpec.EXACTLY
+            );
+
+            child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+        }
+    }
+
+    /**
+     * Clamp the size to the measure spec.
+     * @param size Size we want to be
+     * @param spec Measure spec to clamp against
+     * @return the appropriate size to pass to {@linkplain View#setMeasuredDimension(int, int)}
+     */
+    private static int clampSize(int size, int spec) {
+        int specMode = MeasureSpec.getMode(spec);
+        int specSize = MeasureSpec.getSize(spec);
+        switch (specMode) {
+            case MeasureSpec.EXACTLY: {
+                return specSize;
             }
-            this.weekDayTextAppearance = taId;
-            for(MonthView monthView : currentViews) {
-                monthView.setWeekDayTextAppearance(taId);
+            case MeasureSpec.AT_MOST: {
+                return Math.min(size, specSize);
+            }
+            case MeasureSpec.UNSPECIFIED:
+            default: {
+                return size;
             }
         }
+    }
 
-        public void setRangeDates(CalendarDay min, CalendarDay max) {
-            this.minDate = min;
-            this.maxDate = max;
-            for(MonthView monthView : currentViews) {
-                monthView.setMinimumDate(min);
-                monthView.setMaximumDate(max);
-            }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        final int count = getChildCount();
 
-            if(min == null) {
-                Calendar worker = CalendarUtils.getInstance();
-                worker.add(Calendar.YEAR, -200);
-                min = CalendarDay.from(worker);
-            }
+        final int parentLeft = getPaddingLeft();
+        final int parentWidth = right - left - parentLeft - getPaddingRight();
 
-            if(max == null) {
-                Calendar worker = CalendarUtils.getInstance();
-                worker.add(Calendar.YEAR, 200);
-                max = CalendarDay.from(worker);
-            }
+        int childTop = getPaddingTop();
 
-            months.clear();
+        for (int i = 0; i < count; i++) {
+            final View child = getChildAt(i);
 
-            Calendar worker = CalendarUtils.getInstance();
-            min.copyToMonthOnly(worker);
-            CalendarDay workingMonth = CalendarDay.from(worker);
-            while (!max.isBefore(workingMonth)) {
-                months.add(CalendarDay.from(worker));
-                worker.add(Calendar.MONTH, 1);
-                worker.set(Calendar.DAY_OF_MONTH, 1);
-                workingMonth = CalendarDay.from(worker);
-            }
+            final int width = child.getMeasuredWidth();
+            final int height = child.getMeasuredHeight();
 
-            CalendarDay prevDate = selectedDate;
-            notifyDataSetChanged();
-            setSelectedDate(prevDate);
-            if(prevDate != null) {
-                if(!prevDate.equals(selectedDate)) {
-                    callbacks.onDateChanged(selectedDate);
-                }
-            }
+            int delta = (parentWidth - width) / 2;
+            int childLeft = parentLeft + delta;
+
+            child.layout(childLeft, childTop, childLeft + width, childTop + height);
+
+            childTop += height;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new LayoutParams(1);
+    }
+
+    @Override
+    public boolean shouldDelayChildPressedState() {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
+        return p instanceof LayoutParams;
+    }
+
+    @Override
+    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
+        return new LayoutParams(1);
+    }
+
+
+    @Override
+    public void onInitializeAccessibilityEvent(@NonNull AccessibilityEvent event) {
+        super.onInitializeAccessibilityEvent(event);
+        event.setClassName(MaterialCalendarView.class.getName());
+    }
+
+    @Override
+    public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(info);
+        info.setClassName(MaterialCalendarView.class.getName());
+    }
+
+    /**
+     * Simple layout params for MaterialCalendarView. The only variation for layout is height.
+     */
+    private static class LayoutParams extends MarginLayoutParams {
+
+        /**
+         * Create a layout that matches parent width, and is X number of tiles high
+         *
+         * @param tileHeight view height in number of tiles
+         */
+        public LayoutParams(int tileHeight) {
+            super(MATCH_PARENT, tileHeight);
         }
 
-        public void setSelectedDate(@Nullable CalendarDay date) {
-            CalendarDay prevDate = selectedDate;
-            this.selectedDate = getValidSelectedDate(date);
-            for(MonthView monthView : currentViews) {
-                monthView.setSelectedDate(selectedDate);
-            }
-
-            if(date == null && prevDate != null) {
-                callbacks.onDateChanged(null);
-            }
-        }
-
-        private CalendarDay getValidSelectedDate(CalendarDay date) {
-            if(date == null) {
-                return null;
-            }
-            if(minDate != null && minDate.isAfter(date)) {
-                return minDate;
-            }
-            if(maxDate != null && maxDate.isBefore(date)) {
-                return maxDate;
-            }
-            return date;
-        }
-
-        public CalendarDay getItem(int position) {
-            return months.get(position);
-        }
-
-        public CalendarDay getSelectedDate() {
-            return selectedDate;
-        }
-
-        protected int getDateTextAppearance() {
-            return dateTextAppearance == null ? 0 : dateTextAppearance;
-        }
-
-        protected int getWeekDayTextAppearance() {
-            return weekDayTextAppearance == null ? 0 : weekDayTextAppearance;
-        }
-
-        public int getFirstDayOfWeek() {
-            return firstDayOfTheWeek;
-        }
     }
 }
