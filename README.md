@@ -8,10 +8,10 @@ and feel, rather than 100% parity with the platform's implementation.
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Material%20Calendar%20View-blue.svg?style=flat)](https://android-arsenal.com/details/1/1531)
 
-Breaking Change in FUTURE *(RELEASE_DATE)*
-------------------------------------------
+Major Change in 0.8.0
+---------------------
 
-* Change: The view now responds better to layout parameters.
+The view now responds better to layout parameters.
 The functionality is similar to how `adjustViewBounds` works with ImageView,
 where the view will try and take up as much space as necessary,
 but we base it on tile size instead of an aspect ratio.
@@ -21,7 +21,7 @@ that will override everything and set the view to that size.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:0.7.0'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:0.8.0'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
 

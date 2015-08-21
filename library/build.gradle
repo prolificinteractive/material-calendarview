@@ -17,7 +17,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.android.support:support-v4:22.2.1'
 }
 
 task sourcesJar(type: Jar) {

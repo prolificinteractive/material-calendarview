@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version FUTURE *(RELEASE_DATE)*
+Version 0.8.0 *(2015-08-21)*
 -------------------------------
 
 * Change: The view now responds better to layout parameters.
@@ -10,6 +10,7 @@ where the view will try and take up as much space as necessary,
 but we base it on tile size instead of an aspect ratio.
 The exception being that if a `tileSize` is set,
 that will override everything and set the view to that size.
+* Improved: More efficent, dynamic, calculations are used in the pager adapter for month ranges
 
 Version 0.7.0 *(2015-07-09)*
 ----------------------------
