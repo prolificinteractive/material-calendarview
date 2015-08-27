@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Abstraction layer to help in decorating Day views
  */
-public final class DayViewFacade {
+public class DayViewFacade {
 
     private boolean isDecorated;
 
