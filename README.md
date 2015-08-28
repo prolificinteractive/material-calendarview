@@ -21,7 +21,7 @@ that will override everything and set the view to that size.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:0.8.0'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:0.8.1'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
 

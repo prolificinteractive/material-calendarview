@@ -708,14 +708,8 @@ public class MaterialCalendarView extends ViewGroup {
      * @param visible Boolean indicating if the topbar is visible
      */
     public void setTopbarVisible(boolean visible) {
-        int tileSize = getTileSize();
-        if (visible) {
-            topbar.setVisibility(View.VISIBLE);
-        }
-        else {
-            topbar.setVisibility(View.GONE);
-        }
-        setTileSize(tileSize);
+        topbar.setVisibility(visible ? View.VISIBLE : View.GONE);
+        requestLayout();
     }
 
     /**
@@ -1061,6 +1055,9 @@ public class MaterialCalendarView extends ViewGroup {
 
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
+            if(child.getVisibility() == View.GONE) {
+                continue;
+            }
 
             final int width = child.getMeasuredWidth();
             final int height = child.getMeasuredHeight();
