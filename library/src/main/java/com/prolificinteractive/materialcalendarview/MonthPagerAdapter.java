@@ -9,10 +9,10 @@ import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,7 +20,7 @@ import java.util.List;
  */
 class MonthPagerAdapter extends PagerAdapter {
 
-    private final LinkedList<MonthView> currentViews;
+    private final ArrayDeque<MonthView> currentViews;
 
     private final MaterialCalendarView mcv;
     private TitleFormatter titleFormatter = null;
@@ -41,7 +41,8 @@ class MonthPagerAdapter extends PagerAdapter {
 
     MonthPagerAdapter(MaterialCalendarView mcv) {
         this.mcv = mcv;
-        currentViews = new LinkedList<>();
+        currentViews = new ArrayDeque<>();
+        currentViews.iterator();
         setRangeDates(null, null);
     }
 
