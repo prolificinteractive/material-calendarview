@@ -37,7 +37,7 @@ public class DynamicSettersActivity extends AppCompatActivity {
     }
 
     @OnCheckedChanged(R.id.check_other_dates) void onOtherMonthsChecked(boolean checked) {
-        widget.setShowOtherDates(checked);
+        widget.setShowOtherDates(checked ? MaterialCalendarView.SHOW_ALL : MaterialCalendarView.SHOW_NONE);
     }
 
     @OnCheckedChanged(R.id.check_text_appearance) void onTextAppearanceChecked(boolean checked) {
@@ -51,7 +51,7 @@ public class DynamicSettersActivity extends AppCompatActivity {
             widget.setDateTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_Date);
             widget.setWeekDayTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_WeekDay);
         }
-        widget.setShowOtherDates(checked);
+        widget.setShowOtherDates(checked ? MaterialCalendarView.SHOW_ALL : MaterialCalendarView.SHOW_NONE);
     }
 
     @OnClick(R.id.button_min_date) void onMinClicked() {

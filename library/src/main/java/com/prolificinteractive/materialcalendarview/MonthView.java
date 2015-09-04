@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
@@ -16,6 +17,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
+import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SHOW_DEFAULTS;
+import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_WEEK;
 
@@ -43,7 +46,7 @@ class MonthView extends ViewGroup implements View.OnClickListener {
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
 
-    private boolean showOtherDates = false;
+    private @ShowOtherDates int showOtherDates = SHOW_DEFAULTS;
 
     private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
 
@@ -102,8 +105,8 @@ class MonthView extends ViewGroup implements View.OnClickListener {
         }
     }
 
-    public void setShowOtherDates(boolean show) {
-        this.showOtherDates = show;
+    public void setShowOtherDates(@ShowOtherDates int showFlags) {
+        this.showOtherDates = showFlags;
         updateUi();
     }
 
@@ -112,10 +115,6 @@ class MonthView extends ViewGroup implements View.OnClickListener {
             dayView.setOnClickListener(selectionEnabled ? this : null);
             dayView.setClickable(selectionEnabled);
         }
-    }
-
-    public boolean getShowOtherDates() {
-        return showOtherDates;
     }
 
     public CalendarDay getMonth() {
@@ -134,7 +133,7 @@ class MonthView extends ViewGroup implements View.OnClickListener {
         int dow = CalendarUtils.getDayOfWeek(tempWorkingCalendar);
         int delta = firstDayOfWeek - dow;
         //If the delta is positive, we want to remove a week
-        boolean removeRow = showOtherDates ? delta >= 0 : delta > 0;
+        boolean removeRow = showOtherMonths(showOtherDates) ? delta >= 0 : delta > 0;
         if(removeRow) {
             delta -= DEFAULT_DAYS_IN_WEEK;
         }

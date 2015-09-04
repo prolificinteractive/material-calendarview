@@ -6,6 +6,7 @@ Version 1.0.0 *(FUTURE)*
 
 * New: Added ability to select multiple dates or disable selection completely
 * Change: `OnDateChangedListener` has become `OnDateSelectedListener` with different functionality
+* Change: `showOtherDates` is now a integer flag for finer control over which days are shown
 
 Version 0.8.1 *(2015-08-28)*
 ----------------------------

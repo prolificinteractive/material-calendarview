@@ -38,7 +38,7 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateS
         ButterKnife.bind(this);
 
         widget.setOnDateChangedListener(this);
-        widget.setShowOtherDates(true);
+        widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
 
         Calendar calendar = Calendar.getInstance();
         widget.setSelectedDate(calendar.getTime());
