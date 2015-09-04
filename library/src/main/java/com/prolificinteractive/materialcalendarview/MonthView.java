@@ -30,11 +30,6 @@ class MonthView extends ViewGroup implements View.OnClickListener {
     protected static final int DEFAULT_MAX_WEEKS = 6;
     protected static final int DEFAULT_MONTH_TILE_HEIGHT = DEFAULT_MAX_WEEKS + 1;
 
-    public interface Callbacks {
-
-        void onDateClicked(@NonNull CalendarDay date, boolean nowSelected);
-    }
-
     private MaterialCalendarView mcv;
 
     private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
