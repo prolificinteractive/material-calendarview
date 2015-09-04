@@ -1,18 +1,13 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import butterknife.Bind;
@@ -21,20 +16,15 @@ import butterknife.ButterKnife;
 /**
  * Show off setting min and max dates and disabling individual days
  */
-public class DisableDaysActivity extends AppCompatActivity implements OnDateChangedListener {
-
-    private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
+public class DisableDaysActivity extends AppCompatActivity {
 
     @Bind(R.id.calendarView) MaterialCalendarView widget;
-    @Bind(R.id.textView) TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
         ButterKnife.bind(this);
-
-        widget.setOnDateChangedListener(this);
 
         // Add a decorator to disable prime numbered days
         widget.addDecorator(new PrimeDayDisableDecorator());
@@ -50,11 +40,6 @@ public class DisableDaysActivity extends AppCompatActivity implements OnDateChan
 
         calendar.set(calendar.get(Calendar.YEAR) + 2, Calendar.OCTOBER, 31);
         widget.setMaximumDate(calendar.getTime());
-    }
-
-    @Override
-    public void onDateChanged(@NonNull MaterialCalendarView widget, CalendarDay date) {
-        textView.setText(FORMATTER.format(date.getDate()));
     }
 
     private static class PrimeDayDisableDecorator implements DayViewDecorator {

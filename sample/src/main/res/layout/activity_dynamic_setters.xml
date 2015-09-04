@@ -53,6 +53,30 @@
             >
 
             <Button
+                android:id="@+id/button_selection_mode"
+                android:text="Selection Mode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+            <Button
+                android:id="@+id/button_toggle_topbar"
+                android:text="Toggle Topbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <Button
                 android:id="@+id/button_min_date"
                 android:text="Set Min Date"
                 android:layout_width="0dp"
@@ -132,9 +156,7 @@
                 android:layout_weight="1"
                 />
 
-            <Button
-                android:id="@+id/button_toggle_topbar"
-                android:text="Toggle Topbar"
+            <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
