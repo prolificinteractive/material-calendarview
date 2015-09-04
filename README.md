@@ -8,6 +8,13 @@ and feel, rather than 100% parity with the platform's implementation.
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Material%20Calendar%20View-blue.svg?style=flat)](https://android-arsenal.com/details/1/1531)
 
+Major Change in 1.0.0
+---------------------
+
+With the implementation of multiple selection, some of the apis needed to change to support it,
+namely `OnDateChangedListener` is now `OnDateSelectedListener`. There are also a bunch of new apis
+for multiple selection.
+
 Major Change in 0.8.0
 ---------------------
 
@@ -21,9 +28,9 @@ that will override everything and set the view to that size.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:0.8.1'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:1.0.0'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
-3. Set a `OnDateChangedListener` or call `MaterialCalendarView.getSelectedDate()` when you need it.
+3. Set a `OnDateSelectedListener` or call `MaterialCalendarView.getSelectedDates()` when you need it.
 
 [Javadoc Available Here](http://prolificinteractive.github.io/material-calendarview/)
 
@@ -80,6 +87,21 @@ Options only available in Java:
 | setMaximumDate()   | Set the latest visible date on the calendar                                 |
 | setSelectedDate()  | Set the date to show as selected. Must be within minimum and maximum dates. |
 | setTopbarVisible() | Set the top bar (arrows and title) as visible or gone.                      |
+| setSelectionMode() | Set the mode of selection. Choices are single, multiple or none.            |
+
+### Date Selection
+
+We support three modes of selection: single, multiple, or none. The default is single selection.
+The mode can be changed by calling `setSelectionMode()` and passing the approprate constant (`SELECTION_MODE_NONE`, `SELECTION_MODE_SINGLE`, or `SELECTION_MODE_MULTIPLE`).
+If you change to single selection, all selected days except the last selected will be cleared.
+If you change to none, all selected days will be cleared.
+
+You can set an `OnDateSelectedListener` to listen for selections, make sure to take into account multiple calls for the same date and state.
+You can manually select or deselect dates by calling `setDateSelected()`.
+There is also `setSelectedDate()` will will clear the current selection(s) and select the provided date.
+
+There are also: `clearSelection()`, `getSelectedDates()`, and `getSelectionMode()`; which should be self-explanitory.
+
 
 ### DayViewDecorator
 
