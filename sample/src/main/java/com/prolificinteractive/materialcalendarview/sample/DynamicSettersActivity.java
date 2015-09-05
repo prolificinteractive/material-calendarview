@@ -1,24 +1,19 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -27,9 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-public class DynamicSettersActivity extends AppCompatActivity implements OnDateChangedListener {
-
-    private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
+public class DynamicSettersActivity extends AppCompatActivity {
 
     @Bind(R.id.calendarView) MaterialCalendarView widget;
     private int currentTileSize;
@@ -41,13 +34,6 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
         ButterKnife.bind(this);
 
         currentTileSize = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
-
-        widget.setOnDateChangedListener(this);
-    }
-
-    @Override
-    public void onDateChanged(@NonNull MaterialCalendarView widget, @Nullable CalendarDay date) {
-        Toast.makeText(this, date == null ? "Unselected" : FORMATTER.format(date.getDate()), Toast.LENGTH_SHORT).show();
     }
 
     @OnCheckedChanged(R.id.check_other_dates) void onOtherMonthsChecked(boolean checked) {
@@ -131,6 +117,24 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateC
 
     @OnClick(R.id.button_clear_selection) void onClearSelection() {
         widget.clearSelection();
+    }
+
+    @OnClick(R.id.button_selection_mode) void onChangeSelectionMode() {
+        CharSequence[] items = {
+                "No Selection",
+                "Single Date",
+                "Multiple Dates"
+        };
+        new AlertDialog.Builder(this)
+                .setTitle("Selection Mode")
+                .setSingleChoiceItems(items, widget.getSelectionMode(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        widget.setSelectionMode(which);
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     private static final int[] DAYS_OF_WEEK = {
