@@ -28,9 +28,9 @@
             android:layout_height="wrap_content"
             >
 
-            <CheckBox
-                android:id="@+id/check_other_dates"
-                android:text="Show Other Dates"
+            <Button
+                android:id="@+id/button_other_dates"
+                android:text="Other Dates"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
