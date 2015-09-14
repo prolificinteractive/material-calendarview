@@ -15,6 +15,8 @@ With the implementation of multiple selection, some of the apis needed to change
 namely `OnDateChangedListener` is now `OnDateSelectedListener`. There are also a bunch of new apis
 for multiple selection.
 
+Also, `showOtherDates` is now a set of flags for finer control over which extra dates are shown.
+
 Major Change in 0.8.0
 ---------------------
 
