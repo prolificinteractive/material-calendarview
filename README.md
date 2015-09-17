@@ -1,3 +1,5 @@
+<img src="/images/ic_launcher-web.png" width="300px" />
+
 Material Calendar View
 ======================
 
