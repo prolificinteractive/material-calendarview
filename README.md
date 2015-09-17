@@ -81,14 +81,23 @@ Options only available in Java:
 | setSelectedDate()  | Set the date to show as selected. Must be within minimum and maximum dates. |
 | setTopbarVisible() | Set the top bar (arrows and title) as visible or gone.                      |
 
-### DayViewDecorator
+### Events, Highlighting, Custom Selectors, and More!
 
-Decorators allow you to change several aspects of each day's appearance.
+Material CalendarView provides an API that allows you to modify the appearance of a set of days.
+The `DayViewDecorator` API allows you to:
+
+* Set a custom background drawable
+* Set a custom selector drawable
+* Apply spans the the entire day's text
+    * See [this tutorial](http://blog.stylingandroid.com/introduction-to-spans/) for spans on Android
+    * We provide `DotSpan` which will draw a dot centered below the text
+* Set dates as disabled
+
 To do so, you need to make a new instance of `DayViewDecorator` and add it to the calendar with `addDecorator()`.
 Decorating is done via a `DayViewFacade` that is passed to the `decorate()` method.
-All calls to the `DayViewFacade` will be applied to every day `shouldDecorate()` returns true.
+All calls to the `DayViewFacade` will be applied to every day where `shouldDecorate()` returns true.
 
-`DayViewFacade` has three methods to allow decoration:
+`DayViewFacade` has four methods to allow decoration:
 
 1. `setBackgroundDrawable()` set a drawable to draw behind everything else. This also responds to state changes.
 2. `setSelectionDrawable()` allows customizes the selection indicator for specific days.
@@ -103,6 +112,8 @@ If one of your decorators changes after it's been added to the calendar view, ma
 When implementing a `DayViewDecorator`, make sure that they are as efficent as possible.
 Remember that `shouldDecorate()` needs to be called 42 times for each month view.
 An easy way to be more efficent is to convert your data to `CalendarDay`s outside of `shouldDecorate()`.
+
+Check out the sample app's `BasicActivityDecorated` activity for some examples.
 
 Contributing
 ============
