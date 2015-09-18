@@ -15,6 +15,8 @@ With the implementation of multiple selection, some of the apis needed to change
 namely `OnDateChangedListener` is now `OnDateSelectedListener`. There are also a bunch of new apis
 for multiple selection.
 
+Also, `showOtherDates` is now a set of flags for finer control over which extra dates are shown.
+
 Major Change in 0.8.0
 ---------------------
 
@@ -66,7 +68,7 @@ Options available in Java and as XML attributes:
 
 | Attribute             | Type      | Description                                                                                                                                                                                                     |
 |:----------------------|:----------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| showOtherDates        | boolean   | By default, only days of one month are shown. If this is set `true`,then days from the previous and next months are used to fill the empty space.This also controls showing dates outside of the min-max range. |
+| showOtherDates        | flags     | By default, only days of one month, in the min-max range, are shown. There are flags for `other_months`, `out_of_range`, and `decorated_disabled`. There are also `none`, `all`, or `defaults` for convenience. |
 | arrowColor            | color     | Set the color of the arrows used to page the calendar. Black by default.                                                                                                                                        |
 | selectionColor        | color     | Set the color of the date selector. By default this is the color set by`?android:attr/colorAccent` on 5.0+ or `?attr/colorAccent` from the AppCompat library.                                                   |
 | headerTextAppearance  | style     | Override the text appearance of the month-year indicator at the top.                                                                                                                                            |

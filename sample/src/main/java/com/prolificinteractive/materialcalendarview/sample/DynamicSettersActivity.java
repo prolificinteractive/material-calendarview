@@ -36,8 +36,42 @@ public class DynamicSettersActivity extends AppCompatActivity {
         currentTileSize = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
     }
 
-    @OnCheckedChanged(R.id.check_other_dates) void onOtherMonthsChecked(boolean checked) {
-        widget.setShowOtherDates(checked);
+    @OnClick(R.id.button_other_dates) void onOtherDatesClicked() {
+        CharSequence[] items = {
+                "Other Months",
+                "Out Of Range",
+                "Decorated Disabled"
+        };
+        final int[] itemValues = {
+                MaterialCalendarView.SHOW_OTHER_MONTHS,
+                MaterialCalendarView.SHOW_OUT_OF_RANGE,
+                MaterialCalendarView.SHOW_DECORATED_DISABLED,
+        };
+        int showOtherDates = widget.getShowOtherDates();
+        boolean[] initSelections = {
+                MaterialCalendarView.showOtherMonths(showOtherDates),
+                MaterialCalendarView.showOutOfRange(showOtherDates),
+                MaterialCalendarView.showDecoratedDisabled(showOtherDates),
+        };
+        new AlertDialog.Builder(this)
+                .setTitle("Show Other Dates")
+                .setMultiChoiceItems(items, initSelections, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        int showOtherDates = widget.getShowOtherDates();
+                        if(isChecked) {
+                            //Set flag
+                            showOtherDates |= itemValues[which];
+                        }
+                        else {
+                            //Unset flag
+                            showOtherDates &= ~itemValues[which];
+                        }
+                        widget.setShowOtherDates(showOtherDates);
+                    }
+                })
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     @OnCheckedChanged(R.id.check_text_appearance) void onTextAppearanceChecked(boolean checked) {
@@ -51,7 +85,7 @@ public class DynamicSettersActivity extends AppCompatActivity {
             widget.setDateTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_Date);
             widget.setWeekDayTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_WeekDay);
         }
-        widget.setShowOtherDates(checked);
+        widget.setShowOtherDates(checked ? MaterialCalendarView.SHOW_ALL : MaterialCalendarView.SHOW_NONE);
     }
 
     @OnClick(R.id.button_min_date) void onMinClicked() {

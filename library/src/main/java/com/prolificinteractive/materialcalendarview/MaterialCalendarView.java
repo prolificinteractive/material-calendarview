@@ -92,6 +92,49 @@ public class MaterialCalendarView extends ViewGroup {
     public static final int SELECTION_MODE_MULTIPLE = 2;
 
     /**
+     * {@linkplain IntDef} annotation for showOtherDates.
+     * @see #setShowOtherDates(int)
+     * @see #getShowOtherDates()
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @IntDef(flag = true, value = {
+            SHOW_NONE, SHOW_ALL, SHOW_DEFAULTS,
+            SHOW_OUT_OF_RANGE, SHOW_OTHER_MONTHS, SHOW_DECORATED_DISABLED
+    })
+    public @interface ShowOtherDates {}
+
+    /**
+     * Do not show any non-enabled dates
+     */
+    public static final int SHOW_NONE = 0;
+
+    /**
+     * Show dates from the proceeding and successive months, in a disabled state
+     */
+    public static final int SHOW_OTHER_MONTHS = 1;
+
+    /**
+     * Show dates that are outside of the min-max range.
+     * This will only show days from the current month unless {@link #SHOW_OTHER_MONTHS} is enabled.
+     */
+    public static final int SHOW_OUT_OF_RANGE = 2;
+
+    /**
+     * Show days that are individually disabled with decorators
+     */
+    public static final int SHOW_DECORATED_DISABLED = 4;
+
+    /**
+     * The default flags for showing non-enabled dates. Currently only shows {@link #SHOW_DECORATED_DISABLED}
+     */
+    public static final int SHOW_DEFAULTS = SHOW_DECORATED_DISABLED;
+
+    /**
+     * Show all the days
+     */
+    public static final int SHOW_ALL = SHOW_OTHER_MONTHS | SHOW_OUT_OF_RANGE | SHOW_DECORATED_DISABLED;
+
+    /**
      * Default tile size in DIPs. This is used in cases where there is no tile size specificed and the view is set to {@linkplain ViewGroup.LayoutParams#WRAP_CONTENT WRAP_CONTENT}
      */
     public static final int DEFAULT_TILE_SIZE_DP = 44;
@@ -247,12 +290,13 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_dateTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_Date
             ));
-            setShowOtherDates(a.getBoolean(
+            //noinspection ResourceType
+            setShowOtherDates(a.getInteger(
                     R.styleable.MaterialCalendarView_mcv_showOtherDates,
-                    false
+                    SHOW_DEFAULTS
             ));
 
-            int firstDayOfWeek = a.getInt(
+            int firstDayOfWeek = a.getInteger(
                     R.styleable.MaterialCalendarView_mcv_firstDayOfWeek,
                     -1
             );
@@ -699,14 +743,19 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * The default value is {@link #SHOW_DEFAULTS}, which currently is just {@link #SHOW_DECORATED_DISABLED}.
+     * This means that the default visible days are of the current month, in the min-max range.
      *
-     * By default, only days of one month are shown. If this is set true,
-     * then days from the previous and next months are used to fill the empty space.
-     * This also controls showing dates outside of the min-max range.
+     * @see #SHOW_ALL
+     * @see #SHOW_NONE
+     * @see #SHOW_DEFAULTS
+     * @see #SHOW_OTHER_MONTHS
+     * @see #SHOW_OUT_OF_RANGE
+     * @see #SHOW_DECORATED_DISABLED
      *
-     * @param showOtherDates show other days, default is false
+     * @param showOtherDates flags for showing non-enabled dates
      */
-    public void setShowOtherDates(boolean showOtherDates) {
+    public void setShowOtherDates(@ShowOtherDates int showOtherDates) {
         adapter.setShowOtherDates(showOtherDates);
     }
 
@@ -755,9 +804,16 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * @return true if days from previous or next months are shown, otherwise false.
+     * @see #SHOW_ALL
+     * @see #SHOW_NONE
+     * @see #SHOW_DEFAULTS
+     * @see #SHOW_OTHER_MONTHS
+     * @see #SHOW_OUT_OF_RANGE
+     * @see #SHOW_DECORATED_DISABLED
+     *
+     * @return int of flags used for showing non-enabled dates
      */
-    public boolean getShowOtherDates() {
+    public @ShowOtherDates int getShowOtherDates() {
         return adapter.getShowOtherDates();
     }
 
@@ -878,7 +934,7 @@ public class MaterialCalendarView extends ViewGroup {
         int color = 0;
         int dateTextAppearance = 0;
         int weekDayTextAppearance = 0;
-        boolean showOtherDates = false;
+        int showOtherDates = SHOW_DEFAULTS;
         CalendarDay minDate = null;
         CalendarDay maxDate = null;
         List<CalendarDay> selectedDates = new ArrayList<>();
@@ -897,7 +953,7 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeInt(color);
             out.writeInt(dateTextAppearance);
             out.writeInt(weekDayTextAppearance);
-            out.writeInt(showOtherDates ? 1 : 0);
+            out.writeInt(showOtherDates);
             out.writeParcelable(minDate, 0);
             out.writeParcelable(maxDate, 0);
             out.writeParcelableArray(selectedDates.toArray(new CalendarDay[selectedDates.size()]), 0);
@@ -923,7 +979,7 @@ public class MaterialCalendarView extends ViewGroup {
             color = in.readInt();
             dateTextAppearance = in.readInt();
             weekDayTextAppearance = in.readInt();
-            showOtherDates = in.readInt() == 1;
+            showOtherDates = in.readInt();
             ClassLoader loader = CalendarDay.class.getClassLoader();
             minDate = in.readParcelable(loader);
             maxDate = in.readParcelable(loader);
@@ -1098,6 +1154,22 @@ public class MaterialCalendarView extends ViewGroup {
      */
     protected void onDateUnselected(CalendarDay date) {
         dispatchOnDateSelected(date, false);
+    }
+
+    /*
+     * Show Other Dates Utils
+     */
+
+    public static boolean showOtherMonths(@ShowOtherDates int showOtherDates) {
+        return (showOtherDates & SHOW_OTHER_MONTHS) != 0;
+    }
+
+    public static boolean showOutOfRange(@ShowOtherDates int showOtherDates) {
+        return (showOtherDates & SHOW_OUT_OF_RANGE) != 0;
+    }
+
+    public static boolean showDecoratedDisabled(@ShowOtherDates int showOtherDates) {
+        return (showOtherDates & SHOW_DECORATED_DISABLED) != 0;
     }
 
     /*

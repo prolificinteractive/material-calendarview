@@ -5,6 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
@@ -27,7 +28,7 @@ class MonthPagerAdapter extends PagerAdapter {
     private Integer color = null;
     private Integer dateTextAppearance = null;
     private Integer weekDayTextAppearance = null;
-    private Boolean showOtherDates = null;
+    private @ShowOtherDates int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private DateRangeIndex rangeIndex;
@@ -124,9 +125,7 @@ class MonthPagerAdapter extends PagerAdapter {
         if (weekDayTextAppearance != null) {
             monthView.setWeekDayTextAppearance(weekDayTextAppearance);
         }
-        if (showOtherDates != null) {
-            monthView.setShowOtherDates(showOtherDates);
-        }
+        monthView.setShowOtherDates(showOtherDates);
         monthView.setMinimumDate(minDate);
         monthView.setMaximumDate(maxDate);
         monthView.setSelectedDates(selectedDates);
@@ -186,10 +185,10 @@ class MonthPagerAdapter extends PagerAdapter {
         }
     }
 
-    public void setShowOtherDates(boolean show) {
-        this.showOtherDates = show;
+    public void setShowOtherDates(@ShowOtherDates int showFlags) {
+        this.showOtherDates = showFlags;
         for (MonthView monthView : currentViews) {
-            monthView.setShowOtherDates(show);
+            monthView.setShowOtherDates(showFlags);
         }
     }
 
@@ -207,7 +206,7 @@ class MonthPagerAdapter extends PagerAdapter {
         }
     }
 
-    public boolean getShowOtherDates() {
+    public @ShowOtherDates int getShowOtherDates() {
         return showOtherDates;
     }
 

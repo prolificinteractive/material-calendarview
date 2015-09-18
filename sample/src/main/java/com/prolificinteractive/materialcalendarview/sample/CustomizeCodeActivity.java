@@ -23,7 +23,7 @@ public class CustomizeCodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_basic);
         ButterKnife.bind(this);
 
-        widget.setShowOtherDates(true);
+        widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
         widget.setArrowColor(getResources().getColor(R.color.sample_primary));
         widget.setLeftArrowMask(getResources().getDrawable(R.drawable.ic_navigation_arrow_back));
         widget.setRightArrowMask(getResources().getDrawable(R.drawable.ic_navigation_arrow_forward));
