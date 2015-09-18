@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 1.0.0 *(FUTURE)*
+Version 1.0.0 *(2015-09-30)*
 ------------------------
 
 * New: Added ability to select multiple dates or disable selection completely
