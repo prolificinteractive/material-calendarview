@@ -1,12 +1,12 @@
-Material Calendar View
+<img src="/images/ic_launcher-web.png" width="300px" />
+
+Material Calendar View [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Material%20Calendar%20View-blue.svg?style=flat)](https://android-arsenal.com/details/1/1531)
 ======================
 
 A Material design back port of Android's CalendarView. The goal is to have a Material look
 and feel, rather than 100% parity with the platform's implementation.
 
 <img src="/images/screencast.gif" alt="Demo Screen Capture" width="300px" />
-
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Material%20Calendar%20View-blue.svg?style=flat)](https://android-arsenal.com/details/1/1531)
 
 Major Change in 1.0.0
 ---------------------
@@ -105,14 +105,23 @@ There is also `setSelectedDate()` will will clear the current selection(s) and s
 There are also: `clearSelection()`, `getSelectedDates()`, and `getSelectionMode()`; which should be self-explanitory.
 
 
-### DayViewDecorator
+### Events, Highlighting, Custom Selectors, and More!
 
-Decorators allow you to change several aspects of each day's appearance.
+Material CalendarView provides an API that allows you to modify the appearance of a set of days.
+The `DayViewDecorator` API allows you to:
+
+* Set a custom background drawable
+* Set a custom selector drawable
+* Apply spans the the entire day's text
+    * See [this tutorial](http://blog.stylingandroid.com/introduction-to-spans/) for spans on Android
+    * We provide `DotSpan` which will draw a dot centered below the text
+* Set dates as disabled
+
 To do so, you need to make a new instance of `DayViewDecorator` and add it to the calendar with `addDecorator()`.
 Decorating is done via a `DayViewFacade` that is passed to the `decorate()` method.
-All calls to the `DayViewFacade` will be applied to every day `shouldDecorate()` returns true.
+All calls to the `DayViewFacade` will be applied to every day where `shouldDecorate()` returns true.
 
-`DayViewFacade` has three methods to allow decoration:
+`DayViewFacade` has four methods to allow decoration:
 
 1. `setBackgroundDrawable()` set a drawable to draw behind everything else. This also responds to state changes.
 2. `setSelectionDrawable()` allows customizes the selection indicator for specific days.
@@ -127,6 +136,8 @@ If one of your decorators changes after it's been added to the calendar view, ma
 When implementing a `DayViewDecorator`, make sure that they are as efficent as possible.
 Remember that `shouldDecorate()` needs to be called 42 times for each month view.
 An easy way to be more efficent is to convert your data to `CalendarDay`s outside of `shouldDecorate()`.
+
+Check out the sample app's `BasicActivityDecorated` activity for some examples.
 
 Contributing
 ============
