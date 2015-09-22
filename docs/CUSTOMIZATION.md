@@ -78,14 +78,15 @@ The xml attribute is an enum of `sunday` through `saturday` and `setFirstDayOfWe
 By default, the calendar displays months for 200 years before today and 200 years after.
 You can specify different minimum and maximum dates by calling `setMinimumDate(CalendarDay)` and `setMaximumDate(CalendarDay)`.
 Passing `null` will reset back to the default 200 years.
-There are also convience methods that accept a `Calendar` or a `Date` object, which convert them to a `CalendarDay` using the relevant `CalendarDay.from()` factory method.
+There are also convenience methods that accept a `Calendar` or a `Date` object and convert them to a `CalendarDay` using the relevant `CalendarDay.from()` factory method.
 
 
 ## Topbar Options
 
 ### Visibility
 
-You can hide or reshow the topbar (arrow buttons and month label) by calling `setTopbarVisible(boolean)`
+You can hide or show the topbar (arrow buttons and month label) by calling `setTopbarVisible(boolean)`
+The default is visible.
 
 ### Arrow Color
 
