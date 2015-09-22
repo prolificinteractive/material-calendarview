@@ -18,6 +18,8 @@ public class DotSpan implements LineBackgroundSpan {
     private final int color;
 
     /**
+     * Create a span to draw a dot using default radius and color
+     *
      * @see #DotSpan(float, int)
      * @see #DEFAULT_RADIUS
      */
@@ -27,6 +29,10 @@ public class DotSpan implements LineBackgroundSpan {
     }
 
     /**
+     * Create a span to draw a dot using a specified color
+     *
+     * @param color color of the dot
+     *
      * @see #DotSpan(float, int)
      * @see #DEFAULT_RADIUS
      */
@@ -36,6 +42,10 @@ public class DotSpan implements LineBackgroundSpan {
     }
 
     /**
+     * Create a span to draw a dot using a specified radius
+     *
+     * @param radius radius for the dot
+     *
      * @see #DotSpan(float, int)
      */
     public DotSpan(float radius) {

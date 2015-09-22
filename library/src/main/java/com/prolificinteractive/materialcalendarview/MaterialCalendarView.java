@@ -1111,6 +1111,9 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Dispatch date change events to a listener, if set
+     *
+     * @param day the day that was selected
+     * @param selected true if the day is now currently selected, false otherwise
      */
     protected void dispatchOnDateSelected(final CalendarDay day, final boolean selected) {
         OnDateSelectedListener l = listener;
@@ -1133,6 +1136,9 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Call by MonthView to indicate that a day was clicked and we should handle it
+     *
+     * @param date date of the day that was clicked
+     * @param nowSelected true if the date is now selected, false otherwise
      */
     protected void onDateClicked(@NonNull CalendarDay date, boolean nowSelected) {
         switch (selectionMode) {
@@ -1151,6 +1157,8 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Called by the adapter for cases when changes in state result in dates being unselected
+     *
+     * @param date date that should be de-selected
      */
     protected void onDateUnselected(CalendarDay date) {
         dispatchOnDateSelected(date, false);
@@ -1363,7 +1371,7 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * Simple layout params for MaterialCalendarView. The only variation for layout is height.
      */
-    private static class LayoutParams extends MarginLayoutParams {
+    protected static class LayoutParams extends MarginLayoutParams {
 
         /**
          * Create a layout that matches parent width, and is X number of tiles high
