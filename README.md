@@ -107,37 +107,7 @@ There are also: `clearSelection()`, `getSelectedDates()`, and `getSelectionMode(
 
 ### Events, Highlighting, Custom Selectors, and More!
 
-Material CalendarView provides an API that allows you to modify the appearance of a set of days.
-The `DayViewDecorator` API allows you to:
-
-* Set a custom background drawable
-* Set a custom selector drawable
-* Apply spans the the entire day's text
-    * See [this tutorial](http://blog.stylingandroid.com/introduction-to-spans/) for spans on Android
-    * We provide `DotSpan` which will draw a dot centered below the text
-* Set dates as disabled
-
-To do so, you need to make a new instance of `DayViewDecorator` and add it to the calendar with `addDecorator()`.
-Decorating is done via a `DayViewFacade` that is passed to the `decorate()` method.
-All calls to the `DayViewFacade` will be applied to every day where `shouldDecorate()` returns true.
-
-`DayViewFacade` has four methods to allow decoration:
-
-1. `setBackgroundDrawable()` set a drawable to draw behind everything else. This also responds to state changes.
-2. `setSelectionDrawable()` allows customizes the selection indicator for specific days.
-3. `addSpan()` sets a span on the entire day label.
-    * `DotSpan` was added to show a dot centered below the label
-    * For an introduction to spans, see [this article](http://androidcocktail.blogspot.com/2014/03/android-spannablestring-example.html).
-    * If you want to learn more about custom spans, check out [this article](http://flavienlaurent.com/blog/2014/01/31/spans/).
-4. `setDaysDisabled()` allows you to disable and re-enable days. This will not affect minimum and maximum dates.
-
-If one of your decorators changes after it's been added to the calendar view, make sure you call `MaterialCalendarView.invalidateDecorators()` to have those changes reflected.
-
-When implementing a `DayViewDecorator`, make sure that they are as efficent as possible.
-Remember that `shouldDecorate()` needs to be called 42 times for each month view.
-An easy way to be more efficent is to convert your data to `CalendarDay`s outside of `shouldDecorate()`.
-
-Check out the sample app's `BasicActivityDecorated` activity for some examples.
+All of this and more can be done via the decorator api. Please check out the [decorator documentation](docs/DECORATORS.md).
 
 Contributing
 ============
