@@ -109,6 +109,11 @@ There are also: `clearSelection()`, `getSelectedDates()`, and `getSelectionMode(
 
 All of this and more can be done via the decorator api. Please check out the [decorator documentation](docs/DECORATORS.md).
 
+### Custom Selectors and Colors
+
+If you provide custom drawables or colors, you'll want to make sure they respond to state.
+Check out the [documentation for custom states](docs/CUSTOM_SELECTORS.md).
+
 Contributing
 ============
 

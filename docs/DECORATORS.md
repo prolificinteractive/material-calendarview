@@ -49,6 +49,11 @@ When implementing a `DayViewDecorator`, make sure that they are as efficent as p
 Remember that `shouldDecorate()` needs to be called 42 times for each month view.
 An easy way to be more efficent is to convert your data to `CalendarDay`s outside of `shouldDecorate()`.
 
+## Responding To State
+
+If you provide custom drawables, make sure they respond to touches and states.
+Read more in the [custom selector documentation](CUSTOM_SELECTORS.md).
+
 ## Examples
 
 This section details some example uses.
