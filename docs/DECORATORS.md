@@ -45,9 +45,9 @@ To add a decorator to the calendar, you can call `addDecorator()`.
 The order that decorators are added are the order in which they will be applied.
 You can remove decorators by calling `removeDecorator()` or `removeDecorators()`.
 
-When implementing a `DayViewDecorator`, make sure that they are as efficent as possible.
+When implementing a `DayViewDecorator`, make sure that they are as efficient as possible.
 Remember that `shouldDecorate()` needs to be called 42 times for each month view.
-An easy way to be more efficent is to convert your data to `CalendarDay`s outside of `shouldDecorate()`.
+An easy way to be more efficient is to convert your data to `CalendarDay`s outside of `shouldDecorate()`.
 
 ## Responding To State
 

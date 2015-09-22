@@ -3,7 +3,7 @@ Custom Selectors
 
 This doc describes how do create custom stateful drawables and colors to be used in the view.
 
-## Statefulness in Material CalendarView
+## Stateful-ness in Material CalendarView
 
 There are several places in the view where reacting to state would be useful.
 The most obvious is we the date selection indicator, but state can also be represented with custom
