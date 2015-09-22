@@ -56,7 +56,7 @@ One of the aims of this library is to be customizable. The many options include:
 
 * [Custom labels for the header, weekdays, or individual days](docs/CUSTOMIZATION.md#custom-labels)
 * [Single or Multiple date selection, or disabling selection entirely](docs/CUSTOMIZATION.md)
-* [Setting the size of the view by tile size](docs/CUSTOMIZATION.md#tile-size)
+* [Define the view's width and height in terms of tile size](docs/CUSTOMIZATION.md#tile-size)
 * [Showing dates from other months or those out of range](docs/CUSTOMIZATION.md#showing-other-dates)
 * [Setting the first day of the week](docs/CUSTOMIZATION.md#first-day-of-the-week)
 * [Show only a range of dates](docs/CUSTOMIZATION.md#date-ranges)
