@@ -113,7 +113,7 @@ They can be set in xml using `mcv_leftArrowMask` and `mcv_rightArrowMask` or by 
 You can customize the label displayed in the header by setting a custom `TitleFormatter` by calling `setTitleFormatter()`.
 You will be passed a `CalendarDay` with a month and year set, and you can format it to any `CharSequence`.
 The default passes it to a `SimpleDateFormat` with a format of `"MMMM yyyy"`.
-The library provides a `DateFormatTitleFormatter` and `MonthArrayTitleFormatter` as a conveniences.
+The library provides a `DateFormatTitleFormatter` and `MonthArrayTitleFormatter` for convenience.
 
 You can also set a string array resource with `mcv_monthLabels` that will use the `MonthArrayTitleFormatter` to format the title with the months provided.
 

@@ -1,15 +1,15 @@
 Custom Selectors
 ================
 
-This doc describes how do create custom stateful drawables and colors to be used in the view.
+This doc describes how to create custom stateful drawables and colors to be used in the view.
 
 ## Stateful-ness in Material CalendarView
 
 There are several places in the view where reacting to state would be useful.
-The most obvious is we the date selection indicator, but state can also be represented with custom
+The most obvious is the date selection indicator, but state can also be represented with custom
 backgrounds set by decorators or text colors.
 
-The state that is used to represent days a selected is `android:checked`.
+The state that is used to represent selected days is `android:checked`.
 Days can also be disabled, which is represented with `android:enabled`.
 
 ### Drawables
