@@ -44,7 +44,7 @@ If you change to none, all selected days will be cleared.
 
 You can set an `OnDateSelectedListener` to listen for selections, make sure to take into account multiple calls for the same date and state.
 You can manually select or deselect dates by calling `setDateSelected()`.
-There is also `setSelectedDate()` will will clear the current selection(s) and select the provided date.
+Use `setSelectedDate()` to clear the current selection(s) and select the provided date.
 
 There are also: `clearSelection()`, `getSelectedDates()`, and `getSelectionMode()`; which should be self-explanitory.
 

@@ -52,7 +52,7 @@ Example:
 Customization
 -------------
 
-One of the aims of this library is to be customizable. The many option include:
+One of the aims of this library is to be customizable. The many options include:
 
 * [Custom labels for the header, weekdays, or individual days](docs/CUSTOMIZATION.md#custom-labels)
 * [Single or Multiple date selection, or disabling selection entirely](docs/CUSTOMIZATION.md)
