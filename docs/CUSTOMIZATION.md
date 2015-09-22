@@ -126,7 +126,7 @@ You can set `mcv_weekDayLabels` in xml with a string array resource, which will 
 
 ### DayFormatter
 
-You can set custom day labels by setting a `DayFormatter` by calling `setDayFormatter()`.
+You can set custom day labels by passing a `DayFormatter` to the `setDayFormatter()` method.
 The default is a `DateFormatDayFormatter`, which uses a `SimpleDateFormat` with format `"d"`.
 
 Unlike the formatters for Header or WeekDays, this formatter returns a String.

@@ -6,7 +6,7 @@ Specifically, it allows you to:
 
 * Set custom backgrounds
 * Set custom selectors
-* Apply spans the the entire day's text
+* Apply spans to the entire day's text
     * We provide `DotSpan` which will draw a dot centered below the text
 * Set dates as disabled
 
@@ -15,7 +15,7 @@ This doc will explain how the API works and examples of how to use it.
 ## How It Works
 
 A `DayViewDecorator` is an interface that has only two methods you need to implement, `shouldDecorate(CalendarDay)` and `decorate(DayViewFacade)`.
-`shouldDecorate()` is called for every date in the calendar to determine if the decorator should be applied that date.
+`shouldDecorate()` is called for every date in the calendar to determine if the decorator should be applied to that date.
 `decorate()` is called only one time to gather the customizations used for this decorator.
 This is so we can cache the decorations and efficiently apply them to many days.
 
@@ -25,7 +25,7 @@ The `decorate()` method provides you with a `DayViewFacade` that has four method
     * You can set a drawable to draw behind everything else.
     * This also responds to state changes.
 2. `setSelectionDrawable(Drawable)`
-    * This allows customizes the selection indicator.
+    * This customizes the selection indicator.
 3. `addSpan(Object)`
     * Allows you to set a span on the entire day label.
     * We provide a `DotSpan` that draws a dot centered below the label.
