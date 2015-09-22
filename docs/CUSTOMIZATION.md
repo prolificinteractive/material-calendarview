@@ -54,7 +54,13 @@ There are also: `clearSelection()`, `getSelectedDates()`, and `getSelectionMode(
 By default, only days of one month, in the min-max range, are shown.
 You can customize this by setting `mcv_showOtherDates` in xml, or by calling `setShowOtherDates()`.
 
-In xml, there are flags for `other_months`, `out_of_range`, and `decorated_disabled`, and also `none`, `all`, or `defaults` for convenience.
+Avaliable flags are:
+* `other_months`: Show aditional days from the previous and next months
+* `out_of_range`: Show dates that are outside of the minimum and maximum date range
+* `decorated_disabled`: Show dates that are set as disabled by a decorator
+* `none`: An alias that sets none of the flags
+* `all`: An alias that sets all of the flags
+* `defaults`: An alias of flags set by default. Currently this is only `decorated_disabled`.
 
 There are similar constants on `MaterialCalendarView` such as `MaterialCalendarView.SHOW_DECORATED_DISABLED`.
 
