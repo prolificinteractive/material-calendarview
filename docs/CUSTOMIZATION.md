@@ -46,7 +46,7 @@ You can set an `OnDateSelectedListener` to listen for selections, make sure to t
 You can manually select or deselect dates by calling `setDateSelected()`.
 Use `setSelectedDate()` to clear the current selection(s) and select the provided date.
 
-There are also: `clearSelection()`, `getSelectedDates()`, and `getSelectionMode()`; which should be self-explanitory.
+There are also: `clearSelection()`, `getSelectedDates()`, and `getSelectionMode()`; which should work as you would expect.
 
 
 ## Showing Other Dates
@@ -55,7 +55,7 @@ By default, only days of one month, in the min-max range, are shown.
 You can customize this by setting `mcv_showOtherDates` in xml, or by calling `setShowOtherDates()`.
 
 Avaliable flags are:
-* `other_months`: Show aditional days from the previous and next months
+* `other_months`: Show additional days from the previous and next months
 * `out_of_range`: Show dates that are outside of the minimum and maximum date range
 * `decorated_disabled`: Show dates that are set as disabled by a decorator
 * `none`: An alias that sets none of the flags
