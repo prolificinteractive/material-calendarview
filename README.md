@@ -8,25 +8,6 @@ and feel, rather than 100% parity with the platform's implementation.
 
 <img src="/images/screencast.gif" alt="Demo Screen Capture" width="300px" />
 
-Major Change in 1.0.0
----------------------
-
-With the implementation of multiple selection, some of the apis needed to change to support it,
-namely `OnDateChangedListener` is now `OnDateSelectedListener`. There are also a bunch of new apis
-for multiple selection.
-
-Also, `showOtherDates` is now a set of flags for finer control over which extra dates are shown.
-
-Major Change in 0.8.0
----------------------
-
-The view now responds better to layout parameters.
-The functionality is similar to how `adjustViewBounds` works with ImageView,
-where the view will try and take up as much space as necessary,
-but we base it on tile size instead of an aspect ratio.
-The exception being that if a `tileSize` is set,
-that will override everything and set the view to that size.
-
 Usage
 -----
 
@@ -48,6 +29,25 @@ Example:
     app:mcv_selectionColor="#00F"
     />
 ```
+
+Major Change in 1.0.0
+---------------------
+
+With the implementation of multiple selection, some of the apis needed to change to support it,
+namely `OnDateChangedListener` is now `OnDateSelectedListener`. There are also a bunch of new apis
+for multiple selection.
+
+Also, `showOtherDates` is now a set of flags for finer control over which extra dates are shown.
+
+Major Change in 0.8.0
+---------------------
+
+The view now responds better to layout parameters.
+The functionality is similar to how `adjustViewBounds` works with ImageView,
+where the view will try and take up as much space as necessary,
+but we base it on tile size instead of an aspect ratio.
+The exception being that if a `tileSize` is set,
+that will override everything and set the view to that size.
 
 Customization
 -------------
