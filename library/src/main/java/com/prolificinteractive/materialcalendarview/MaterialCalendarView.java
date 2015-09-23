@@ -785,7 +785,7 @@ public class MaterialCalendarView extends ViewGroup {
         return isDynamicHeight;
     }
 
-    public void setEnableDynamicHeight(boolean enableDynamicHeight) {
+    public void setDynamicHeightStatus(boolean enableDynamicHeight) {
         this.isDynamicHeight = enableDynamicHeight;
     }
 
@@ -796,7 +796,7 @@ public class MaterialCalendarView extends ViewGroup {
         return false;
     }
 
-    public void setIsMultipleSelection(boolean isMultipleSelection) {
+    public void setMultiSelectionState(boolean isMultipleSelection) {
         if (this.adapter != null) {
             this.adapter.setIsMultiSelectionEnabled(isMultipleSelection);
         }
