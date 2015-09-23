@@ -1,8 +1,11 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.content.Context;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,7 +21,7 @@ import java.util.List;
 /**
  * Pager adapter backing the calendar view
  */
-class MonthPagerAdapter extends PagerAdapter {
+class MonthPagerAdapter extends PagerAdapter implements MultiSelectionAdapter {
 
     private final LinkedList<MonthView> currentViews;
 
@@ -32,16 +35,24 @@ class MonthPagerAdapter extends PagerAdapter {
     private CalendarDay maxDate = null;
     private DateRangeIndex rangeIndex;
     private CalendarDay selectedDate = null;
+    private List<CalendarDay> selectedDateRange = null;
     private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
     private DayFormatter dayFormatter = DayFormatter.DEFAULT;
     private List<DayViewDecorator> decorators = new ArrayList<>();
     private List<DecoratorResult> decoratorResults = null;
     private int firstDayOfTheWeek = Calendar.SUNDAY;
+    private boolean isInMultipleSelectionMode = false;
+    private DayViewProvider mDayViewProvider;
+    private boolean isMultiSelectionEnabled;
 
 
     MonthPagerAdapter() {
         currentViews = new LinkedList<>();
         setRangeDates(null, null);
+    }
+
+    public void setDayViewProvider(DayViewProvider dayViewProvider) {
+        mDayViewProvider = dayViewProvider;
     }
 
 
@@ -104,10 +115,42 @@ class MonthPagerAdapter extends PagerAdapter {
         return index;
     }
 
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         CalendarDay month = getItem(position);
-        MonthView monthView = new MonthView(container.getContext(), month, firstDayOfTheWeek);
+        MonthView monthView = new MonthView(container.getContext(), month, firstDayOfTheWeek, new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (isMultiSelectionEnabled && v instanceof CheckableCalendarDayView) {
+                    try {
+                        ((Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(50); //
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    setSelectedDate(((CheckableCalendarDayView) v).getDate());
+                    isInMultipleSelectionMode = true;
+                    return true;
+                }
+                return false;
+            }
+        }, new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                if (isMultiSelectionEnabled && event.getAction() == android.view.MotionEvent.ACTION_UP && isInMultipleSelectionMode) {
+                    isInMultipleSelectionMode = false;
+                    Calendar lastSelectedDate = ((MonthView) view.getParent()).getDateByCoordinate((int) event.getRawX(), (int) event.getRawY());
+                    if (lastSelectedDate != null && selectedDate.getCalendar().compareTo(lastSelectedDate) != 0) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTimeInMillis(selectedDate.getCalendar().getTimeInMillis());
+                        setSelectedDateRange(getListBetweenDates(cal, lastSelectedDate));
+                    }
+                }
+                return false;
+            }
+        }, mDayViewProvider);
+
+
         monthView.setAlpha(0);
 
         monthView.setWeekDayFormatter(weekDayFormatter);
@@ -127,7 +170,12 @@ class MonthPagerAdapter extends PagerAdapter {
         }
         monthView.setMinimumDate(minDate);
         monthView.setMaximumDate(maxDate);
-        monthView.setSelectedDate(selectedDate);
+
+        if (selectedDateRange == null) {
+            monthView.setSelectedDate(selectedDate);
+        } else {
+            monthView.setSelectedDateRange(selectedDateRange);
+        }
 
         container.addView(monthView);
         currentViews.add(monthView);
@@ -252,6 +300,7 @@ class MonthPagerAdapter extends PagerAdapter {
     }
 
     public void setSelectedDate(@Nullable CalendarDay date) {
+        this.selectedDateRange = null;
         CalendarDay prevDate = selectedDate;
         this.selectedDate = getValidSelectedDate(date);
         for (MonthView monthView : currentViews) {
@@ -260,6 +309,22 @@ class MonthPagerAdapter extends PagerAdapter {
 
         if (date == null && prevDate != null) {
             callbacks.onDateChanged(null);
+        }
+    }
+
+    public void setSelectedDateRange(@Nullable List<CalendarDay> date) {
+        this.selectedDate = null;
+        this.selectedDateRange = new ArrayList<>();
+        if (date != null) {
+            for (CalendarDay cd : date) {
+                this.selectedDateRange.add(getValidSelectedDate(cd));
+            }
+        } else {
+            callbacks.onDateChanged(null);
+        }
+
+        for (MonthView monthView : currentViews) {
+            monthView.setSelectedDateRange(selectedDateRange);
         }
     }
 
@@ -284,6 +349,10 @@ class MonthPagerAdapter extends PagerAdapter {
         return selectedDate;
     }
 
+    public List<CalendarDay> getSelectedDateRange() {
+        return selectedDateRange;
+    }
+
     protected int getDateTextAppearance() {
         return dateTextAppearance == null ? 0 : dateTextAppearance;
     }
@@ -296,4 +365,33 @@ class MonthPagerAdapter extends PagerAdapter {
         return firstDayOfTheWeek;
     }
 
+
+    private List<CalendarDay> getListBetweenDates(Calendar start, Calendar end) {
+        List<CalendarDay> selectedDates = new ArrayList<>();
+        if (start.compareTo(end) < 0) {
+            while (start.compareTo(end) <= 0 && selectedDates.size() < 31) {
+                selectedDates.add(CalendarDay.from(start));
+                start.add(Calendar.DAY_OF_MONTH, 1);
+            }
+        } else if (start.compareTo(end) > 0) {
+            while (start.compareTo(end) >= 0 && selectedDates.size() < 31) {
+                selectedDates.add(CalendarDay.from(start));
+                start.add(Calendar.DAY_OF_MONTH, -1);
+            }
+        }
+        return selectedDates;
+    }
+
+    @Override
+    public boolean isInMultiSelectionMode() {
+        return isInMultipleSelectionMode;
+    }
+
+    public boolean isMultiSelectionEnabled() {
+        return isMultiSelectionEnabled;
+    }
+
+    public void setIsMultiSelectionEnabled(boolean isMultiSelectionEnabled) {
+        this.isMultiSelectionEnabled = isMultiSelectionEnabled;
+    }
 }
