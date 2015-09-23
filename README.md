@@ -54,13 +54,13 @@ Customization
 
 One of the aims of this library is to be customizable. The many options include:
 
-* [Custom labels for the header, weekdays, or individual days](docs/CUSTOMIZATION.md#custom-labels)
-* [Single or Multiple date selection, or disabling selection entirely](docs/CUSTOMIZATION.md)
 * [Define the view's width and height in terms of tile size](docs/CUSTOMIZATION.md#tile-size)
+* [Single or Multiple date selection, or disabling selection entirely](docs/CUSTOMIZATION.md#date-selection)
 * [Showing dates from other months or those out of range](docs/CUSTOMIZATION.md#showing-other-dates)
 * [Setting the first day of the week](docs/CUSTOMIZATION.md#first-day-of-the-week)
 * [Show only a range of dates](docs/CUSTOMIZATION.md#date-ranges)
 * [Customize the top bar](docs/CUSTOMIZATION.md#topbar-options)
+* [Custom labels for the header, weekdays, or individual days](docs/CUSTOMIZATION.md#custom-labels)
 
 ### Events, Highlighting, Custom Selectors, and More!
 
