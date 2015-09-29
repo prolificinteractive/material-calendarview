@@ -60,6 +60,7 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
                 new HighlightWeekendsDecorator(),
                 oneDayDecorator
         );
+        widget.setScrollable(false);
 
         new ApiSimulator().executeOnExecutor(Executors.newSingleThreadExecutor());
     }
