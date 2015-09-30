@@ -56,8 +56,11 @@ You can customize this by setting `mcv_showOtherDates` in xml, or by calling `se
 
 Avaliable flags are:
 * `other_months`: Show additional days from the previous and next months
+    * This flag also enables the `out_of_range` flag, to prevent weird blank areas that nobody wants.
 * `out_of_range`: Show dates that are outside of the minimum and maximum date range
+    * This will only affect dates in the current month. Use the `other_months` flag to show other months.
 * `decorated_disabled`: Show dates that are set as disabled by a decorator
+    * This will only affect dates in the current month and inside the minimum/maximum date range.
 * `none`: An alias that sets none of the flags
 * `all`: An alias that sets all of the flags
 * `defaults`: An alias of flags set by default. Currently this is only `decorated_disabled`.

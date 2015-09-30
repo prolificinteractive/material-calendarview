@@ -109,7 +109,8 @@ public class MaterialCalendarView extends ViewGroup {
     public static final int SHOW_NONE = 0;
 
     /**
-     * Show dates from the proceeding and successive months, in a disabled state
+     * Show dates from the proceeding and successive months, in a disabled state.
+     * This flag also enables the {@link #SHOW_OUT_OF_RANGE} flag to prevent odd blank areas.
      */
     public static final int SHOW_OTHER_MONTHS = 1;
 
@@ -120,7 +121,8 @@ public class MaterialCalendarView extends ViewGroup {
     public static final int SHOW_OUT_OF_RANGE = 2;
 
     /**
-     * Show days that are individually disabled with decorators
+     * Show days that are individually disabled with decorators.
+     * This will only show dates in the current month and inside the minimum and maximum date range.
      */
     public static final int SHOW_DECORATED_DISABLED = 4;
 
@@ -1168,14 +1170,26 @@ public class MaterialCalendarView extends ViewGroup {
      * Show Other Dates Utils
      */
 
+    /**
+     * @param showOtherDates int flag for show other dates
+     * @return true if the other months flag is set
+     */
     public static boolean showOtherMonths(@ShowOtherDates int showOtherDates) {
         return (showOtherDates & SHOW_OTHER_MONTHS) != 0;
     }
 
+    /**
+     * @param showOtherDates int flag for show other dates
+     * @return true if the out of range flag is set
+     */
     public static boolean showOutOfRange(@ShowOtherDates int showOtherDates) {
         return (showOtherDates & SHOW_OUT_OF_RANGE) != 0;
     }
 
+    /**
+     * @param showOtherDates int flag for show other dates
+     * @return true if the decorated disabled flag is set
+     */
     public static boolean showDecoratedDisabled(@ShowOtherDates int showOtherDates) {
         return (showOtherDates & SHOW_DECORATED_DISABLED) != 0;
     }

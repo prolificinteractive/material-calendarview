@@ -27,6 +27,10 @@ import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 
 import java.util.List;
 
+import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showDecoratedDisabled;
+import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
+import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOutOfRange;
+
 /**
  * Display one day of a {@linkplain MaterialCalendarView}
  */
@@ -131,15 +135,22 @@ class DayView extends CheckedTextView {
         boolean enabled = isInMonth && isInRange && !isDecoratedDisabled;
         super.setEnabled(enabled);
 
+        boolean showOtherMonths = showOtherMonths(showOtherDates);
+        boolean showOutOfRange = showOutOfRange(showOtherDates) || showOtherMonths;
+        boolean showDecoratedDisabled = showDecoratedDisabled(showOtherDates);
+
         boolean shouldBeVisible = enabled;
-        if(isDecoratedDisabled && MaterialCalendarView.showDecoratedDisabled(showOtherDates)) {
+
+        if(!isInMonth && showOtherMonths) {
             shouldBeVisible = true;
         }
-        else if(!isInRange && MaterialCalendarView.showOutOfRange(showOtherDates)) {
-            shouldBeVisible = true;
+
+        if(!isInRange && showOutOfRange) {
+            shouldBeVisible |= isInMonth;
         }
-        else if(!isInMonth && MaterialCalendarView.showOtherMonths(showOtherDates)) {
-            shouldBeVisible = true;
+
+        if(isDecoratedDisabled && showDecoratedDisabled) {
+            shouldBeVisible |= isInMonth && isInRange;
         }
 
         setVisibility(shouldBeVisible ? View.VISIBLE : View.INVISIBLE);
