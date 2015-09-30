@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.1 *(2015-09-30)*
+------------------------
+
+* Fix [#143](https://github.com/prolificinteractive/material-calendarview/issues/143):
+ flag implementation for `showOtherDates` was a little weird and ambiguous. Clarified and added documentation.
+
 Version 1.0.0 *(2015-09-30)*
 ------------------------
 
