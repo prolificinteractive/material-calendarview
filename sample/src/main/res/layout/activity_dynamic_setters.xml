@@ -28,9 +28,9 @@
             android:layout_height="wrap_content"
             >
 
-            <CheckBox
-                android:id="@+id/check_other_dates"
-                android:text="Show Other Dates"
+            <Button
+                android:id="@+id/button_other_dates"
+                android:text="Other Dates"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -39,6 +39,30 @@
             <CheckBox
                 android:id="@+id/check_text_appearance"
                 android:text="Use Large Text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <Button
+                android:id="@+id/button_selection_mode"
+                android:text="Selection Mode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+            <Button
+                android:id="@+id/button_toggle_topbar"
+                android:text="Toggle Topbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -132,9 +156,7 @@
                 android:layout_weight="1"
                 />
 
-            <Button
-                android:id="@+id/button_toggle_topbar"
-                android:text="Toggle Topbar"
+            <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

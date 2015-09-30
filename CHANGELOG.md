@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 1.0.0 *(2015-09-30)*
+------------------------
+
+* New: Added ability to select multiple dates or disable selection completely
+* Change: `OnDateChangedListener` has become `OnDateSelectedListener` with different functionality
+* Change: `showOtherDates` is now a integer flag for finer control over which days are shown
+* Change: `CalendarDay.toString()` no longer adds one to the month
+
 Version 0.8.1 *(2015-08-28)*
 ----------------------------
 

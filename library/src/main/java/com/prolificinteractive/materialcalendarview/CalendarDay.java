@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * An imputable representation of a day on a calendar
@@ -273,7 +272,7 @@ public final class CalendarDay implements Parcelable {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "CalendarDay{%d-%d-%d}", year, month + 1, day);
+        return "CalendarDay{" + year + "-" + month + "-" + day + "}";
     }
 
     /*

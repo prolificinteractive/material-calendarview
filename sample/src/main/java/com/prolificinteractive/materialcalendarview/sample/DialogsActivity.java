@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,7 +58,7 @@ public class DialogsActivity extends AppCompatActivity {
         }
     }
 
-    public static class SimpleCalendarDialogFragment extends DialogFragment implements OnDateChangedListener {
+    public static class SimpleCalendarDialogFragment extends DialogFragment implements OnDateSelectedListener {
 
         private TextView textView;
 
@@ -79,7 +79,7 @@ public class DialogsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onDateChanged(@NonNull MaterialCalendarView widget, CalendarDay date) {
+        public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
             textView.setText(FORMATTER.format(date.getDate()));
         }
     }

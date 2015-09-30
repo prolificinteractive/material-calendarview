@@ -15,7 +15,7 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:mcv_showOtherDates="true"
+        app:mcv_showOtherDates="all"
         app:mcv_arrowColor="?attr/colorPrimary"
         app:mcv_leftArrowMask="@drawable/ic_navigation_arrow_back"
         app:mcv_rightArrowMask="@drawable/ic_navigation_arrow_forward"
@@ -27,15 +27,6 @@
         app:mcv_monthLabels="@array/custom_months"
         app:mcv_tileSize="36dp"
         app:mcv_firstDayOfWeek="thursday"
-        />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_margin="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         />
 
 </LinearLayout>

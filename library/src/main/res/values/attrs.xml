@@ -12,7 +12,14 @@
         <attr name="mcv_rightArrowMask" format="reference"/>
         <attr name="mcv_selectionColor" format="color"/>
 
-        <attr name="mcv_showOtherDates" format="boolean"/>
+        <attr name="mcv_showOtherDates" format="integer">
+            <flag name="none" value="0" />
+            <flag name="other_months" value="1" />
+            <flag name="out_of_range" value="2" />
+            <flag name="decorated_disabled" value="4" />
+            <flag name="defaults" value="4" />
+            <flag name="all" value="7" />
+        </attr>
 
         <attr name="mcv_weekDayLabels" format="reference" />
         <attr name="mcv_monthLabels" format="reference" />

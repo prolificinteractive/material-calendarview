@@ -22,6 +22,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
 
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 
 import java.util.List;
@@ -41,8 +42,9 @@ class DayView extends CheckedTextView {
     private DayFormatter formatter = DayFormatter.DEFAULT;
 
     private boolean isInRange = true;
-    private boolean showOtherDates = false;
+    private boolean isInMonth = true;
     private boolean isDecoratedDisabled = false;
+    private @ShowOtherDates int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
 
     public DayView(Context context, CalendarDay day) {
         super(context);
@@ -126,13 +128,27 @@ class DayView extends CheckedTextView {
     }
 
     private void setEnabled() {
-        super.setEnabled(isInRange && !isDecoratedDisabled);
-        setVisibility(isInRange || showOtherDates ? View.VISIBLE : View.INVISIBLE);
+        boolean enabled = isInMonth && isInRange && !isDecoratedDisabled;
+        super.setEnabled(enabled);
+
+        boolean shouldBeVisible = enabled;
+        if(isDecoratedDisabled && MaterialCalendarView.showDecoratedDisabled(showOtherDates)) {
+            shouldBeVisible = true;
+        }
+        else if(!isInRange && MaterialCalendarView.showOutOfRange(showOtherDates)) {
+            shouldBeVisible = true;
+        }
+        else if(!isInMonth && MaterialCalendarView.showOtherMonths(showOtherDates)) {
+            shouldBeVisible = true;
+        }
+
+        setVisibility(shouldBeVisible ? View.VISIBLE : View.INVISIBLE);
     }
 
-    protected void setupSelection(boolean showOtherDates, boolean inRange, boolean inMonth) {
+    protected void setupSelection(@ShowOtherDates int showOtherDates, boolean inRange, boolean inMonth) {
         this.showOtherDates = showOtherDates;
-        this.isInRange = inMonth && inRange;
+        this.isInMonth = inMonth;
+        this.isInRange = inRange;
         setEnabled();
     }
 

@@ -5,18 +5,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.sample.decorators.EventDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.HighlightWeekendsDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.MySelectorDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.OneDayDecorator;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -28,14 +25,11 @@ import butterknife.ButterKnife;
 /**
  * Shows off the most basic usage
  */
-public class BasicActivityDecorated extends AppCompatActivity implements OnDateChangedListener {
-
-    private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
+public class BasicActivityDecorated extends AppCompatActivity implements OnDateSelectedListener {
 
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
 
     @Bind(R.id.calendarView) MaterialCalendarView widget;
-    @Bind(R.id.textView) TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +38,7 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
         ButterKnife.bind(this);
 
         widget.setOnDateChangedListener(this);
-        widget.setShowOtherDates(true);
+        widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
 
         Calendar calendar = Calendar.getInstance();
         widget.setSelectedDate(calendar.getTime());
@@ -65,13 +59,10 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateC
     }
 
     @Override
-    public void onDateChanged(@NonNull MaterialCalendarView widget, CalendarDay date) {
-
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         //If you change a decorate, you need to invalidate decorators
         oneDayDecorator.setDate(date.getDate());
         widget.invalidateDecorators();
-
-        textView.setText(FORMATTER.format(date.getDate()));
     }
 
     /**
