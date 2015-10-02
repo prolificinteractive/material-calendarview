@@ -66,12 +66,14 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * {@linkplain IntDef} annotation for selection mode.
+     *
      * @see #setSelectionMode(int)
      * @see #getSelectionMode()
      */
     @Retention(RetentionPolicy.RUNTIME)
-    @IntDef({ SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE })
-    public @interface SelectionMode {}
+    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE})
+    public @interface SelectionMode {
+    }
 
     /**
      * Selection mode that disallows all selection.
@@ -93,6 +95,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * {@linkplain IntDef} annotation for showOtherDates.
+     *
      * @see #setShowOtherDates(int)
      * @see #getShowOtherDates()
      */
@@ -101,7 +104,8 @@ public class MaterialCalendarView extends ViewGroup {
             SHOW_NONE, SHOW_ALL, SHOW_DEFAULTS,
             SHOW_OUT_OF_RANGE, SHOW_OTHER_MONTHS, SHOW_DECORATED_DISABLED
     })
-    public @interface ShowOtherDates {}
+    public @interface ShowOtherDates {
+    }
 
     /**
      * Do not show any non-enabled dates
@@ -147,7 +151,7 @@ public class MaterialCalendarView extends ViewGroup {
     private final TextView title;
     private final DirectionButton buttonPast;
     private final DirectionButton buttonFuture;
-    private final ViewPager pager;
+    private final MonthPager pager;
     private final MonthPagerAdapter adapter;
     private CalendarDay currentMonth;
     private LinearLayout topbar;
@@ -157,9 +161,9 @@ public class MaterialCalendarView extends ViewGroup {
     private final OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(v == buttonFuture) {
+            if (v == buttonFuture) {
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-            } else if(v == buttonPast) {
+            } else if (v == buttonPast) {
                 pager.setCurrentItem(pager.getCurrentItem() - 1, true);
             }
         }
@@ -175,9 +179,13 @@ public class MaterialCalendarView extends ViewGroup {
             dispatchOnMonthChanged(currentMonth);
         }
 
-        @Override public void onPageScrollStateChanged(int state) {}
+        @Override
+        public void onPageScrollStateChanged(int state) {
+        }
 
-        @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        }
     };
 
     private CalendarDay minDate = null;
@@ -191,7 +199,8 @@ public class MaterialCalendarView extends ViewGroup {
     private Drawable leftArrowMask;
     private Drawable rightArrowMask;
     private int tileSize = -1;
-    @SelectionMode private int selectionMode = SELECTION_MODE_SINGLE;
+    @SelectionMode
+    private int selectionMode = SELECTION_MODE_SINGLE;
 
     public MaterialCalendarView(Context context) {
         this(context, null);
@@ -213,7 +222,7 @@ public class MaterialCalendarView extends ViewGroup {
         buttonPast = new DirectionButton(getContext());
         title = new TextView(getContext());
         buttonFuture = new DirectionButton(getContext());
-        pager = new ViewPager(getContext());
+        pager = new MonthPager(getContext());
 
         setupChildren();
 
@@ -240,23 +249,23 @@ public class MaterialCalendarView extends ViewGroup {
         try {
 
             int tileSize = a.getDimensionPixelSize(R.styleable.MaterialCalendarView_mcv_tileSize, -1);
-            if(tileSize > 0) {
+            if (tileSize > 0) {
                 setTileSize(tileSize);
             }
 
             setArrowColor(a.getColor(
-                R.styleable.MaterialCalendarView_mcv_arrowColor,
-                Color.BLACK
+                    R.styleable.MaterialCalendarView_mcv_arrowColor,
+                    Color.BLACK
             ));
             Drawable leftMask = a.getDrawable(
-                R.styleable.MaterialCalendarView_mcv_leftArrowMask
+                    R.styleable.MaterialCalendarView_mcv_leftArrowMask
             );
             if (leftMask == null) {
                 leftMask = getResources().getDrawable(R.drawable.mcv_action_previous);
             }
             setLeftArrowMask(leftMask);
             Drawable rightMask = a.getDrawable(
-                R.styleable.MaterialCalendarView_mcv_rightArrowMask
+                    R.styleable.MaterialCalendarView_mcv_rightArrowMask
             );
             if (rightMask == null) {
                 rightMask = getResources().getDrawable(R.drawable.mcv_action_next);
@@ -264,19 +273,19 @@ public class MaterialCalendarView extends ViewGroup {
             setRightArrowMask(rightMask);
 
             setSelectionColor(
-                a.getColor(
-                    R.styleable.MaterialCalendarView_mcv_selectionColor,
-                    getThemeAccentColor(context)
-                )
+                    a.getColor(
+                            R.styleable.MaterialCalendarView_mcv_selectionColor,
+                            getThemeAccentColor(context)
+                    )
             );
 
             CharSequence[] array = a.getTextArray(R.styleable.MaterialCalendarView_mcv_weekDayLabels);
-            if(array != null) {
+            if (array != null) {
                 setWeekDayFormatter(new ArrayWeekDayFormatter(array));
             }
 
             array = a.getTextArray(R.styleable.MaterialCalendarView_mcv_monthLabels);
-            if(array != null) {
+            if (array != null) {
                 setTitleFormatter(new MonthArrayTitleFormatter(array));
             }
 
@@ -302,22 +311,20 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_firstDayOfWeek,
                     -1
             );
-            if(firstDayOfWeek < 0) {
+            if (firstDayOfWeek < 0) {
                 firstDayOfWeek = CalendarUtils.getInstance().getFirstDayOfWeek();
             }
             setFirstDayOfWeek(firstDayOfWeek);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             a.recycle();
         }
 
         currentMonth = CalendarDay.today();
         setCurrentDate(currentMonth);
 
-        if(isInEditMode()) {
+        if (isInEditMode()) {
             removeView(pager);
             MonthView monthView = new MonthView(this, currentMonth, getFirstDayOfWeek());
             monthView.setSelectionColor(getSelectionColor());
@@ -363,39 +370,41 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * Change the selection mode of the calendar. The default mode is {@linkplain #SELECTION_MODE_SINGLE}
      *
+     * @param mode the selection mode to change to. This must be one of
+     *             {@linkplain #SELECTION_MODE_NONE}, {@linkplain #SELECTION_MODE_SINGLE}, or {@linkplain #SELECTION_MODE_MULTIPLE}.
+     *             Unknown values will act as {@linkplain #SELECTION_MODE_SINGLE}
      * @see #getSelectionMode()
      * @see #SELECTION_MODE_NONE
      * @see #SELECTION_MODE_SINGLE
      * @see #SELECTION_MODE_MULTIPLE
-     *
-     * @param mode the selection mode to change to. This must be one of
-     * {@linkplain #SELECTION_MODE_NONE}, {@linkplain #SELECTION_MODE_SINGLE}, or {@linkplain #SELECTION_MODE_MULTIPLE}.
-     * Unknown values will act as {@linkplain #SELECTION_MODE_SINGLE}
      */
     public void setSelectionMode(final @SelectionMode int mode) {
         final @SelectionMode int oldMode = this.selectionMode;
         switch (mode) {
             case SELECTION_MODE_MULTIPLE: {
                 this.selectionMode = SELECTION_MODE_MULTIPLE;
-            } break;
+            }
+            break;
             default:
             case SELECTION_MODE_SINGLE: {
                 this.selectionMode = SELECTION_MODE_SINGLE;
-                if(oldMode == SELECTION_MODE_MULTIPLE) {
+                if (oldMode == SELECTION_MODE_MULTIPLE) {
                     //We should only have one selection now, so we should pick one
                     List<CalendarDay> dates = getSelectedDates();
-                    if(!dates.isEmpty()) {
+                    if (!dates.isEmpty()) {
                         setSelectedDate(getSelectedDate());
                     }
                 }
-            } break;
+            }
+            break;
             case SELECTION_MODE_NONE: {
                 this.selectionMode = SELECTION_MODE_NONE;
-                if(oldMode != SELECTION_MODE_NONE) {
+                if (oldMode != SELECTION_MODE_NONE) {
                     //No selection! Clear out!
                     clearSelection();
                 }
-            } break;
+            }
+            break;
         }
 
         adapter.setSelectionEnabled(selectionMode != SELECTION_MODE_NONE);
@@ -404,14 +413,15 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * Get the current selection mode. The default mode is {@linkplain #SELECTION_MODE_SINGLE}
      *
+     * @return the current selection mode
      * @see #setSelectionMode(int)
      * @see #SELECTION_MODE_NONE
      * @see #SELECTION_MODE_SINGLE
      * @see #SELECTION_MODE_MULTIPLE
-     *
-     * @return the current selection mode
      */
-    public @SelectionMode int getSelectionMode() {
+    public
+    @SelectionMode
+    int getSelectionMode() {
         return selectionMode;
     }
 
@@ -435,9 +445,8 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * @see #setTileSize(int)
-     *
      * @param tileSizeDp the new size for each tile in dips
+     * @see #setTileSize(int)
      */
     public void setTileSizeDp(int tileSizeDp) {
         setTileSize(dpToPx(tileSizeDp));
@@ -455,7 +464,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if there is a future month that can be shown
      */
     private boolean canGoForward() {
-        return pager.getCurrentItem() < (adapter.getCount() - 1);
+        return pager.isScrollable() ? pager.getCurrentItem() < (adapter.getCount() - 1) : false;
     }
 
     /**
@@ -464,7 +473,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if there is a previous month that can be shown
      */
     private boolean canGoBack() {
-        return pager.getCurrentItem() > 0;
+        return pager.isScrollable() ? pager.getCurrentItem() > 0 : false;
     }
 
     /**
@@ -478,11 +487,10 @@ public class MaterialCalendarView extends ViewGroup {
      * @param color The selection color
      */
     public void setSelectionColor(int color) {
-        if(color == 0) {
-            if(!isInEditMode()) {
+        if (color == 0) {
+            if (!isInEditMode()) {
                 return;
-            }
-            else {
+            } else {
                 color = Color.GRAY;
             }
         }
@@ -502,7 +510,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param color the new color for the paging arrows
      */
     public void setArrowColor(int color) {
-        if(color == 0) {
+        if (color == 0) {
             return;
         }
         arrowColor = color;
@@ -568,18 +576,19 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public CalendarDay getSelectedDate() {
         List<CalendarDay> dates = adapter.getSelectedDates();
-        if(dates.isEmpty()) {
+        if (dates.isEmpty()) {
             return null;
-        }
-        else {
-            return dates.get(dates.size()-1);
+        } else {
+            return dates.get(dates.size() - 1);
         }
     }
 
     /**
      * @return all of the currently selected dates
      */
-    public @NonNull List<CalendarDay> getSelectedDates() {
+    public
+    @NonNull
+    List<CalendarDay> getSelectedDates() {
         return adapter.getSelectedDates();
     }
 
@@ -613,7 +622,7 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void setSelectedDate(@Nullable CalendarDay date) {
         clearSelection();
-        if(date != null) {
+        if (date != null) {
             setDateSelected(date, true);
         }
     }
@@ -627,7 +636,7 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * @param date a Date to change. Passing null does nothing
+     * @param date     a Date to change. Passing null does nothing
      * @param selected true if day should be selected, false to deselect
      */
     public void setDateSelected(@Nullable Date date, boolean selected) {
@@ -635,11 +644,11 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * @param day a CalendarDay to change. Passing null does nothing
+     * @param day      a CalendarDay to change. Passing null does nothing
      * @param selected true if day should be selected, false to deselect
      */
     public void setDateSelected(@Nullable CalendarDay day, boolean selected) {
-        if(day == null) {
+        if (day == null) {
             return;
         }
         adapter.setDateSelected(day, selected);
@@ -674,11 +683,11 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * @param day a CalendarDay to focus the calendar on. Null will do nothing
+     * @param day             a CalendarDay to focus the calendar on. Null will do nothing
      * @param useSmoothScroll use smooth scroll when changing months.
      */
     public void setCurrentDate(@Nullable CalendarDay day, boolean useSmoothScroll) {
-        if(day == null) {
+        if (day == null) {
             return;
         }
         int index = adapter.getIndexForDay(day);
@@ -748,14 +757,13 @@ public class MaterialCalendarView extends ViewGroup {
      * The default value is {@link #SHOW_DEFAULTS}, which currently is just {@link #SHOW_DECORATED_DISABLED}.
      * This means that the default visible days are of the current month, in the min-max range.
      *
+     * @param showOtherDates flags for showing non-enabled dates
      * @see #SHOW_ALL
      * @see #SHOW_NONE
      * @see #SHOW_DEFAULTS
      * @see #SHOW_OTHER_MONTHS
      * @see #SHOW_OUT_OF_RANGE
      * @see #SHOW_DECORATED_DISABLED
-     *
-     * @param showOtherDates flags for showing non-enabled dates
      */
     public void setShowOtherDates(@ShowOtherDates int showOtherDates) {
         adapter.setShowOtherDates(showOtherDates);
@@ -783,10 +791,9 @@ public class MaterialCalendarView extends ViewGroup {
      * Set a {@linkplain com.prolificinteractive.materialcalendarview.format.WeekDayFormatter}
      * with the provided week day labels
      *
+     * @param weekDayLabels Labels to use for the days of the week
      * @see com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
      * @see #setWeekDayFormatter(com.prolificinteractive.materialcalendarview.format.WeekDayFormatter)
-     *
-     * @param weekDayLabels Labels to use for the days of the week
      */
     public void setWeekDayLabels(CharSequence[] weekDayLabels) {
         setWeekDayFormatter(new ArrayWeekDayFormatter(weekDayLabels));
@@ -796,35 +803,36 @@ public class MaterialCalendarView extends ViewGroup {
      * Set a {@linkplain com.prolificinteractive.materialcalendarview.format.WeekDayFormatter}
      * with the provided week day labels
      *
+     * @param arrayRes String array resource of week day labels
      * @see com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
      * @see #setWeekDayFormatter(com.prolificinteractive.materialcalendarview.format.WeekDayFormatter)
-     *
-     * @param arrayRes String array resource of week day labels
      */
     public void setWeekDayLabels(@ArrayRes int arrayRes) {
         setWeekDayLabels(getResources().getTextArray(arrayRes));
     }
 
     /**
+     * @return int of flags used for showing non-enabled dates
      * @see #SHOW_ALL
      * @see #SHOW_NONE
      * @see #SHOW_DEFAULTS
      * @see #SHOW_OTHER_MONTHS
      * @see #SHOW_OUT_OF_RANGE
      * @see #SHOW_DECORATED_DISABLED
-     *
-     * @return int of flags used for showing non-enabled dates
      */
-    public @ShowOtherDates int getShowOtherDates() {
+    public
+    @ShowOtherDates
+    int getShowOtherDates() {
         return adapter.getShowOtherDates();
     }
 
     /**
      * Set a custom formatter for the month/year title
+     *
      * @param titleFormatter new formatter to use, null to use default formatter
      */
     public void setTitleFormatter(TitleFormatter titleFormatter) {
-        if(titleFormatter == null) {
+        if (titleFormatter == null) {
             titleFormatter = DEFAULT_TITLE_FORMATTER;
         }
         titleChanger.setTitleFormatter(titleFormatter);
@@ -836,10 +844,9 @@ public class MaterialCalendarView extends ViewGroup {
      * Set a {@linkplain com.prolificinteractive.materialcalendarview.format.TitleFormatter}
      * using the provided month labels
      *
+     * @param monthLabels month labels to use
      * @see com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
      * @see #setTitleFormatter(com.prolificinteractive.materialcalendarview.format.TitleFormatter)
-     *
-     * @param monthLabels month labels to use
      */
     public void setTitleMonths(CharSequence[] monthLabels) {
         setTitleFormatter(new MonthArrayTitleFormatter(monthLabels));
@@ -849,10 +856,9 @@ public class MaterialCalendarView extends ViewGroup {
      * Set a {@linkplain com.prolificinteractive.materialcalendarview.format.TitleFormatter}
      * using the provided month labels
      *
+     * @param arrayRes String array resource of month labels to use
      * @see com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
      * @see #setTitleFormatter(com.prolificinteractive.materialcalendarview.format.TitleFormatter)
-     *
-     * @param arrayRes String array resource of month labels to use
      */
     public void setTitleMonths(@ArrayRes int arrayRes) {
         setTitleMonths(getResources().getTextArray(arrayRes));
@@ -904,7 +910,7 @@ public class MaterialCalendarView extends ViewGroup {
         setShowOtherDates(ss.showOtherDates);
         setRangeDates(ss.minDate, ss.maxDate);
         clearSelection();
-        for(CalendarDay calendarDay : ss.selectedDates) {
+        for (CalendarDay calendarDay : ss.selectedDates) {
             setDateSelected(calendarDay, true);
         }
         setFirstDayOfWeek(ss.firstDayOfWeek);
@@ -966,7 +972,7 @@ public class MaterialCalendarView extends ViewGroup {
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR
-            = new Parcelable.Creator<SavedState>() {
+                = new Parcelable.Creator<SavedState>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }
@@ -996,7 +1002,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     private static int getThemeAccentColor(Context context) {
         int colorAttr;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             colorAttr = android.R.attr.colorAccent;
         } else {
             //Get colorAccent defined for AppCompat
@@ -1009,18 +1015,17 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Sets the first day of the week.
-     *
+     * <p/>
      * Uses the java.util.Calendar day constants.
-     * @see java.util.Calendar
      *
      * @param day The first day of the week as a java.util.Calendar day constant.
+     * @see java.util.Calendar
      */
     public void setFirstDayOfWeek(int day) {
         adapter.setFirstDayOfWeek(day);
     }
 
     /**
-     *
      * @return The first day of the week as a {@linkplain Calendar} day constant.
      */
     public int getFirstDayOfWeek() {
@@ -1033,7 +1038,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param decorators decorators to add
      */
     public void addDecorators(Collection<? extends DayViewDecorator> decorators) {
-        if(decorators == null) {
+        if (decorators == null) {
             return;
         }
 
@@ -1056,7 +1061,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param decorator decorator to add
      */
     public void addDecorator(DayViewDecorator decorator) {
-        if(decorator == null) {
+        if (decorator == null) {
             return;
         }
         dayViewDecorators.add(decorator);
@@ -1114,12 +1119,12 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * Dispatch date change events to a listener, if set
      *
-     * @param day the day that was selected
+     * @param day      the day that was selected
      * @param selected true if the day is now currently selected, false otherwise
      */
     protected void dispatchOnDateSelected(final CalendarDay day, final boolean selected) {
         OnDateSelectedListener l = listener;
-        if(l != null) {
+        if (l != null) {
             l.onDateSelected(MaterialCalendarView.this, day, selected);
         }
     }
@@ -1131,7 +1136,7 @@ public class MaterialCalendarView extends ViewGroup {
      */
     protected void dispatchOnMonthChanged(final CalendarDay day) {
         OnMonthChangedListener l = monthListener;
-        if(l != null) {
+        if (l != null) {
             l.onMonthChanged(MaterialCalendarView.this, day);
         }
     }
@@ -1139,7 +1144,7 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * Call by MonthView to indicate that a day was clicked and we should handle it
      *
-     * @param date date of the day that was clicked
+     * @param date        date of the day that was clicked
      * @param nowSelected true if the date is now selected, false otherwise
      */
     protected void onDateClicked(@NonNull CalendarDay date, boolean nowSelected) {
@@ -1147,13 +1152,15 @@ public class MaterialCalendarView extends ViewGroup {
             case SELECTION_MODE_MULTIPLE: {
                 adapter.setDateSelected(date, nowSelected);
                 dispatchOnDateSelected(date, nowSelected);
-            } break;
+            }
+            break;
             default:
             case SELECTION_MODE_SINGLE: {
                 adapter.clearSelections();
                 adapter.setDateSelected(date, true);
                 dispatchOnDateSelected(date, true);
-            } break;
+            }
+            break;
         }
     }
 
@@ -1230,27 +1237,24 @@ public class MaterialCalendarView extends ViewGroup {
 
         int measureTileSize = -1;
 
-        if(this.tileSize > 0) {
+        if (this.tileSize > 0) {
             //We have a tileSize set, we should use that
             measureTileSize = this.tileSize;
-        }
-        else if(specWidthMode == MeasureSpec.EXACTLY) {
-            if(specHeightMode == MeasureSpec.EXACTLY) {
+        } else if (specWidthMode == MeasureSpec.EXACTLY) {
+            if (specHeightMode == MeasureSpec.EXACTLY) {
                 //Pick the larger of the two explicit sizes
                 measureTileSize = Math.max(desiredTileWidth, desiredTileHeight);
-            }
-            else {
+            } else {
                 //Be the width size the user wants
                 measureTileSize = desiredTileWidth;
             }
-        }
-        else if(specHeightMode == MeasureSpec.EXACTLY) {
+        } else if (specHeightMode == MeasureSpec.EXACTLY) {
             //Be the height size the user wants
             measureTileSize = desiredTileHeight;
         }
 
         //Uh oh! We need to default to something, quick!
-        if(measureTileSize <= 0) {
+        if (measureTileSize <= 0) {
             measureTileSize = dpToPx(DEFAULT_TILE_SIZE_DP);
         }
 
@@ -1292,6 +1296,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Clamp the size to the measure spec.
+     *
      * @param size Size we want to be
      * @param spec Measure spec to clamp against
      * @return the appropriate size to pass to {@linkplain View#setMeasuredDimension(int, int)}
@@ -1327,7 +1332,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
-            if(child.getVisibility() == View.GONE) {
+            if (child.getVisibility() == View.GONE) {
                 continue;
             }
 
@@ -1396,5 +1401,15 @@ public class MaterialCalendarView extends ViewGroup {
             super(MATCH_PARENT, tileHeight);
         }
 
+    }
+
+    /**
+     * enable disable pager scroll
+     *
+     * @param scrollable
+     */
+    public void setScrollable(boolean scrollable) {
+        pager.setScrollable(scrollable);
+        updateUi();
     }
 }
