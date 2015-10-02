@@ -24,6 +24,8 @@ class MonthPagerAdapter extends PagerAdapter {
     private final ArrayDeque<MonthView> currentViews;
 
     private final MaterialCalendarView mcv;
+    private final CalendarDay today;
+
     private TitleFormatter titleFormatter = null;
     private Integer color = null;
     private Integer dateTextAppearance = null;
@@ -43,6 +45,7 @@ class MonthPagerAdapter extends PagerAdapter {
 
     MonthPagerAdapter(MaterialCalendarView mcv) {
         this.mcv = mcv;
+        this.today = CalendarDay.today();
         currentViews = new ArrayDeque<>();
         currentViews.iterator();
         setRangeDates(null, null);
@@ -231,15 +234,11 @@ class MonthPagerAdapter extends PagerAdapter {
         }
 
         if (min == null) {
-            Calendar worker = CalendarUtils.getInstance();
-            worker.add(Calendar.YEAR, -200);
-            min = CalendarDay.from(worker);
+            min = CalendarDay.from(today.getYear() - 200, today.getMonth(), today.getDay());
         }
 
         if (max == null) {
-            Calendar worker = CalendarUtils.getInstance();
-            worker.add(Calendar.YEAR, 200);
-            max = CalendarDay.from(worker);
+            max = CalendarDay.from(today.getYear() + 200, today.getMonth(), today.getDay());
         }
 
         rangeIndex = new DateRangeIndex(min, max);

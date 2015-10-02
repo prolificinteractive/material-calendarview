@@ -312,7 +312,8 @@ public class MaterialCalendarView extends ViewGroup {
                     -1
             );
             if (firstDayOfWeek < 0) {
-                firstDayOfWeek = CalendarUtils.getInstance().getFirstDayOfWeek();
+                //Allowing use of Calendar.getInstance() here as a performance optimization
+                firstDayOfWeek = Calendar.getInstance().getFirstDayOfWeek();
             }
             setFirstDayOfWeek(firstDayOfWeek);
         } catch (Exception e) {

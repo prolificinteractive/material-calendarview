@@ -49,7 +49,6 @@ public class CalendarUtils {
         int month = getMonth(calendar);
         calendar.clear();
         calendar.set(year, month, 1);
-        calendar.getTimeInMillis();
     }
 
     /**
@@ -64,7 +63,6 @@ public class CalendarUtils {
         int day = getDay(from);
         to.clear();
         to.set(year, month, day);
-        to.getTimeInMillis();
     }
 
     public static int getYear(Calendar calendar) {

@@ -27,7 +27,7 @@ public class CalendarWeekDayFormatter implements WeekDayFormatter {
      * Format with a default calendar
      */
     public CalendarWeekDayFormatter() {
-        calendar = CalendarUtils.getInstance();
+        this(CalendarUtils.getInstance());
     }
 
     /**

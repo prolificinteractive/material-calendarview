@@ -41,7 +41,7 @@ class MonthView extends ViewGroup implements View.OnClickListener {
     private final CalendarDay month;
     private int firstDayOfWeek;
 
-    private final Calendar tempWorkingCalendar = CalendarUtils.getInstance();
+    private static final Calendar tempWorkingCalendar = CalendarUtils.getInstance();
 
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
