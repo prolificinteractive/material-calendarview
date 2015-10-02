@@ -17,7 +17,8 @@ public interface DayFormatter {
      * @param day the day
      * @return a label for the day
      */
-    @NonNull String format(@NonNull CalendarDay day);
+    @NonNull
+    String format(@NonNull CalendarDay day);
 
     /**
      * Default implementation used by {@linkplain com.prolificinteractive.materialcalendarview.MaterialCalendarView}

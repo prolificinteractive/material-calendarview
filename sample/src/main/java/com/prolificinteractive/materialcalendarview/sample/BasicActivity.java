@@ -24,8 +24,11 @@ public class BasicActivity extends AppCompatActivity implements OnDateSelectedLi
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
-    @Bind(R.id.calendarView) MaterialCalendarView widget;
-    @Bind(R.id.textView) TextView textView;
+    @Bind(R.id.calendarView)
+    MaterialCalendarView widget;
+
+    @Bind(R.id.textView)
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,7 @@ public class BasicActivity extends AppCompatActivity implements OnDateSelectedLi
 
     private String getSelectedDatesString() {
         CalendarDay date = widget.getSelectedDate();
-        if(date == null) {
+        if (date == null) {
             return "No Selection";
         }
         return FORMATTER.format(date.getDate());

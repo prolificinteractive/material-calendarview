@@ -18,7 +18,8 @@ import butterknife.ButterKnife;
  */
 public class DisableDaysActivity extends AppCompatActivity {
 
-    @Bind(R.id.calendarView) MaterialCalendarView widget;
+    @Bind(R.id.calendarView)
+    MaterialCalendarView widget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

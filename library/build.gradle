@@ -21,17 +21,17 @@ dependencies {
 }
 
 task sourcesJar(type: Jar) {
-  from android.sourceSets.main.java.srcDirs
-  classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
 }
 
 artifacts {
-  archives sourcesJar
+    archives sourcesJar
 }
 
 signing {
-   required { gradle.taskGraph.hasTask("uploadArchives") }
-   sign configurations.archives
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
 }
 
 def getReleaseRepositoryUrl() {
@@ -45,61 +45,61 @@ def getSnapshotRepositoryUrl() {
 }
 
 def getRepositoryUsername() {
-  return hasProperty('sonatypeUsername') ? sonatypeUsername : ""
+    return hasProperty('sonatypeUsername') ? sonatypeUsername : ""
 }
 
 def getRepositoryPassword() {
-  return hasProperty('sonatypePassword') ? sonatypePassword : ""
+    return hasProperty('sonatypePassword') ? sonatypePassword : ""
 }
 
 uploadArchives {
-  repositories.mavenDeployer {
-    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+    repositories.mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-    repository(url: getReleaseRepositoryUrl()) {
-      authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+        repository(url: getReleaseRepositoryUrl()) {
+            authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+        }
+
+        snapshotRepository(url: getSnapshotRepositoryUrl()) {
+            authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+        }
+
+        pom.groupId = GROUP
+        pom.version = version
+        pom.artifactId = POM_ARTIFACT_ID
+
+        pom {
+            project {
+                name POM_NAME
+                packaging POM_PACKAGING
+                description POM_DESCRIPTION
+                url POM_URL
+
+                scm {
+                    url POM_SCM_URL
+                    connection POM_SCM_CONNECTION
+                    developerConnection POM_SCM_DEV_CONNECTION
+                }
+
+                licenses {
+                    license {
+                        name POM_LICENCE_NAME
+                        url POM_LICENCE_URL
+                        distribution POM_LICENCE_DIST
+                    }
+                }
+
+                developers {
+                    developer {
+                        id POM_DEVELOPER_ID
+                        name POM_DEVELOPER_NAME
+                        email POM_DEVELOPER_EMAIL
+                    }
+                }
+
+            }
+        }
     }
-
-      snapshotRepository(url: getSnapshotRepositoryUrl()) {
-          authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
-      }
-
-    pom.groupId = GROUP
-    pom.version = version
-    pom.artifactId = POM_ARTIFACT_ID
-
-    pom {
-      project {
-        name POM_NAME
-        packaging POM_PACKAGING
-        description POM_DESCRIPTION
-        url POM_URL
-
-        scm {
-          url POM_SCM_URL
-          connection POM_SCM_CONNECTION
-          developerConnection POM_SCM_DEV_CONNECTION
-        }
-
-        licenses {
-          license {
-            name POM_LICENCE_NAME
-            url POM_LICENCE_URL
-            distribution POM_LICENCE_DIST
-          }
-        }
-
-        developers {
-          developer {
-            id POM_DEVELOPER_ID
-            name POM_DEVELOPER_NAME
-            email POM_DEVELOPER_EMAIL
-          }
-        }
-
-      }
-    }
-  }
 }
 
 android.libraryVariants.all { variant ->
@@ -112,7 +112,7 @@ android.libraryVariants.all { variant ->
         exclude '**/R.java'
         options {
             links "http://docs.oracle.com/javase/7/docs/api/"
-            linksOffline "http://d.android.com/reference","${android.sdkDirectory}/docs/reference"
+            linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
         }
     }
 }

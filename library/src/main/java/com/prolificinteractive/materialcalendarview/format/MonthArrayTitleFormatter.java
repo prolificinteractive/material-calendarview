@@ -17,10 +17,10 @@ public class MonthArrayTitleFormatter implements TitleFormatter {
      * @param monthLabels an array of 12 labels to use for months, starting with January
      */
     public MonthArrayTitleFormatter(CharSequence[] monthLabels) {
-        if(monthLabels == null) {
+        if (monthLabels == null) {
             throw new IllegalArgumentException("Label array cannot be null");
         }
-        if(monthLabels.length < 12) {
+        if (monthLabels.length < 12) {
             throw new IllegalArgumentException("Label array is too short");
         }
         this.monthLabels = monthLabels;

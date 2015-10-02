@@ -9,7 +9,6 @@ public interface DayViewDecorator {
      * Determine if a specific day should be decorated
      *
      * @param day {@linkplain CalendarDay} to possibly decorate
-     *
      * @return true if this decorator should be applied to the provided day
      */
     boolean shouldDecorate(CalendarDay day);

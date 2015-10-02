@@ -29,7 +29,8 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateS
 
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
 
-    @Bind(R.id.calendarView) MaterialCalendarView widget;
+    @Bind(R.id.calendarView)
+    MaterialCalendarView widget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateS
         protected void onPostExecute(@NonNull List<CalendarDay> calendarDays) {
             super.onPostExecute(calendarDays);
 
-            if(isFinishing()) {
+            if (isFinishing()) {
                 return;
             }
 

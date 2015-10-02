@@ -419,9 +419,8 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #SELECTION_MODE_SINGLE
      * @see #SELECTION_MODE_MULTIPLE
      */
-    public
     @SelectionMode
-    int getSelectionMode() {
+    public int getSelectionMode() {
         return selectionMode;
     }
 
@@ -586,9 +585,8 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * @return all of the currently selected dates
      */
-    public
     @NonNull
-    List<CalendarDay> getSelectedDates() {
+    public List<CalendarDay> getSelectedDates() {
         return adapter.getSelectedDates();
     }
 
@@ -820,9 +818,8 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #SHOW_OUT_OF_RANGE
      * @see #SHOW_DECORATED_DISABLED
      */
-    public
     @ShowOtherDates
-    int getShowOtherDates() {
+    public int getShowOtherDates() {
         return adapter.getShowOtherDates();
     }
 
