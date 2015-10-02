@@ -1,13 +1,13 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
+import android.support.v4.view.BetterViewPager;
 import android.view.MotionEvent;
 
 /**
  * Custom ViewPager that allows swiping to be disabled.
  */
-class MonthPager extends ViewPager {
+class MonthPager extends BetterViewPager {
 
     private boolean pagingEnabled = true;
 
@@ -41,5 +41,10 @@ class MonthPager extends ViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return pagingEnabled && super.onInterceptTouchEvent(ev);
+    }
+
+    @Override
+    public void setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
+        super.setPageTransformer(reverseDrawingOrder, transformer);
     }
 }
