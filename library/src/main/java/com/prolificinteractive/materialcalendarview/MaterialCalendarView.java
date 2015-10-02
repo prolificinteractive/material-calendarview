@@ -464,7 +464,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if there is a future month that can be shown
      */
     private boolean canGoForward() {
-        return pager.isScrollable() ? pager.getCurrentItem() < (adapter.getCount() - 1) : false;
+        return pager.isPagingEnabled() && pager.getCurrentItem() < (adapter.getCount() - 1);
     }
 
     /**
@@ -473,7 +473,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if there is a previous month that can be shown
      */
     private boolean canGoBack() {
-        return pager.isScrollable() ? pager.getCurrentItem() > 0 : false;
+        return pager.isPagingEnabled() && pager.getCurrentItem() > 0;
     }
 
     /**
@@ -1404,12 +1404,19 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * enable disable pager scroll
+     * Enable or disable the ability to swipe between months.
      *
-     * @param scrollable
+     * @param pagingEnabled pass false to disable paging, true to enable (default)
      */
-    public void setScrollable(boolean scrollable) {
-        pager.setScrollable(scrollable);
+    public void setPagingEnabled(boolean pagingEnabled) {
+        pager.setPagingEnabled(pagingEnabled);
         updateUi();
+    }
+
+    /**
+     * @return true if swiping months is enabled, false if disabled. Default is true.
+     */
+    public boolean isPagingEnabled() {
+        return pager.isPagingEnabled();
     }
 }
