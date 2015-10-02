@@ -28,7 +28,8 @@ class MonthPagerAdapter extends PagerAdapter {
     private Integer color = null;
     private Integer dateTextAppearance = null;
     private Integer weekDayTextAppearance = null;
-    private @ShowOtherDates int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
+    @ShowOtherDates
+    private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private DateRangeIndex rangeIndex;
@@ -206,7 +207,8 @@ class MonthPagerAdapter extends PagerAdapter {
         }
     }
 
-    public @ShowOtherDates int getShowOtherDates() {
+    @ShowOtherDates
+    public int getShowOtherDates() {
         return showOtherDates;
     }
 
@@ -252,14 +254,13 @@ class MonthPagerAdapter extends PagerAdapter {
     }
 
     public void setDateSelected(CalendarDay day, boolean selected) {
-        if(selected) {
-            if(!selectedDates.contains(day)) {
+        if (selected) {
+            if (!selectedDates.contains(day)) {
                 selectedDates.add(day);
                 invalidateSelectedDates();
             }
-        }
-        else {
-            if(selectedDates.contains(day)) {
+        } else {
+            if (selectedDates.contains(day)) {
                 selectedDates.remove(day);
                 invalidateSelectedDates();
             }
@@ -289,7 +290,8 @@ class MonthPagerAdapter extends PagerAdapter {
         return rangeIndex.getItem(position);
     }
 
-    public @NonNull List<CalendarDay> getSelectedDates() {
+    @NonNull
+    public List<CalendarDay> getSelectedDates() {
         return Collections.unmodifiableList(selectedDates);
     }
 

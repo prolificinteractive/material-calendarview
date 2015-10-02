@@ -15,12 +15,15 @@ import butterknife.ButterKnife;
  * Shows off the most basic usage
  */
 public class OldCalendarViewActivity extends AppCompatActivity
-    implements CalendarView.OnDateChangeListener {
+        implements CalendarView.OnDateChangeListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
-    @Bind(R.id.calendarView) CalendarView widget;
-    @Bind(R.id.textView) TextView textView;
+    @Bind(R.id.calendarView)
+    CalendarView widget;
+
+    @Bind(R.id.textView)
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +34,9 @@ public class OldCalendarViewActivity extends AppCompatActivity
         widget.setOnDateChangeListener(this);
     }
 
-  @Override public void onSelectedDayChange(CalendarView view, int year, int month,
-      int dayOfMonth) {
+    @Override
+    public void onSelectedDayChange(CalendarView view, int year, int month,
+                                    int dayOfMonth) {
         textView.setText(FORMATTER.format(view.getDate()));
     }
 }

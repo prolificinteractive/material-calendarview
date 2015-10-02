@@ -1,7 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -35,11 +34,11 @@ class DirectionButton extends ImageView {
     }
 
     private static int getThemeSelectableBackgroundId(Context context) {
-            //Get selectableItemBackgroundBorderless defined for AppCompat
+        //Get selectableItemBackgroundBorderless defined for AppCompat
         int colorAttr = context.getResources().getIdentifier(
                 "selectableItemBackgroundBorderless", "attr", context.getPackageName());
 
-        if(colorAttr == 0) {
+        if (colorAttr == 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 colorAttr = android.R.attr.selectableItemBackgroundBorderless;
             } else {

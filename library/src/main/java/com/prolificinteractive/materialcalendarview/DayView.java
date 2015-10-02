@@ -48,7 +48,8 @@ class DayView extends CheckedTextView {
     private boolean isInRange = true;
     private boolean isInMonth = true;
     private boolean isDecoratedDisabled = false;
-    private @ShowOtherDates int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
+    @ShowOtherDates
+    private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
 
     public DayView(Context context, CalendarDay day) {
         super(context);
@@ -59,7 +60,7 @@ class DayView extends CheckedTextView {
 
         setGravity(Gravity.CENTER);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             setTextAlignment(TEXT_ALIGNMENT_CENTER);
         }
 
@@ -80,19 +81,20 @@ class DayView extends CheckedTextView {
         this.formatter = formatter == null ? DayFormatter.DEFAULT : formatter;
         CharSequence currentLabel = getText();
         Object[] spans = null;
-        if(currentLabel instanceof Spanned) {
+        if (currentLabel instanceof Spanned) {
             spans = ((Spanned) currentLabel).getSpans(0, currentLabel.length(), Object.class);
         }
         SpannableString newLabel = new SpannableString(getLabel());
-        if(spans != null) {
-            for(Object span : spans) {
+        if (spans != null) {
+            for (Object span : spans) {
                 newLabel.setSpan(span, 0, newLabel.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
         setText(newLabel);
     }
 
-    public @NonNull String getLabel() {
+    @NonNull
+    public String getLabel() {
         return formatter.format(date);
     }
 
@@ -105,10 +107,9 @@ class DayView extends CheckedTextView {
      * @param drawable custom selection drawable
      */
     public void setSelectionDrawable(Drawable drawable) {
-        if(drawable == null) {
+        if (drawable == null) {
             this.selectionDrawable = null;
-        }
-        else {
+        } else {
             this.selectionDrawable = drawable.getConstantState().newDrawable(getResources());
         }
         regenerateBackground();
@@ -118,10 +119,9 @@ class DayView extends CheckedTextView {
      * @param drawable background to draw behind everything else
      */
     public void setCustomBackground(Drawable drawable) {
-        if(drawable == null) {
+        if (drawable == null) {
             this.customBackground = null;
-        }
-        else {
+        } else {
             this.customBackground = drawable.getConstantState().newDrawable(getResources());
         }
         invalidate();
@@ -141,15 +141,15 @@ class DayView extends CheckedTextView {
 
         boolean shouldBeVisible = enabled;
 
-        if(!isInMonth && showOtherMonths) {
+        if (!isInMonth && showOtherMonths) {
             shouldBeVisible = true;
         }
 
-        if(!isInRange && showOutOfRange) {
+        if (!isInRange && showOutOfRange) {
             shouldBeVisible |= isInMonth;
         }
 
-        if(isDecoratedDisabled && showDecoratedDisabled) {
+        if (isDecoratedDisabled && showDecoratedDisabled) {
             shouldBeVisible |= isInMonth && isInRange;
         }
 
@@ -167,7 +167,7 @@ class DayView extends CheckedTextView {
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
-        if(customBackground != null) {
+        if (customBackground != null) {
             canvas.getClipBounds(tempRect);
             customBackground.setBounds(tempRect);
             customBackground.setState(getDrawableState());
@@ -177,10 +177,9 @@ class DayView extends CheckedTextView {
     }
 
     private void regenerateBackground() {
-        if(selectionDrawable != null) {
+        if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
-        }
-        else {
+        } else {
             setBackgroundDrawable(generateBackground(selectionColor, fadeTime));
         }
     }
@@ -189,10 +188,10 @@ class DayView extends CheckedTextView {
         StateListDrawable drawable = new StateListDrawable();
         drawable.setExitFadeDuration(fadeTime);
         drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color));
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable.addState(new int[] { android.R.attr.state_pressed }, generateRippleDrawable(color));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleDrawable(color));
         } else {
-            drawable.addState(new int[] { android.R.attr.state_pressed }, generateCircleDrawable(color));
+            drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleDrawable(color));
         }
 
         drawable.addState(new int[]{}, generateCircleDrawable(Color.TRANSPARENT));
@@ -230,10 +229,10 @@ class DayView extends CheckedTextView {
 
         // Facade has spans
         List<DayViewFacade.Span> spans = facade.getSpans();
-        if(!spans.isEmpty()) {
+        if (!spans.isEmpty()) {
             String label = getLabel();
             SpannableString formattedLabel = new SpannableString(getLabel());
-            for(DayViewFacade.Span span : spans) {
+            for (DayViewFacade.Span span : spans) {
                 formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             setText(formattedLabel);

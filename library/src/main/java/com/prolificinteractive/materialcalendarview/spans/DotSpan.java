@@ -32,7 +32,6 @@ public class DotSpan implements LineBackgroundSpan {
      * Create a span to draw a dot using a specified color
      *
      * @param color color of the dot
-     *
      * @see #DotSpan(float, int)
      * @see #DEFAULT_RADIUS
      */
@@ -45,7 +44,6 @@ public class DotSpan implements LineBackgroundSpan {
      * Create a span to draw a dot using a specified radius
      *
      * @param radius radius for the dot
-     *
      * @see #DotSpan(float, int)
      */
     public DotSpan(float radius) {
@@ -57,7 +55,7 @@ public class DotSpan implements LineBackgroundSpan {
      * Create a span to draw a dot using a specified radius and color
      *
      * @param radius radius for the dot
-     * @param color color of the dot
+     * @param color  color of the dot
      */
     public DotSpan(float radius, int color) {
         this.radius = radius;
@@ -72,7 +70,7 @@ public class DotSpan implements LineBackgroundSpan {
             int start, int end, int lineNum
     ) {
         int oldColor = paint.getColor();
-        if(color != 0) {
+        if (color != 0) {
             paint.setColor(color);
         }
         canvas.drawCircle((left + right) / 2, bottom + radius, radius, paint);

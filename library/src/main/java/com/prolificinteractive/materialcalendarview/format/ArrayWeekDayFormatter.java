@@ -11,10 +11,10 @@ public class ArrayWeekDayFormatter implements WeekDayFormatter {
      * @param weekDayLabels an array of 7 labels, starting with Sunday
      */
     public ArrayWeekDayFormatter(CharSequence[] weekDayLabels) {
-        if(weekDayLabels == null) {
+        if (weekDayLabels == null) {
             throw new IllegalArgumentException("Cannot be null");
         }
-        if(weekDayLabels.length != 7) {
+        if (weekDayLabels.length != 7) {
             throw new IllegalArgumentException("Array must contain exactly 7 elements");
         }
         this.weekDayLabels = weekDayLabels;

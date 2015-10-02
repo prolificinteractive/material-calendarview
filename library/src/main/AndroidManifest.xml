@@ -1,6 +1,5 @@
-<manifest
-    package="com.prolificinteractive.materialcalendarview">
+<manifest package="com.prolificinteractive.materialcalendarview">
 
-    <application/>
+    <application />
 
 </manifest>

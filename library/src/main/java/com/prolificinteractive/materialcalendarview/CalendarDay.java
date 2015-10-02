@@ -18,19 +18,21 @@ public final class CalendarDay implements Parcelable {
      *
      * @return CalendarDay set to today's date
      */
-    public static @NonNull CalendarDay today() {
+    @NonNull
+    public static CalendarDay today() {
         return from(CalendarUtils.getInstance());
     }
 
     /**
      * Get a new instance set to the specified day
      *
-     * @param year new instance's year
+     * @param year  new instance's year
      * @param month new instance's month as defined by {@linkplain java.util.Calendar}
-     * @param day new instance's day of month
+     * @param day   new instance's day of month
      * @return CalendarDay set to the specified date
      */
-    public static @NonNull CalendarDay from(int year, int month, int day) {
+    @NonNull
+    public static CalendarDay from(int year, int month, int day) {
         return new CalendarDay(year, month, day);
     }
 
@@ -38,11 +40,10 @@ public final class CalendarDay implements Parcelable {
      * Get a new instance set to the specified day
      *
      * @param calendar {@linkplain Calendar} to pull date information from. Passing null will return null
-     *
      * @return CalendarDay set to the specified date
      */
     public static CalendarDay from(@Nullable Calendar calendar) {
-        if(calendar == null) {
+        if (calendar == null) {
             return null;
         }
         return from(
@@ -56,11 +57,10 @@ public final class CalendarDay implements Parcelable {
      * Get a new instance set to the specified day
      *
      * @param date {@linkplain Date} to pull date information from. Passing null will return null.
-     *
      * @return CalendarDay set to the specified date
      */
     public static CalendarDay from(@Nullable Date date) {
-        if(date == null) {
+        if (date == null) {
             return null;
         }
         return from(CalendarUtils.getInstance(date));
@@ -91,9 +91,8 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
-     * @see CalendarDay#from(Calendar)
-     *
      * @param calendar source to pull date information from for this instance
+     * @see CalendarDay#from(Calendar)
      */
     @Deprecated
     public CalendarDay(Calendar calendar) {
@@ -105,11 +104,10 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
-     * @see CalendarDay#from(Calendar)
-     *
-     * @param year new instance's year
+     * @param year  new instance's year
      * @param month new instance's month as defined by {@linkplain java.util.Calendar}
-     * @param day new instance's day of month
+     * @param day   new instance's day of month
+     * @see CalendarDay#from(Calendar)
      */
     @Deprecated
     public CalendarDay(int year, int month, int day) {
@@ -119,9 +117,8 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
-     * @see CalendarDay#from(Date)
-     *
      * @param date source to pull date information from for this instance
+     * @see CalendarDay#from(Date)
      */
     @Deprecated
     public CalendarDay(Date date) {
@@ -160,8 +157,9 @@ public final class CalendarDay implements Parcelable {
      *
      * @return a date with this days information
      */
-    public @NonNull Date getDate() {
-        if(_date == null) {
+    @NonNull
+    public Date getDate() {
+        if (_date == null) {
             _date = getCalendar().getTime();
         }
         return _date;
@@ -172,8 +170,9 @@ public final class CalendarDay implements Parcelable {
      *
      * @return a new calendar instance with this day information
      */
-    public @NonNull Calendar getCalendar() {
-        if(_calendar == null) {
+    @NonNull
+    public Calendar getCalendar() {
+        if (_calendar == null) {
             _calendar = CalendarUtils.getInstance();
             copyTo(_calendar);
         }
@@ -216,13 +215,12 @@ public final class CalendarDay implements Parcelable {
      * @return true if this is before other, false if equal or after
      */
     public boolean isBefore(@NonNull CalendarDay other) {
-        if(other == null) {
+        if (other == null) {
             throw new IllegalArgumentException("other cannot be null");
         }
         if (year == other.year) {
             return ((month == other.month) ? (day < other.day) : (month < other.month));
-        }
-        else {
+        } else {
             return year < other.year;
         }
     }
@@ -234,14 +232,13 @@ public final class CalendarDay implements Parcelable {
      * @return true if this is after other, false if equal or before
      */
     public boolean isAfter(@NonNull CalendarDay other) {
-        if(other == null) {
+        if (other == null) {
             throw new IllegalArgumentException("other cannot be null");
         }
 
         if (year == other.year) {
             return (month == other.month) ? (day > other.day) : (month > other.month);
-        }
-        else {
+        } else {
             return year > other.year;
         }
     }

@@ -24,7 +24,9 @@ import butterknife.OnClick;
 
 public class DynamicSettersActivity extends AppCompatActivity {
 
-    @Bind(R.id.calendarView) MaterialCalendarView widget;
+    @Bind(R.id.calendarView)
+    MaterialCalendarView widget;
+
     private int currentTileSize;
 
     @Override
@@ -36,7 +38,8 @@ public class DynamicSettersActivity extends AppCompatActivity {
         currentTileSize = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
     }
 
-    @OnClick(R.id.button_other_dates) void onOtherDatesClicked() {
+    @OnClick(R.id.button_other_dates)
+    void onOtherDatesClicked() {
         CharSequence[] items = {
                 "Other Months",
                 "Out Of Range",
@@ -59,11 +62,10 @@ public class DynamicSettersActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         int showOtherDates = widget.getShowOtherDates();
-                        if(isChecked) {
+                        if (isChecked) {
                             //Set flag
                             showOtherDates |= itemValues[which];
-                        }
-                        else {
+                        } else {
                             //Unset flag
                             showOtherDates &= ~itemValues[which];
                         }
@@ -74,13 +76,13 @@ public class DynamicSettersActivity extends AppCompatActivity {
                 .show();
     }
 
-    @OnCheckedChanged(R.id.check_text_appearance) void onTextAppearanceChecked(boolean checked) {
-        if(checked) {
+    @OnCheckedChanged(R.id.check_text_appearance)
+    void onTextAppearanceChecked(boolean checked) {
+        if (checked) {
             widget.setHeaderTextAppearance(R.style.TextAppearance_AppCompat_Large);
             widget.setDateTextAppearance(R.style.TextAppearance_AppCompat_Medium);
             widget.setWeekDayTextAppearance(R.style.TextAppearance_AppCompat_Medium);
-        }
-        else {
+        } else {
             widget.setHeaderTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_Header);
             widget.setDateTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_Date);
             widget.setWeekDayTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_WeekDay);
@@ -88,7 +90,8 @@ public class DynamicSettersActivity extends AppCompatActivity {
         widget.setShowOtherDates(checked ? MaterialCalendarView.SHOW_ALL : MaterialCalendarView.SHOW_NONE);
     }
 
-    @OnClick(R.id.button_min_date) void onMinClicked() {
+    @OnClick(R.id.button_min_date)
+    void onMinClicked() {
         showDatePickerDialog(this, widget.getMinimumDate(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -97,7 +100,8 @@ public class DynamicSettersActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.button_max_date) void onMaxClicked() {
+    @OnClick(R.id.button_max_date)
+    void onMaxClicked() {
         showDatePickerDialog(this, widget.getMaximumDate(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -106,7 +110,8 @@ public class DynamicSettersActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.button_selected_date) void onSelectedClicked() {
+    @OnClick(R.id.button_selected_date)
+    void onSelectedClicked() {
         showDatePickerDialog(this, widget.getSelectedDate(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -115,23 +120,26 @@ public class DynamicSettersActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.button_toggle_topbar) void onToggleTopBarClicked() {
+    @OnClick(R.id.button_toggle_topbar)
+    void onToggleTopBarClicked() {
         widget.setTopbarVisible(!widget.getTopbarVisible());
     }
 
     Random random = new Random();
 
-    @OnClick(R.id.button_set_colors) void onColorsClicked() {
+    @OnClick(R.id.button_set_colors)
+    void onColorsClicked() {
         int color = Color.HSVToColor(new float[]{
-            random.nextFloat() * 360,
-            1f,
-            0.75f
+                random.nextFloat() * 360,
+                1f,
+                0.75f
         });
         widget.setArrowColor(color);
         widget.setSelectionColor(color);
     }
 
-    @OnClick(R.id.button_set_tile_size) void onTileSizeClicked() {
+    @OnClick(R.id.button_set_tile_size)
+    void onTileSizeClicked() {
         final NumberPicker view = new NumberPicker(this);
         view.setMinValue(24);
         view.setMaxValue(64);
@@ -149,11 +157,13 @@ public class DynamicSettersActivity extends AppCompatActivity {
                 .show();
     }
 
-    @OnClick(R.id.button_clear_selection) void onClearSelection() {
+    @OnClick(R.id.button_clear_selection)
+    void onClearSelection() {
         widget.clearSelection();
     }
 
-    @OnClick(R.id.button_selection_mode) void onChangeSelectionMode() {
+    @OnClick(R.id.button_selection_mode)
+    void onChangeSelectionMode() {
         CharSequence[] items = {
                 "No Selection",
                 "Single Date",
@@ -181,18 +191,19 @@ public class DynamicSettersActivity extends AppCompatActivity {
             Calendar.SATURDAY,
     };
 
-    @OnClick(R.id.button_set_first_day) void onFirstDayOfWeekClicked() {
+    @OnClick(R.id.button_set_first_day)
+    void onFirstDayOfWeekClicked() {
         int index = random.nextInt(DAYS_OF_WEEK.length);
         widget.setFirstDayOfWeek(DAYS_OF_WEEK[index]);
     }
 
     public static void showDatePickerDialog(Context context, CalendarDay day,
-        DatePickerDialog.OnDateSetListener callback) {
-        if(day == null) {
+                                            DatePickerDialog.OnDateSetListener callback) {
+        if (day == null) {
             day = CalendarDay.today();
         }
         DatePickerDialog dialog = new DatePickerDialog(
-            context, 0, callback, day.getYear(), day.getMonth(), day.getDay()
+                context, 0, callback, day.getYear(), day.getMonth(), day.getDay()
         );
         dialog.show();
     }

@@ -18,12 +18,11 @@ public class CalendarUtils {
 
     /**
      * @param date {@linkplain Date} to pull date information from
-     *
      * @return a new Calendar instance with the date set to the provided date. Time set to zero.
      */
     public static Calendar getInstance(@Nullable Date date) {
         Calendar calendar = Calendar.getInstance();
-        if(date != null) {
+        if (date != null) {
             calendar.setTime(date);
         }
         copyDateTo(calendar, calendar);
@@ -33,7 +32,8 @@ public class CalendarUtils {
     /**
      * @return a new Calendar instance with the date set to today. Time set to zero.
      */
-    public static @NonNull Calendar getInstance() {
+    @NonNull
+    public static Calendar getInstance() {
         Calendar calendar = Calendar.getInstance();
         copyDateTo(calendar, calendar);
         return calendar;
@@ -56,7 +56,7 @@ public class CalendarUtils {
      * Copy <i>only</i> date information to a new calendar.
      *
      * @param from calendar to copy from
-     * @param to calendar to copy to
+     * @param to   calendar to copy to
      */
     public static void copyDateTo(Calendar from, Calendar to) {
         int year = getYear(from);
