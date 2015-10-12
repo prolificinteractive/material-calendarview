@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -99,6 +100,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #setShowOtherDates(int)
      * @see #getShowOtherDates()
      */
+    @SuppressLint("UniqueConstants")
     @Retention(RetentionPolicy.RUNTIME)
     @IntDef(flag = true, value = {
             SHOW_NONE, SHOW_ALL, SHOW_DEFAULTS,
@@ -962,7 +964,7 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeInt(showOtherDates);
             out.writeParcelable(minDate, 0);
             out.writeParcelable(maxDate, 0);
-            out.writeParcelableArray(selectedDates.toArray(new CalendarDay[selectedDates.size()]), 0);
+            out.writeTypedList(selectedDates);
             out.writeInt(firstDayOfWeek);
             out.writeInt(tileSizePx);
             out.writeInt(topbarVisible ? 1 : 0);
@@ -989,8 +991,7 @@ public class MaterialCalendarView extends ViewGroup {
             ClassLoader loader = CalendarDay.class.getClassLoader();
             minDate = in.readParcelable(loader);
             maxDate = in.readParcelable(loader);
-            CalendarDay[] days = (CalendarDay[]) in.readParcelableArray(loader);
-            selectedDates.addAll(Arrays.asList(days));
+            in.readTypedList(selectedDates, CalendarDay.CREATOR);
             firstDayOfWeek = in.readInt();
             tileSizePx = in.readInt();
             topbarVisible = in.readInt() == 1;
