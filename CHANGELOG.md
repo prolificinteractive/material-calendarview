@@ -5,6 +5,9 @@ Version 1.1.0 *(FUTURE)*
 ------------------------
 
 * New: Ability to disable month swiping with `setPagingEnabled()`
+* Fix [#149](https://github.com/prolificinteractive/material-calendarview/issues/149):
+  save selected dates as a typed List instead of an array.
+* Change: Some preformance optimizations
 
 Version 1.0.1 *(2015-09-30)*
 ----------------------------
