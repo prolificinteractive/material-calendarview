@@ -1,8 +1,8 @@
 Change Log
 ==========
 
-Version 1.1.0 *(FUTURE)*
-------------------------
+Version 1.1.0 *(2015-10-14)*
+----------------------------
 
 * New: Ability to disable month swiping with `setPagingEnabled()`
 * Fix [#149](https://github.com/prolificinteractive/material-calendarview/issues/149):
