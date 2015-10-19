@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 1.1.0 *(2015-10-14)*
+Version 1.1.0 *(2015-10-19)*
 ----------------------------
 
 * New: Ability to disable month swiping with `setPagingEnabled()`
