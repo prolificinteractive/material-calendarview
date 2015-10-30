@@ -110,6 +110,21 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * {@linkplain IntDef} annotation for DisabledClickBehaviour.
+     *
+     * @see #setDisabledClickBehaviour(int)
+     * @see #getDisabledClickBehaviour()
+     */
+    @SuppressLint("UniqueConstants")
+    @Retention(RetentionPolicy.RUNTIME)
+    @IntDef(flag = true, value = {
+            OTHER_MONTHS_SELECTABLE, OTHER_MONTHS_SELECTABLE_SWITCH_MONTHS,
+            OUT_OF_RANGE_SELECTABLE, NONE_SELECTABLE, SELECTABLE_DEFAULTS
+    })
+    public @interface DisabledClickBehavior {
+    }
+
+    /**
      * Do not show any non-enabled dates
      */
     public static final int SHOW_NONE = 0;
@@ -141,6 +156,32 @@ public class MaterialCalendarView extends ViewGroup {
      * Show all the days
      */
     public static final int SHOW_ALL = SHOW_OTHER_MONTHS | SHOW_OUT_OF_RANGE | SHOW_DECORATED_DISABLED;
+
+    /**
+     * Make dates from other months selectable
+     */
+    public static final int OTHER_MONTHS_SELECTABLE = 0;
+
+    /**
+     * Make dates from other months selectable
+     * Also enables paging from one month to another if a date from another month is selected
+     * Also enables {@link #OUT_OF_RANGE_SELECTABLE}
+     */
+    public static final int OTHER_MONTHS_SELECTABLE_SWITCH_MONTHS = 1;
+
+    /**
+     * Make out of range days selectable
+     * This will only work on days from the current month unless {@link #OTHER_MONTHS_SELECTABLE}
+     * or {@link #OTHER_MONTHS_SELECTABLE_SWITCH_MONTHS} is enabled
+     */
+    public static final int OUT_OF_RANGE_SELECTABLE = 2;
+
+    /**
+     * Do not make any disabled dates selectable
+     */
+    public static final int NONE_SELECTABLE = 3;
+
+    public static final int SELECTABLE_DEFAULTS = NONE_SELECTABLE;
 
     /**
      * Default tile size in DIPs. This is used in cases where there is no tile size specificed and the view is set to {@linkplain ViewGroup.LayoutParams#WRAP_CONTENT WRAP_CONTENT}
@@ -311,6 +352,11 @@ public class MaterialCalendarView extends ViewGroup {
             setShowOtherDates(a.getInteger(
                     R.styleable.MaterialCalendarView_mcv_showOtherDates,
                     SHOW_DEFAULTS
+            ));
+            //noinspection ResourceType
+            setDisabledClickBehaviour(a.getInteger(
+                    R.styleable.MaterialCalendarView_mcv_disabledClickBehaviour,
+                    SELECTABLE_DEFAULTS
             ));
 
             int firstDayOfWeek = a.getInteger(
@@ -775,6 +821,21 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * The default value is {@link #SELECTABLE_DEFAULTS}, which is currently {@link #NONE_SELECTABLE}.
+     * This means the default behaviour is that all disabled dates are non-selectable
+     *
+     * @param clickBehaviour flag for make disabled dates selectable
+     * @see #OTHER_MONTHS_SELECTABLE
+     * @see #OTHER_MONTHS_SELECTABLE_SWITCH_MONTHS
+     * @see #OUT_OF_RANGE_SELECTABLE
+     * @see #NONE_SELECTABLE
+     * @see #SELECTABLE_DEFAULTS
+     */
+    public void setDisabledClickBehaviour(@DisabledClickBehavior int clickBehaviour) {
+        adapter.setDisabledClickBehaviour(clickBehaviour);
+    }
+
+    /**
      * Set a formatter for weekday labels.
      *
      * @param formatter the new formatter, null for default
@@ -828,6 +889,19 @@ public class MaterialCalendarView extends ViewGroup {
     @ShowOtherDates
     public int getShowOtherDates() {
         return adapter.getShowOtherDates();
+    }
+
+    /**
+     * @return int of flags used for making disabled dates selectable
+     * @see #OTHER_MONTHS_SELECTABLE
+     * @see #OTHER_MONTHS_SELECTABLE_SWITCH_MONTHS
+     * @see #OUT_OF_RANGE_SELECTABLE
+     * @see #NONE_SELECTABLE
+     * @see #SELECTABLE_DEFAULTS
+     */
+    @DisabledClickBehavior
+    public int getDisabledClickBehaviour() {
+        return adapter.getDisabledClickBehaviour();
     }
 
     /**
@@ -1185,6 +1259,14 @@ public class MaterialCalendarView extends ViewGroup {
             default:
             case SELECTION_MODE_SINGLE: {
                 adapter.clearSelections();
+                if ((getDisabledClickBehaviour() == OTHER_MONTHS_SELECTABLE_SWITCH_MONTHS
+                        || getDisabledClickBehaviour() == OTHER_MONTHS_SELECTABLE_SWITCH_MONTHS)
+                        && currentMonth.getMonth() != date.getMonth())
+                {
+                    // Find difference between months and move viewPager by that much
+                    int difference = currentMonth.getMonth() - date.getMonth();
+                    pager.setCurrentItem(pager.getCurrentItem() - difference, true);
+                }
                 adapter.setDateSelected(date, true);
                 dispatchOnDateSelected(date, true);
             }
