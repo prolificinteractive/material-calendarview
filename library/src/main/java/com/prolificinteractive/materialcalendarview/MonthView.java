@@ -9,6 +9,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView.DisabledClickBehavior;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
@@ -17,6 +18,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
+import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTABLE_DEFAULTS;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SHOW_DEFAULTS;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
 import static java.util.Calendar.DATE;
@@ -48,6 +50,9 @@ class MonthView extends ViewGroup implements View.OnClickListener {
 
     @ShowOtherDates
     private int showOtherDates = SHOW_DEFAULTS;
+
+    @DisabledClickBehavior
+    private int disabledClickBehaviour = SELECTABLE_DEFAULTS;
 
     private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
 
@@ -108,6 +113,11 @@ class MonthView extends ViewGroup implements View.OnClickListener {
 
     public void setShowOtherDates(@ShowOtherDates int showFlags) {
         this.showOtherDates = showFlags;
+        updateUi();
+    }
+
+    public void setDisabledClickBehaviour(@DisabledClickBehavior int disabledClickBehaviour) {
+        this.disabledClickBehaviour = disabledClickBehaviour;
         updateUi();
     }
 
@@ -196,7 +206,7 @@ class MonthView extends ViewGroup implements View.OnClickListener {
         int ourMonth = month.getMonth();
         for (DayView dayView : monthDayViews) {
             CalendarDay day = dayView.getDate();
-            dayView.setupSelection(showOtherDates, day.isInRange(minDate, maxDate), day.getMonth() == ourMonth);
+            dayView.setupSelection(showOtherDates, disabledClickBehaviour, day.isInRange(minDate, maxDate), day.getMonth() == ourMonth);
         }
         postInvalidate();
     }
