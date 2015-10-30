@@ -1022,7 +1022,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Sets the first day of the week.
-     * <p/>
+
      * Uses the java.util.Calendar day constants.
      *
      * @param day The first day of the week as a java.util.Calendar day constant.
