@@ -146,6 +146,8 @@ public class MaterialCalendarView extends ViewGroup {
      * Default tile size in DIPs. This is used in cases where there is no tile size specificed and the view is set to {@linkplain ViewGroup.LayoutParams#WRAP_CONTENT WRAP_CONTENT}
      */
     public static final int DEFAULT_TILE_SIZE_DP = 44;
+    private static final int DEFAULT_DAYS_IN_WEEK = 7;
+    private static final int DAY_NAMES_ROW = 1;
 
     private static final TitleFormatter DEFAULT_TITLE_FORMATTER = new DateFormatTitleFormatter();
     private final TitleChanger titleChanger;
@@ -153,7 +155,7 @@ public class MaterialCalendarView extends ViewGroup {
     private final TextView title;
     private final DirectionButton buttonPast;
     private final DirectionButton buttonFuture;
-    private final MonthPager pager;
+    private final CalendarPager pager;
     private CalendarPagerAdapter<?> adapter;
     private CalendarDay currentMonth;
     private LinearLayout topbar;
@@ -229,7 +231,7 @@ public class MaterialCalendarView extends ViewGroup {
         buttonPast = new DirectionButton(getContext());
         title = new TextView(getContext());
         buttonFuture = new DirectionButton(getContext());
-        pager = new MonthPager(getContext());
+        pager = new CalendarPager(getContext());
 
         setupChildren();
 
@@ -339,7 +341,7 @@ public class MaterialCalendarView extends ViewGroup {
             monthView.setDateTextAppearance(adapter.getDateTextAppearance());
             monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance());
             monthView.setShowOtherDates(getShowOtherDates());
-            addView(monthView, new LayoutParams(MonthView.DEFAULT_MONTH_TILE_HEIGHT));
+            addView(monthView, new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
         }
     }
 
@@ -357,7 +359,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         title.setGravity(Gravity.CENTER);
         topbar.addView(title, new LinearLayout.LayoutParams(
-                0, LayoutParams.MATCH_PARENT, MonthView.DEFAULT_DAYS_IN_WEEK - 2
+                0, LayoutParams.MATCH_PARENT, DEFAULT_DAYS_IN_WEEK - 2
         ));
 
         buttonFuture.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
@@ -366,7 +368,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         pager.setId(R.id.mcv_pager);
         pager.setOffscreenPageLimit(1);
-        addView(pager, new LayoutParams(MonthView.DEFAULT_MONTH_TILE_HEIGHT));
+        addView(pager, new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
     }
 
     private void updateUi() {
@@ -437,6 +439,7 @@ public class MaterialCalendarView extends ViewGroup {
         adapter = adapter.migrateStateAndReturn(newAdapter);
         pager.setAdapter(adapter);
         calendarMode = mode;
+        invalidateDecorators();
         updateUi();
     }
 
@@ -1278,24 +1281,12 @@ public class MaterialCalendarView extends ViewGroup {
         final int desiredWidth = specWidthSize - getPaddingLeft() - getPaddingRight();
         final int desiredHeight = specHeightSize - getPaddingTop() - getPaddingBottom();
 
-        int weekCount = MonthView.DEFAULT_MONTH_TILE_HEIGHT;
-
-        /*
-         * The default height of the calendar component is MonthView.DEFAULT_MONTH_TILE_HEIGHT rows,
-         * but we need to hide 1 if the actual date is 5 week long
-         */
-        if (mDynamicHeightEnabled && adapter != null && pager != null) {
-            Calendar cal = (Calendar) adapter.getItem(pager.getCurrentItem()).getCalendar().clone();
-            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-            //noinspection ResourceType
-            cal.setFirstDayOfWeek(getFirstDayOfWeek());
-            weekCount = cal.get(Calendar.WEEK_OF_MONTH) + 1; // + 1 because of the week days
-        }
+        final int weekCount = getWeekCountBasedOnMode();
 
         final int viewTileHeight = getTopbarVisible() ? (weekCount + 1) : weekCount;
 
         //Calculate independent tile sizes for later
-        int desiredTileWidth = desiredWidth / MonthView.DEFAULT_DAYS_IN_WEEK;
+        int desiredTileWidth = desiredWidth / DEFAULT_DAYS_IN_WEEK;
         int desiredTileHeight = desiredHeight / viewTileHeight;
 
         int measureTileSize = -1;
@@ -1322,7 +1313,7 @@ public class MaterialCalendarView extends ViewGroup {
         }
 
         //Calculate our size based off our measured tile size
-        int measuredWidth = measureTileSize * MonthView.DEFAULT_DAYS_IN_WEEK;
+        int measuredWidth = measureTileSize * DEFAULT_DAYS_IN_WEEK;
         int measuredHeight = measureTileSize * viewTileHeight;
 
         //Put padding back in from when we took it away
@@ -1344,7 +1335,7 @@ public class MaterialCalendarView extends ViewGroup {
             LayoutParams p = (LayoutParams) child.getLayoutParams();
 
             int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    MonthView.DEFAULT_DAYS_IN_WEEK * measureTileSize,
+                    DEFAULT_DAYS_IN_WEEK * measureTileSize,
                     MeasureSpec.EXACTLY
             );
 
@@ -1355,6 +1346,19 @@ public class MaterialCalendarView extends ViewGroup {
 
             child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
         }
+    }
+
+    private int getWeekCountBasedOnMode() {
+        int weekCount = calendarMode.visibleWeeksCount;
+        boolean isInMonthsMode = calendarMode.equals(CalendarMode.MONTHS);
+        if (isInMonthsMode && mDynamicHeightEnabled && adapter != null && pager != null) {
+            Calendar cal = (Calendar) adapter.getItem(pager.getCurrentItem()).getCalendar().clone();
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            //noinspection ResourceType
+            cal.setFirstDayOfWeek(getFirstDayOfWeek());
+            weekCount = cal.get(Calendar.WEEK_OF_MONTH);
+        }
+        return weekCount + DAY_NAMES_ROW;
     }
 
     /**
