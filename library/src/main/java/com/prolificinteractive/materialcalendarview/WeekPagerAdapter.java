@@ -41,7 +41,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
         public Weekly(@NonNull CalendarDay min, @NonNull CalendarDay max) {
             this.min = CalendarDay.from(min.getYear(), min.getMonth(), 1);
             max = CalendarDay.from(max.getYear(), max.getMonth(), 1);
-            this.count = weekNumberDifference(min, max) + 1;
+            this.count = weekNumberDifference(min, max);
         }
 
         @Override
@@ -67,7 +67,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
         private int weekNumberDifference(@NonNull CalendarDay min, @NonNull CalendarDay max) {
             long millisDiff = max.getDate().getTime() - min.getDate().getTime();
             long dayDiff = TimeUnit.DAYS.convert(millisDiff, TimeUnit.MILLISECONDS);
-            return (int) (dayDiff / DAYS_IN_WEEK);
+            return (int) (dayDiff / DAYS_IN_WEEK) + 1;
         }
     }
 }

@@ -1,13 +1,19 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import java.util.Calendar;
 import java.util.Collection;
 
+/**
+ * Display a week of {@linkplain DayView}s and
+ * seven {@linkplain WeekDayView}s.
+ */
+@SuppressLint("ViewConstructor")
 public class WeekView extends CalendarPagerView {
 
-    protected static final int DEFAULT_DAYS_IN_WEEK = 7;
+    private static final int DEFAULT_DAYS_IN_WEEK = 7;
 
     public WeekView(@NonNull MaterialCalendarView view,
                     CalendarDay firstViewDay,
