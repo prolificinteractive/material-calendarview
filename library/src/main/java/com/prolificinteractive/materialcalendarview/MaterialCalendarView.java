@@ -154,9 +154,10 @@ public class MaterialCalendarView extends ViewGroup {
     private final DirectionButton buttonPast;
     private final DirectionButton buttonFuture;
     private final MonthPager pager;
-    private final MonthPagerAdapter adapter;
+    private CalendarPagerAdapter<?> adapter;
     private CalendarDay currentMonth;
     private LinearLayout topbar;
+    private CalendarMode calendarMode = CalendarMode.MONTHS;
     /**
      * Used for the dynamic calendar height.
      */
@@ -415,6 +416,28 @@ public class MaterialCalendarView extends ViewGroup {
         }
 
         adapter.setSelectionEnabled(selectionMode != SELECTION_MODE_NONE);
+    }
+
+    public void setCalendarMode(CalendarMode mode) {
+        if (calendarMode.equals(mode)) {
+            return;
+        }
+
+        CalendarPagerAdapter<?> newAdapter;
+        switch (mode) {
+            case MONTHS:
+                newAdapter = new MonthPagerAdapter(this);
+                break;
+            case WEEKS:
+                newAdapter = new WeekPagerAdapter(this);
+                break;
+            default:
+                throw new UnsupportedOperationException("Provided calendar mode which is not yet implemented");
+        }
+        adapter = adapter.migrateStateAndReturn(newAdapter);
+        pager.setAdapter(adapter);
+        calendarMode = mode;
+        updateUi();
     }
 
     /**
@@ -1022,7 +1045,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Sets the first day of the week.
-
+     * <p/>
      * Uses the java.util.Calendar day constants.
      *
      * @param day The first day of the week as a java.util.Calendar day constant.
@@ -1042,7 +1065,7 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * By default, the calendar will take up all the space needed to show any month (6 rows).
      * By enabling dynamic height, the view will change height dependant on the visible month.
-     *
+     * <p/>
      * This means months that only need 5 or 4 rows to show the entire month will only take up
      * that many rows, and will grow and shrink as necessary.
      *

@@ -17,12 +17,14 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SHOW_DEFAULTS;
+import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_WEEK;
 
 abstract class CalendarPagerView extends ViewGroup implements View.OnClickListener {
 
     protected static final int DEFAULT_DAYS_IN_WEEK = 7;
+    private static final Calendar tempWorkingCalendar = CalendarUtils.getInstance();
     private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
     private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
     @ShowOtherDates
@@ -32,7 +34,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private int firstDayOfWeek;
-    
+
     private final Collection<DayView> dayViews = new ArrayList<>();
 
     public CalendarPagerView(@NonNull MaterialCalendarView view,
@@ -57,6 +59,31 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
             addView(weekDayView);
             calendar.add(DATE, 1);
         }
+    }
+
+    protected void addDayView(Collection<DayView> dayViews, Calendar calendar) {
+        CalendarDay day = CalendarDay.from(calendar);
+        DayView dayView = new DayView(getContext(), day);
+        dayView.setOnClickListener(this);
+        dayViews.add(dayView);
+        addView(dayView, new LayoutParams());
+
+        calendar.add(DATE, 1);
+    }
+
+    protected Calendar resetAndGetWorkingCalendar() {
+        getFirstViewDay().copyTo(tempWorkingCalendar);
+        //noinspection ResourceType
+        tempWorkingCalendar.setFirstDayOfWeek(getFirstDayOfWeek());
+        int dow = CalendarUtils.getDayOfWeek(tempWorkingCalendar);
+        int delta = getFirstDayOfWeek() - dow;
+        //If the delta is positive, we want to remove a week
+        boolean removeRow = showOtherMonths(showOtherDates) ? delta >= 0 : delta > 0;
+        if (removeRow) {
+            delta -= DEFAULT_DAYS_IN_WEEK;
+        }
+        tempWorkingCalendar.add(DATE, delta);
+        return tempWorkingCalendar;
     }
 
     protected int getFirstDayOfWeek() {
@@ -84,8 +111,6 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     }
 
     protected abstract void buildDayViews(Collection<DayView> dayViews, Calendar calendar);
-
-    protected abstract Calendar resetAndGetWorkingCalendar();
 
     protected abstract boolean isDayEnabled(CalendarDay day);
 
