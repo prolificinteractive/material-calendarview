@@ -2,6 +2,7 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.support.annotation.NonNull;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +30,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
     @Override
     protected DateRangeIndex createRangeIndex(CalendarDay min, CalendarDay max) {
-        return new Weekly(min, max);
+        return new Weekly(min, max, getFirstDayOfWeek());
     }
 
     private static class Weekly implements DateRangeIndex {
@@ -38,9 +39,11 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
         private final CalendarDay min;
         private final int count;
 
-        public Weekly(@NonNull CalendarDay min, @NonNull CalendarDay max) {
-            this.min = CalendarDay.from(min.getYear(), min.getMonth(), 1);
-            max = CalendarDay.from(max.getYear(), max.getMonth(), 1);
+        public Weekly(@NonNull CalendarDay min, @NonNull CalendarDay max, int firstDayOfWeek) {
+            Calendar calendar = Calendar.getInstance();
+            min.copyTo(calendar);
+            calendar.set(Calendar.DAY_OF_WEEK, firstDayOfWeek);
+            this.min = CalendarDay.from(calendar);
             this.count = weekNumberDifference(min, max);
         }
 
@@ -67,7 +70,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
         private int weekNumberDifference(@NonNull CalendarDay min, @NonNull CalendarDay max) {
             long millisDiff = max.getDate().getTime() - min.getDate().getTime();
             long dayDiff = TimeUnit.DAYS.convert(millisDiff, TimeUnit.MILLISECONDS);
-            return (int) (dayDiff / DAYS_IN_WEEK) + 1;
+            return (int) (dayDiff / DAYS_IN_WEEK);
         }
     }
 }

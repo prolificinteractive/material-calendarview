@@ -62,11 +62,11 @@ public class SwappableBasicActivityDecorated extends AppCompatActivity implement
 
     @OnClick(R.id.button_weeks)
     public void onSetWeekMode() {
-        widget.setCalendarMode(CalendarMode.WEEKS);
+        widget.setCalendarDisplayMode(CalendarMode.WEEKS);
     }
 
     @OnClick(R.id.button_months)
     public void onSetMonthMode() {
-        widget.setCalendarMode(CalendarMode.MONTHS);
+        widget.setCalendarDisplayMode(CalendarMode.MONTHS);
     }
 }
