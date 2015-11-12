@@ -420,7 +420,14 @@ public class MaterialCalendarView extends ViewGroup {
         adapter.setSelectionEnabled(selectionMode != SELECTION_MODE_NONE);
     }
 
-    public void setCalendarMode(CalendarMode mode) {
+    /**
+     * Set calendar display mode. The default mode is Months.
+     * When switching between modes will select todays date, or the selected date,
+     * if selection mode is single.
+     *
+     * @param mode - calendar mode
+     */
+    public void setCalendarDisplayMode(CalendarMode mode) {
         if (calendarMode.equals(mode)) {
             return;
         }
@@ -434,11 +441,14 @@ public class MaterialCalendarView extends ViewGroup {
                 newAdapter = new WeekPagerAdapter(this);
                 break;
             default:
-                throw new UnsupportedOperationException("Provided calendar mode which is not yet implemented");
+                throw new IllegalArgumentException("Provided display mode which is not yet implemented");
         }
         adapter = adapter.migrateStateAndReturn(newAdapter);
         pager.setAdapter(adapter);
         calendarMode = mode;
+        setCurrentDate(selectionMode == SELECTION_MODE_SINGLE
+                ? adapter.getSelectedDates().get(0)
+                : CalendarDay.today());
         invalidateDecorators();
         updateUi();
     }
