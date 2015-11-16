@@ -33,7 +33,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
         return new Weekly(min, max, getFirstDayOfWeek());
     }
 
-    private static class Weekly implements DateRangeIndex {
+    public static class Weekly implements DateRangeIndex {
 
         private static final int DAYS_IN_WEEK = 7;
         private final CalendarDay min;

@@ -14,7 +14,7 @@ public class DateRangeIndexTest {
     @Test
     public void testSingleMonth() {
         CalendarDay date = CalendarDay.from(2015, 6, 1);
-        DateRangeIndex index = new DateRangeIndex(date, date);
+        DateRangeIndex index = new MonthPagerAdapter.Monthly(date, date);
 
         assertEquals(1, index.getCount());
         assertEquals(date, index.getItem(0));
@@ -31,7 +31,7 @@ public class DateRangeIndexTest {
         maxCal.set(3000, 0, 1);
         CalendarDay maxDay = CalendarDay.from(maxCal);
 
-        DateRangeIndex index = new DateRangeIndex(minDay, maxDay);
+        DateRangeIndex index = new MonthPagerAdapter.Monthly(minDay, maxDay);
 
         assertEquals(2000 * 12 + 1, index.getCount());
 
