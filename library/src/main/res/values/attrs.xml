@@ -21,14 +21,6 @@
             <flag name="all" value="7" />
         </attr>
 
-        <attr name="mcv_disabledClickBehaviour" format="integer">
-            <flag name="other_month_enabled" value="0" />
-            <flag name="other_month_enabled_switch" value="1"/>
-            <flag name="out_of_range_enabled" value="2" />
-            <flag name="none" value="3"/>
-            <flag name="defaults" value="3"/>
-        </attr>
-
         <attr name="mcv_weekDayLabels" format="reference" />
         <attr name="mcv_monthLabels" format="reference" />
 

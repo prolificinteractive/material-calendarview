@@ -13,7 +13,6 @@ import android.widget.NumberPicker;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.util.Calendar;
 import java.util.Random;
@@ -181,27 +180,6 @@ public class DynamicSettersActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         widget.setSelectionMode(which);
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
-
-    @OnClick(R.id.button_disabled_selection)
-    void onDisabledSelection() {
-        CharSequence[] items = {
-                "Other Months Enabled",
-                "Other Months Enabled with Switching",
-                "Out Of Range Enabled",
-                "None"
-        };
-
-        new AlertDialog.Builder(this)
-                .setTitle("Selection Mode")
-                .setSingleChoiceItems(items, widget.getSelectionMode(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        widget.setDisabledClickBehaviour(which);
                         dialog.dismiss();
                     }
                 })
