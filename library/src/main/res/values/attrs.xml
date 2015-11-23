@@ -36,6 +36,8 @@
             <enum name="saturday" value="7" />
         </attr>
 
+        <attr name="mcv_minimizeHorizontalTileHeight" format="float"/>
+
     </declare-styleable>
 
 </resources>
