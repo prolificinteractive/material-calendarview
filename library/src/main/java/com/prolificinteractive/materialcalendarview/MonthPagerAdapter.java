@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView.DisabledClickBehavior;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
@@ -32,6 +33,8 @@ class MonthPagerAdapter extends PagerAdapter {
     private Integer weekDayTextAppearance = null;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
+    @DisabledClickBehavior
+    private int disabledClickBehaviour = MaterialCalendarView.SELECTABLE_DEFAULTS;
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private DateRangeIndex rangeIndex;
@@ -130,6 +133,7 @@ class MonthPagerAdapter extends PagerAdapter {
             monthView.setWeekDayTextAppearance(weekDayTextAppearance);
         }
         monthView.setShowOtherDates(showOtherDates);
+        monthView.setDisabledClickBehaviour(disabledClickBehaviour);
         monthView.setMinimumDate(minDate);
         monthView.setMaximumDate(maxDate);
         monthView.setSelectedDates(selectedDates);
@@ -196,6 +200,13 @@ class MonthPagerAdapter extends PagerAdapter {
         }
     }
 
+    public void setDisabledClickBehaviour(@DisabledClickBehavior int disabledFlag) {
+        this.disabledClickBehaviour = disabledFlag;
+        for (MonthView monthView : currentViews) {
+            monthView.setDisabledClickBehaviour(disabledFlag);
+        }
+    }
+
     public void setWeekDayFormatter(WeekDayFormatter formatter) {
         this.weekDayFormatter = formatter;
         for (MonthView monthView : currentViews) {
@@ -213,6 +224,11 @@ class MonthPagerAdapter extends PagerAdapter {
     @ShowOtherDates
     public int getShowOtherDates() {
         return showOtherDates;
+    }
+
+    @DisabledClickBehavior
+    public int getDisabledClickBehaviour() {
+        return disabledClickBehaviour;
     }
 
     public void setWeekDayTextAppearance(int taId) {
