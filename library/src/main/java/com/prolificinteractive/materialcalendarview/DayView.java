@@ -23,7 +23,6 @@ import android.view.View;
 import android.widget.CheckedTextView;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView.DisabledClickBehavior;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 
 import java.util.List;
@@ -49,14 +48,8 @@ class DayView extends CheckedTextView {
     private boolean isInRange = true;
     private boolean isInMonth = true;
     private boolean isDecoratedDisabled = false;
-    private boolean outOfRangeSelectable = false;
-    private boolean outOfMonthSelectable = false;
-
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
-
-    @DisabledClickBehavior
-    private int disabledClickBehaviour = MaterialCalendarView.SELECTABLE_DEFAULTS;
 
     public DayView(Context context, CalendarDay day) {
         super(context);
@@ -140,14 +133,7 @@ class DayView extends CheckedTextView {
 
     private void setEnabled() {
         boolean enabled = isInMonth && isInRange && !isDecoratedDisabled;
-        boolean disabledClickable = (isInMonth || outOfMonthSelectable)
-                && (isInRange || outOfRangeSelectable)
-                && (!isDecoratedDisabled);
-        super.setEnabled(disabledClickable);
-
-        if (!enabled && disabledClickable) {
-            super.setAlpha(.55f);
-        }
+        super.setEnabled(enabled);
 
         boolean showOtherMonths = showOtherMonths(showOtherDates);
         boolean showOutOfRange = showOutOfRange(showOtherDates) || showOtherMonths;
@@ -170,27 +156,10 @@ class DayView extends CheckedTextView {
         setVisibility(shouldBeVisible ? View.VISIBLE : View.INVISIBLE);
     }
 
-    protected void setupSelection(
-            @ShowOtherDates int showOtherDates,
-            @DisabledClickBehavior int disabledClickBehaviour,
-            boolean inRange,
-            boolean inMonth) {
+    protected void setupSelection(@ShowOtherDates int showOtherDates, boolean inRange, boolean inMonth) {
         this.showOtherDates = showOtherDates;
-        this.disabledClickBehaviour = disabledClickBehaviour;
         this.isInMonth = inMonth;
         this.isInRange = inRange;
-
-        switch (disabledClickBehaviour) {
-            case MaterialCalendarView.OTHER_MONTHS_SELECTABLE:
-            case MaterialCalendarView.OTHER_MONTHS_SELECTABLE_SWITCH_MONTHS:
-                this.outOfMonthSelectable = true;
-                this.outOfRangeSelectable = true;
-                break;
-            case MaterialCalendarView.OUT_OF_RANGE_SELECTABLE:
-                this.outOfRangeSelectable = true;
-                break;
-        }
-
         setEnabled();
     }
 
