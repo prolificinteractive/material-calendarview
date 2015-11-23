@@ -5,7 +5,7 @@ Version 1.2.0 *(FUTURE)*
 ----------------------------
 
 * Fix: Disable paging also disables arrows
-* New: Dynamic Height, the calendar can now resize it's height based on the currently visible month
+* New: Dynamic Height, the calendar can now resize its height based on the currently visible month
 
 Version 1.1.0 *(2015-10-19)*
 ----------------------------
