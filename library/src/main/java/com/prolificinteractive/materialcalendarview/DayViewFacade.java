@@ -1,8 +1,8 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +16,7 @@ public class DayViewFacade {
 
     private Drawable backgroundDrawable = null;
     private Drawable selectionDrawable = null;
+    private int textColor = Color.WHITE;
     private final LinkedList<Span> spans = new LinkedList<>();
     private boolean daysDisabled = false;
 
@@ -77,6 +78,7 @@ public class DayViewFacade {
     void reset() {
         backgroundDrawable = null;
         selectionDrawable = null;
+        textColor = Color.WHITE;
         spans.clear();
         isDecorated = false;
         daysDisabled = false;
@@ -93,6 +95,7 @@ public class DayViewFacade {
         }
         if (backgroundDrawable != null) {
             other.setBackgroundDrawable(backgroundDrawable);
+            other.setTextColor(textColor);
         }
         other.spans.addAll(spans);
         other.isDecorated |= this.isDecorated;
@@ -131,5 +134,14 @@ public class DayViewFacade {
         public Span(Object span) {
             this.span = span;
         }
+    }
+
+    public void setTextColor(int color) {
+        this.textColor = color;
+        isDecorated = true;
+    }
+
+    public int getTextColor() {
+        return textColor;
     }
 }

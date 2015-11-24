@@ -180,7 +180,7 @@ class DayView extends CheckedTextView {
         if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
         } else {
-            setBackgroundDrawable(generateBackground(selectionColor, fadeTime));
+            //setBackgroundDrawable(generateBackground(selectionColor, fadeTime));
         }
     }
 
@@ -241,5 +241,6 @@ class DayView extends CheckedTextView {
         else {
             setText(getLabel());
         }
+        setTextColor(facade.getTextColor());
     }
 }

@@ -15,12 +15,12 @@ class MonthPager extends BetterViewPager {
         super(context);
     }
 
-    @Override
-    public void scrollTo(int x, int y) {
-        if (pagingEnabled) {
-            super.scrollTo(x, y);
-        }
-    }
+    //@Override
+    //public void scrollTo(int x, int y) {
+    //    if (pagingEnabled) {
+    //        super.scrollTo(x, y);
+    //    }
+    //}
 
     /**
      * enable disable viewpager scroll
@@ -41,6 +41,10 @@ class MonthPager extends BetterViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return pagingEnabled && super.onInterceptTouchEvent(ev);
+    }
+
+    @Override public boolean onTouchEvent(MotionEvent ev) {
+        return pagingEnabled && super.onTouchEvent(ev);
     }
 
     @Override
