@@ -17,6 +17,7 @@ import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
@@ -470,7 +471,18 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if there is a future month that can be shown
      */
     private boolean canGoForward() {
-        return pager.isPagingEnabled() && pager.getCurrentItem() < (adapter.getCount() - 1);
+        return pager.getCurrentItem() < (adapter.getCount() - 1);
+    }
+
+    /**
+     * Pass all touch events to the pager so scrolling works on the edges of the calendar view.
+     * 
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return pager.dispatchTouchEvent(event);
     }
 
     /**
@@ -479,7 +491,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if there is a previous month that can be shown
      */
     private boolean canGoBack() {
-        return pager.isPagingEnabled() && pager.getCurrentItem() > 0;
+        return pager.getCurrentItem() > 0;
     }
 
     /**
