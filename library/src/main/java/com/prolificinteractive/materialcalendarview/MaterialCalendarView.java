@@ -1459,4 +1459,17 @@ public class MaterialCalendarView extends ViewGroup {
     public boolean isPagingEnabled() {
         return pager.isPagingEnabled();
     }
+
+
+
+    /**
+     * go to the current day
+     *
+     */
+    public void goToday(){
+        Calendar calendar = Calendar.getInstance();
+        setCurrentDate(calendar);
+        setSelectedDate(calendar);
+    }
+
 }
