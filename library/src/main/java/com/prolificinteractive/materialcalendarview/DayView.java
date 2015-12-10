@@ -51,6 +51,8 @@ class DayView extends CheckedTextView {
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
 
+    private Drawable mCircleDrawable;
+
     public DayView(Context context, CalendarDay day) {
         super(context);
 
@@ -165,6 +167,8 @@ class DayView extends CheckedTextView {
 
     private final Rect tempRect = new Rect();
 
+    private final Rect circleRect = new Rect();
+
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         if (customBackground != null) {
@@ -173,6 +177,20 @@ class DayView extends CheckedTextView {
             customBackground.setState(getDrawableState());
             customBackground.draw(canvas);
         }
+
+        // draw circle in square rect , need this minimizeHeight value
+        if (circleRect.width() == 0 || circleRect.width() != circleRect.height()) {
+            canvas.getClipBounds(circleRect);
+
+            if (circleRect.width() > circleRect.height()) {
+                int left = circleRect.width() / 2 - circleRect.height() / 2;
+                int right = circleRect.width() / 2 - circleRect.height() / 2 + circleRect.height();
+                circleRect.set(left, circleRect.top, right, circleRect.bottom);
+
+            }
+            mCircleDrawable.setBounds(circleRect);
+        }
+
         super.onDraw(canvas);
     }
 
@@ -180,7 +198,8 @@ class DayView extends CheckedTextView {
         if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
         } else {
-            setBackgroundDrawable(generateBackground(selectionColor, fadeTime));
+            mCircleDrawable = generateBackground(selectionColor,fadeTime);
+            setBackgroundDrawable(mCircleDrawable);
         }
     }
 

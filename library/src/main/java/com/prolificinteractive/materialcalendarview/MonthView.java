@@ -264,10 +264,15 @@ class MonthView extends ViewGroup implements View.OnClickListener {
                     MeasureSpec.EXACTLY
             );
 
-            int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    measureTileSize,
-                    MeasureSpec.EXACTLY
-            );
+            int childHeightMeasureSpec;
+
+            float minimizeHeight =  mcv.getMinimizeHorizontalTileHeight();
+
+            if (minimizeHeight > 0) {
+                childHeightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (measureTileSize / minimizeHeight), MeasureSpec.EXACTLY);
+            } else {
+                childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(measureTileSize, MeasureSpec.EXACTLY);
+            }
 
             child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
         }
