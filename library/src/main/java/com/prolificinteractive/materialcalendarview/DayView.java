@@ -12,6 +12,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.SquareDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
@@ -37,7 +38,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 @SuppressLint("ViewConstructor")
 class DayView extends CheckedTextView {
 
-    private CalendarDay date;
+ private CalendarDay date;
     private int selectionColor = Color.GRAY;
 
     private final int fadeTime;
@@ -50,8 +51,7 @@ class DayView extends CheckedTextView {
     private boolean isDecoratedDisabled = false;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
-
-    private Drawable mCircleDrawable;
+    private Drawable drawable;
 
     public DayView(Context context, CalendarDay day) {
         super(context);
@@ -166,7 +166,6 @@ class DayView extends CheckedTextView {
     }
 
     private final Rect tempRect = new Rect();
-
     private final Rect circleRect = new Rect();
 
     @Override
@@ -177,20 +176,6 @@ class DayView extends CheckedTextView {
             customBackground.setState(getDrawableState());
             customBackground.draw(canvas);
         }
-
-        // draw circle in square rect , need this minimizeHeight value
-        if (circleRect.width() == 0 || circleRect.width() != circleRect.height()) {
-            canvas.getClipBounds(circleRect);
-
-            if (circleRect.width() > circleRect.height()) {
-                int left = circleRect.width() / 2 - circleRect.height() / 2;
-                int right = circleRect.width() / 2 - circleRect.height() / 2 + circleRect.height();
-                circleRect.set(left, circleRect.top, right, circleRect.bottom);
-
-            }
-            mCircleDrawable.setBounds(circleRect);
-        }
-
         super.onDraw(canvas);
     }
 
@@ -198,14 +183,15 @@ class DayView extends CheckedTextView {
         if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
         } else {
-            mCircleDrawable = generateBackground(selectionColor,fadeTime);
-            setBackgroundDrawable(mCircleDrawable);
+            drawable = generateBackground(selectionColor, fadeTime);
+            setBackgroundDrawable(drawable);
         }
     }
 
     private static Drawable generateBackground(int color, int fadeTime) {
         StateListDrawable drawable = new StateListDrawable();
         drawable.setExitFadeDuration(fadeTime);
+
         drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleDrawable(color));
@@ -214,7 +200,6 @@ class DayView extends CheckedTextView {
         }
 
         drawable.addState(new int[]{}, generateCircleDrawable(Color.TRANSPARENT));
-
         return drawable;
     }
 
@@ -226,7 +211,7 @@ class DayView extends CheckedTextView {
                 return new LinearGradient(0, 0, 0, 0, color, color, Shader.TileMode.REPEAT);
             }
         });
-        return drawable;
+        return new SquareDrawable(drawable);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -242,6 +227,7 @@ class DayView extends CheckedTextView {
     void applyFacade(DayViewFacade facade) {
         this.isDecoratedDisabled = facade.areDaysDisabled();
         setEnabled();
+
 
         setCustomBackground(facade.getBackgroundDrawable());
         setSelectionDrawable(facade.getSelectionDrawable());

@@ -1316,7 +1316,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         //Calculate our size based off our measured tile size
         int measuredWidth = measureTileSize * MonthView.DEFAULT_DAYS_IN_WEEK;
-        int measuredHeight = measureTileSize * viewTileHeight;
+        int measuredHeight = (int) ((measureTileSize / minimizeHorizontalTileHeight ) * viewTileHeight);
 
         //Put padding back in from when we took it away
         measuredWidth += getPaddingLeft() + getPaddingRight();
