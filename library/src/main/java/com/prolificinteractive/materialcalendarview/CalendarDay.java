@@ -20,7 +20,7 @@ public final class CalendarDay implements Parcelable {
      */
     @NonNull
     public static CalendarDay today() {
-        return from(CalendarUtils.getInstance());
+        return from(com.prolificinteractive.materialcalendarview.CalendarUtils.getInstance());
     }
 
     /**
@@ -47,9 +47,9 @@ public final class CalendarDay implements Parcelable {
             return null;
         }
         return from(
-                CalendarUtils.getYear(calendar),
-                CalendarUtils.getMonth(calendar),
-                CalendarUtils.getDay(calendar)
+                com.prolificinteractive.materialcalendarview.CalendarUtils.getYear(calendar),
+                com.prolificinteractive.materialcalendarview.CalendarUtils.getMonth(calendar),
+                com.prolificinteractive.materialcalendarview.CalendarUtils.getDay(calendar)
         );
     }
 
@@ -63,7 +63,7 @@ public final class CalendarDay implements Parcelable {
         if (date == null) {
             return null;
         }
-        return from(CalendarUtils.getInstance(date));
+        return from(com.prolificinteractive.materialcalendarview.CalendarUtils.getInstance(date));
     }
 
     private final int year;
@@ -87,7 +87,7 @@ public final class CalendarDay implements Parcelable {
      */
     @Deprecated
     public CalendarDay() {
-        this(CalendarUtils.getInstance());
+        this(com.prolificinteractive.materialcalendarview.CalendarUtils.getInstance());
     }
 
     /**
@@ -97,9 +97,9 @@ public final class CalendarDay implements Parcelable {
     @Deprecated
     public CalendarDay(Calendar calendar) {
         this(
-                CalendarUtils.getYear(calendar),
-                CalendarUtils.getMonth(calendar),
-                CalendarUtils.getDay(calendar)
+                com.prolificinteractive.materialcalendarview.CalendarUtils.getYear(calendar),
+                com.prolificinteractive.materialcalendarview.CalendarUtils.getMonth(calendar),
+                com.prolificinteractive.materialcalendarview.CalendarUtils.getDay(calendar)
         );
     }
 
@@ -122,7 +122,7 @@ public final class CalendarDay implements Parcelable {
      */
     @Deprecated
     public CalendarDay(Date date) {
-        this(CalendarUtils.getInstance(date));
+        this(com.prolificinteractive.materialcalendarview.CalendarUtils.getInstance(date));
     }
 
     /**
@@ -173,7 +173,7 @@ public final class CalendarDay implements Parcelable {
     @NonNull
     public Calendar getCalendar() {
         if (_calendar == null) {
-            _calendar = CalendarUtils.getInstance();
+            _calendar = com.prolificinteractive.materialcalendarview.CalendarUtils.getInstance();
             copyTo(_calendar);
         }
         return _calendar;

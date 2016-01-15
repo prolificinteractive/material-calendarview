@@ -17,4 +17,16 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="TextAppearance.MaterialCalendarWidget.UnfocusedDate"
+        parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/mcv_text_date_light</item>
+    </style>
+
+    <style name="TextAppearance.MaterialCalendarWidget.SelectedDate"
+        parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/mcv_text_date_dark</item>
+    </style>
+
 </resources>

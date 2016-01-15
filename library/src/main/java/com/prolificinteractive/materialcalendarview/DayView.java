@@ -14,6 +14,7 @@ import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
@@ -43,11 +44,14 @@ class DayView extends CheckedTextView {
     private final int fadeTime;
     private Drawable customBackground = null;
     private Drawable selectionDrawable;
+    private DrawableShape defaultSelectedShape = DrawableShape.CIRCLE;
     private DayFormatter formatter = DayFormatter.DEFAULT;
 
     private boolean isInRange = true;
     private boolean isInMonth = true;
     private boolean isDecoratedDisabled = false;
+    private boolean isSelected = false;
+
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
 
@@ -67,9 +71,21 @@ class DayView extends CheckedTextView {
         setDay(day);
     }
 
+    public boolean isInMonth() {
+        return isInMonth;
+    }
+
     public void setDay(CalendarDay date) {
         this.date = date;
         setText(getLabel());
+    }
+
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
     }
 
     /**
@@ -100,6 +116,15 @@ class DayView extends CheckedTextView {
 
     public void setSelectionColor(int color) {
         this.selectionColor = color;
+        regenerateBackground();
+    }
+
+    /**
+     * @param shape appearance of default selected background if no
+     * custom drawable is being used
+     */
+    public void setSelectedDrawableShape(DrawableShape shape) {
+        this.defaultSelectedShape = shape;
         regenerateBackground();
     }
 
@@ -180,21 +205,37 @@ class DayView extends CheckedTextView {
         if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
         } else {
-            setBackgroundDrawable(generateBackground(selectionColor, fadeTime));
+            setBackgroundDrawable(generateBackground(selectionColor, fadeTime, defaultSelectedShape));
         }
     }
 
-    private static Drawable generateBackground(int color, int fadeTime) {
+    private static Drawable generateBackground(int color, int fadeTime, DrawableShape shape) {
         StateListDrawable drawable = new StateListDrawable();
         drawable.setExitFadeDuration(fadeTime);
-        drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleDrawable(color));
-        } else {
-            drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleDrawable(color));
-        }
 
-        drawable.addState(new int[]{}, generateCircleDrawable(Color.TRANSPARENT));
+        if(shape == DrawableShape.RECTANGLE) {
+
+            drawable.addState(new int[]{android.R.attr.state_checked}, generateRectangleDrawable(color));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleRectangleDrawable(color));
+            } else {
+                drawable.addState(new int[]{android.R.attr.state_pressed}, generateRectangleDrawable(color));
+            }
+
+            drawable.addState(new int[]{}, generateRectangleDrawable(Color.TRANSPARENT));
+
+        }
+        else if(shape == DrawableShape.CIRCLE) {
+
+            drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleCircleDrawable(color));
+            } else {
+                drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleDrawable(color));
+            }
+
+            drawable.addState(new int[]{}, generateCircleDrawable(Color.TRANSPARENT));
+        }
 
         return drawable;
     }
@@ -210,10 +251,28 @@ class DayView extends CheckedTextView {
         return drawable;
     }
 
+    private static Drawable generateRectangleDrawable(final int color) {
+        ShapeDrawable drawable = new ShapeDrawable(new RectShape());
+        drawable.setShaderFactory(new ShapeDrawable.ShaderFactory() {
+            @Override
+            public Shader resize(int width, int height) {
+                return new LinearGradient(0, 0, 0, 0, color, color, Shader.TileMode.REPEAT);
+            }
+        });
+        return drawable;
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static Drawable generateRippleDrawable(final int color) {
+    private static Drawable generateRippleCircleDrawable(final int color) {
         ColorStateList list = ColorStateList.valueOf(color);
         Drawable mask = generateCircleDrawable(Color.WHITE);
+        return new RippleDrawable(list, null, mask);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private static Drawable generateRippleRectangleDrawable(final int color) {
+        ColorStateList list = ColorStateList.valueOf(color);
+        Drawable mask = generateRectangleDrawable(Color.WHITE);
         return new RippleDrawable(list, null, mask);
     }
 

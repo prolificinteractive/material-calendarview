@@ -4,6 +4,8 @@
     <declare-styleable name="MaterialCalendarView">
 
         <attr name="mcv_dateTextAppearance" format="reference"/>
+        <attr name="mcv_selectedDateTextAppearance" format="reference"/>
+        <attr name="mcv_unfocusedDateTextAppearance" format="reference"/>
         <attr name="mcv_weekDayTextAppearance" format="reference"/>
         <attr name="mcv_headerTextAppearance" format="reference"/>
 

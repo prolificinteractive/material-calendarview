@@ -36,6 +36,8 @@ public class CustomizeCodeActivity extends AppCompatActivity {
         widget.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
         widget.setTileSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics()));
         widget.setFirstDayOfWeek(Calendar.THURSDAY);
+        widget.setVerticalSwiping(true);
+        widget.showArrows(false);
     }
 
 }

@@ -22,6 +22,8 @@
         app:mcv_selectionColor="?attr/colorPrimary"
         app:mcv_headerTextAppearance="?android:attr/textAppearanceMedium"
         app:mcv_dateTextAppearance="@style/CustomDayTextAppearance"
+        app:mcv_unfocusedDateTextAppearance="@style/CustomUnfocusedDateTextAppearance"
+        app:mcv_selectedDateTextAppearance="@style/CustomSelectedDateTextAppearance"
         app:mcv_weekDayTextAppearance="?android:attr/textAppearanceMedium"
         app:mcv_weekDayLabels="@array/custom_weekdays"
         app:mcv_monthLabels="@array/custom_months"

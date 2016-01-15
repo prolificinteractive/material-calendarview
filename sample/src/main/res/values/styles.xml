@@ -13,4 +13,12 @@
         <item name="android:textColor">@color/mcv_text_date_light</item>
     </style>
 
+    <style name="CustomSelectedDateTextAppearance" parent="TextAppearance.MaterialCalendarWidget.SelectedDate">
+        <item name="android:textColor">#FF0000</item>
+    </style>
+
+    <style name="CustomUnfocusedDateTextAppearance" parent="TextAppearance.MaterialCalendarWidget.UnfocusedDate">
+        <item name="android:textColor">#0000FF</item>
+    </style>
+
 </resources>
