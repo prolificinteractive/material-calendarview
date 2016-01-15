@@ -62,6 +62,17 @@ One of the aims of this library is to be customizable. The many options include:
 * [Customize the top bar](docs/CUSTOMIZATION.md#topbar-options)
 * [Custom labels for the header, weekdays, or individual days](docs/CUSTOMIZATION.md#custom-labels)
 
+More Customization
+------------------
+
+This fork of the library adds the following additional customizations:
+
+* Customize text appearance of selected date using `setSelectedDateTextAppearance` or XML attribute `mcv_selectedDateTextAppearance`
+* Customize text appearance of dates from other months using `setUnfocusedDateTextAppearance` or XML attribute `mcv_unfocusedDateTextAppearance`
+* Enable vertical swiping to page to next/previous month by calling `setVerticalSwiping`
+* Show or hide header arrows with `showArrows`
+* Set selected date background drawable shape using `setSelectedDrawableShape` with `DrawableShape.CIRCLE` or `DrawableShape.RECTANGLE`
+
 ### Events, Highlighting, Custom Selectors, and More!
 
 All of this and more can be done via the decorator api. Please check out the [decorator documentation](docs/DECORATORS.md).
