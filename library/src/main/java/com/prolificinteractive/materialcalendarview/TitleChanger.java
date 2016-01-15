@@ -51,7 +51,7 @@ class TitleChanger {
             doChange(currentTime, currentMonth, false);
         }
 
-        if (currentMonth.equals(previousMonth)) {
+        if (currentMonth.equals(previousMonth) || currentMonth.getMonth() == previousMonth.getMonth()) {
             return;
         }
 
