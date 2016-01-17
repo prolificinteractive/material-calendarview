@@ -38,7 +38,6 @@ public class DayViewFacade {
 
     /**
      * Set a custom selection drawable
-     * <p/>
      * TODO: define states that can/should be used in StateListDrawables
      *
      * @param drawable the drawable for selection
@@ -65,7 +64,6 @@ public class DayViewFacade {
 
     /**
      * <p>Set days to be in a disabled state, or re-enabled.</p>
-     * <p/>
      * <p>Note, passing true here will <b>not</b> override minimum and maximum dates, if set.
      * This will only re-enable disabled dates.</p>
      *
