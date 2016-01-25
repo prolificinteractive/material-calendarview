@@ -85,7 +85,7 @@ Would you like to contribute? Fork us and send a pull request! Be sure to checko
 License
 =======
 
->Copyright 2015 Prolific Interactive
+>Copyright 2016 Prolific Interactive
 >
 >Licensed under the Apache License, Version 2.0 (the "License");
 >you may not use this file except in compliance with the License.
