@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 1.2.0 *(2016-01-24)*
+----------------------------
+
+* Fix: Disable paging also disables arrows
+* Fix: Allow paging from the entire width of the view
+* New: Dynamic Height, the calendar can now resize its height based on the currently visible month
+* New: Add single week calendar mode
+
 Version 1.1.0 *(2015-10-19)*
 ----------------------------
 
