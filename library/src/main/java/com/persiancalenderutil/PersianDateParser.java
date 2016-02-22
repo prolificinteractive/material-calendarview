@@ -20,7 +20,7 @@ package com.persiancalenderutil;
 
 /**
  * Parses text from the beginning of the given string to produce a
- * PersianCalendar.
+ * JalaliCalendar.
  * 
  * <p>
  * See the {@link #getPersianDate()} method for more information on date
@@ -30,7 +30,7 @@ package com.persiancalenderutil;
  *                Example
  *                     
  *  {@code
- *    PersianCalendar pCal =
+ *    JalaliCalendar pCal =
  *     new PersianDateParser("1361/3/1").getPersianDate();             
  *  }
  * </pre>
@@ -55,7 +55,7 @@ public class PersianDateParser {
 	 *                     Example
 	 *                     
 	 *  {@code
-	 *    PersianCalendar pCal =
+	 *    JalaliCalendar pCal =
 	 *     new PersianDateParser("1361/3/1").getPersianDate();             
 	 *  }
 	 * </pre>
@@ -78,7 +78,7 @@ public class PersianDateParser {
 	 *                     Example
 	 *                     
 	 *  {@code
-	 *    PersianCalendar pCal =
+	 *    JalaliCalendar pCal =
 	 *     new PersianDateParser("1361-3-1","-").getPersianDate();             
 	 *  }
 	 * </pre>
@@ -92,13 +92,13 @@ public class PersianDateParser {
 	}
 
 	/**
-	 * Produce the PersianCalendar object from given DateString throws Exception
+	 * Produce the JalaliCalendar object from given DateString throws Exception
 	 * if couldn't parse the text.
 	 * 
-	 * @return PersianCalendar object
+	 * @return JalaliCalendar object
 	 * @exception RuntimeException
 	 */
-	public PersianCalendar getPersianDate() {
+	public JalaliCalendar getPersianDate() {
 
 		checkDateStringInitialValidation();
 
@@ -109,7 +109,7 @@ public class PersianDateParser {
 
 		checkPersianDateValidation(year, month, day);
 
-		PersianCalendar pCal = new PersianCalendar();
+		JalaliCalendar pCal = new JalaliCalendar();
 		pCal.setPersianDate(year, month, day);
 
 		return pCal;
