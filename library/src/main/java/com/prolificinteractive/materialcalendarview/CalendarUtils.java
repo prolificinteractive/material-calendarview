@@ -3,7 +3,7 @@ package com.prolificinteractive.materialcalendarview;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.persiancalenderutil.JalaliCalendar;
+import com.jalalicalendarutil.JalaliCalendar;
 
 import java.util.Calendar;
 import java.util.Date;

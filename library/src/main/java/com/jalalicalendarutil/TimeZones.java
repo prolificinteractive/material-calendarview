@@ -1,4 +1,4 @@
-package com.persiancalenderutil;
+package com.jalalicalendarutil;
 
 import java.util.TimeZone;
 
