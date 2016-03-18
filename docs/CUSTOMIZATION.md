@@ -18,8 +18,7 @@ Customization Options
     app:mcv_tileSize="dimension"
     app:mcv_firstDayOfWeek="enum"
     app:mcv_leftArrowMask="drawable"
-    app:mcv_rightArrowMask="drawable"
-    />
+    app:mcv_rightArrowMask="drawable"/>
 ```
 
 ## Tile Size
