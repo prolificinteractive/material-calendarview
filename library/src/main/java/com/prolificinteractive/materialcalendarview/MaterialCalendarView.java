@@ -125,13 +125,13 @@ public class MaterialCalendarView extends ViewGroup {
      * Show dates that are outside of the min-max range.
      * This will only show days from the current month unless {@link #SHOW_OTHER_MONTHS} is enabled.
      */
-    public static final int SHOW_OUT_OF_RANGE = 2;
+    public static final int SHOW_OUT_OF_RANGE = 1 << 1;
 
     /**
      * Show days that are individually disabled with decorators.
      * This will only show dates in the current month and inside the minimum and maximum date range.
      */
-    public static final int SHOW_DECORATED_DISABLED = 4;
+    public static final int SHOW_DECORATED_DISABLED = 1 << 2;
 
     /**
      * The default flags for showing non-enabled dates. Currently only shows {@link #SHOW_DECORATED_DISABLED}
@@ -249,8 +249,9 @@ public class MaterialCalendarView extends ViewGroup {
         pager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
             public void transformPage(View page, float position) {
-                position = (float) Math.sqrt(1 - Math.abs(position));
-                page.setAlpha(position);
+                final float abs = Math.abs(position);
+                final float alpha = abs < 1 ? (float) Math.sqrt(1 - abs) : 1;
+                page.setAlpha(alpha);
             }
         });
 
@@ -447,7 +448,7 @@ public class MaterialCalendarView extends ViewGroup {
         adapter = adapter.migrateStateAndReturn(newAdapter);
         pager.setAdapter(adapter);
         calendarMode = mode;
-        setCurrentDate(selectionMode == SELECTION_MODE_SINGLE
+        setCurrentDate(selectionMode == SELECTION_MODE_SINGLE && adapter.getSelectedDates().size() > 0
                 ? adapter.getSelectedDates().get(0)
                 : CalendarDay.today());
         invalidateDecorators();

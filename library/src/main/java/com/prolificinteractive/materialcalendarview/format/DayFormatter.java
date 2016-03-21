@@ -23,5 +23,11 @@ public interface DayFormatter {
     /**
      * Default implementation used by {@linkplain com.prolificinteractive.materialcalendarview.MaterialCalendarView}
      */
-    public static final DayFormatter DEFAULT = new DateFormatDayFormatter();
+    public static final DayFormatter DEFAULT = new DayFormatter() {
+        @NonNull
+        @Override
+        public String format(@NonNull CalendarDay day) {
+            return String.valueOf(day.getDay());
+        }
+    };
 }

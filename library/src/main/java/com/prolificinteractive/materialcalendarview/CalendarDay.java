@@ -189,9 +189,10 @@ public final class CalendarDay implements Parcelable {
      *
      * @param calendar calendar to set date information to
      */
-    public void copyTo(@NonNull Calendar calendar) {
+    public Calendar copyTo(@NonNull Calendar calendar) {
         calendar.clear();
         calendar.set(year, month, day);
+        return calendar;
     }
 
     /**
@@ -267,7 +268,7 @@ public final class CalendarDay implements Parcelable {
 
     @Override
     public String toString() {
-        return "CalendarDay{" + year + "-" + month + "-" + day + "}";
+        return "CalendarDay{" + year + "-" + (month + 1) + "-" + day + "}";
     }
 
     /*
