@@ -249,8 +249,9 @@ public class MaterialCalendarView extends ViewGroup {
         pager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
             public void transformPage(View page, float position) {
-                position = (float) Math.sqrt(1 - Math.abs(position));
-                page.setAlpha(position);
+                final float abs = Math.abs(position);
+                final float alpha = abs < 1 ? (float) Math.sqrt(1 - abs) : 1;
+                page.setAlpha(alpha);
             }
         });
 
