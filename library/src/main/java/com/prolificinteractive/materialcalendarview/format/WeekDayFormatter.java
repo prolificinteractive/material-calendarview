@@ -1,6 +1,6 @@
 package com.prolificinteractive.materialcalendarview.format;
 
-import com.prolificinteractive.materialcalendarview.CalendarUtils;
+import java.text.DateFormatSymbols;
 
 /**
  * Supply labels for a given day of the week
@@ -17,5 +17,10 @@ public interface WeekDayFormatter {
     /**
      * Default implementation used by {@linkplain com.prolificinteractive.materialcalendarview.MaterialCalendarView}
      */
-    public static final WeekDayFormatter DEFAULT = new CalendarWeekDayFormatter(CalendarUtils.getInstance());
+    public static final WeekDayFormatter DEFAULT = new WeekDayFormatter() {
+        @Override
+        public CharSequence format(int dayOfWeek) {
+            return DateFormatSymbols.getInstance().getShortWeekdays()[dayOfWeek];
+        }
+    };
 }
