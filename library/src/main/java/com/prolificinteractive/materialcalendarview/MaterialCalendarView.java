@@ -73,7 +73,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #getSelectionMode()
      */
     @Retention(RetentionPolicy.RUNTIME)
-    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE})
+    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE, SELECTION_MODE_FROM_TO})
     public @interface SelectionMode {
     }
 
@@ -94,6 +94,12 @@ public class MaterialCalendarView extends ViewGroup {
      * Selection mode which allows more than one selected date at one time.
      */
     public static final int SELECTION_MODE_MULTIPLE = 2;
+
+    /**
+     * Selection mode which allows select a period of days,
+     * clicking on first day and then the last day.
+     */
+    public static final int SELECTION_MODE_FROM_TO = 3;
 
     /**
      * {@linkplain IntDef} annotation for showOtherDates.
@@ -382,16 +388,21 @@ public class MaterialCalendarView extends ViewGroup {
      * Change the selection mode of the calendar. The default mode is {@linkplain #SELECTION_MODE_SINGLE}
      *
      * @param mode the selection mode to change to. This must be one of
-     *             {@linkplain #SELECTION_MODE_NONE}, {@linkplain #SELECTION_MODE_SINGLE}, or {@linkplain #SELECTION_MODE_MULTIPLE}.
+     *             {@linkplain #SELECTION_MODE_NONE}, {@linkplain #SELECTION_MODE_SINGLE}, {@linkplain #SELECTION_MODE_MULTIPLE}, or {@linkplain #SELECTION_MODE_FROM_TO}.
      *             Unknown values will act as {@linkplain #SELECTION_MODE_SINGLE}
      * @see #getSelectionMode()
      * @see #SELECTION_MODE_NONE
      * @see #SELECTION_MODE_SINGLE
      * @see #SELECTION_MODE_MULTIPLE
+     * @see #SELECTION_MODE_FROM_TO
      */
     public void setSelectionMode(final @SelectionMode int mode) {
         final @SelectionMode int oldMode = this.selectionMode;
         switch (mode) {
+            case SELECTION_MODE_FROM_TO: {
+                this.selectionMode = SELECTION_MODE_FROM_TO;
+            }
+            break;
             case SELECTION_MODE_MULTIPLE: {
                 this.selectionMode = SELECTION_MODE_MULTIPLE;
             }
@@ -399,7 +410,7 @@ public class MaterialCalendarView extends ViewGroup {
             default:
             case SELECTION_MODE_SINGLE: {
                 this.selectionMode = SELECTION_MODE_SINGLE;
-                if (oldMode == SELECTION_MODE_MULTIPLE) {
+                if (oldMode == SELECTION_MODE_MULTIPLE || oldMode == SELECTION_MODE_FROM_TO) {
                     //We should only have one selection now, so we should pick one
                     List<CalendarDay> dates = getSelectedDates();
                     if (!dates.isEmpty()) {
@@ -462,6 +473,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #SELECTION_MODE_NONE
      * @see #SELECTION_MODE_SINGLE
      * @see #SELECTION_MODE_MULTIPLE
+     * @see #SELECTION_MODE_FROM_TO
      */
     @SelectionMode
     public int getSelectionMode() {
@@ -1225,6 +1237,15 @@ public class MaterialCalendarView extends ViewGroup {
      */
     protected void onDateClicked(@NonNull CalendarDay date, boolean nowSelected) {
         switch (selectionMode) {
+            case SELECTION_MODE_FROM_TO: {
+                selectionFromTo(date, nowSelected);
+                dispatchOnDateSelected(date, nowSelected);
+/*
+                adapter.setDateSelected(date, nowSelected);
+                dispatchOnDateSelected(date, nowSelected);
+*/
+            }
+            break;
             case SELECTION_MODE_MULTIPLE: {
                 adapter.setDateSelected(date, nowSelected);
                 dispatchOnDateSelected(date, nowSelected);
@@ -1507,5 +1528,93 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public boolean isPagingEnabled() {
         return pager.isPagingEnabled();
+    }
+
+    private void selectionFromTo(CalendarDay date, boolean selected) {
+        MaterialCalendarView calendario= this;
+        CalendarDay fechaPulsada= date;
+        List<CalendarDay> diasSeleccionados= this.getSelectedDates();
+
+        // El elemento sobre el que pulsamos no está seleccionado
+        if (selected) {
+            // Si es el primer elemento a seleccionar
+            if (diasSeleccionados.isEmpty()) {
+                calendario.setSelectedDate(fechaPulsada);
+            }
+            // Si ya hay más de un día seleccionado
+            else {
+                CalendarDay diaInicial= diasSeleccionados.get(0);
+
+                desdeHasta(diaInicial, fechaPulsada);
+            }
+            // Y qué pasa si tenemos ya un rango seleccionado?
+        }
+        // El elemento sobre el que pulsamos ya está seleccionado
+        else {
+            // El elemento sobre el que pulsamos es el único
+            if (diasSeleccionados.size() == 1) {
+                calendario.clearSelection();
+            }
+            // Hay que deshacer un rango seleccionado
+            // La lógica es la siguiente:
+            // - Seleccionar unicamente el día inicial del periodo seleccionado
+            // - Pasar a seleccionar un nuevo periodo
+            else {
+                CalendarDay diaInicial= diasSeleccionados.get(0);
+
+                calendario.setSelectedDate(diaInicial);
+                desdeHasta(diaInicial, fechaPulsada);
+            }
+        }
+    }
+
+    private void desdeHasta(CalendarDay diaInicial, CalendarDay diaFinal) {
+        MaterialCalendarView calendario= this;
+
+        // Por si acaso, limpiamos cualquier selección
+        calendario.clearSelection();
+
+        // Recorrido al derecho
+        if (diaInicial.isBefore(diaFinal)) {
+            for (CalendarDay diaAseleccionar= diaInicial;
+                 diaAseleccionar.isInRange(diaInicial, diaFinal);
+                 diaAseleccionar= nextDay(diaAseleccionar)) {
+                calendario.setDateSelected(diaAseleccionar, true);
+            }
+        }
+        // Recorrido a la inversa
+        else {
+            for (CalendarDay diaAseleccionar= diaInicial;
+                 diaAseleccionar.isInRange(diaFinal, diaInicial);
+                 diaAseleccionar= pastDay(diaAseleccionar)) {
+                calendario.setDateSelected(diaAseleccionar, true);
+            }
+        }
+    }
+
+    private CalendarDay nextDay(CalendarDay dia) {
+        Date dt= dia.getDate();
+
+        // Truco del almendruco gracias a:
+        // http://stackoverflow.com/questions/1005523/how-to-add-one-day-to-a-date
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
+        c.add(Calendar.DATE, 1);
+        dt = c.getTime();
+
+        return CalendarDay.from(dt);
+    }
+
+    private CalendarDay pastDay(CalendarDay dia) {
+        Date dt= dia.getDate();
+
+        // Truco del almendruco gracias a:
+        // http://stackoverflow.com/questions/1005523/how-to-add-one-day-to-a-date
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
+        c.add(Calendar.DATE, -1);
+        dt = c.getTime();
+
+        return CalendarDay.from(dt);
     }
 }
