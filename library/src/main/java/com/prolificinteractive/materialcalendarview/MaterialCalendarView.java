@@ -1536,36 +1536,19 @@ public class MaterialCalendarView extends ViewGroup {
         CalendarDay fechaPulsada= date;
         List<CalendarDay> diasSeleccionados= this.getSelectedDates();
 
-        // El elemento sobre el que pulsamos no está seleccionado
-        if (selected) {
-            // Un complejo IF para analizar. Entra si:
-            // - Si no tenemos nada seleccionado
-            // - Si tenemos un rango seleccionado y queremos declarar otro
-            if (diasSeleccionados.isEmpty() || diasSeleccionados.size() > 1) {
-                calendario.setSelectedDate(fechaPulsada);
-            }
-            // Si ya hay más de un día seleccionado
-            else {
-                CalendarDay diaInicial= diasSeleccionados.get(0);
-
-                desdeHasta(diaInicial, fechaPulsada);
-            }
-            // Y qué pasa si tenemos ya un rango seleccionado?
+        // Un complejo IF para analizar. Entra si:
+        // - Si no tenemos nada seleccionado
+        // - Si tenemos un rango seleccionado y queremos declarar otro
+        // En cualquier caso, se trata de marcar el inicio del periodo
+        if (diasSeleccionados.isEmpty() || diasSeleccionados.size() > 1) {
+            calendario.setSelectedDate(fechaPulsada);
         }
-        // El elemento sobre el que pulsamos ya está seleccionado
         else {
-            // El elemento sobre el que pulsamos es el único
-            if (diasSeleccionados.size() == 1) {
+            // Es el único elemento que hay y por tanto queremos desmarcarlo
+            if (!selected) {
                 calendario.clearSelection();
             }
-            // El elemento sobre el que pulsamos es el último
-            else if (diasSeleccionados.get(diasSeleccionados.size()-1).equals(fechaPulsada)) {
-                calendario.setSelectedDate(fechaPulsada);
-            }
-            // Hay que deshacer un rango seleccionado
-            // La lógica es la siguiente:
-            // - Seleccionar unicamente el día inicial del periodo seleccionado
-            // - Pasar a seleccionar un nuevo periodo
+            // Hay un elemento marcado y seleccionamos el final de periodo
             else {
                 CalendarDay diaInicial= diasSeleccionados.get(0);
 
