@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -1537,8 +1538,10 @@ public class MaterialCalendarView extends ViewGroup {
 
         // El elemento sobre el que pulsamos no está seleccionado
         if (selected) {
-            // Si es el primer elemento a seleccionar
-            if (diasSeleccionados.isEmpty()) {
+            // Un complejo IF para analizar. Entra si:
+            // - Si no tenemos nada seleccionado
+            // - Si tenemos un rango seleccionado y queremos declarar otro
+            if (diasSeleccionados.isEmpty() || diasSeleccionados.size() > 1) {
                 calendario.setSelectedDate(fechaPulsada);
             }
             // Si ya hay más de un día seleccionado
@@ -1554,6 +1557,10 @@ public class MaterialCalendarView extends ViewGroup {
             // El elemento sobre el que pulsamos es el único
             if (diasSeleccionados.size() == 1) {
                 calendario.clearSelection();
+            }
+            // El elemento sobre el que pulsamos es el último
+            else if (diasSeleccionados.get(diasSeleccionados.size()-1).equals(fechaPulsada)) {
+                calendario.setSelectedDate(fechaPulsada);
             }
             // Hay que deshacer un rango seleccionado
             // La lógica es la siguiente:
@@ -1571,14 +1578,18 @@ public class MaterialCalendarView extends ViewGroup {
     private void desdeHasta(CalendarDay diaInicial, CalendarDay diaFinal) {
         MaterialCalendarView calendario= this;
 
+        Log.e("Mostramos dia inicial", diaInicial.toString());
+        Log.e("Mostramos dia final", diaFinal.toString());
         // Por si acaso, limpiamos cualquier selección
         calendario.clearSelection();
 
         // Recorrido al derecho
         if (diaInicial.isBefore(diaFinal)) {
+            Log.e("Mostramos dia final", diaFinal.toString());
             for (CalendarDay diaAseleccionar= diaInicial;
                  diaAseleccionar.isInRange(diaInicial, diaFinal);
                  diaAseleccionar= nextDay(diaAseleccionar)) {
+                Log.e("Dia procesado", diaAseleccionar.toString());
                 calendario.setDateSelected(diaAseleccionar, true);
             }
         }
@@ -1587,6 +1598,7 @@ public class MaterialCalendarView extends ViewGroup {
             for (CalendarDay diaAseleccionar= diaInicial;
                  diaAseleccionar.isInRange(diaFinal, diaInicial);
                  diaAseleccionar= pastDay(diaAseleccionar)) {
+                Log.e("Dia procesado", diaAseleccionar.toString());
                 calendario.setDateSelected(diaAseleccionar, true);
             }
         }
