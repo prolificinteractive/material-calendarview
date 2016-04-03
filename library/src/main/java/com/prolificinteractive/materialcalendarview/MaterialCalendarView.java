@@ -1530,24 +1530,25 @@ public class MaterialCalendarView extends ViewGroup {
         return pager.isPagingEnabled();
     }
 
+    // Manages the selection option SELECTION_MODE_FROM_TO
     private void selectionFromTo(CalendarDay date, boolean selected) {
         MaterialCalendarView calendario= this;
         CalendarDay fechaPulsada= date;
         List<CalendarDay> diasSeleccionados= this.getSelectedDates();
 
-        // Un complejo IF para analizar. Entra si:
-        // - Si no tenemos nada seleccionado
-        // - Si tenemos un rango seleccionado y queremos declarar otro
-        // En cualquier caso, se trata de marcar el inicio del periodo
+        // Let's analyze that IF sentence. It executes if:
+        // - If there's nothing selected
+        // - If there's a period selected and we want to declare other
+        // Anyway, this selects the begin of the period
         if (diasSeleccionados.isEmpty() || diasSeleccionados.size() > 1) {
             calendario.setSelectedDate(fechaPulsada);
         }
         else {
-            // Es el único elemento que hay y por tanto queremos desmarcarlo
+            // If only it is selected the day taped and we want to deselect it.
             if (!selected) {
                 calendario.clearSelection();
             }
-            // Hay un elemento marcado y seleccionamos el final de periodo
+            // There's one day selected and we tap the final day from the period
             else {
                 CalendarDay diaInicial= diasSeleccionados.get(0);
 
@@ -1557,13 +1558,14 @@ public class MaterialCalendarView extends ViewGroup {
         }
     }
 
+    // This method selects all days between the passed days
     private void desdeHasta(CalendarDay diaInicial, CalendarDay diaFinal) {
         MaterialCalendarView calendario= this;
 
-        // Por si acaso, limpiamos cualquier selección
+        // For security reasons, we clear all selections
         calendario.clearSelection();
 
-        // Recorrido al derecho
+        // The standard way
         if (diaInicial.isBefore(diaFinal)) {
             for (CalendarDay diaAseleccionar= diaInicial;
                  diaAseleccionar.isInRange(diaInicial, diaFinal);
@@ -1571,7 +1573,7 @@ public class MaterialCalendarView extends ViewGroup {
                 calendario.setDateSelected(diaAseleccionar, true);
             }
         }
-        // Recorrido a la inversa
+        // The reverse way
         else {
             for (CalendarDay diaAseleccionar= diaInicial;
                  diaAseleccionar.isInRange(diaFinal, diaInicial);
@@ -1584,7 +1586,7 @@ public class MaterialCalendarView extends ViewGroup {
     private CalendarDay nextDay(CalendarDay dia) {
         Date dt= dia.getDate();
 
-        // Truco del almendruco gracias a:
+        // The trick was taken from:
         // http://stackoverflow.com/questions/1005523/how-to-add-one-day-to-a-date
         Calendar c = Calendar.getInstance();
         c.setTime(dt);
@@ -1597,7 +1599,7 @@ public class MaterialCalendarView extends ViewGroup {
     private CalendarDay pastDay(CalendarDay dia) {
         Date dt= dia.getDate();
 
-        // Truco del almendruco gracias a:
+        // The trick was taken from:
         // http://stackoverflow.com/questions/1005523/how-to-add-one-day-to-a-date
         Calendar c = Calendar.getInstance();
         c.setTime(dt);
