@@ -43,6 +43,7 @@ class DayView extends CheckedTextView {
     private final int fadeTime;
     private Drawable customBackground = null;
     private Drawable selectionDrawable;
+    private Drawable mCircleDrawable;
     private DayFormatter formatter = DayFormatter.DEFAULT;
 
     private boolean isInRange = true;
@@ -167,12 +168,27 @@ class DayView extends CheckedTextView {
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
+        canvas.getClipBounds(tempRect);
         if (customBackground != null) {
-            canvas.getClipBounds(tempRect);
             customBackground.setBounds(tempRect);
             customBackground.setState(getDrawableState());
             customBackground.draw(canvas);
         }
+
+        // draw circle in square rect
+        if (tempRect.width() == 0 || tempRect.width() != tempRect.height()) {
+            canvas.getClipBounds(tempRect);
+            final int radius = Math.min(tempRect.height(), tempRect.width());
+            final int offset = Math.abs(tempRect.height() - tempRect.width()) / 2;
+
+            if (tempRect.width() > tempRect.height()) {
+                tempRect.set(offset, tempRect.top, radius + offset, tempRect.bottom);
+            } else if (tempRect.width() < tempRect.height()) {
+                tempRect.set(tempRect.left, offset, tempRect.right, radius + offset);
+            }
+            mCircleDrawable.setBounds(tempRect);
+        }
+
         super.onDraw(canvas);
     }
 
@@ -180,7 +196,8 @@ class DayView extends CheckedTextView {
         if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
         } else {
-            setBackgroundDrawable(generateBackground(selectionColor, fadeTime));
+            mCircleDrawable = generateBackground(selectionColor, fadeTime);
+            setBackgroundDrawable(mCircleDrawable);
         }
     }
 

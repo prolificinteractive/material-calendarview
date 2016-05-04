@@ -32,4 +32,9 @@ public class WeekView extends CalendarPagerView {
     protected boolean isDayEnabled(CalendarDay day) {
         return true;
     }
+
+    @Override
+    protected int getDivider() {
+        return 2;
+    }
 }
