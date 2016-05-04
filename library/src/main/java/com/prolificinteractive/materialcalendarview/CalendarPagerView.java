@@ -240,22 +240,24 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         }
 
         //The spec width should be a correct multiple
-        final int measureTileSize = specWidthSize / DEFAULT_DAYS_IN_WEEK;
+        final int measureTileWidth = specWidthSize / DEFAULT_DAYS_IN_WEEK;
+        final int measureTileHeight = specHeightSize / getDivider();
 
         //Just use the spec sizes
         setMeasuredDimension(specWidthSize, specHeightSize);
 
         int count = getChildCount();
+
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
 
             int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    measureTileSize,
+                    measureTileWidth,
                     MeasureSpec.EXACTLY
             );
 
             int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    measureTileSize,
+                    measureTileHeight,
                     MeasureSpec.EXACTLY
             );
 
@@ -332,6 +334,8 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         super.onInitializeAccessibilityNodeInfo(info);
         info.setClassName(CalendarPagerView.class.getName());
     }
+
+    protected abstract int getDivider();
 
     protected CalendarDay getFirstViewDay() {
         return firstViewDay;
