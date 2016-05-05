@@ -422,6 +422,28 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * Go to previous month or week without using the button {@link #buttonPast}. Should only go to
+     * previous if {@link #isPreviousAccessible()} is true, meaning it's possible to go to the previous month
+     * or week.
+     */
+    public void goToPrevious() {
+        if (canGoBack()) {
+            pager.setCurrentItem(pager.getCurrentItem() - 1, true);
+        }
+    }
+
+    /**
+     * Go to next month or week without using the button {@link #buttonFuture}. Should only go to
+     * next if {@link #buttonFuture} is enabled, meaning it's possible to go to the next month or
+     * week.
+     */
+    public void goToNext() {
+        if (canGoForward()) {
+            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+        }
+    }
+
+    /**
      * Set calendar display mode. The default mode is Months.
      * When switching between modes will select todays date, or the selected date,
      * if selection mode is single.
@@ -506,13 +528,13 @@ public class MaterialCalendarView extends ViewGroup {
      *
      * @return true if there is a future month that can be shown
      */
-    private boolean canGoForward() {
+    public boolean canGoForward() {
         return pager.getCurrentItem() < (adapter.getCount() - 1);
     }
 
     /**
      * Pass all touch events to the pager so scrolling works on the edges of the calendar view.
-     * 
+     *
      * @param event
      * @return
      */
@@ -526,7 +548,7 @@ public class MaterialCalendarView extends ViewGroup {
      *
      * @return true if there is a previous month that can be shown
      */
-    private boolean canGoBack() {
+    public boolean canGoBack() {
         return pager.getCurrentItem() > 0;
     }
 
