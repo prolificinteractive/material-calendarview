@@ -427,18 +427,9 @@ public class MaterialCalendarView extends ViewGroup {
      * or week.
      */
     public void goToPrevious() {
-        if (isPreviousAccessible()) {
+        if (canGoBack()) {
             pager.setCurrentItem(pager.getCurrentItem() - 1, true);
         }
-    }
-
-    /**
-     * Check if the previous month or week is accessible
-     *
-     * @return boolean true if previous month or week is accessible
-     */
-    public boolean isPreviousAccessible() {
-        return buttonPast.isEnabled();
     }
 
     /**
@@ -447,18 +438,9 @@ public class MaterialCalendarView extends ViewGroup {
      * week.
      */
     public void goToNext() {
-        if (isNextAccessible()) {
+        if (canGoForward()) {
             pager.setCurrentItem(pager.getCurrentItem() + 1, true);
         }
-    }
-
-    /**
-     * Check if the next month or week is accessible
-     *
-     * @return boolean true if next month or week is accessible
-     */
-    public boolean isNextAccessible() {
-        return buttonFuture.isEnabled();
     }
 
     /**
@@ -546,7 +528,7 @@ public class MaterialCalendarView extends ViewGroup {
      *
      * @return true if there is a future month that can be shown
      */
-    private boolean canGoForward() {
+    public boolean canGoForward() {
         return pager.getCurrentItem() < (adapter.getCount() - 1);
     }
 
@@ -566,7 +548,7 @@ public class MaterialCalendarView extends ViewGroup {
      *
      * @return true if there is a previous month that can be shown
      */
-    private boolean canGoBack() {
+    public boolean canGoBack() {
         return pager.getCurrentItem() > 0;
     }
 
