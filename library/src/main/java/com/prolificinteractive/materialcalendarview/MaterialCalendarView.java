@@ -447,9 +447,10 @@ public class MaterialCalendarView extends ViewGroup {
         adapter = adapter.migrateStateAndReturn(newAdapter);
         pager.setAdapter(adapter);
         calendarMode = mode;
-        setCurrentDate(selectionMode == SELECTION_MODE_SINGLE
-                ? adapter.getSelectedDates().get(0)
-                : CalendarDay.today());
+        setCurrentDate(
+                selectionMode == SELECTION_MODE_SINGLE && adapter.getSelectedDates().size() > 0
+                        ? adapter.getSelectedDates().get(0)
+                        : CalendarDay.today());
         invalidateDecorators();
         updateUi();
     }
@@ -512,7 +513,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Pass all touch events to the pager so scrolling works on the edges of the calendar view.
-     * 
+     *
      * @param event
      * @return
      */
