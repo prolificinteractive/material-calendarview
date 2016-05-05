@@ -853,7 +853,7 @@ public class MaterialCalendarView extends ViewGroup {
      * Allow the user to click on dates from other months that are not out of range. Go to next or
      * previous month if a day outside the current month is clicked. The day still need to be
      * enabled to be selected.
-     * Default value is false. Should be used with {@link #SHOW_OTHER_MONTHS}.
+     * Default value is true. Should be used with {@link #SHOW_OTHER_MONTHS}.
      *
      * @param enabled True to allow the user to click on a day outside current month displayed
      */
@@ -1044,7 +1044,7 @@ public class MaterialCalendarView extends ViewGroup {
         int dateTextAppearance = 0;
         int weekDayTextAppearance = 0;
         int showOtherDates = SHOW_DEFAULTS;
-        boolean allowClickDaysOutsideCurrentMonth = false;
+        boolean allowClickDaysOutsideCurrentMonth = true;
         CalendarDay minDate = null;
         CalendarDay maxDate = null;
         List<CalendarDay> selectedDates = new ArrayList<>();

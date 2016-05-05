@@ -32,7 +32,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private Integer weekDayTextAppearance = null;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
-    private boolean allowClickDaysOutsideCurrentMonth = false;
+    private boolean allowClickDaysOutsideCurrentMonth = true;
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private DateRangeIndex rangeIndex;
