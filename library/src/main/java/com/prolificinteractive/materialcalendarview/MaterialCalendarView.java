@@ -230,8 +230,10 @@ public class MaterialCalendarView extends ViewGroup {
         }
 
         buttonPast = new DirectionButton(getContext());
+        buttonPast.setContentDescription(getContext().getString(R.string.previous));
         title = new TextView(getContext());
         buttonFuture = new DirectionButton(getContext());
+        buttonFuture.setContentDescription(getContext().getString(R.string.next));
         pager = new CalendarPager(getContext());
 
         setupChildren();
