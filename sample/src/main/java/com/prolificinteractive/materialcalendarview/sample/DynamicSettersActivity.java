@@ -43,7 +43,8 @@ public class DynamicSettersActivity extends AppCompatActivity {
         CharSequence[] items = {
                 "Other Months",
                 "Out Of Range",
-                "Decorated Disabled"
+                "Decorated Disabled",
+                "Select days outside month"
         };
         final int[] itemValues = {
                 MaterialCalendarView.SHOW_OTHER_MONTHS,
@@ -51,25 +52,31 @@ public class DynamicSettersActivity extends AppCompatActivity {
                 MaterialCalendarView.SHOW_DECORATED_DISABLED,
         };
         int showOtherDates = widget.getShowOtherDates();
+
         boolean[] initSelections = {
                 MaterialCalendarView.showOtherMonths(showOtherDates),
                 MaterialCalendarView.showOutOfRange(showOtherDates),
                 MaterialCalendarView.showDecoratedDisabled(showOtherDates),
+                widget.allowClickDaysOutsideCurrentMonth()
         };
         new AlertDialog.Builder(this)
                 .setTitle("Show Other Dates")
                 .setMultiChoiceItems(items, initSelections, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        int showOtherDates = widget.getShowOtherDates();
-                        if (isChecked) {
-                            //Set flag
-                            showOtherDates |= itemValues[which];
-                        } else {
-                            //Unset flag
-                            showOtherDates &= ~itemValues[which];
+                        if (which < 3) {
+                            int showOtherDates = widget.getShowOtherDates();
+                            if (isChecked) {
+                                //Set flag
+                                showOtherDates |= itemValues[which];
+                            } else {
+                                //Unset flag
+                                showOtherDates &= ~itemValues[which];
+                            }
+                            widget.setShowOtherDates(showOtherDates);
+                        } else if (which == 3) {
+                            widget.setAllowClickDaysOutsideCurrentMonth(isChecked);
                         }
-                        widget.setShowOtherDates(showOtherDates);
                     }
                 })
                 .setPositiveButton(android.R.string.ok, null)

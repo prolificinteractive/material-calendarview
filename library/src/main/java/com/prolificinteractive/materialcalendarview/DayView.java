@@ -133,7 +133,7 @@ class DayView extends CheckedTextView {
 
     private void setEnabled() {
         boolean enabled = isInMonth && isInRange && !isDecoratedDisabled;
-        super.setEnabled(enabled);
+        super.setEnabled(isInRange && !isDecoratedDisabled);
 
         boolean showOtherMonths = showOtherMonths(showOtherDates);
         boolean showOutOfRange = showOutOfRange(showOtherDates) || showOtherMonths;
@@ -153,6 +153,10 @@ class DayView extends CheckedTextView {
             shouldBeVisible |= isInMonth && isInRange;
         }
 
+        if (!isInMonth && shouldBeVisible) {
+            setTextColor(getTextColors().getColorForState(
+                    new int[]{-android.R.attr.state_enabled}, Color.GRAY));
+        }
         setVisibility(shouldBeVisible ? View.VISIBLE : View.INVISIBLE);
     }
 

@@ -207,8 +207,8 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v instanceof DayView) {
-            DayView dayView = (DayView) v;
-            mcv.onDateClicked(dayView.getDate(), !dayView.isChecked());
+            final DayView dayView = (DayView) v;
+            mcv.onDateClicked(dayView);
         }
     }
 
