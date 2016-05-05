@@ -29,7 +29,6 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
     @ShowOtherDates
     protected int showOtherDates = SHOW_DEFAULTS;
-    protected boolean allowClickDaysOutsideCurrentMonth = true;
     private MaterialCalendarView mcv;
     private CalendarDay firstViewDay;
     private CalendarDay minDate = null;
@@ -140,10 +139,6 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         updateUi();
     }
 
-    public void setAllowClickDaysOutsideCurrentMonth(boolean enabled) {
-        this.allowClickDaysOutsideCurrentMonth = enabled;
-    }
-
     public void setSelectionEnabled(boolean selectionEnabled) {
         for (DayView dayView : dayViews) {
             dayView.setOnClickListener(selectionEnabled ? this : null);
@@ -213,16 +208,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     public void onClick(View v) {
         if (v instanceof DayView) {
             final DayView dayView = (DayView) v;
-            if (allowClickDaysOutsideCurrentMonth) {
-                if (mcv.getCurrentDate().getMonth() > ((DayView) v).getDate().getMonth()) {
-                    mcv.goToPrevious();
-                } else if (mcv.getCurrentDate().getMonth() < ((DayView) v).getDate().getMonth()) {
-                    mcv.goToNext();
-                }
-                mcv.onDateClicked(dayView.getDate(), !dayView.isChecked());
-            } else if (mcv.getCurrentDate().getMonth() == dayView.getDate().getMonth()) {
-                mcv.onDateClicked(dayView.getDate(), !dayView.isChecked());
-            }
+            mcv.onDateClicked(dayView);
         }
     }
 

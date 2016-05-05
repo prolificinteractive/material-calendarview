@@ -211,6 +211,7 @@ public class MaterialCalendarView extends ViewGroup {
     private int tileSize = -1;
     @SelectionMode
     private int selectionMode = SELECTION_MODE_SINGLE;
+    private boolean allowClickDaysOutsideCurrentMonth = true;
 
     public MaterialCalendarView(Context context) {
         this(context, null);
@@ -428,7 +429,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Go to previous month or week without using the button {@link #buttonPast}. Should only go to
-     * previous if {@link #isPreviousAccessible()} is true, meaning it's possible to go to the previous month
+     * previous if {@link #canGoBack()} is true, meaning it's possible to go to the previous month
      * or week.
      */
     public void goToPrevious() {
@@ -439,7 +440,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Go to next month or week without using the button {@link #buttonFuture}. Should only go to
-     * next if {@link #buttonFuture} is enabled, meaning it's possible to go to the next month or
+     * next if {@link #canGoForward()} is enabled, meaning it's possible to go to the next month or
      * week.
      */
     public void goToNext() {
@@ -858,7 +859,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param enabled True to allow the user to click on a day outside current month displayed
      */
     public void setAllowClickDaysOutsideCurrentMonth(final boolean enabled) {
-        adapter.setAllowClickDaysOutsideCurrentMonth(enabled);
+        this.allowClickDaysOutsideCurrentMonth = enabled;
     }
 
     /**
@@ -921,7 +922,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if allow click on days outside current month displayed
      */
     public boolean allowClickDaysOutsideCurrentMonth() {
-        return adapter.allowClickDaysOutsideCurrentMonth();
+        return allowClickDaysOutsideCurrentMonth;
     }
 
     /**
@@ -1269,7 +1270,8 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * Call by MonthView to indicate that a day was clicked and we should handle it
+     * Call by {@link CalendarPagerView} to indicate that a day was clicked and we should handle it.
+     * This method will always process the click to the selected date.
      *
      * @param date        date of the day that was clicked
      * @param nowSelected true if the date is now selected, false otherwise
@@ -1288,6 +1290,25 @@ public class MaterialCalendarView extends ViewGroup {
                 dispatchOnDateSelected(date, true);
             }
             break;
+        }
+    }
+
+    /**
+     * Call by {@link CalendarPagerView} to indicate that a day was clicked and we should handle it
+     *
+     * @param dayView
+     */
+    protected void onDateClicked(DayView dayView) {
+        final int currentMonth = getCurrentDate().getMonth();
+        final int selectedMonth = dayView.getDate().getMonth();
+
+        if (allowClickDaysOutsideCurrentMonth || currentMonth == selectedMonth) {
+            if (currentMonth > selectedMonth) {
+                goToPrevious();
+            } else if (currentMonth < selectedMonth) {
+                goToNext();
+            }
+            onDateClicked(dayView.getDate(), !dayView.isChecked());
         }
     }
 

@@ -32,7 +32,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private Integer weekDayTextAppearance = null;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
-    private boolean allowClickDaysOutsideCurrentMonth = true;
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private DateRangeIndex rangeIndex;
@@ -219,13 +218,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         }
     }
 
-    public void setAllowClickDaysOutsideCurrentMonth(final boolean enabled) {
-        this.allowClickDaysOutsideCurrentMonth = enabled;
-        for (final V pagerView : currentViews) {
-            pagerView.setAllowClickDaysOutsideCurrentMonth(enabled);
-        }
-    }
-
     public void setWeekDayFormatter(WeekDayFormatter formatter) {
         this.weekDayFormatter = formatter;
         for (V pagerView : currentViews) {
@@ -243,10 +235,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     @ShowOtherDates
     public int getShowOtherDates() {
         return showOtherDates;
-    }
-
-    public boolean allowClickDaysOutsideCurrentMonth() {
-        return allowClickDaysOutsideCurrentMonth;
     }
 
     public void setWeekDayTextAppearance(int taId) {

@@ -51,7 +51,6 @@ class DayView extends CheckedTextView {
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
 
-
     public DayView(Context context, CalendarDay day) {
         super(context);
 
