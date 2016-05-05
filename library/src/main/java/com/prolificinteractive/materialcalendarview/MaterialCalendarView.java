@@ -448,7 +448,7 @@ public class MaterialCalendarView extends ViewGroup {
         pager.setAdapter(adapter);
         calendarMode = mode;
         setCurrentDate(
-                selectionMode == SELECTION_MODE_SINGLE && adapter.getSelectedDates().size() > 0
+                selectionMode == SELECTION_MODE_SINGLE && !adapter.getSelectedDates().isEmpty()
                         ? adapter.getSelectedDates().get(0)
                         : CalendarDay.today());
         invalidateDecorators();
