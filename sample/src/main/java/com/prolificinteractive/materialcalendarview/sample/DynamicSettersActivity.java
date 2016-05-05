@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
 
@@ -76,7 +75,6 @@ public class DynamicSettersActivity extends AppCompatActivity {
                             }
                             widget.setShowOtherDates(showOtherDates);
                         } else if (which == 3) {
-                            Log.e("Hola", "Que tal " + isChecked);
                             widget.setAllowClickDaysOutsideCurrentMonth(isChecked);
                         }
                     }
