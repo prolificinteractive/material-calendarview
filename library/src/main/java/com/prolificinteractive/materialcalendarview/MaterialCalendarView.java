@@ -989,6 +989,7 @@ public class MaterialCalendarView extends ViewGroup {
         currentMonth = c;
         int position = adapter.getIndexForDay(c);
         pager.setCurrentItem(position, false);
+        updateUi();
     }
 
     public static class SavedState extends BaseSavedState {
