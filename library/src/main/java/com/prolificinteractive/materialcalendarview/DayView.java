@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Rect;
-import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -18,6 +16,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -172,26 +171,14 @@ class DayView extends CheckedTextView {
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
-        canvas.getClipBounds(tempRect);
         if (customBackground != null) {
             customBackground.setBounds(tempRect);
             customBackground.setState(getDrawableState());
             customBackground.draw(canvas);
         }
 
-        // draw circle in square rect
-        if (tempRect.width() == 0 || tempRect.width() != tempRect.height()) {
-            canvas.getClipBounds(tempRect);
-            final int radius = Math.min(tempRect.height(), tempRect.width());
-            final int offset = Math.abs(tempRect.height() - tempRect.width()) / 2;
-
-            if (tempRect.width() > tempRect.height()) {
-                tempRect.set(offset, tempRect.top, radius + offset, tempRect.bottom);
-            } else if (tempRect.width() < tempRect.height()) {
-                tempRect.set(tempRect.left, offset, tempRect.right, radius + offset);
-            }
-            mCircleDrawable.setBounds(tempRect);
-        }
+        mCircleDrawable.setBounds(tempRect);
+//        Log.d("ONDRAW", String.format("%d %d %d %d", tempRect.left, tempRect.top, tempRect.right, tempRect.bottom));
 
         super.onDraw(canvas);
     }
@@ -200,17 +187,17 @@ class DayView extends CheckedTextView {
         if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
         } else {
-            mCircleDrawable = generateBackground(selectionColor, fadeTime);
+            mCircleDrawable = generateBackground(selectionColor, fadeTime, tempRect);
             setBackgroundDrawable(mCircleDrawable);
         }
     }
 
-    private static Drawable generateBackground(int color, int fadeTime) {
+    private static Drawable generateBackground(int color, int fadeTime, Rect bounds) {
         StateListDrawable drawable = new StateListDrawable();
         drawable.setExitFadeDuration(fadeTime);
         drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleDrawable(color));
+            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleDrawable(color, bounds));
         } else {
             drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleDrawable(color));
         }
@@ -222,20 +209,28 @@ class DayView extends CheckedTextView {
 
     private static Drawable generateCircleDrawable(final int color) {
         ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
-        drawable.setShaderFactory(new ShapeDrawable.ShaderFactory() {
-            @Override
-            public Shader resize(int width, int height) {
-                return new LinearGradient(0, 0, 0, 0, color, color, Shader.TileMode.REPEAT);
-            }
-        });
+        drawable.getPaint().setColor(color);
         return drawable;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static Drawable generateRippleDrawable(final int color) {
-        ColorStateList list = ColorStateList.valueOf(color);
-        Drawable mask = generateCircleDrawable(Color.WHITE);
-        return new RippleDrawable(list, null, mask);
+    private static Drawable generateRippleDrawable(final int color, Rect bounds) {
+        ColorStateList list = ColorStateList.valueOf(Color.GREEN);
+        Drawable mask = generateCircleDrawable(Color.RED);
+        RippleDrawable rippleDrawable = new RippleDrawable(list, null,
+                Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP
+                        ? mask
+                        : null);
+//        API 21
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            rippleDrawable.setBounds(bounds);
+        }
+//        rippleDrawable.setHotspotBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
+//        rippleDrawable.setBounds(0, 0, 40, 40);
+
+//        rippleDrawable.setHotspotBounds(0, 0, 100, 80);
+        Log.d("DEBUG", String.format("%d %d %d %d", bounds.left, bounds.top, bounds.right, bounds.bottom));
+        return rippleDrawable;
     }
 
     /**
@@ -261,6 +256,28 @@ class DayView extends CheckedTextView {
         // Reset in case it was customized previously
         else {
             setText(getLabel());
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        calculateBounds(right - left, bottom - top);
+        regenerateBackground();
+    }
+
+    private void calculateBounds(int width, int height) {
+        if (width == 0 || width != height) {
+            final int radius = Math.min(height, width);
+            // Lollipop platform bug. Rect offset needs to be divided by 4 instead of 2
+            final int offsetDivisor = Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP ? 4 : 2;
+            final int offset = Math.abs(height - width) / offsetDivisor;
+
+            if (width > height) {
+                tempRect.set(offset, 0, radius + offset, height);
+            } else if (tempRect.width() < tempRect.height()) {
+                tempRect.set(0, offset, width, radius + offset);
+            }
         }
     }
 }
