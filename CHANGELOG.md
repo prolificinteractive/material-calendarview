@@ -1,5 +1,14 @@
 Change Log
 ==========
+Version 1.3.0 *(TBD)*
+----------------------------
+
+* New: MCV `goToNext` and `goToPrevious` API to programmatically trigger paging
+* New: Allow users to click on dates outside of current month with `setAllowClickDaysOutsideCurrentMonth`
+* New: Set tile width/height separately rather than single tile size
+* Change: `getTileSize` is deprecated, use `getTileWidth` and `getTileHeight`. `setTileSize` still works as a convenience method to set width and height at the same time.
+* Fix: Fix - issue with arrow not enabled when setting maxDate
+* Fix: TalkBack content descriptions for pager view, forward/back arrows, and ability to set them manually
 
 Version 1.2.1 *(2016-05-05)*
 ----------------------------
