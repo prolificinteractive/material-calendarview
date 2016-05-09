@@ -177,7 +177,6 @@ class DayView extends CheckedTextView {
         }
 
         mCircleDrawable.setBounds(tempRect);
-//        Log.d("ONDRAW", String.format("%d %d %d %d", tempRect.left, tempRect.top, tempRect.right, tempRect.bottom));
 
         super.onDraw(canvas);
     }
