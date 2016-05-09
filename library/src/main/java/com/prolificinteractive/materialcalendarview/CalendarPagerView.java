@@ -24,6 +24,8 @@ import static java.util.Calendar.DAY_OF_WEEK;
 abstract class CalendarPagerView extends ViewGroup implements View.OnClickListener {
 
     protected static final int DEFAULT_DAYS_IN_WEEK = 7;
+    protected static final int DEFAULT_MAX_WEEKS = 6;
+    protected static final int DEFAULT_MAX_ROWS = DEFAULT_MAX_WEEKS + 1; // include days header
     private static final Calendar tempWorkingCalendar = CalendarUtils.getInstance();
     private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
     private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
@@ -240,22 +242,24 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         }
 
         //The spec width should be a correct multiple
-        final int measureTileSize = specWidthSize / DEFAULT_DAYS_IN_WEEK;
+        final int measureTileWidth = specWidthSize / DEFAULT_DAYS_IN_WEEK;
+        final int measureTileHeight = specHeightSize / DEFAULT_MAX_ROWS;
 
         //Just use the spec sizes
         setMeasuredDimension(specWidthSize, specHeightSize);
 
         int count = getChildCount();
+
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
 
             int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    measureTileSize,
+                    measureTileWidth,
                     MeasureSpec.EXACTLY
             );
 
             int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    measureTileSize,
+                    measureTileHeight,
                     MeasureSpec.EXACTLY
             );
 

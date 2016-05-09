@@ -13,9 +13,6 @@ import java.util.Collection;
 @SuppressLint("ViewConstructor")
 class MonthView extends CalendarPagerView {
 
-    private static final int DEFAULT_DAYS_IN_WEEK = 7;
-    private static final int DEFAULT_MAX_WEEKS = 6;
-
     public MonthView(@NonNull MaterialCalendarView view, CalendarDay month, int firstDayOfWeek) {
         super(view, month, firstDayOfWeek);
     }

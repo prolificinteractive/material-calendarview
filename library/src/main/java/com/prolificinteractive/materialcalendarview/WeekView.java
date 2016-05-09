@@ -13,8 +13,6 @@ import java.util.Collection;
 @SuppressLint("ViewConstructor")
 public class WeekView extends CalendarPagerView {
 
-    private static final int DEFAULT_DAYS_IN_WEEK = 7;
-
     public WeekView(@NonNull MaterialCalendarView view,
                     CalendarDay firstViewDay,
                     int firstDayOfWeek) {

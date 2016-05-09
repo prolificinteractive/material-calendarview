@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Rect;
-import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -43,6 +41,7 @@ class DayView extends CheckedTextView {
     private final int fadeTime;
     private Drawable customBackground = null;
     private Drawable selectionDrawable;
+    private Drawable mCircleDrawable;
     private DayFormatter formatter = DayFormatter.DEFAULT;
 
     private boolean isInRange = true;
@@ -172,11 +171,13 @@ class DayView extends CheckedTextView {
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         if (customBackground != null) {
-            canvas.getClipBounds(tempRect);
             customBackground.setBounds(tempRect);
             customBackground.setState(getDrawableState());
             customBackground.draw(canvas);
         }
+
+        mCircleDrawable.setBounds(tempRect);
+
         super.onDraw(canvas);
     }
 
@@ -184,16 +185,17 @@ class DayView extends CheckedTextView {
         if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
         } else {
-            setBackgroundDrawable(generateBackground(selectionColor, fadeTime));
+            mCircleDrawable = generateBackground(selectionColor, fadeTime, tempRect);
+            setBackgroundDrawable(mCircleDrawable);
         }
     }
 
-    private static Drawable generateBackground(int color, int fadeTime) {
+    private static Drawable generateBackground(int color, int fadeTime, Rect bounds) {
         StateListDrawable drawable = new StateListDrawable();
         drawable.setExitFadeDuration(fadeTime);
         drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleDrawable(color));
+            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleDrawable(color, bounds));
         } else {
             drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleDrawable(color));
         }
@@ -205,20 +207,27 @@ class DayView extends CheckedTextView {
 
     private static Drawable generateCircleDrawable(final int color) {
         ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
-        drawable.setShaderFactory(new ShapeDrawable.ShaderFactory() {
-            @Override
-            public Shader resize(int width, int height) {
-                return new LinearGradient(0, 0, 0, 0, color, color, Shader.TileMode.REPEAT);
-            }
-        });
+        drawable.getPaint().setColor(color);
         return drawable;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static Drawable generateRippleDrawable(final int color) {
+    private static Drawable generateRippleDrawable(final int color, Rect bounds) {
         ColorStateList list = ColorStateList.valueOf(color);
         Drawable mask = generateCircleDrawable(Color.WHITE);
-        return new RippleDrawable(list, null, mask);
+        RippleDrawable rippleDrawable = new RippleDrawable(list, null, mask);
+//        API 21
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            rippleDrawable.setBounds(bounds);
+        }
+
+//        API 22. Technically harmless to leave on for API 21 and 23, but not worth risking for 23+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1) {
+            int center = (bounds.left + bounds.right) / 2;
+            rippleDrawable.setHotspotBounds(center, bounds.top, center, bounds.bottom);
+        }
+
+        return rippleDrawable;
     }
 
     /**
@@ -244,6 +253,26 @@ class DayView extends CheckedTextView {
         // Reset in case it was customized previously
         else {
             setText(getLabel());
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        calculateBounds(right - left, bottom - top);
+        regenerateBackground();
+    }
+
+    private void calculateBounds(int width, int height) {
+        final int radius = Math.min(height, width);
+        // Lollipop platform bug. Rect offset needs to be divided by 4 instead of 2
+        final int offsetDivisor = Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP ? 4 : 2;
+        final int offset = Math.abs(height - width) / offsetDivisor;
+
+        if (width >= height) {
+            tempRect.set(offset, 0, radius + offset, height);
+        } else {
+            tempRect.set(0, offset, width, radius + offset);
         }
     }
 }
