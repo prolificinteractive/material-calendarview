@@ -16,7 +16,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -215,21 +214,20 @@ class DayView extends CheckedTextView {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static Drawable generateRippleDrawable(final int color, Rect bounds) {
-        ColorStateList list = ColorStateList.valueOf(Color.GREEN);
-        Drawable mask = generateCircleDrawable(Color.RED);
-        RippleDrawable rippleDrawable = new RippleDrawable(list, null,
-                Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP
-                        ? mask
-                        : null);
+        ColorStateList list = ColorStateList.valueOf(color);
+        Drawable mask = generateCircleDrawable(Color.WHITE);
+        RippleDrawable rippleDrawable = new RippleDrawable(list, null, mask);
 //        API 21
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
             rippleDrawable.setBounds(bounds);
         }
-//        rippleDrawable.setHotspotBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
-//        rippleDrawable.setBounds(0, 0, 40, 40);
 
-//        rippleDrawable.setHotspotBounds(0, 0, 100, 80);
-        Log.d("DEBUG", String.format("%d %d %d %d", bounds.left, bounds.top, bounds.right, bounds.bottom));
+//        API 22. Technically harmless to leave on for API 21 and 23, but not worth risking for 23+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1) {
+            int center = (bounds.left + bounds.right) / 2;
+            rippleDrawable.setHotspotBounds(center, bounds.top, center, bounds.bottom);
+        }
+
         return rippleDrawable;
     }
 
@@ -267,17 +265,15 @@ class DayView extends CheckedTextView {
     }
 
     private void calculateBounds(int width, int height) {
-        if (width == 0 || width != height) {
-            final int radius = Math.min(height, width);
-            // Lollipop platform bug. Rect offset needs to be divided by 4 instead of 2
-            final int offsetDivisor = Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP ? 4 : 2;
-            final int offset = Math.abs(height - width) / offsetDivisor;
+        final int radius = Math.min(height, width);
+        // Lollipop platform bug. Rect offset needs to be divided by 4 instead of 2
+        final int offsetDivisor = Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP ? 4 : 2;
+        final int offset = Math.abs(height - width) / offsetDivisor;
 
-            if (width > height) {
-                tempRect.set(offset, 0, radius + offset, height);
-            } else if (tempRect.width() < tempRect.height()) {
-                tempRect.set(0, offset, width, radius + offset);
-            }
+        if (width >= height) {
+            tempRect.set(offset, 0, radius + offset, height);
+        } else {
+            tempRect.set(0, offset, width, radius + offset);
         }
     }
 }
