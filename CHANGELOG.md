@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.2.1 *(2016-05-05)*
+----------------------------
+
+* Fix: Scrolling for nested view pagers
+* Fix: Crash on switching Calendar modes with no days selected
+
 Version 1.2.0 *(2016-01-24)*
 ----------------------------
 

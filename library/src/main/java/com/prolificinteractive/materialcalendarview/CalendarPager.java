@@ -40,4 +40,23 @@ class CalendarPager extends BetterViewPager {
     public boolean onTouchEvent(MotionEvent ev) {
         return pagingEnabled && super.onTouchEvent(ev);
     }
+
+    @Override
+    public boolean canScrollVertically(int direction) {
+        /**
+         * disables scrolling vertically when paging disabled, fixes scrolling
+         * for nested {@link android.support.v4.view.ViewPager}
+         */
+        return pagingEnabled && super.canScrollVertically(direction);
+    }
+
+    @Override
+    public boolean canScrollHorizontally(int direction) {
+        /**
+         * disables scrolling horizontally when paging disabled, fixes scrolling
+         * for nested {@link android.support.v4.view.ViewPager}
+         */
+        return pagingEnabled && super.canScrollHorizontally(direction);
+    }
+
 }
