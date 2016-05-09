@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.util.Calendar;
@@ -254,6 +255,17 @@ public class DynamicSettersActivity extends AppCompatActivity {
         int index = random.nextInt(DAYS_OF_WEEK.length);
         widget.setFirstDayOfWeek(DAYS_OF_WEEK[index]);
     }
+
+    @OnClick(R.id.button_weeks)
+    public void onSetWeekMode() {
+        widget.setCalendarDisplayMode(CalendarMode.WEEKS);
+    }
+
+    @OnClick(R.id.button_months)
+    public void onSetMonthMode() {
+        widget.setCalendarDisplayMode(CalendarMode.MONTHS);
+    }
+
 
     public static void showDatePickerDialog(Context context, CalendarDay day,
                                             DatePickerDialog.OnDateSetListener callback) {
