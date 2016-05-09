@@ -51,6 +51,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+            <Button
+                android:id="@+id/button_months"
+                android:text="Month Mode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+            <Button
+                android:id="@+id/button_weeks"
+                android:text="Week mode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
 
             <Button
                 android:id="@+id/button_selection_mode"
@@ -193,30 +214,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <Button
-                android:id="@+id/button_months"
-                android:text="Month Mode"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
-
-            <Button
-                android:id="@+id/button_weeks"
-                android:text="Week mode"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 />
 
         </LinearLayout>

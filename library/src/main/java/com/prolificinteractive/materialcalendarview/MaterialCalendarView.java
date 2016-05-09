@@ -208,7 +208,6 @@ public class MaterialCalendarView extends ViewGroup {
     private int arrowColor = Color.BLACK;
     private Drawable leftArrowMask;
     private Drawable rightArrowMask;
-    private int tileSize = -1;
     private int tileHeight = -1;
     private int tileWidth = -1;
     @SelectionMode
@@ -510,10 +509,14 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * @return the size of tiles in pixels
+     * Use {@link #getTileWidth()} or {@link #getTileHeight()} instead. This method is deprecated
+     * and will just return the largest of the two sizes.
+     *
+     * @return tile height or width, whichever is larger
      */
+    @Deprecated
     public int getTileSize() {
-        return tileSize;
+        return Math.max(tileHeight, tileWidth);
     }
 
     /**
@@ -524,7 +527,8 @@ public class MaterialCalendarView extends ViewGroup {
      * @param size the new size for each tile in pixels
      */
     public void setTileSize(int size) {
-        this.tileSize = size;
+        this.tileWidth = size;
+        this.tileHeight = size;
         requestLayout();
     }
 
@@ -1058,7 +1062,6 @@ public class MaterialCalendarView extends ViewGroup {
         ss.selectedDates = getSelectedDates();
         ss.firstDayOfWeek = getFirstDayOfWeek();
         ss.selectionMode = getSelectionMode();
-        ss.tileSizePx = getTileSize();
         ss.tileWidthPx = getTileWidth();
         ss.tileHeightPx = getTileHeight();
         ss.topbarVisible = getTopbarVisible();
@@ -1080,7 +1083,6 @@ public class MaterialCalendarView extends ViewGroup {
             setDateSelected(calendarDay, true);
         }
         setFirstDayOfWeek(ss.firstDayOfWeek);
-        setTileSize(ss.tileSizePx);
         setTileWidth(ss.tileWidthPx);
         setTileHeight(ss.tileHeightPx);
         setTopbarVisible(ss.topbarVisible);
@@ -1117,7 +1119,6 @@ public class MaterialCalendarView extends ViewGroup {
         CalendarDay maxDate = null;
         List<CalendarDay> selectedDates = new ArrayList<>();
         int firstDayOfWeek = Calendar.SUNDAY;
-        int tileSizePx = -1;
         int tileWidthPx = -1;
         int tileHeightPx = -1;
         boolean topbarVisible = true;
@@ -1140,7 +1141,6 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeParcelable(maxDate, 0);
             out.writeTypedList(selectedDates);
             out.writeInt(firstDayOfWeek);
-            out.writeInt(tileSizePx);
             out.writeInt(tileWidthPx);
             out.writeInt(tileHeightPx);
             out.writeInt(topbarVisible ? 1 : 0);
@@ -1171,7 +1171,6 @@ public class MaterialCalendarView extends ViewGroup {
             maxDate = in.readParcelable(loader);
             in.readTypedList(selectedDates, CalendarDay.CREATOR);
             firstDayOfWeek = in.readInt();
-            tileSizePx = in.readInt();
             tileWidthPx = in.readInt();
             tileHeightPx = in.readInt();
             topbarVisible = in.readInt() == 1;
@@ -1460,10 +1459,7 @@ public class MaterialCalendarView extends ViewGroup {
         int measureTileWidth = -1;
         int measureTileHeight = -1;
 
-        if (this.tileSize > 0) {
-            //We have a tileSize set, we should use that
-            measureTileSize = this.tileSize;
-        } else if (this.tileWidth > 0 || this.tileHeight > 0) {
+        if (this.tileWidth > 0 || this.tileHeight > 0) {
             if (this.tileWidth > 0) {
                 //We have a tileWidth set, we should use that
                 measureTileWidth = this.tileWidth;
