@@ -34,4 +34,9 @@ class MonthView extends CalendarPagerView {
     protected boolean isDayEnabled(CalendarDay day) {
         return day.getMonth() == getFirstViewDay().getMonth();
     }
+
+    @Override
+    protected int getRows() {
+        return DEFAULT_MAX_WEEKS + DAY_NAMES_ROW;
+    }
 }

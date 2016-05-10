@@ -40,7 +40,10 @@
             <enum name="saturday" value="7" />
         </attr>
 
-
+        <attr name="mcv_calendarMode" format="enum">
+            <enum name="month" value="0" />
+            <enum name="week" value="1" />
+        </attr>
     </declare-styleable>
 
 </resources>

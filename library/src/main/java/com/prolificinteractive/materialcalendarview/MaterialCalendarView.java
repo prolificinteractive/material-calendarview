@@ -148,6 +148,7 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public static final int DEFAULT_TILE_SIZE_DP = 44;
     private static final int DEFAULT_DAYS_IN_WEEK = 7;
+    private static final int DEFAULT_MAX_WEEKS = 6;
     private static final int DAY_NAMES_ROW = 1;
 
     private static final TitleFormatter DEFAULT_TITLE_FORMATTER = new DateFormatTitleFormatter();
@@ -160,7 +161,7 @@ public class MaterialCalendarView extends ViewGroup {
     private CalendarPagerAdapter<?> adapter;
     private CalendarDay currentMonth;
     private LinearLayout topbar;
-    private CalendarMode calendarMode = CalendarMode.MONTHS;
+    private CalendarMode calendarMode;
     /**
      * Used for the dynamic calendar height.
      */
@@ -236,17 +237,13 @@ public class MaterialCalendarView extends ViewGroup {
         buttonFuture = new DirectionButton(getContext());
         pager = new CalendarPager(getContext());
 
-        setupChildren();
-
         title.setOnClickListener(onClickListener);
         buttonPast.setOnClickListener(onClickListener);
         buttonFuture.setOnClickListener(onClickListener);
 
         titleChanger = new TitleChanger(title);
         titleChanger.setTitleFormatter(DEFAULT_TITLE_FORMATTER);
-        adapter = new MonthPagerAdapter(this);
-        adapter.setTitleFormatter(DEFAULT_TITLE_FORMATTER);
-        pager.setAdapter(adapter);
+
         pager.setOnPageChangeListener(pageChangeListener);
         pager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
@@ -259,6 +256,11 @@ public class MaterialCalendarView extends ViewGroup {
         TypedArray a = context.getTheme()
                 .obtainStyledAttributes(attrs, R.styleable.MaterialCalendarView, 0, 0);
         try {
+            int calendarModeIndex = a.getInteger(
+                    R.styleable.MaterialCalendarView_mcv_calendarMode,
+                    0
+            );
+            setCalendarDisplayMode(CalendarMode.values()[calendarModeIndex]);
 
             final int tileSize = a.getDimensionPixelSize(R.styleable.MaterialCalendarView_mcv_tileSize, -1);
             if (tileSize > 0) {
@@ -349,6 +351,10 @@ public class MaterialCalendarView extends ViewGroup {
             a.recycle();
         }
 
+        // Adapter is created while parsing the TypedArray attrs, so setup has to happen after
+        adapter.setTitleFormatter(DEFAULT_TITLE_FORMATTER);
+        setupChildren();
+
         currentMonth = CalendarDay.today();
         setCurrentDate(currentMonth);
 
@@ -364,7 +370,6 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     private void setupChildren() {
-
         topbar = new LinearLayout(getContext());
         topbar.setOrientation(LinearLayout.HORIZONTAL);
         topbar.setClipChildren(false);
@@ -468,7 +473,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param mode - calendar mode
      */
     public void setCalendarDisplayMode(CalendarMode mode) {
-        if (calendarMode.equals(mode)) {
+        if (calendarMode != null && calendarMode.equals(mode)) {
             return;
         }
 
@@ -483,9 +488,17 @@ public class MaterialCalendarView extends ViewGroup {
             default:
                 throw new IllegalArgumentException("Provided display mode which is not yet implemented");
         }
-        adapter = adapter.migrateStateAndReturn(newAdapter);
+        if (adapter == null) {
+            adapter = newAdapter;
+        } else {
+            adapter = adapter.migrateStateAndReturn(newAdapter);
+        }
         pager.setAdapter(adapter);
         calendarMode = mode;
+
+        // Reset height params after mode change
+        pager.setLayoutParams(new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
+
         setCurrentDate(
                 selectionMode == SELECTION_MODE_SINGLE && !adapter.getSelectedDates().isEmpty()
                         ? adapter.getSelectedDates().get(0)

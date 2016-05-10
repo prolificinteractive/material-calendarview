@@ -25,7 +25,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
 
     protected static final int DEFAULT_DAYS_IN_WEEK = 7;
     protected static final int DEFAULT_MAX_WEEKS = 6;
-    protected static final int DEFAULT_MAX_ROWS = DEFAULT_MAX_WEEKS + 1; // include days header
+    protected static final int DAY_NAMES_ROW = 1;
     private static final Calendar tempWorkingCalendar = CalendarUtils.getInstance();
     private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
     private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
@@ -243,7 +243,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
 
         //The spec width should be a correct multiple
         final int measureTileWidth = specWidthSize / DEFAULT_DAYS_IN_WEEK;
-        final int measureTileHeight = specHeightSize / DEFAULT_MAX_ROWS;
+        final int measureTileHeight = specHeightSize / getRows();
 
         //Just use the spec sizes
         setMeasuredDimension(specWidthSize, specHeightSize);
@@ -266,6 +266,12 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
             child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
         }
     }
+
+    /**
+     * Return the number of rows to display per page
+     * @return
+     */
+    protected abstract int getRows();
 
     /**
      * {@inheritDoc}
