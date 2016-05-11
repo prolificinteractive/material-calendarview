@@ -71,10 +71,10 @@ class DayView extends CheckedTextView {
     /**
      * Set the height between rows which have dates
      * Used to extend customBackground
-     * @param gapHeight
+     * @param distanceBetweenRows
      */
-    public void setDistanceBetweenRows(int gapHeight) {
-        this.distanceBetweenRows = gapHeight;
+    public void setDistanceBetweenRows(int distanceBetweenRows) {
+        this.distanceBetweenRows = distanceBetweenRows;
     }
 
     public void setDay(CalendarDay date) {

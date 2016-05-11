@@ -156,6 +156,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         pagerView.setMinimumDate(minDate);
         pagerView.setMaximumDate(maxDate);
         pagerView.setSelectedDates(selectedDates);
+        pagerView.setDistanceBetweenRows(distanceBetweenRows);
 
         container.addView(pagerView);
         currentViews.add(pagerView);

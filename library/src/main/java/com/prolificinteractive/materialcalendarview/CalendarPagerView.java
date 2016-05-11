@@ -27,6 +27,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     private static final Calendar tempWorkingCalendar = CalendarUtils.getInstance();
     private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
     private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
+    private final Collection<DayView> dayViews = new ArrayList<>();
     @ShowOtherDates
     protected int showOtherDates = SHOW_DEFAULTS;
     private MaterialCalendarView mcv;
@@ -34,8 +35,6 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private int firstDayOfWeek;
-
-    private final Collection<DayView> dayViews = new ArrayList<>();
     private int distanceBetweenRows;
 
     public CalendarPagerView(@NonNull MaterialCalendarView view,
@@ -65,7 +64,8 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     protected void addDayView(Collection<DayView> dayViews, Calendar calendar) {
         CalendarDay day = CalendarDay.from(calendar);
         DayView dayView = new DayView(getContext(), day);
-        dayView.setDistanceBetweenRows(distanceBetweenRows);
+        dayView.setDistanceBetweenRows(distanceBetweenRows == 0 ?
+                mcv.getDistanceBetweenRows() : distanceBetweenRows);
         dayView.setOnClickListener(this);
         dayViews.add(dayView);
         addView(dayView, new LayoutParams());
@@ -186,7 +186,6 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
 
     public void setDistanceBetweenRows(int distanceBetweenRows) {
         this.distanceBetweenRows = distanceBetweenRows;
-        updateUi();
     }
 
     protected void updateUi() {
@@ -275,6 +274,12 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
      */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+
+        //distanceBetweenRows is not set when initially laying out so we get it directly from mcv
+        // (which could be 0 too)
+        if (distanceBetweenRows == 0)
+            distanceBetweenRows = mcv.getDistanceBetweenRows();
+
         final int count = getChildCount();
 
         final int parentLeft = 0;
