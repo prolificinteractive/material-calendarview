@@ -37,4 +37,9 @@ class MonthView extends CalendarPagerView {
     protected boolean isDayEnabled(CalendarDay day) {
         return day.getMonth() == getFirstViewDay().getMonth();
     }
+
+    @Override
+    protected int getDivider() {
+        return 7;
+    }
 }

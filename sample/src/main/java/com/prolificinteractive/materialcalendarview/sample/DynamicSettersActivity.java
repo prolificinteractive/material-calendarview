@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -28,6 +29,8 @@ public class DynamicSettersActivity extends AppCompatActivity {
     MaterialCalendarView widget;
 
     private int currentTileSize;
+    private int currentTileWidth;
+    private int currentTileHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,8 @@ public class DynamicSettersActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         currentTileSize = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
+        currentTileWidth = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
+        currentTileHeight = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
     }
 
     @OnClick(R.id.button_other_dates)
@@ -43,7 +48,8 @@ public class DynamicSettersActivity extends AppCompatActivity {
         CharSequence[] items = {
                 "Other Months",
                 "Out Of Range",
-                "Decorated Disabled"
+                "Decorated Disabled",
+                "Select days outside month"
         };
         final int[] itemValues = {
                 MaterialCalendarView.SHOW_OTHER_MONTHS,
@@ -51,25 +57,31 @@ public class DynamicSettersActivity extends AppCompatActivity {
                 MaterialCalendarView.SHOW_DECORATED_DISABLED,
         };
         int showOtherDates = widget.getShowOtherDates();
+
         boolean[] initSelections = {
                 MaterialCalendarView.showOtherMonths(showOtherDates),
                 MaterialCalendarView.showOutOfRange(showOtherDates),
                 MaterialCalendarView.showDecoratedDisabled(showOtherDates),
+                widget.allowClickDaysOutsideCurrentMonth()
         };
         new AlertDialog.Builder(this)
                 .setTitle("Show Other Dates")
                 .setMultiChoiceItems(items, initSelections, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        int showOtherDates = widget.getShowOtherDates();
-                        if (isChecked) {
-                            //Set flag
-                            showOtherDates |= itemValues[which];
-                        } else {
-                            //Unset flag
-                            showOtherDates &= ~itemValues[which];
+                        if (which < 3) {
+                            int showOtherDates = widget.getShowOtherDates();
+                            if (isChecked) {
+                                //Set flag
+                                showOtherDates |= itemValues[which];
+                            } else {
+                                //Unset flag
+                                showOtherDates &= ~itemValues[which];
+                            }
+                            widget.setShowOtherDates(showOtherDates);
+                        } else if (which == 3) {
+                            widget.setAllowClickDaysOutsideCurrentMonth(isChecked);
                         }
-                        widget.setShowOtherDates(showOtherDates);
                     }
                 })
                 .setPositiveButton(android.R.string.ok, null)
@@ -90,12 +102,22 @@ public class DynamicSettersActivity extends AppCompatActivity {
         widget.setShowOtherDates(checked ? MaterialCalendarView.SHOW_ALL : MaterialCalendarView.SHOW_NONE);
     }
 
-    @OnCheckedChanged(R.id.check_page_enabled) 
+    @OnCheckedChanged(R.id.check_page_enabled)
     void onPageEnabledChecked(boolean checked) {
         widget.setPagingEnabled(checked);
     }
 
-    @OnClick(R.id.button_min_date) 
+    @OnClick(R.id.button_previous)
+    void onPreviousClicked() {
+        widget.goToPrevious();
+    }
+
+    @OnClick(R.id.button_next)
+    void onNextClicked() {
+        widget.goToNext();
+    }
+
+    @OnClick(R.id.button_min_date)
     void onMinClicked() {
         showDatePickerDialog(this, widget.getMinimumDate(), new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -157,6 +179,37 @@ public class DynamicSettersActivity extends AppCompatActivity {
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         currentTileSize = view.getValue();
                         widget.setTileSizeDp(currentTileSize);
+                    }
+                })
+                .show();
+    }
+
+    @OnClick(R.id.button_set_width_height)
+    void onTileWidthHeightClicked() {
+        final LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+        final NumberPicker pickerWidth = new NumberPicker(this);
+        pickerWidth.setMinValue(24);
+        pickerWidth.setMaxValue(64);
+        pickerWidth.setWrapSelectorWheel(false);
+        pickerWidth.setValue(currentTileWidth);
+        final NumberPicker pickerHeight = new NumberPicker(this);
+        pickerHeight.setMinValue(24);
+        pickerHeight.setMaxValue(64);
+        pickerHeight.setWrapSelectorWheel(false);
+        pickerHeight.setValue(currentTileHeight);
+        layout.addView(pickerWidth);
+        layout.addView(pickerHeight);
+        new AlertDialog.Builder(this)
+                .setView(layout)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogInterface dialog, int which) {
+                        currentTileWidth = pickerWidth.getValue();
+                        currentTileHeight = pickerHeight.getValue();
+                        widget.setTileSize(-1);
+                        widget.setTileWidthDp(currentTileWidth);
+                        widget.setTileHeightDp(currentTileHeight);
                     }
                 })
                 .show();
