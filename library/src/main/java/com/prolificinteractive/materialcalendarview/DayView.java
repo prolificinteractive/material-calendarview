@@ -50,6 +50,7 @@ class DayView extends CheckedTextView {
     private boolean isDecoratedDisabled = false;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
+    private int distanceBetweenRows = 0;
 
     public DayView(Context context, CalendarDay day) {
         super(context);
@@ -65,6 +66,15 @@ class DayView extends CheckedTextView {
         }
 
         setDay(day);
+    }
+
+    /**
+     * Set the height between rows which have dates
+     * Used to extend customBackground
+     * @param gapHeight
+     */
+    public void setDistanceBetweenRows(int gapHeight) {
+        this.distanceBetweenRows = gapHeight;
     }
 
     public void setDay(CalendarDay date) {
@@ -169,7 +179,12 @@ class DayView extends CheckedTextView {
     protected void onDraw(@NonNull Canvas canvas) {
         if (customBackground != null) {
             canvas.getClipBounds(tempRect);
-            customBackground.setBounds(tempRect);
+            //Extends the custom background above and below the view to compensate for
+            //the distanceBetweenRows
+            customBackground.setBounds(
+                    tempRect.left, tempRect.top - (distanceBetweenRows / 2),
+                    tempRect.right, tempRect.bottom + (distanceBetweenRows / 2)
+            );
             customBackground.setState(getDrawableState());
             customBackground.draw(canvas);
         }

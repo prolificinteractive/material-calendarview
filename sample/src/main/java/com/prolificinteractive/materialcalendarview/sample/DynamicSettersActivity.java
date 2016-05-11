@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
+import android.widget.SeekBar;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -27,6 +28,9 @@ public class DynamicSettersActivity extends AppCompatActivity {
     @Bind(R.id.calendarView)
     MaterialCalendarView widget;
 
+    @Bind(R.id.seekBar)
+    SeekBar mSeekBar;
+
     private int currentTileSize;
 
     @Override
@@ -36,6 +40,21 @@ public class DynamicSettersActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         currentTileSize = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
+
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                widget.setDistanceBetweenRowsDP(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
     }
 
     @OnClick(R.id.button_other_dates)
