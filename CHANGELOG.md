@@ -8,8 +8,9 @@ Version 1.3.0 *(TBD)*
 * New: Set tile width/height separately rather than single tile size
 * New: Attributes: mcv_tileWidth, mcv_tileHeight, mcv_calendarMode
 * Change: `getTileSize` is deprecated, use `getTileWidth` and `getTileHeight`. `setTileSize` still works as a convenience method to set width and height at the same time.
-* Fix: Fix - issue with arrow not enabled when setting maxDate
+* Fix: Issue with arrow not enabled when setting maxDate
 * Fix: TalkBack content descriptions for pager view, forward/back arrows, and ability to set them manually
+* Fix: Crash while in Week mode when `CalendarPagerAdapter#getItemPosition` is called
 
 Version 1.2.1 *(2016-05-05)*
 ----------------------------
