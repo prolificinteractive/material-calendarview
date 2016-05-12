@@ -1458,12 +1458,16 @@ public class MaterialCalendarView extends ViewGroup {
         final int currentMonth = getCurrentDate().getMonth();
         final int selectedMonth = dayView.getDate().getMonth();
 
-        if (allowClickDaysOutsideCurrentMonth || currentMonth == selectedMonth) {
-            if (currentMonth > selectedMonth) {
-                goToPrevious();
-            } else if (currentMonth < selectedMonth) {
-                goToNext();
+        if (calendarMode == CalendarMode.MONTHS) {
+            if (allowClickDaysOutsideCurrentMonth || currentMonth == selectedMonth) {
+                if (currentMonth > selectedMonth) {
+                    goToPrevious();
+                } else if (currentMonth < selectedMonth) {
+                    goToNext();
+                }
+                onDateClicked(dayView.getDate(), !dayView.isChecked());
             }
+        } else {
             onDateClicked(dayView.getDate(), !dayView.isChecked());
         }
     }
