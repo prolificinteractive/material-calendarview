@@ -205,6 +205,7 @@ public class MaterialCalendarView extends ViewGroup {
     private OnDateSelectedListener listener;
     private OnMonthChangedListener monthListener;
 
+    CharSequence calendarContentDescription;
     private int accentColor = 0;
     private int arrowColor = Color.BLACK;
     private Drawable leftArrowMask;
@@ -234,8 +235,10 @@ public class MaterialCalendarView extends ViewGroup {
         }
 
         buttonPast = new DirectionButton(getContext());
+        buttonPast.setContentDescription(getContext().getString(R.string.previous));
         title = new TextView(getContext());
         buttonFuture = new DirectionButton(getContext());
+        buttonFuture.setContentDescription(getContext().getString(R.string.next));
         pager = new CalendarPager(getContext());
 
         title.setOnClickListener(onClickListener);
@@ -680,6 +683,44 @@ public class MaterialCalendarView extends ViewGroup {
         buttonPast.setColor(color);
         buttonFuture.setColor(color);
         invalidate();
+    }
+
+    /**
+     * Set content description for button past
+     *
+     * @param description String to use as content description
+     */
+    public void setContentDescriptionArrowPast(final CharSequence description) {
+        buttonPast.setContentDescription(description);
+    }
+
+    /**
+     * Set content description for button future
+     *
+     * @param description String to use as content description
+     */
+    public void setContentDescriptionArrowFuture(final CharSequence description) {
+        buttonFuture.setContentDescription(description);
+    }
+
+    /**
+     * Set content description for calendar
+     *
+     * @param description String to use as content description
+     */
+    public void setContentDescriptionCalendar(final CharSequence description) {
+        calendarContentDescription = description;
+    }
+
+    /**
+     * Get content description for calendar
+     *
+     * @return calendar's content description
+     */
+    public CharSequence getCalendarContentDescription() {
+        return calendarContentDescription != null
+                ? calendarContentDescription
+                : getContext().getString(R.string.calendar);
     }
 
     /**
@@ -1208,7 +1249,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Sets the first day of the week.
-     * <p/>
+     * <p>
      * Uses the java.util.Calendar day constants.
      *
      * @param day The first day of the week as a java.util.Calendar day constant.
@@ -1255,7 +1296,7 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * By default, the calendar will take up all the space needed to show any month (6 rows).
      * By enabling dynamic height, the view will change height dependant on the visible month.
-     * <p/>
+     * <p>
      * This means months that only need 5 or 4 rows to show the entire month will only take up
      * that many rows, and will grow and shrink as necessary.
      *
