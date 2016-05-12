@@ -14,7 +14,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
     @Override
     protected WeekView createView(int position) {
-        return new WeekView(mcv, getItem(position), getFirstDayOfWeek());
+        return new WeekView(mcv, getItem(position), mcv.getFirstDayOfWeek());
     }
 
     @Override
@@ -30,7 +30,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
     @Override
     protected DateRangeIndex createRangeIndex(CalendarDay min, CalendarDay max) {
-        return new Weekly(min, max, getFirstDayOfWeek());
+        return new Weekly(min, max, mcv.getFirstDayOfWeek());
     }
 
     public static class Weekly implements DateRangeIndex {
