@@ -346,7 +346,6 @@ public class MaterialCalendarView extends ViewGroup {
                     true
             ));
 
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -1097,7 +1096,7 @@ public class MaterialCalendarView extends ViewGroup {
         for (CalendarDay calendarDay : ss.selectedDates) {
             setDateSelected(calendarDay, true);
         }
-        firstDayOfWeek = ss.firstDayOfWeek;
+        setFirstDayOfWeek(ss.firstDayOfWeek);
         setTileWidth(ss.tileWidthPx);
         setTileHeight(ss.tileHeightPx);
         setTopbarVisible(ss.topbarVisible);
