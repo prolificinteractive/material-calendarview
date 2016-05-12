@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
@@ -35,7 +37,15 @@ public class CustomizeCodeActivity extends AppCompatActivity {
         widget.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
         widget.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
         widget.setTileSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics()));
-        widget.setFirstDayOfWeek(Calendar.THURSDAY);
+
+        CalendarDay today = CalendarDay.from(2016, 5, 2);
+        widget.setCurrentDate(today);
+        widget.setSelectedDate(today);
+
+        widget.setFirstDayOfWeek(Calendar.WEDNESDAY);
+        widget.setMinimumDate(CalendarDay.from(2016, 4, 3));
+        widget.setMaximumDate(CalendarDay.from(2016, 5, 12));
+        widget.setCalendarDisplayMode(CalendarMode.WEEKS);
     }
 
 }
