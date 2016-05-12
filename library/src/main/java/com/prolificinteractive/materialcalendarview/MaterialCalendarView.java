@@ -1216,6 +1216,9 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void setFirstDayOfWeek(int day) {
         firstDayOfWeek = day;
+        // TODO: 5/12/16 consider a less nuclear means of resetting the adapter when setting a new
+        // first day of week and how regular notifyDataSetChanged doesn't work (may require updating
+        // getItemPosition to flag current object and the ones to the left/right as changed)
         CalendarPagerAdapter<?> newAdapter;
         switch (calendarMode) {
             case MONTHS:
