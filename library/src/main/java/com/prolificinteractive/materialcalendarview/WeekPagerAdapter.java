@@ -69,7 +69,6 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
         private int weekNumberDifference(@NonNull CalendarDay min, @NonNull CalendarDay max) {
             long millisDiff = max.getDate().getTime() - min.getDate().getTime();
             long dayDiff = TimeUnit.DAYS.convert(millisDiff, TimeUnit.MILLISECONDS);
-            dayDiff += (Calendar.DAY_OF_WEEK_IN_MONTH - firstDayOfWeek) % 7;
             return (int) (dayDiff / DAYS_IN_WEEK);
         }
 
