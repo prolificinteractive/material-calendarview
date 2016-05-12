@@ -12,7 +12,6 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,7 +39,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private DayFormatter dayFormatter = DayFormatter.DEFAULT;
     private List<DayViewDecorator> decorators = new ArrayList<>();
     private List<DecoratorResult> decoratorResults = null;
-    private int firstDayOfTheWeek = Calendar.SUNDAY;
     private boolean selectionEnabled = true;
 
     CalendarPagerAdapter(MaterialCalendarView mcv) {
@@ -91,7 +89,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         newAdapter.minDate = minDate;
         newAdapter.maxDate = maxDate;
         newAdapter.selectedDates = selectedDates;
-        newAdapter.firstDayOfTheWeek = firstDayOfTheWeek;
         newAdapter.selectionEnabled = selectionEnabled;
         return newAdapter;
     }
@@ -162,13 +159,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         pagerView.setDayViewDecorators(decoratorResults);
 
         return pagerView;
-    }
-
-    public void setFirstDayOfWeek(int day) {
-        firstDayOfTheWeek = day;
-        for (V pagerView : currentViews) {
-            pagerView.setFirstDayOfWeek(firstDayOfTheWeek);
-        }
     }
 
     public void setSelectionEnabled(boolean enabled) {
@@ -326,9 +316,5 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
 
     protected int getWeekDayTextAppearance() {
         return weekDayTextAppearance == null ? 0 : weekDayTextAppearance;
-    }
-
-    public int getFirstDayOfWeek() {
-        return firstDayOfTheWeek;
     }
 }

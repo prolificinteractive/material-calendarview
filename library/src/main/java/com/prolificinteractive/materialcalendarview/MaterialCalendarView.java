@@ -214,6 +214,7 @@ public class MaterialCalendarView extends ViewGroup {
     @SelectionMode
     private int selectionMode = SELECTION_MODE_SINGLE;
     private boolean allowClickDaysOutsideCurrentMonth = true;
+    private int firstDayOfWeek;
 
     public MaterialCalendarView(Context context) {
         this(context, null);
@@ -260,6 +261,15 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_calendarMode,
                     0
             );
+            firstDayOfWeek = a.getInteger(
+                    R.styleable.MaterialCalendarView_mcv_firstDayOfWeek,
+                    -1
+            );
+
+            if (firstDayOfWeek < 0) {
+                //Allowing use of Calendar.getInstance() here as a performance optimization
+                firstDayOfWeek = Calendar.getInstance().getFirstDayOfWeek();
+            }
             setCalendarDisplayMode(CalendarMode.values()[calendarModeIndex]);
 
             final int tileSize = a.getDimensionPixelSize(R.styleable.MaterialCalendarView_mcv_tileSize, -1);
@@ -336,15 +346,7 @@ public class MaterialCalendarView extends ViewGroup {
                     true
             ));
 
-            int firstDayOfWeek = a.getInteger(
-                    R.styleable.MaterialCalendarView_mcv_firstDayOfWeek,
-                    -1
-            );
-            if (firstDayOfWeek < 0) {
-                //Allowing use of Calendar.getInstance() here as a performance optimization
-                firstDayOfWeek = Calendar.getInstance().getFirstDayOfWeek();
-            }
-            setFirstDayOfWeek(firstDayOfWeek);
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -1095,7 +1097,7 @@ public class MaterialCalendarView extends ViewGroup {
         for (CalendarDay calendarDay : ss.selectedDates) {
             setDateSelected(calendarDay, true);
         }
-        setFirstDayOfWeek(ss.firstDayOfWeek);
+        firstDayOfWeek = ss.firstDayOfWeek;
         setTileWidth(ss.tileWidthPx);
         setTileHeight(ss.tileHeightPx);
         setTopbarVisible(ss.topbarVisible);
@@ -1214,14 +1216,38 @@ public class MaterialCalendarView extends ViewGroup {
      * @see java.util.Calendar
      */
     public void setFirstDayOfWeek(int day) {
-        adapter.setFirstDayOfWeek(day);
+        firstDayOfWeek = day;
+        CalendarPagerAdapter<?> newAdapter;
+        switch (calendarMode) {
+            case MONTHS:
+                newAdapter = new MonthPagerAdapter(this);
+                break;
+            case WEEKS:
+                newAdapter = new WeekPagerAdapter(this);
+                break;
+            default:
+                throw new IllegalArgumentException("Provided display mode which is not yet implemented");
+        }
+        if (adapter == null) {
+            adapter = newAdapter;
+        } else {
+            adapter = adapter.migrateStateAndReturn(newAdapter);
+        }
+        pager.setAdapter(adapter);
+
+        setCurrentDate(
+                selectionMode == SELECTION_MODE_SINGLE && !adapter.getSelectedDates().isEmpty()
+                        ? adapter.getSelectedDates().get(0)
+                        : CalendarDay.today());
+        invalidateDecorators();
+        updateUi();
     }
 
     /**
      * @return The first day of the week as a {@linkplain Calendar} day constant.
      */
     public int getFirstDayOfWeek() {
-        return adapter.getFirstDayOfWeek();
+        return firstDayOfWeek;
     }
 
     /**

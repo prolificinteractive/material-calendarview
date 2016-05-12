@@ -14,7 +14,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
     @Override
     protected WeekView createView(int position) {
-        return new WeekView(mcv, getItem(position), getFirstDayOfWeek());
+        return new WeekView(mcv, getItem(position), mcv.getFirstDayOfWeek());
     }
 
     @Override
@@ -30,7 +30,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
     @Override
     protected DateRangeIndex createRangeIndex(CalendarDay min, CalendarDay max) {
-        return new Weekly(min, max, getFirstDayOfWeek());
+        return new Weekly(min, max, mcv.getFirstDayOfWeek());
     }
 
     public static class Weekly implements DateRangeIndex {
@@ -38,8 +38,10 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
         private static final int DAYS_IN_WEEK = 7;
         private final CalendarDay min;
         private final int count;
+        private int firstDayOfWeek;
 
         public Weekly(@NonNull CalendarDay min, @NonNull CalendarDay max, int firstDayOfWeek) {
+            this.firstDayOfWeek = firstDayOfWeek;
             this.min = getFirstDayOfWeek(min, firstDayOfWeek);
             this.count = weekNumberDifference(min, max);
         }
@@ -67,6 +69,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
         private int weekNumberDifference(@NonNull CalendarDay min, @NonNull CalendarDay max) {
             long millisDiff = max.getDate().getTime() - min.getDate().getTime();
             long dayDiff = TimeUnit.DAYS.convert(millisDiff, TimeUnit.MILLISECONDS);
+            dayDiff += (Calendar.DAY_OF_WEEK_IN_MONTH - firstDayOfWeek) % 7;
             return (int) (dayDiff / DAYS_IN_WEEK);
         }
 
