@@ -17,7 +17,7 @@ Usage
 
 Snapshot
 -----
-Latest snapshot build is available in Sonatype's Snapshot Repository:
+See the [CHANGELOG](https://github.com/prolificinteractive/material-calendarview/blob/future-1.x/CHANGELOG.md) for the upcoming release. Latest snapshot build is available in Sonatype's Snapshot Repository:
 
 
 ```groovy
