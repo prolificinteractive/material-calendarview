@@ -10,6 +10,7 @@ import java.util.Collection;
  * Display a week of {@linkplain DayView}s and
  * seven {@linkplain WeekDayView}s.
  */
+@Experimental
 @SuppressLint("ViewConstructor")
 public class WeekView extends CalendarPagerView {
 
