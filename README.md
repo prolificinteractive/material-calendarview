@@ -15,8 +15,21 @@ Usage
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateSelectedListener` or call `MaterialCalendarView.getSelectedDates()` when you need it.
 
-[Javadoc Available Here](http://prolificinteractive.github.io/material-calendarview/)
+Snapshot
+-----
+Latest snapshot build is available in Sonatype's Snapshot Repository:
 
+
+```groovy
+repositories {
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+dependencies {
+    compile 'com.prolificinteractive:material-calendarview:1.3.0-SNAPSHOT'
+}
+```
+
+[Javadoc Available Here](http://prolificinteractive.github.io/material-calendarview/)
 Example:
 
 ```xml
