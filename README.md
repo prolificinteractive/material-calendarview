@@ -29,6 +29,10 @@ Example:
     app:mcv_selectionColor="#00F"
     />
 ```
+#### @Experimental
+`CalendarMode.WEEK` and all week mode functionality is officially marked `@Experimental`. All APIs
+marked `@Experimental` are subject to change quickly and should not be used in production code. They
+are allowed for testing and feedback.
 
 Major Change in 1.2.0
 ---------------------

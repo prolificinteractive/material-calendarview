@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+@Experimental
 public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
     public WeekPagerAdapter(MaterialCalendarView mcv) {

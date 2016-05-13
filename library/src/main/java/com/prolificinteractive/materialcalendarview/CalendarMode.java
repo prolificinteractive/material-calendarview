@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
+@Experimental
 public enum CalendarMode {
 
     MONTHS(6),

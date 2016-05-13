@@ -13,6 +13,7 @@ import java.util.Calendar;
 /**
  * Display a day of the week
  */
+@Experimental
 @SuppressLint("ViewConstructor")
 class WeekDayView extends TextView {
 

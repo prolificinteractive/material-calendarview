@@ -476,6 +476,7 @@ public class MaterialCalendarView extends ViewGroup {
      *
      * @param mode - calendar mode
      */
+    @Experimental
     public void setCalendarDisplayMode(CalendarMode mode) {
         if (calendarMode != null && calendarMode.equals(mode)) {
             return;
@@ -1121,6 +1122,8 @@ public class MaterialCalendarView extends ViewGroup {
         ss.tileWidthPx = getTileWidth();
         ss.tileHeightPx = getTileHeight();
         ss.topbarVisible = getTopbarVisible();
+        ss.calendarMode = calendarMode;
+        ss.currentMonth = currentMonth;
         return ss;
     }
 
@@ -1144,6 +1147,8 @@ public class MaterialCalendarView extends ViewGroup {
         setTopbarVisible(ss.topbarVisible);
         setSelectionMode(ss.selectionMode);
         setDynamicHeightEnabled(ss.dynamicHeightEnabled);
+        setCalendarDisplayMode(ss.calendarMode);
+        setCurrentDate(ss.currentMonth);
     }
 
     @Override
@@ -1180,6 +1185,8 @@ public class MaterialCalendarView extends ViewGroup {
         boolean topbarVisible = true;
         int selectionMode = SELECTION_MODE_SINGLE;
         boolean dynamicHeightEnabled = false;
+        CalendarMode calendarMode = CalendarMode.MONTHS;
+        CalendarDay currentMonth = null;
 
         SavedState(Parcelable superState) {
             super(superState);
@@ -1202,6 +1209,8 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeInt(topbarVisible ? 1 : 0);
             out.writeInt(selectionMode);
             out.writeInt(dynamicHeightEnabled ? 1 : 0);
+            out.writeInt(calendarMode == CalendarMode.WEEKS ? 1 : 0);
+            out.writeParcelable(currentMonth, 0);
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR
@@ -1232,6 +1241,8 @@ public class MaterialCalendarView extends ViewGroup {
             topbarVisible = in.readInt() == 1;
             selectionMode = in.readInt();
             dynamicHeightEnabled = in.readInt() == 1;
+            calendarMode = in.readInt() == 1 ? CalendarMode.WEEKS : CalendarMode.MONTHS;
+            currentMonth = in.readParcelable(loader);
         }
     }
 
