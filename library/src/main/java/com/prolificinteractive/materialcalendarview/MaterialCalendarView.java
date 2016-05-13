@@ -1136,6 +1136,8 @@ public class MaterialCalendarView extends ViewGroup {
         setWeekDayTextAppearance(ss.weekDayTextAppearance);
         setShowOtherDates(ss.showOtherDates);
         setAllowClickDaysOutsideCurrentMonth(ss.allowClickDaysOutsideCurrentMonth);
+        minDate = ss.minDate;
+        maxDate = ss.maxDate;
         setRangeDates(ss.minDate, ss.maxDate);
         clearSelection();
         for (CalendarDay calendarDay : ss.selectedDates) {
