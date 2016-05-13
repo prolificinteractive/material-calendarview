@@ -37,14 +37,20 @@ public class SwappableBasicActivityDecorated extends AppCompatActivity implement
         widget.setOnDateChangedListener(this);
         widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
 
-        Calendar calendar = Calendar.getInstance();
-        widget.setSelectedDate(calendar.getTime());
 
-        calendar.set(calendar.get(Calendar.YEAR), Calendar.JANUARY, 1);
-        widget.setMinimumDate(calendar.getTime());
+        Calendar instance = Calendar.getInstance();
+        widget.setSelectedDate(instance.getTime());
 
-        calendar.set(calendar.get(Calendar.YEAR), Calendar.DECEMBER, 31);
-        widget.setMaximumDate(calendar.getTime());
+        Calendar instance1 = Calendar.getInstance();
+        instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
+
+        Calendar instance2 = Calendar.getInstance();
+        instance2.set(instance2.get(Calendar.YEAR), Calendar.DECEMBER, 31);
+
+        widget.state().edit()
+                .setMinimumDate(instance1.getTime())
+                .setMaximumDate(instance2.getTime())
+                .commit();
 
         widget.addDecorators(
                 new MySelectorDecorator(this),
@@ -62,11 +68,15 @@ public class SwappableBasicActivityDecorated extends AppCompatActivity implement
 
     @OnClick(R.id.button_weeks)
     public void onSetWeekMode() {
-        widget.setCalendarDisplayMode(CalendarMode.WEEKS);
+        widget.state().edit()
+                .setCalendarDisplayMode(CalendarMode.WEEKS)
+                .commit();
     }
 
     @OnClick(R.id.button_months)
     public void onSetMonthMode() {
-        widget.setCalendarDisplayMode(CalendarMode.MONTHS);
+        widget.state().edit()
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .commit();
     }
 }

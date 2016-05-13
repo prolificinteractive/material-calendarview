@@ -42,10 +42,13 @@ public class CustomizeCodeActivity extends AppCompatActivity {
         widget.setCurrentDate(today);
         widget.setSelectedDate(today);
 
-        widget.setFirstDayOfWeek(Calendar.WEDNESDAY);
-        widget.setMinimumDate(CalendarDay.from(2016, 4, 3));
-        widget.setMaximumDate(CalendarDay.from(2016, 5, 12));
-        widget.setCalendarDisplayMode(CalendarMode.WEEKS);
+        widget.state().edit()
+                .setFirstDayOfWeek(Calendar.WEDNESDAY)
+                .setMinimumDate(CalendarDay.from(2016, 4, 3))
+                .setMaximumDate(CalendarDay.from(2016, 5, 12))
+                .setCalendarDisplayMode(CalendarMode.WEEKS)
+                .commit();
+
     }
 
 }
