@@ -66,9 +66,6 @@ import java.util.List;
  */
 public class MaterialCalendarView extends ViewGroup {
 
-    static volatile State singleton = null;
-    private State state;
-
     /**
      * {@linkplain IntDef} annotation for selection mode.
      *
@@ -219,6 +216,8 @@ public class MaterialCalendarView extends ViewGroup {
     private int selectionMode = SELECTION_MODE_SINGLE;
     private boolean allowClickDaysOutsideCurrentMonth = true;
     private int firstDayOfWeek;
+
+    private State state;
 
     public MaterialCalendarView(Context context) {
         this(context, null);
