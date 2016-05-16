@@ -217,6 +217,8 @@ public class MaterialCalendarView extends ViewGroup {
     private boolean allowClickDaysOutsideCurrentMonth = true;
     private int firstDayOfWeek;
 
+    private State state;
+
     public MaterialCalendarView(Context context) {
         this(context, null);
     }
@@ -273,7 +275,11 @@ public class MaterialCalendarView extends ViewGroup {
                 //Allowing use of Calendar.getInstance() here as a performance optimization
                 firstDayOfWeek = Calendar.getInstance().getFirstDayOfWeek();
             }
-            setCalendarDisplayMode(CalendarMode.values()[calendarModeIndex]);
+
+            newState()
+                    .setFirstDayOfWeek(firstDayOfWeek)
+                    .setCalendarDisplayMode(CalendarMode.values()[calendarModeIndex])
+                    .commit();
 
             final int tileSize = a.getDimensionPixelSize(R.styleable.MaterialCalendarView_mcv_tileSize, -1);
             if (tileSize > 0) {
@@ -348,7 +354,6 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_allowClickDaysOutsideCurrentMonth,
                     true
             ));
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -467,50 +472,6 @@ public class MaterialCalendarView extends ViewGroup {
         if (canGoForward()) {
             pager.setCurrentItem(pager.getCurrentItem() + 1, true);
         }
-    }
-
-    /**
-     * Set calendar display mode. The default mode is Months.
-     * When switching between modes will select todays date, or the selected date,
-     * if selection mode is single.
-     *
-     * @param mode - calendar mode
-     */
-    @Experimental
-    public void setCalendarDisplayMode(CalendarMode mode) {
-        if (calendarMode != null && calendarMode.equals(mode)) {
-            return;
-        }
-
-        CalendarPagerAdapter<?> newAdapter;
-        switch (mode) {
-            case MONTHS:
-                newAdapter = new MonthPagerAdapter(this);
-                break;
-            case WEEKS:
-                newAdapter = new WeekPagerAdapter(this);
-                break;
-            default:
-                throw new IllegalArgumentException("Provided display mode which is not yet implemented");
-        }
-        if (adapter == null) {
-            adapter = newAdapter;
-        } else {
-            adapter = adapter.migrateStateAndReturn(newAdapter);
-        }
-        pager.setAdapter(adapter);
-        setRangeDates(minDate, maxDate);
-        calendarMode = mode;
-
-        // Reset height params after mode change
-        pager.setLayoutParams(new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
-
-        setCurrentDate(
-                selectionMode == SELECTION_MODE_SINGLE && !adapter.getSelectedDates().isEmpty()
-                        ? adapter.getSelectedDates().get(0)
-                        : CalendarDay.today());
-        invalidateDecorators();
-        updateUi();
     }
 
     /**
@@ -908,54 +869,10 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * @param calendar set the minimum selectable date, null for no minimum
-     */
-    public void setMinimumDate(@Nullable Calendar calendar) {
-        setMinimumDate(CalendarDay.from(calendar));
-    }
-
-    /**
-     * @param date set the minimum selectable date, null for no minimum
-     */
-    public void setMinimumDate(@Nullable Date date) {
-        setMinimumDate(CalendarDay.from(date));
-    }
-
-    /**
-     * @param calendar set the minimum selectable date, null for no minimum
-     */
-    public void setMinimumDate(@Nullable CalendarDay calendar) {
-        minDate = calendar;
-        setRangeDates(minDate, maxDate);
-    }
-
-    /**
      * @return the maximum selectable date for the calendar, if any
      */
     public CalendarDay getMaximumDate() {
         return maxDate;
-    }
-
-    /**
-     * @param calendar set the maximum selectable date, null for no maximum
-     */
-    public void setMaximumDate(@Nullable Calendar calendar) {
-        setMaximumDate(CalendarDay.from(calendar));
-    }
-
-    /**
-     * @param date set the maximum selectable date, null for no maximum
-     */
-    public void setMaximumDate(@Nullable Date date) {
-        setMaximumDate(CalendarDay.from(date));
-    }
-
-    /**
-     * @param calendar set the maximum selectable date, null for no maximum
-     */
-    public void setMaximumDate(@Nullable CalendarDay calendar) {
-        maxDate = calendar;
-        setRangeDates(minDate, maxDate);
     }
 
     /**
@@ -1131,25 +1048,27 @@ public class MaterialCalendarView extends ViewGroup {
     protected void onRestoreInstanceState(Parcelable state) {
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
+        newState()
+                .setFirstDayOfWeek(ss.firstDayOfWeek)
+                .setCalendarDisplayMode(ss.calendarMode)
+                .setMinimumDate(ss.minDate)
+                .setMaximumDate(ss.maxDate)
+                .commit();
+
         setSelectionColor(ss.color);
         setDateTextAppearance(ss.dateTextAppearance);
         setWeekDayTextAppearance(ss.weekDayTextAppearance);
         setShowOtherDates(ss.showOtherDates);
         setAllowClickDaysOutsideCurrentMonth(ss.allowClickDaysOutsideCurrentMonth);
-        minDate = ss.minDate;
-        maxDate = ss.maxDate;
-        setRangeDates(ss.minDate, ss.maxDate);
         clearSelection();
         for (CalendarDay calendarDay : ss.selectedDates) {
             setDateSelected(calendarDay, true);
         }
-        setFirstDayOfWeek(ss.firstDayOfWeek);
         setTileWidth(ss.tileWidthPx);
         setTileHeight(ss.tileHeightPx);
         setTopbarVisible(ss.topbarVisible);
         setSelectionMode(ss.selectionMode);
         setDynamicHeightEnabled(ss.dynamicHeightEnabled);
-        setCalendarDisplayMode(ss.calendarMode);
         setCurrentDate(ss.currentMonth);
     }
 
@@ -1259,46 +1178,6 @@ public class MaterialCalendarView extends ViewGroup {
         TypedValue outValue = new TypedValue();
         context.getTheme().resolveAttribute(colorAttr, outValue, true);
         return outValue.data;
-    }
-
-    /**
-     * Sets the first day of the week.
-     * <p/>
-     * Uses the java.util.Calendar day constants.
-     *
-     * @param day The first day of the week as a java.util.Calendar day constant.
-     * @see java.util.Calendar
-     */
-    public void setFirstDayOfWeek(int day) {
-        firstDayOfWeek = day;
-        // TODO: 5/12/16 consider a less nuclear means of resetting the adapter when setting a new
-        // first day of week and how regular notifyDataSetChanged doesn't work (may require updating
-        // getItemPosition to flag current object and the ones to the left/right as changed)
-        CalendarPagerAdapter<?> newAdapter;
-        switch (calendarMode) {
-            case MONTHS:
-                newAdapter = new MonthPagerAdapter(this);
-                break;
-            case WEEKS:
-                newAdapter = new WeekPagerAdapter(this);
-                break;
-            default:
-                throw new IllegalArgumentException("Provided display mode which is not yet implemented");
-        }
-        if (adapter == null) {
-            adapter = newAdapter;
-        } else {
-            adapter = adapter.migrateStateAndReturn(newAdapter);
-        }
-        pager.setAdapter(adapter);
-        setRangeDates(minDate, maxDate);
-
-        setCurrentDate(
-                selectionMode == SELECTION_MODE_SINGLE && !adapter.getSelectedDates().isEmpty()
-                        ? adapter.getSelectedDates().get(0)
-                        : CalendarDay.today());
-        invalidateDecorators();
-        updateUi();
     }
 
     /**
@@ -1770,5 +1649,175 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public boolean isPagingEnabled() {
         return pager.isPagingEnabled();
+    }
+
+    /**
+     * Preserve the current parameters of the Material Calendar View.
+     */
+    public State state() {
+        return state;
+    }
+
+    /**
+     * Initialize the parameters from scratch.
+     */
+    public StateBuilder newState() {
+        return new StateBuilder();
+    }
+
+    public class State {
+        public final CalendarMode calendarMode;
+        public final int firstDayOfWeek;
+        public final CalendarDay minDate;
+        public final CalendarDay maxDate;
+
+        public State(StateBuilder builder) {
+            calendarMode = builder.calendarMode;
+            firstDayOfWeek = builder.firstDayOfWeek;
+            minDate = builder.minDate;
+            maxDate = builder.maxDate;
+        }
+
+        /**
+         * Modify parameters from current state.
+         */
+        public StateBuilder edit() {
+            return new StateBuilder(this);
+        }
+
+    }
+
+    public class StateBuilder {
+        private CalendarMode calendarMode = CalendarMode.MONTHS;
+        private int firstDayOfWeek = Calendar.getInstance().getFirstDayOfWeek();
+        public CalendarDay minDate = null;
+        public CalendarDay maxDate = null;
+
+        public StateBuilder() {
+        }
+
+        private StateBuilder(final State state) {
+            calendarMode = state.calendarMode;
+            firstDayOfWeek = state.firstDayOfWeek;
+            minDate = state.minDate;
+            maxDate = state.maxDate;
+        }
+
+        /**
+         * Sets the first day of the week.
+         * <p/>
+         * Uses the java.util.Calendar day constants.
+         *
+         * @param day The first day of the week as a java.util.Calendar day constant.
+         * @see java.util.Calendar
+         */
+        public StateBuilder setFirstDayOfWeek(int day) {
+            this.firstDayOfWeek = day;
+            return this;
+        }
+
+        /**
+         * Set calendar display mode. The default mode is Months.
+         * When switching between modes will select todays date, or the selected date,
+         * if selection mode is single.
+         *
+         * @param mode - calendar mode
+         */
+        public StateBuilder setCalendarDisplayMode(CalendarMode mode) {
+            this.calendarMode = mode;
+            return this;
+        }
+
+
+        /**
+         * @param calendar set the minimum selectable date, null for no minimum
+         */
+        public StateBuilder setMinimumDate(@Nullable Calendar calendar) {
+            setMinimumDate(CalendarDay.from(calendar));
+            return this;
+        }
+
+        /**
+         * @param date set the minimum selectable date, null for no minimum
+         */
+        public StateBuilder setMinimumDate(@Nullable Date date) {
+            setMinimumDate(CalendarDay.from(date));
+            return this;
+        }
+
+        /**
+         * @param calendar set the minimum selectable date, null for no minimum
+         */
+        public StateBuilder setMinimumDate(@Nullable CalendarDay calendar) {
+            minDate = calendar;
+            return this;
+        }
+
+        /**
+         * @param calendar set the maximum selectable date, null for no maximum
+         */
+        public StateBuilder setMaximumDate(@Nullable Calendar calendar) {
+            setMaximumDate(CalendarDay.from(calendar));
+            return this;
+        }
+
+        /**
+         * @param date set the maximum selectable date, null for no maximum
+         */
+        public StateBuilder setMaximumDate(@Nullable Date date) {
+            setMaximumDate(CalendarDay.from(date));
+            return this;
+        }
+
+        /**
+         * @param calendar set the maximum selectable date, null for no maximum
+         */
+        public StateBuilder setMaximumDate(@Nullable CalendarDay calendar) {
+            maxDate = calendar;
+            return this;
+        }
+
+        public void commit() {
+            MaterialCalendarView.this.commit(new State(this));
+        }
+    }
+
+    private void commit(State state) {
+        this.state = state;
+        // Save states parameters
+        calendarMode = state.calendarMode;
+        firstDayOfWeek = state.firstDayOfWeek;
+        minDate = state.minDate;
+        maxDate = state.maxDate;
+
+        // Recreate adapter
+        final CalendarPagerAdapter<?> newAdapter;
+        switch (calendarMode) {
+            case MONTHS:
+                newAdapter = new MonthPagerAdapter(this);
+                break;
+            case WEEKS:
+                newAdapter = new WeekPagerAdapter(this);
+                break;
+            default:
+                throw new IllegalArgumentException("Provided display mode which is not yet implemented");
+        }
+        if (adapter == null) {
+            adapter = newAdapter;
+        } else {
+            adapter = adapter.migrateStateAndReturn(newAdapter);
+        }
+        pager.setAdapter(adapter);
+        setRangeDates(minDate, maxDate);
+
+        // Reset height params after mode change
+        pager.setLayoutParams(new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
+
+        setCurrentDate(
+                selectionMode == SELECTION_MODE_SINGLE && !adapter.getSelectedDates().isEmpty()
+                        ? adapter.getSelectedDates().get(0)
+                        : CalendarDay.today());
+        invalidateDecorators();
+        updateUi();
     }
 }
