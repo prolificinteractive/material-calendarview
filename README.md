@@ -11,25 +11,13 @@ and feel, rather than 100% parity with the platform's implementation.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:1.2.1'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:1.3.0'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateSelectedListener` or call `MaterialCalendarView.getSelectedDates()` when you need it.
 
-Snapshot
------
-See the [CHANGELOG](https://github.com/prolificinteractive/material-calendarview/blob/future-1.x/CHANGELOG.md) for the upcoming release. Latest snapshot build is available in Sonatype's Snapshot Repository:
-
-
-```groovy
-repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-}
-dependencies {
-    compile 'com.prolificinteractive:material-calendarview:1.3.0-SNAPSHOT'
-}
-```
 
 [Javadoc Available Here](http://prolificinteractive.github.io/material-calendarview/)
+
 Example:
 
 ```xml
@@ -46,6 +34,16 @@ Example:
 `CalendarMode.WEEK` and all week mode functionality is officially marked `@Experimental`. All APIs
 marked `@Experimental` are subject to change quickly and should not be used in production code. They
 are allowed for testing and feedback.
+
+Major Change in 1.3.0
+---------------------
+* Breaking change: `getTileSize` is deprecated. Use `getTileWidth` or `getTileHeight`.
+* Added `goToNext` and `goToPrevious` API to programmatically trigger paging
+* Allow users to click on dates outside of current month with `setAllowClickDaysOutsideCurrentMonth`
+* Set tile width/height separately rather than single tile size with `setTileWidth` and `setTileHeight`
+* Attributes: mcv_tileWidth, mcv_tileHeight, mcv_calendarMode
+
+See other changes in the [CHANGELOG](/CHANGELOG.md).
 
 Major Change in 1.2.0
 ---------------------

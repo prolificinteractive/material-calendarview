@@ -1,6 +1,6 @@
 Change Log
 ==========
-Version 1.3.0 *(TBD)*
+Version 1.3.0 *(2016-05-16)*
 ----------------------------
 
 * New: MCV `goToNext` and `goToPrevious` API to programmatically trigger paging
@@ -14,6 +14,7 @@ Version 1.3.0 *(TBD)*
 * Fix: TalkBack content descriptions for pager view, forward/back arrows, and ability to set them manually
 * Fix: Crash while in Week mode when `CalendarPagerAdapter#getItemPosition` is called
 * Fix: Calendar Mode is retained on restore instance state
+* Fix: Min/Max date range is retained on restore instance state
 * Issue: Week mode - Restore instance state shows the previous week of the one that was saved
 * Issue: Week mode - Some combinations of first day of week, min/max date can cause the last week not to be pagable
 
