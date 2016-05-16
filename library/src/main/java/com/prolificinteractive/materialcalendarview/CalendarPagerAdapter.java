@@ -42,6 +42,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private List<DecoratorResult> decoratorResults = null;
     private int firstDayOfTheWeek = Calendar.SUNDAY;
     private boolean selectionEnabled = true;
+    private int distanceBetweenRows;
 
     CalendarPagerAdapter(MaterialCalendarView mcv) {
         this.mcv = mcv;
@@ -155,6 +156,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         pagerView.setMinimumDate(minDate);
         pagerView.setMaximumDate(maxDate);
         pagerView.setSelectedDates(selectedDates);
+        pagerView.setDistanceBetweenRows(distanceBetweenRows);
 
         container.addView(pagerView);
         currentViews.add(pagerView);
@@ -229,6 +231,13 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         this.dayFormatter = formatter;
         for (V pagerView : currentViews) {
             pagerView.setDayFormatter(formatter);
+        }
+    }
+
+    public void setDistanceBetweenRows(int distanceBetweenRows) {
+        this.distanceBetweenRows = distanceBetweenRows;
+        for (V pagerView : currentViews) {
+            pagerView.setDistanceBetweenRows(distanceBetweenRows);
         }
     }
 

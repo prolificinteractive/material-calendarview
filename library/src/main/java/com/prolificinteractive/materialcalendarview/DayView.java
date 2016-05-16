@@ -24,6 +24,7 @@ import android.widget.CheckedTextView;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
+import com.prolificinteractive.materialcalendarview.spans.UniqueSpan;
 
 import java.util.List;
 
@@ -50,6 +51,7 @@ class DayView extends CheckedTextView {
     private boolean isDecoratedDisabled = false;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
+    private int distanceBetweenRows = 0;
 
     public DayView(Context context, CalendarDay day) {
         super(context);
@@ -65,6 +67,15 @@ class DayView extends CheckedTextView {
         }
 
         setDay(day);
+    }
+
+    /**
+     * Set the height between rows which have dates
+     * Used to extend customBackground
+     * @param distanceBetweenRows
+     */
+    public void setDistanceBetweenRows(int distanceBetweenRows) {
+        this.distanceBetweenRows = distanceBetweenRows;
     }
 
     public void setDay(CalendarDay date) {
@@ -169,7 +180,12 @@ class DayView extends CheckedTextView {
     protected void onDraw(@NonNull Canvas canvas) {
         if (customBackground != null) {
             canvas.getClipBounds(tempRect);
-            customBackground.setBounds(tempRect);
+            //Extends the custom background above and below the view to compensate for
+            //the distanceBetweenRows
+            customBackground.setBounds(
+                    tempRect.left, tempRect.top - (distanceBetweenRows / 2),
+                    tempRect.right, tempRect.bottom + (distanceBetweenRows / 2)
+            );
             customBackground.setState(getDrawableState());
             customBackground.draw(canvas);
         }
@@ -233,7 +249,11 @@ class DayView extends CheckedTextView {
             String label = getLabel();
             SpannableString formattedLabel = new SpannableString(getLabel());
             for (DayViewFacade.Span span : spans) {
-                formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                if (span.span instanceof UniqueSpan) {
+                    UniqueSpan uSpan = new UniqueSpan((UniqueSpan) span.span);
+                    formattedLabel.setSpan(uSpan, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } else
+                    formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             setText(formattedLabel);
         }

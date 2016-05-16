@@ -3,7 +3,7 @@ package com.prolificinteractive.materialcalendarview;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,42 +12,15 @@ import java.util.List;
  */
 public class DayViewFacade {
 
+    private final LinkedList<Span> spans = new LinkedList<>();
     private boolean isDecorated;
-
     private Drawable backgroundDrawable = null;
     private Drawable selectionDrawable = null;
-    private final LinkedList<Span> spans = new LinkedList<>();
     private boolean daysDisabled = false;
+    private int customAmount;
 
     DayViewFacade() {
         isDecorated = false;
-    }
-
-    /**
-     * Set a drawable to draw behind everything else
-     *
-     * @param drawable Drawable to draw behind everything
-     */
-    public void setBackgroundDrawable(@NonNull Drawable drawable) {
-        if (drawable == null) {
-            throw new IllegalArgumentException("Cannot be null");
-        }
-        this.backgroundDrawable = drawable;
-        isDecorated = true;
-    }
-
-    /**
-     * Set a custom selection drawable
-     * TODO: define states that can/should be used in StateListDrawables
-     *
-     * @param drawable the drawable for selection
-     */
-    public void setSelectionDrawable(@NonNull Drawable drawable) {
-        if (drawable == null) {
-            throw new IllegalArgumentException("Cannot be null");
-        }
-        selectionDrawable = drawable;
-        isDecorated = true;
     }
 
     /**
@@ -60,6 +33,17 @@ public class DayViewFacade {
             this.spans.add(new Span(span));
             isDecorated = true;
         }
+    }
+
+    public void addUniqueSpan(@NonNull Object uniqueSpan) {
+        if (spans != null) {
+            this.spans.add(new UniqueSpan(uniqueSpan));
+            isDecorated = true;
+        }
+    }
+
+    public void setCustomAmount(int customAmount) {
+        this.customAmount = customAmount;
     }
 
     /**
@@ -107,12 +91,40 @@ public class DayViewFacade {
         return selectionDrawable;
     }
 
+    /**
+     * Set a custom selection drawable
+     * TODO: define states that can/should be used in StateListDrawables
+     *
+     * @param drawable the drawable for selection
+     */
+    public void setSelectionDrawable(@NonNull Drawable drawable) {
+        if (drawable == null) {
+            throw new IllegalArgumentException("Cannot be null");
+        }
+        selectionDrawable = drawable;
+        isDecorated = true;
+    }
+
     Drawable getBackgroundDrawable() {
         return backgroundDrawable;
     }
 
+    /**
+     * Set a drawable to draw behind everything else
+     *
+     * @param drawable Drawable to draw behind everything
+     */
+    public void setBackgroundDrawable(@NonNull Drawable drawable) {
+        if (drawable == null) {
+            throw new IllegalArgumentException("Cannot be null");
+        }
+        this.backgroundDrawable = drawable;
+        isDecorated = true;
+    }
+
     List<Span> getSpans() {
-        return Collections.unmodifiableList(spans);
+//        return Collections.unmodifiableList(spans);
+        return new ArrayList<>(spans);
     }
 
     /**
@@ -126,10 +138,27 @@ public class DayViewFacade {
 
     static class Span {
 
-        final Object span;
+        Object span;
 
         public Span(Object span) {
             this.span = span;
+        }
+    }
+
+    static class UniqueSpan extends Span {
+
+        private String uniqueLabel;
+
+        public UniqueSpan(Object span) {
+            super(span);
+        }
+
+        public String getUniqueLabel() {
+            return uniqueLabel;
+        }
+
+        public void setUniqueLabel(String uniqueLabel) {
+            this.uniqueLabel = uniqueLabel;
         }
     }
 }

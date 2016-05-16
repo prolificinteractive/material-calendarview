@@ -10,6 +10,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
+import com.prolificinteractive.materialcalendarview.spans.UniqueSpan;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,6 +28,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     private static final Calendar tempWorkingCalendar = CalendarUtils.getInstance();
     private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
     private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
+    private final Collection<DayView> dayViews = new ArrayList<>();
     @ShowOtherDates
     protected int showOtherDates = SHOW_DEFAULTS;
     private MaterialCalendarView mcv;
@@ -34,8 +36,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private int firstDayOfWeek;
-
-    private final Collection<DayView> dayViews = new ArrayList<>();
+    private int distanceBetweenRows;
 
     public CalendarPagerView(@NonNull MaterialCalendarView view,
                              CalendarDay firstViewDay,
@@ -64,6 +65,8 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     protected void addDayView(Collection<DayView> dayViews, Calendar calendar) {
         CalendarDay day = CalendarDay.from(calendar);
         DayView dayView = new DayView(getContext(), day);
+        dayView.setDistanceBetweenRows(distanceBetweenRows == 0 ?
+                mcv.getDistanceBetweenRows() : distanceBetweenRows);
         dayView.setOnClickListener(this);
         dayViews.add(dayView);
         addView(dayView, new LayoutParams());
@@ -182,6 +185,10 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         postInvalidate();
     }
 
+    public void setDistanceBetweenRows(int distanceBetweenRows) {
+        this.distanceBetweenRows = distanceBetweenRows;
+    }
+
     protected void updateUi() {
         for (DayView dayView : dayViews) {
             CalendarDay day = dayView.getDate();
@@ -198,9 +205,27 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
             for (DecoratorResult result : decoratorResults) {
                 if (result.decorator.shouldDecorate(dayView.getDate())) {
                     result.result.applyTo(facadeAccumulator);
+                    if (result.decorator instanceof UniqueDecorator)
+                        handleUniqueDecorator(dayView.getDate(), result, facadeAccumulator);
                 }
             }
             dayView.applyFacade(facadeAccumulator);
+        }
+    }
+
+    private void handleUniqueDecorator(CalendarDay date, DecoratorResult result, DayViewFacade facadeAccumulator) {
+        UniqueDecorator mUniqueDecorator = (UniqueDecorator) result.decorator;
+        String uniqueString = mUniqueDecorator.getUniqueString(date);
+
+        List<DayViewFacade.Span> spans = facadeAccumulator.getSpans();
+
+        if (spans != null && spans.size() > 0) {
+            for (int i = 0; i < spans.size(); i++) {
+                if (spans.get(i).span instanceof UniqueSpan) {
+                    ((UniqueSpan) spans.get(i).span).setUniqueString(uniqueString);
+                    break;
+                }
+            }
         }
     }
 
@@ -268,12 +293,20 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
      */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+
+        //distanceBetweenRows is not set when initially laying out so we get it directly from mcv
+        // (which could be 0 too)
+        if (distanceBetweenRows == 0)
+            distanceBetweenRows = mcv.getDistanceBetweenRows();
+
         final int count = getChildCount();
 
         final int parentLeft = 0;
 
         int childTop = 0;
         int childLeft = parentLeft;
+
+        boolean weekRow = mcv.getTopbarVisible();
 
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
@@ -289,6 +322,9 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
             if (i % DEFAULT_DAYS_IN_WEEK == (DEFAULT_DAYS_IN_WEEK - 1)) {
                 childLeft = parentLeft;
                 childTop += height;
+                //Offsetting each row by supplied distanceBetweenRows
+                if (!weekRow) childTop += distanceBetweenRows;
+                weekRow = false;
             }
 
         }

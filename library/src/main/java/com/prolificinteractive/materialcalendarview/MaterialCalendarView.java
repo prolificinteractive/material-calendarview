@@ -166,6 +166,8 @@ public class MaterialCalendarView extends ViewGroup {
      */
     private boolean mDynamicHeightEnabled;
 
+    private int distanceBetweenRows = 0;
+
     private final ArrayList<DayViewDecorator> dayViewDecorators = new ArrayList<>();
 
     private final OnClickListener onClickListener = new OnClickListener() {
@@ -376,6 +378,32 @@ public class MaterialCalendarView extends ViewGroup {
         titleChanger.change(currentMonth);
         buttonPast.setEnabled(canGoBack());
         buttonFuture.setEnabled(canGoForward());
+    }
+
+    /**
+     * Set the height between rows which have dates
+     * @param distance
+     */
+    public void setDistanceBetweenRows(int distance){
+        this.distanceBetweenRows = distance;
+        adapter.setDistanceBetweenRows(distance);
+        requestLayout();
+    }
+
+    /**
+     * Set the height between rows in DP which have dates
+     * @param distance
+     */
+    public void setDistanceBetweenRowsDP(int distance){
+        setDistanceBetweenRows(dpToPx(distance));
+    }
+
+    /**
+     * Returns distance/height between rows
+     * @return distanceBetweenRows
+     */
+    public int getDistanceBetweenRows(){
+        return this.distanceBetweenRows;
     }
 
     /**
@@ -1344,6 +1372,12 @@ public class MaterialCalendarView extends ViewGroup {
         measuredWidth += getPaddingLeft() + getPaddingRight();
         measuredHeight += getPaddingTop() + getPaddingBottom();
 
+        //Adding gaps only after each "date" row and not the top bar or the "week" row
+        int cumulativeGapHeight = distanceBetweenRows *
+                (getTopbarVisible() ? viewTileHeight - 2 : viewTileHeight - 1);
+
+        measuredHeight += cumulativeGapHeight;
+
         //Contract fulfilled, setting out measurements
         setMeasuredDimension(
                 //We clamp inline because we want to use un-clamped versions on the children
@@ -1363,8 +1397,13 @@ public class MaterialCalendarView extends ViewGroup {
                     MeasureSpec.EXACTLY
             );
 
-            int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    p.height * measureTileSize,
+            int height = p.height * measureTileSize;
+            if (getTopbarVisible() && i > 0)
+                height += cumulativeGapHeight;
+            else if (!getTopbarVisible() && i == 0)
+                height += cumulativeGapHeight;
+
+            int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(height,
                     MeasureSpec.EXACTLY
             );
 
