@@ -10,6 +10,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
+import com.prolificinteractive.materialcalendarview.spans.UniqueSpan;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -204,9 +205,27 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
             for (DecoratorResult result : decoratorResults) {
                 if (result.decorator.shouldDecorate(dayView.getDate())) {
                     result.result.applyTo(facadeAccumulator);
+                    if (result.decorator instanceof UniqueDecorator)
+                        handleUniqueDecorator(dayView.getDate(), result, facadeAccumulator);
                 }
             }
             dayView.applyFacade(facadeAccumulator);
+        }
+    }
+
+    private void handleUniqueDecorator(CalendarDay date, DecoratorResult result, DayViewFacade facadeAccumulator) {
+        UniqueDecorator mUniqueDecorator = (UniqueDecorator) result.decorator;
+        String uniqueString = mUniqueDecorator.getUniqueString(date);
+
+        List<DayViewFacade.Span> spans = facadeAccumulator.getSpans();
+
+        if (spans != null && spans.size() > 0) {
+            for (int i = 0; i < spans.size(); i++) {
+                if (spans.get(i).span instanceof UniqueSpan) {
+                    ((UniqueSpan) spans.get(i).span).setUniqueString(uniqueString);
+                    break;
+                }
+            }
         }
     }
 
