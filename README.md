@@ -42,6 +42,7 @@ Major Change in 1.3.0
 * Allow users to click on dates outside of current month with `setAllowClickDaysOutsideCurrentMonth`
 * Set tile width/height separately rather than single tile size with `setTileWidth` and `setTileHeight`
 * Attributes: mcv_tileWidth, mcv_tileHeight, mcv_calendarMode
+* TalkBack APIs: `setContentDescriptionArrowPast`, `ArrowFuture`, `Calendar`
 
 See other changes in the [CHANGELOG](/CHANGELOG.md).
 
