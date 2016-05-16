@@ -10,10 +10,9 @@ import java.util.Collection;
  * Display a week of {@linkplain DayView}s and
  * seven {@linkplain WeekDayView}s.
  */
+@Experimental
 @SuppressLint("ViewConstructor")
 public class WeekView extends CalendarPagerView {
-
-    private static final int DEFAULT_DAYS_IN_WEEK = 7;
 
     public WeekView(@NonNull MaterialCalendarView view,
                     CalendarDay firstViewDay,
@@ -31,5 +30,10 @@ public class WeekView extends CalendarPagerView {
     @Override
     protected boolean isDayEnabled(CalendarDay day) {
         return true;
+    }
+
+    @Override
+    protected int getRows() {
+        return DAY_NAMES_ROW + 1;
     }
 }

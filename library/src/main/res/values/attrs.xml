@@ -3,14 +3,14 @@
 
     <declare-styleable name="MaterialCalendarView">
 
-        <attr name="mcv_dateTextAppearance" format="reference"/>
-        <attr name="mcv_weekDayTextAppearance" format="reference"/>
-        <attr name="mcv_headerTextAppearance" format="reference"/>
+        <attr name="mcv_dateTextAppearance" format="reference" />
+        <attr name="mcv_weekDayTextAppearance" format="reference" />
+        <attr name="mcv_headerTextAppearance" format="reference" />
 
-        <attr name="mcv_arrowColor" format="color"/>
-        <attr name="mcv_leftArrowMask" format="reference"/>
-        <attr name="mcv_rightArrowMask" format="reference"/>
-        <attr name="mcv_selectionColor" format="color"/>
+        <attr name="mcv_arrowColor" format="color" />
+        <attr name="mcv_leftArrowMask" format="reference" />
+        <attr name="mcv_rightArrowMask" format="reference" />
+        <attr name="mcv_selectionColor" format="color" />
 
         <attr name="mcv_showOtherDates" format="integer">
             <flag name="none" value="0" />
@@ -21,10 +21,14 @@
             <flag name="all" value="7" />
         </attr>
 
+        <attr name="mcv_allowClickDaysOutsideCurrentMonth" format="boolean" />
+
         <attr name="mcv_weekDayLabels" format="reference" />
         <attr name="mcv_monthLabels" format="reference" />
 
-        <attr name="mcv_tileSize" format="dimension"/>
+        <attr name="mcv_tileSize" format="dimension" />
+        <attr name="mcv_tileHeight" format="dimension" />
+        <attr name="mcv_tileWidth" format="dimension" />
 
         <attr name="mcv_firstDayOfWeek" format="enum">
             <enum name="sunday" value="1" />
@@ -36,6 +40,10 @@
             <enum name="saturday" value="7" />
         </attr>
 
+        <attr name="mcv_calendarMode" format="enum">
+            <enum name="month" value="0" />
+            <enum name="week" value="1" />
+        </attr>
     </declare-styleable>
 
 </resources>

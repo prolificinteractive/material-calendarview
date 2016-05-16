@@ -51,6 +51,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+            <Button
+                android:id="@+id/button_months"
+                android:text="Month Mode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+            <Button
+                android:id="@+id/button_weeks"
+                android:text="Week mode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
 
             <Button
                 android:id="@+id/button_selection_mode"
@@ -71,7 +92,30 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
+            >
+
+            <Button
+                android:id="@+id/button_previous"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Previous"
+                />
+
+            <Button
+                android:id="@+id/button_next"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Next"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
@@ -141,6 +185,13 @@
                 />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/button_set_width_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Width and Height"
+            />
 
         <LinearLayout
             android:orientation="horizontal"

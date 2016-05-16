@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+@Experimental
 public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
     public WeekPagerAdapter(MaterialCalendarView mcv) {
@@ -14,7 +15,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
     @Override
     protected WeekView createView(int position) {
-        return new WeekView(mcv, getItem(position), getFirstDayOfWeek());
+        return new WeekView(mcv, getItem(position), mcv.getFirstDayOfWeek());
     }
 
     @Override
@@ -30,7 +31,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
     @Override
     protected DateRangeIndex createRangeIndex(CalendarDay min, CalendarDay max) {
-        return new Weekly(min, max, getFirstDayOfWeek());
+        return new Weekly(min, max, mcv.getFirstDayOfWeek());
     }
 
     public static class Weekly implements DateRangeIndex {
@@ -41,7 +42,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
         public Weekly(@NonNull CalendarDay min, @NonNull CalendarDay max, int firstDayOfWeek) {
             this.min = getFirstDayOfWeek(min, firstDayOfWeek);
-            this.count = weekNumberDifference(min, max);
+            this.count = weekNumberDifference(min, max) + 1;
         }
 
         @Override

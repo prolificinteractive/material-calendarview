@@ -1,4 +1,4 @@
-<img src="/images/ic_launcher-web.png" width="300px" />
+<img src="/images/hero.png"/>
 
 Material Calendar View [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Material%20Calendar%20View-blue.svg?style=flat)](https://android-arsenal.com/details/1/1531)
 ======================
@@ -11,9 +11,10 @@ and feel, rather than 100% parity with the platform's implementation.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:1.2.1'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:1.3.0'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateSelectedListener` or call `MaterialCalendarView.getSelectedDates()` when you need it.
+
 
 [Javadoc Available Here](http://prolificinteractive.github.io/material-calendarview/)
 
@@ -29,6 +30,20 @@ Example:
     app:mcv_selectionColor="#00F"
     />
 ```
+#### @Experimental
+`CalendarMode.WEEK` and all week mode functionality is officially marked `@Experimental`. All APIs
+marked `@Experimental` are subject to change quickly and should not be used in production code. They
+are allowed for testing and feedback.
+
+Major Change in 1.3.0
+---------------------
+* Breaking change: `getTileSize` is deprecated. Use `getTileWidth` or `getTileHeight`.
+* Added `goToNext` and `goToPrevious` API to programmatically trigger paging
+* Allow users to click on dates outside of current month with `setAllowClickDaysOutsideCurrentMonth`
+* Set tile width/height separately rather than single tile size with `setTileWidth` and `setTileHeight`
+* Attributes: mcv_tileWidth, mcv_tileHeight, mcv_calendarMode
+
+See other changes in the [CHANGELOG](/CHANGELOG.md).
 
 Major Change in 1.2.0
 ---------------------
@@ -82,19 +97,14 @@ Contributing
 
 Would you like to contribute? Fork us and send a pull request! Be sure to checkout our issues first.
 
-License
-=======
+## License
 
->Copyright 2016 Prolific Interactive
->
->Licensed under the Apache License, Version 2.0 (the "License");
->you may not use this file except in compliance with the License.
->You may obtain a copy of the License at
->
->   http://www.apache.org/licenses/LICENSE-2.0
->
->Unless required by applicable law or agreed to in writing, software
->distributed under the License is distributed on an "AS IS" BASIS,
->WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
->See the License for the specific language governing permissions and
->limitations under the License.
+Material Calendar View is Copyright (c) 2016 Prolific Interactive. It may be redistributed under the terms specified in the [LICENSE] file.
+
+[LICENSE]: /LICENSE
+
+## Maintainers
+
+![prolific](https://s3.amazonaws.com/prolificsitestaging/logos/Prolific_Logo_Full_Color.png)
+
+Material Calendar View is maintained and funded by Prolific Interactive. The names and logos are trademarks of Prolific Interactive.
