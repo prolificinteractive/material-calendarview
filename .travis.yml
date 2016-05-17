@@ -1,7 +1,6 @@
 language: android
 
 jdk:
- - oraclejdk7
  - oraclejdk8
 
 android:
@@ -14,7 +13,7 @@ android:
     - extra-google-m2repository
 
 script:
-  - ./gradlew clean check -Dpre-dex=false
+  - ./gradlew clean check assemble -Dpre-dex=false
 
 notifications:
   email: false
