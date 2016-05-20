@@ -230,7 +230,8 @@ public class DynamicSettersActivity extends AppCompatActivity {
         CharSequence[] items = {
                 "No Selection",
                 "Single Date",
-                "Multiple Dates"
+                "Multiple Dates",
+                "Range selection"
         };
         new AlertDialog.Builder(this)
                 .setTitle("Selection Mode")

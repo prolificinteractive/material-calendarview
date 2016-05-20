@@ -51,6 +51,13 @@ public class CalendarUtils {
         calendar.set(year, month, 1);
     }
 
+    public static CalendarDay nextDay(final CalendarDay date) {
+        final Calendar c = Calendar.getInstance();
+        c.setTime(date.getDate());
+        c.add(Calendar.DATE, 1);
+        return CalendarDay.from(c.getTime());
+    }
+
     /**
      * Copy <i>only</i> date information to a new calendar.
      *

@@ -73,7 +73,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #getSelectionMode()
      */
     @Retention(RetentionPolicy.RUNTIME)
-    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE})
+    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE, SELECTION_MODE_RANGE})
     public @interface SelectionMode {
     }
 
@@ -94,6 +94,11 @@ public class MaterialCalendarView extends ViewGroup {
      * Selection mode which allows more than one selected date at one time.
      */
     public static final int SELECTION_MODE_MULTIPLE = 2;
+
+    /**
+     * Selection mode which allows the selection of a period of days.
+     */
+    public static final int SELECTION_MODE_RANGE = 3;
 
     /**
      * {@linkplain IntDef} annotation for showOtherDates.
@@ -419,20 +424,24 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #SELECTION_MODE_NONE
      * @see #SELECTION_MODE_SINGLE
      * @see #SELECTION_MODE_MULTIPLE
+     * @see #SELECTION_MODE_RANGE
      */
     public void setSelectionMode(final @SelectionMode int mode) {
         final @SelectionMode int oldMode = this.selectionMode;
+        this.selectionMode = mode;
         switch (mode) {
-            case SELECTION_MODE_MULTIPLE: {
-                this.selectionMode = SELECTION_MODE_MULTIPLE;
-            }
-            break;
+            case SELECTION_MODE_RANGE:
+                //You want to start fresh do to range selection
+                clearSelection();
+                break;
+            case SELECTION_MODE_MULTIPLE:
+                break;
             default:
             case SELECTION_MODE_SINGLE: {
                 this.selectionMode = SELECTION_MODE_SINGLE;
-                if (oldMode == SELECTION_MODE_MULTIPLE) {
+                if (oldMode == SELECTION_MODE_MULTIPLE || oldMode == SELECTION_MODE_RANGE) {
                     //We should only have one selection now, so we should pick one
-                    List<CalendarDay> dates = getSelectedDates();
+                    final List<CalendarDay> dates = getSelectedDates();
                     if (!dates.isEmpty()) {
                         setSelectedDate(getSelectedDate());
                     }
@@ -482,6 +491,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #SELECTION_MODE_NONE
      * @see #SELECTION_MODE_SINGLE
      * @see #SELECTION_MODE_MULTIPLE
+     * @see #SELECTION_MODE_RANGE
      */
     @SelectionMode
     public int getSelectionMode() {
@@ -1326,6 +1336,11 @@ public class MaterialCalendarView extends ViewGroup {
      */
     protected void onDateClicked(@NonNull CalendarDay date, boolean nowSelected) {
         switch (selectionMode) {
+            case SELECTION_MODE_RANGE: {
+                selectRange(date, nowSelected);
+                dispatchOnDateSelected(date, nowSelected);
+            }
+            break;
             case SELECTION_MODE_MULTIPLE: {
                 adapter.setDateSelected(date, nowSelected);
                 dispatchOnDateSelected(date, nowSelected);
@@ -1819,5 +1834,88 @@ public class MaterialCalendarView extends ViewGroup {
                         : CalendarDay.today());
         invalidateDecorators();
         updateUi();
+    }
+
+    /**
+     * Logic for selecting the date range using {@link MaterialCalendarView#SELECTION_MODE_RANGE}.
+     * Select the date if it's the first to be selected or if a previous range is already selected.
+     * Select a range if there is already one date selected.
+     *
+     * @param date     the clicked date
+     * @param selected is the date selected or unselected
+     */
+    private void selectRange(final CalendarDay date, final boolean selected) {
+        final List<CalendarDay> selectedDates = getSelectedDates();
+
+        if (selectedDates.isEmpty() || selectedDates.size() > 1) {
+            // No days are selected or range already selected, select first day
+            setSelectedDate(date);
+        } else {
+            // First day already selected
+            if (!selected) {
+                // Date clicked already selected -> deselect
+                adapter.setDateSelected(date, false);
+            } else {
+                // Range completed -> select days in range
+                final CalendarDay firstDay = selectedDates.get(0);
+                if (firstDay != null) {
+                    selectDaysInRange(firstDay, date);
+                }
+            }
+        }
+    }
+
+    /**
+     * Select a range of days to be selected using {@link Calendar}.
+     * Both first and last day are included in the selection. If first day and last day are equals,
+     * the day is selected.
+     *
+     * @param firstDayCalendar First day of range of days that needs to be selected
+     * @param lastDayCalendar  Last day of range of days that needs to be selected
+     */
+    public void selectDaysInRange(final Calendar firstDayCalendar, final Calendar lastDayCalendar) {
+        clearSelection();
+        final CalendarDay firstDay = CalendarDay.from(firstDayCalendar);
+        final CalendarDay lastDay = CalendarDay.from(lastDayCalendar);
+
+        if (firstDay.equals(lastDay)) {
+            adapter.setDateSelected(firstDay, true);
+        } else if (firstDay.isBefore(lastDay)) {
+            for (CalendarDay day = firstDay; day.isInRange(firstDay, lastDay);
+                 day = CalendarUtils.nextDay(day)) {
+                adapter.setDateSelected(day, true);
+            }
+        } else {
+            for (CalendarDay day = lastDay; day.isInRange(lastDay, firstDay);
+                 day = CalendarUtils.nextDay(day)) {
+                adapter.setDateSelected(day, true);
+            }
+        }
+    }
+
+    /**
+     * Select a range of days to be selected using {@link CalendarDay}.
+     * Both first and last day are included in the selection. If first day and last day are equals,
+     * the day is selected.
+     *
+     * @param firstDay First day of range of days that needs to be selected
+     * @param lastDay  Last day of range of days that needs to be selected
+     */
+    public void selectDaysInRange(final CalendarDay firstDay, final CalendarDay lastDay) {
+        clearSelection();
+
+        if (firstDay.equals(lastDay)) {
+            adapter.setDateSelected(firstDay, true);
+        } else if (firstDay.isBefore(lastDay)) {
+            for (CalendarDay day = firstDay; day.isInRange(firstDay, lastDay);
+                 day = CalendarUtils.nextDay(day)) {
+                adapter.setDateSelected(day, true);
+            }
+        } else {
+            for (CalendarDay day = lastDay; day.isInRange(lastDay, firstDay);
+                 day = CalendarUtils.nextDay(day)) {
+                adapter.setDateSelected(day, true);
+            }
+        }
     }
 }
