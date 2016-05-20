@@ -12,6 +12,7 @@ import android.support.annotation.ArrayRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -41,6 +42,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * <p>
@@ -73,7 +76,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #getSelectionMode()
      */
     @Retention(RetentionPolicy.RUNTIME)
-    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE})
+    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE, SELECTION_MODE_RANGE})
     public @interface SelectionMode {
     }
 
@@ -94,6 +97,11 @@ public class MaterialCalendarView extends ViewGroup {
      * Selection mode which allows more than one selected date at one time.
      */
     public static final int SELECTION_MODE_MULTIPLE = 2;
+
+    /**
+     * Selection mode which allows selection of a range between two dates
+     */
+    public static final int SELECTION_MODE_RANGE = 3;
 
     /**
      * {@linkplain IntDef} annotation for showOtherDates.
@@ -204,6 +212,8 @@ public class MaterialCalendarView extends ViewGroup {
 
     private OnDateSelectedListener listener;
     private OnMonthChangedListener monthListener;
+    private OnRangeSelectedListener rangeListener;
+
 
     CharSequence calendarContentDescription;
     private int accentColor = 0;
@@ -414,6 +424,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #SELECTION_MODE_NONE
      * @see #SELECTION_MODE_SINGLE
      * @see #SELECTION_MODE_MULTIPLE
+     * @see #SELECTION_MODE_RANGE
      */
     public void setSelectionMode(final @SelectionMode int mode) {
         final @SelectionMode int oldMode = this.selectionMode;
@@ -440,6 +451,10 @@ public class MaterialCalendarView extends ViewGroup {
                     //No selection! Clear out!
                     clearSelection();
                 }
+            }
+            break;
+            case SELECTION_MODE_RANGE: {
+                this.selectionMode = SELECTION_MODE_RANGE;
             }
             break;
         }
@@ -1415,6 +1430,15 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * Sets the listener to be notified upon a range has been selected.
+     *
+     * @param listener thing to be notified
+     */
+    public void setOnRangeSelectedListener(OnRangeSelectedListener listener) {
+        this.rangeListener = listener;
+    }
+
+    /**
      * Dispatch date change events to a listener, if set
      *
      * @param day      the day that was selected
@@ -1424,6 +1448,38 @@ public class MaterialCalendarView extends ViewGroup {
         OnDateSelectedListener l = listener;
         if (l != null) {
             l.onDateSelected(MaterialCalendarView.this, day, selected);
+        }
+    }
+
+    /**
+     * Dispatch a range of days to a listener, if set
+     *
+     * @param pair      the pair of days enclosing a range
+     */
+    protected void dispatchOnRangeSelected(Pair<CalendarDay, CalendarDay> pair) {
+        OnRangeSelectedListener listener = rangeListener;
+        List<CalendarDay> days = new ArrayList<>();
+
+        SortedSet<Date> sortedDays = new TreeSet<>();
+        sortedDays.add(pair.first.getDate());
+        sortedDays.add(pair.second.getDate());
+
+        Date first = sortedDays.first();  //  min date
+        Date last = sortedDays.last();  //  max date
+
+        Calendar counter = Calendar.getInstance();
+        counter.setTime(first);  //  start from the first day and increment
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(last);  //  for comparison
+
+        while (counter.before(end) || counter.equals(end)) {
+            days.add(CalendarDay.from(counter));
+            counter.add(Calendar.DATE, 1);
+        }
+
+        if (listener != null) {
+            listener.onRangeSelected(MaterialCalendarView.this, days);
         }
     }
 
@@ -1451,6 +1507,22 @@ public class MaterialCalendarView extends ViewGroup {
             case SELECTION_MODE_MULTIPLE: {
                 adapter.setDateSelected(date, nowSelected);
                 dispatchOnDateSelected(date, nowSelected);
+            }
+            break;
+            case SELECTION_MODE_RANGE: {
+                adapter.setDateSelected(date, nowSelected);
+                if (adapter.getSelectedDates().size() > 2) {
+                    adapter.clearSelections();
+                    adapter.setDateSelected(date, nowSelected);  //  re-set because adapter has been cleared
+                    dispatchOnDateSelected(date, nowSelected);
+                } else if (adapter.getSelectedDates().size() == 2) {
+                    List<CalendarDay> dates = adapter.getSelectedDates();
+                    Pair<CalendarDay, CalendarDay> dayPair = new Pair<>(dates.get(0), dates.get(1));
+                    dispatchOnRangeSelected(dayPair);
+                } else {
+                    adapter.setDateSelected(date, nowSelected);
+                    dispatchOnDateSelected(date, nowSelected);
+                }
             }
             break;
             default:
