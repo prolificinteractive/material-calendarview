@@ -73,7 +73,8 @@ Here's an example for a dark theme and a dark selector:
 <style name="CustomTextAppearance" parent="TextAppearance.MaterialCalendarWidget.Date">
     <item name="android:textColor">@color/my_date_text_color</item>
 </style>
-
+```
+```xml
 <!-- In res/color/my_date_text_color.xml -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 

@@ -22,10 +22,10 @@ Example:
 
 ```xml
 <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/calendarView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     app:mcv_showOtherDates="all"
     app:mcv_selectionColor="#00F"
     />
