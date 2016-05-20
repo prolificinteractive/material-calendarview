@@ -71,6 +71,11 @@ but we base it on tile size instead of an aspect ratio.
 The exception being that if a `tileSize` is set,
 that will override everything and set the view to that size.
 
+Documentation
+-------------
+
+Make sure to check all the documentation available [here](docs/README.md).
+
 Customization
 -------------
 
@@ -79,10 +84,11 @@ One of the aims of this library is to be customizable. The many options include:
 * [Define the view's width and height in terms of tile size](docs/CUSTOMIZATION.md#tile-size)
 * [Single or Multiple date selection, or disabling selection entirely](docs/CUSTOMIZATION.md#date-selection)
 * [Showing dates from other months or those out of range](docs/CUSTOMIZATION.md#showing-other-dates)
-* [Setting the first day of the week](docs/CUSTOMIZATION.md#first-day-of-the-week)
-* [Show only a range of dates](docs/CUSTOMIZATION.md#date-ranges)
+* [Setting the first day of the week](docs/CUSTOMIZATION_BUILDER.md#first-day-of-the-week)
+* [Show only a range of dates](docs/CUSTOMIZATION_BUILDER.md#date-ranges)
 * [Customize the top bar](docs/CUSTOMIZATION.md#topbar-options)
 * [Custom labels for the header, weekdays, or individual days](docs/CUSTOMIZATION.md#custom-labels)
+
 
 ### Events, Highlighting, Custom Selectors, and More!
 
