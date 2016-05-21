@@ -147,7 +147,7 @@ public class DynamicSettersActivity extends AppCompatActivity {
         showDatePickerDialog(this, widget.getSelectedDate(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                widget.selectRange(CalendarDay.from(2016, 4, 26), CalendarDay.from(2016, 5, 10));
+                widget.setSelectedDate(CalendarDay.from(year, monthOfYear, dayOfMonth));
             }
         });
     }

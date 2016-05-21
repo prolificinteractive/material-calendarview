@@ -423,7 +423,8 @@ public class MaterialCalendarView extends ViewGroup {
      * Change the selection mode of the calendar. The default mode is {@linkplain #SELECTION_MODE_SINGLE}
      *
      * @param mode the selection mode to change to. This must be one of
-     *             {@linkplain #SELECTION_MODE_NONE}, {@linkplain #SELECTION_MODE_SINGLE}, or {@linkplain #SELECTION_MODE_MULTIPLE}.
+     *             {@linkplain #SELECTION_MODE_NONE}, {@linkplain #SELECTION_MODE_SINGLE},
+     *             {@linkplain #SELECTION_MODE_RANGE} or {@linkplain #SELECTION_MODE_MULTIPLE}.
      *             Unknown values will act as {@linkplain #SELECTION_MODE_SINGLE}
      * @see #getSelectionMode()
      * @see #SELECTION_MODE_NONE
@@ -439,7 +440,6 @@ public class MaterialCalendarView extends ViewGroup {
                 clearSelection();
                 break;
             case SELECTION_MODE_SINGLE:
-                this.selectionMode = SELECTION_MODE_SINGLE;
                 if (oldMode == SELECTION_MODE_MULTIPLE || oldMode == SELECTION_MODE_RANGE) {
                     //We should only have one selection now, so we should pick one
                     List<CalendarDay> dates = getSelectedDates();
@@ -448,6 +448,7 @@ public class MaterialCalendarView extends ViewGroup {
                     }
                 }
                 break;
+            default:
             case SELECTION_MODE_NONE:
                 this.selectionMode = SELECTION_MODE_NONE;
                 if (oldMode != SELECTION_MODE_NONE) {
@@ -455,7 +456,6 @@ public class MaterialCalendarView extends ViewGroup {
                     clearSelection();
                 }
                 break;
-            default:
         }
 
         adapter.setSelectionEnabled(selectionMode != SELECTION_MODE_NONE);
@@ -491,6 +491,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #SELECTION_MODE_NONE
      * @see #SELECTION_MODE_SINGLE
      * @see #SELECTION_MODE_MULTIPLE
+     * @see #SELECTION_MODE_RANGE
      */
     @SelectionMode
     public int getSelectionMode() {
@@ -1414,7 +1415,7 @@ public class MaterialCalendarView extends ViewGroup {
      * Select a fresh range of date including first day and last day.
      *
      * @param firstDay first day of the range to select
-     * @param lastDay last day of the range to select
+     * @param lastDay  last day of the range to select
      */
     public void selectRange(final CalendarDay firstDay, final CalendarDay lastDay) {
         clearSelection();
