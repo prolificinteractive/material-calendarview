@@ -433,35 +433,29 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void setSelectionMode(final @SelectionMode int mode) {
         final @SelectionMode int oldMode = this.selectionMode;
+        this.selectionMode = mode;
         switch (mode) {
-            case SELECTION_MODE_MULTIPLE: {
-                this.selectionMode = SELECTION_MODE_MULTIPLE;
-            }
-            break;
-            default:
-            case SELECTION_MODE_SINGLE: {
+            case SELECTION_MODE_RANGE:
+                clearSelection();
+                break;
+            case SELECTION_MODE_SINGLE:
                 this.selectionMode = SELECTION_MODE_SINGLE;
-                if (oldMode == SELECTION_MODE_MULTIPLE) {
+                if (oldMode == SELECTION_MODE_MULTIPLE || oldMode == SELECTION_MODE_RANGE) {
                     //We should only have one selection now, so we should pick one
                     List<CalendarDay> dates = getSelectedDates();
                     if (!dates.isEmpty()) {
                         setSelectedDate(getSelectedDate());
                     }
                 }
-            }
-            break;
-            case SELECTION_MODE_NONE: {
+                break;
+            case SELECTION_MODE_NONE:
                 this.selectionMode = SELECTION_MODE_NONE;
                 if (oldMode != SELECTION_MODE_NONE) {
                     //No selection! Clear out!
                     clearSelection();
                 }
-            }
-            break;
-            case SELECTION_MODE_RANGE: {
-                this.selectionMode = SELECTION_MODE_RANGE;
-            }
-            break;
+                break;
+            default:
         }
 
         adapter.setSelectionEnabled(selectionMode != SELECTION_MODE_NONE);
@@ -1333,27 +1327,30 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * Dispatch a range of days to a listener, if set
      *
-     * @param pair      the pair of days enclosing a range
+     * @param firstDay first day enclosing a range
+     * @param lastDay  last day enclosing a range
      */
-    protected void dispatchOnRangeSelected(Pair<CalendarDay, CalendarDay> pair) {
-        OnRangeSelectedListener listener = rangeListener;
-        List<CalendarDay> days = new ArrayList<>();
+    protected void dispatchOnRangeSelected(final CalendarDay firstDay, final CalendarDay lastDay) {
+        final OnRangeSelectedListener listener = rangeListener;
+        final List<CalendarDay> days = new ArrayList<>();
 
-        SortedSet<Date> sortedDays = new TreeSet<>();
-        sortedDays.add(pair.first.getDate());
-        sortedDays.add(pair.second.getDate());
+        final SortedSet<Date> sortedDays = new TreeSet<>();
+        sortedDays.add(firstDay.getDate());
+        sortedDays.add(lastDay.getDate());
 
-        Date first = sortedDays.first();  //  min date
-        Date last = sortedDays.last();  //  max date
+        final Date first = sortedDays.first();  //  min date
+        final Date last = sortedDays.last();  //  max date
 
-        Calendar counter = Calendar.getInstance();
+        final Calendar counter = Calendar.getInstance();
         counter.setTime(first);  //  start from the first day and increment
 
-        Calendar end = Calendar.getInstance();
+        final Calendar end = Calendar.getInstance();
         end.setTime(last);  //  for comparison
 
         while (counter.before(end) || counter.equals(end)) {
-            days.add(CalendarDay.from(counter));
+            final CalendarDay current = CalendarDay.from(counter);
+            adapter.setDateSelected(current, true);
+            days.add(current);
             counter.add(Calendar.DATE, 1);
         }
 
@@ -1395,9 +1392,8 @@ public class MaterialCalendarView extends ViewGroup {
                     adapter.setDateSelected(date, nowSelected);  //  re-set because adapter has been cleared
                     dispatchOnDateSelected(date, nowSelected);
                 } else if (adapter.getSelectedDates().size() == 2) {
-                    List<CalendarDay> dates = adapter.getSelectedDates();
-                    Pair<CalendarDay, CalendarDay> dayPair = new Pair<>(dates.get(0), dates.get(1));
-                    dispatchOnRangeSelected(dayPair);
+                    final List<CalendarDay> dates = adapter.getSelectedDates();
+                    dispatchOnRangeSelected(dates.get(0), dates.get(1));
                 } else {
                     adapter.setDateSelected(date, nowSelected);
                     dispatchOnDateSelected(date, nowSelected);
@@ -1412,6 +1408,17 @@ public class MaterialCalendarView extends ViewGroup {
             }
             break;
         }
+    }
+
+    /**
+     * Select a fresh range of date including first day and last day.
+     *
+     * @param firstDay first day of the range to select
+     * @param lastDay last day of the range to select
+     */
+    public void selectRange(final CalendarDay firstDay, final CalendarDay lastDay) {
+        clearSelection();
+        dispatchOnRangeSelected(firstDay, lastDay);
     }
 
     /**
