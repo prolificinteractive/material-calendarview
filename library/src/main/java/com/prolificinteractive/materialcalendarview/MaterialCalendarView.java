@@ -73,7 +73,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #getSelectionMode()
      */
     @Retention(RetentionPolicy.RUNTIME)
-    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE})
+    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE, SELECTION_MODE_RANGE})
     public @interface SelectionMode {
     }
 
@@ -94,6 +94,11 @@ public class MaterialCalendarView extends ViewGroup {
      * Selection mode which allows more than one selected date at one time.
      */
     public static final int SELECTION_MODE_MULTIPLE = 2;
+
+    /**
+     * Selection mode which allows selection of a range between two dates
+     */
+    public static final int SELECTION_MODE_RANGE = 3;
 
     /**
      * {@linkplain IntDef} annotation for showOtherDates.
@@ -204,6 +209,8 @@ public class MaterialCalendarView extends ViewGroup {
 
     private OnDateSelectedListener listener;
     private OnMonthChangedListener monthListener;
+    private OnRangeSelectedListener rangeListener;
+
 
     CharSequence calendarContentDescription;
     private int accentColor = 0;
@@ -413,40 +420,41 @@ public class MaterialCalendarView extends ViewGroup {
      * Change the selection mode of the calendar. The default mode is {@linkplain #SELECTION_MODE_SINGLE}
      *
      * @param mode the selection mode to change to. This must be one of
-     *             {@linkplain #SELECTION_MODE_NONE}, {@linkplain #SELECTION_MODE_SINGLE}, or {@linkplain #SELECTION_MODE_MULTIPLE}.
+     *             {@linkplain #SELECTION_MODE_NONE}, {@linkplain #SELECTION_MODE_SINGLE},
+     *             {@linkplain #SELECTION_MODE_RANGE} or {@linkplain #SELECTION_MODE_MULTIPLE}.
      *             Unknown values will act as {@linkplain #SELECTION_MODE_SINGLE}
      * @see #getSelectionMode()
      * @see #SELECTION_MODE_NONE
      * @see #SELECTION_MODE_SINGLE
      * @see #SELECTION_MODE_MULTIPLE
+     * @see #SELECTION_MODE_RANGE
      */
     public void setSelectionMode(final @SelectionMode int mode) {
         final @SelectionMode int oldMode = this.selectionMode;
+        this.selectionMode = mode;
         switch (mode) {
-            case SELECTION_MODE_MULTIPLE: {
-                this.selectionMode = SELECTION_MODE_MULTIPLE;
-            }
-            break;
-            default:
-            case SELECTION_MODE_SINGLE: {
-                this.selectionMode = SELECTION_MODE_SINGLE;
-                if (oldMode == SELECTION_MODE_MULTIPLE) {
+            case SELECTION_MODE_RANGE:
+                clearSelection();
+                break;
+            case SELECTION_MODE_MULTIPLE:
+                break;
+            case SELECTION_MODE_SINGLE:
+                if (oldMode == SELECTION_MODE_MULTIPLE || oldMode == SELECTION_MODE_RANGE) {
                     //We should only have one selection now, so we should pick one
                     List<CalendarDay> dates = getSelectedDates();
                     if (!dates.isEmpty()) {
                         setSelectedDate(getSelectedDate());
                     }
                 }
-            }
-            break;
-            case SELECTION_MODE_NONE: {
+                break;
+            default:
+            case SELECTION_MODE_NONE:
                 this.selectionMode = SELECTION_MODE_NONE;
                 if (oldMode != SELECTION_MODE_NONE) {
                     //No selection! Clear out!
                     clearSelection();
                 }
-            }
-            break;
+                break;
         }
 
         adapter.setSelectionEnabled(selectionMode != SELECTION_MODE_NONE);
@@ -482,6 +490,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #SELECTION_MODE_NONE
      * @see #SELECTION_MODE_SINGLE
      * @see #SELECTION_MODE_MULTIPLE
+     * @see #SELECTION_MODE_RANGE
      */
     @SelectionMode
     public int getSelectionMode() {
@@ -1088,6 +1097,7 @@ public class MaterialCalendarView extends ViewGroup {
         currentMonth = c;
         int position = adapter.getIndexForDay(c);
         pager.setCurrentItem(position, false);
+        updateUi();
     }
 
     public static class SavedState extends BaseSavedState {
@@ -1190,7 +1200,7 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * By default, the calendar will take up all the space needed to show any month (6 rows).
      * By enabling dynamic height, the view will change height dependant on the visible month.
-     * <p/>
+     * <p>
      * This means months that only need 5 or 4 rows to show the entire month will only take up
      * that many rows, and will grow and shrink as necessary.
      *
@@ -1293,6 +1303,15 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * Sets the listener to be notified upon a range has been selected.
+     *
+     * @param listener thing to be notified
+     */
+    public void setOnRangeSelectedListener(OnRangeSelectedListener listener) {
+        this.rangeListener = listener;
+    }
+
+    /**
      * Dispatch date change events to a listener, if set
      *
      * @param day      the day that was selected
@@ -1302,6 +1321,34 @@ public class MaterialCalendarView extends ViewGroup {
         OnDateSelectedListener l = listener;
         if (l != null) {
             l.onDateSelected(MaterialCalendarView.this, day, selected);
+        }
+    }
+
+    /**
+     * Dispatch a range of days to a listener, if set. First day must be before last Day.
+     *
+     * @param firstDay first day enclosing a range
+     * @param lastDay  last day enclosing a range
+     */
+    protected void dispatchOnRangeSelected(final CalendarDay firstDay, final CalendarDay lastDay) {
+        final OnRangeSelectedListener listener = rangeListener;
+        final List<CalendarDay> days = new ArrayList<>();
+
+        final Calendar counter = Calendar.getInstance();
+        counter.setTime(firstDay.getDate());  //  start from the first day and increment
+
+        final Calendar end = Calendar.getInstance();
+        end.setTime(lastDay.getDate());  //  for comparison
+
+        while (counter.before(end) || counter.equals(end)) {
+            final CalendarDay current = CalendarDay.from(counter);
+            adapter.setDateSelected(current, true);
+            days.add(current);
+            counter.add(Calendar.DATE, 1);
+        }
+
+        if (listener != null) {
+            listener.onRangeSelected(MaterialCalendarView.this, days);
         }
     }
 
@@ -1331,6 +1378,25 @@ public class MaterialCalendarView extends ViewGroup {
                 dispatchOnDateSelected(date, nowSelected);
             }
             break;
+            case SELECTION_MODE_RANGE: {
+                adapter.setDateSelected(date, nowSelected);
+                if (adapter.getSelectedDates().size() > 2) {
+                    adapter.clearSelections();
+                    adapter.setDateSelected(date, nowSelected);  //  re-set because adapter has been cleared
+                    dispatchOnDateSelected(date, nowSelected);
+                } else if (adapter.getSelectedDates().size() == 2) {
+                    final List<CalendarDay> dates = adapter.getSelectedDates();
+                    if (dates.get(0).isAfter(dates.get(1))) {
+                        dispatchOnRangeSelected(dates.get(1), dates.get(0));
+                    } else {
+                        dispatchOnRangeSelected(dates.get(0), dates.get(1));
+                    }
+                } else {
+                    adapter.setDateSelected(date, nowSelected);
+                    dispatchOnDateSelected(date, nowSelected);
+                }
+            }
+            break;
             default:
             case SELECTION_MODE_SINGLE: {
                 adapter.clearSelections();
@@ -1338,6 +1404,21 @@ public class MaterialCalendarView extends ViewGroup {
                 dispatchOnDateSelected(date, true);
             }
             break;
+        }
+    }
+
+    /**
+     * Select a fresh range of date including first day and last day.
+     *
+     * @param firstDay first day of the range to select
+     * @param lastDay  last day of the range to select
+     */
+    public void selectRange(final CalendarDay firstDay, final CalendarDay lastDay) {
+        clearSelection();
+        if (firstDay.isAfter(lastDay)) {
+            dispatchOnRangeSelected(lastDay, firstDay);
+        } else {
+            dispatchOnRangeSelected(firstDay, lastDay);
         }
     }
 
@@ -1705,7 +1786,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         /**
          * Sets the first day of the week.
-         * <p/>
+         * <p>
          * Uses the java.util.Calendar day constants.
          *
          * @param day The first day of the week as a java.util.Calendar day constant.
