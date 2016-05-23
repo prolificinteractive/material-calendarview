@@ -12,7 +12,6 @@ import android.support.annotation.ArrayRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -42,8 +41,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * <p>
@@ -438,6 +435,8 @@ public class MaterialCalendarView extends ViewGroup {
         switch (mode) {
             case SELECTION_MODE_RANGE:
                 clearSelection();
+                break;
+            case SELECTION_MODE_MULTIPLE:
                 break;
             case SELECTION_MODE_SINGLE:
                 if (oldMode == SELECTION_MODE_MULTIPLE || oldMode == SELECTION_MODE_RANGE) {
@@ -1201,7 +1200,7 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * By default, the calendar will take up all the space needed to show any month (6 rows).
      * By enabling dynamic height, the view will change height dependant on the visible month.
-     * <p/>
+     * <p>
      * This means months that only need 5 or 4 rows to show the entire month will only take up
      * that many rows, and will grow and shrink as necessary.
      *
@@ -1326,7 +1325,7 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * Dispatch a range of days to a listener, if set
+     * Dispatch a range of days to a listener, if set. First day must be before last Day.
      *
      * @param firstDay first day enclosing a range
      * @param lastDay  last day enclosing a range
@@ -1335,18 +1334,11 @@ public class MaterialCalendarView extends ViewGroup {
         final OnRangeSelectedListener listener = rangeListener;
         final List<CalendarDay> days = new ArrayList<>();
 
-        final SortedSet<Date> sortedDays = new TreeSet<>();
-        sortedDays.add(firstDay.getDate());
-        sortedDays.add(lastDay.getDate());
-
-        final Date first = sortedDays.first();  //  min date
-        final Date last = sortedDays.last();  //  max date
-
         final Calendar counter = Calendar.getInstance();
-        counter.setTime(first);  //  start from the first day and increment
+        counter.setTime(firstDay.getDate());  //  start from the first day and increment
 
         final Calendar end = Calendar.getInstance();
-        end.setTime(last);  //  for comparison
+        end.setTime(lastDay.getDate());  //  for comparison
 
         while (counter.before(end) || counter.equals(end)) {
             final CalendarDay current = CalendarDay.from(counter);
@@ -1394,7 +1386,11 @@ public class MaterialCalendarView extends ViewGroup {
                     dispatchOnDateSelected(date, nowSelected);
                 } else if (adapter.getSelectedDates().size() == 2) {
                     final List<CalendarDay> dates = adapter.getSelectedDates();
-                    dispatchOnRangeSelected(dates.get(0), dates.get(1));
+                    if (dates.get(0).isAfter(dates.get(1))) {
+                        dispatchOnRangeSelected(dates.get(1), dates.get(0));
+                    } else {
+                        dispatchOnRangeSelected(dates.get(0), dates.get(1));
+                    }
                 } else {
                     adapter.setDateSelected(date, nowSelected);
                     dispatchOnDateSelected(date, nowSelected);
@@ -1419,7 +1415,11 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void selectRange(final CalendarDay firstDay, final CalendarDay lastDay) {
         clearSelection();
-        dispatchOnRangeSelected(firstDay, lastDay);
+        if (firstDay.isAfter(lastDay)) {
+            dispatchOnRangeSelected(lastDay, firstDay);
+        } else {
+            dispatchOnRangeSelected(firstDay, lastDay);
+        }
     }
 
     /**
@@ -1786,7 +1786,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         /**
          * Sets the first day of the week.
-         * <p/>
+         * <p>
          * Uses the java.util.Calendar day constants.
          *
          * @param day The first day of the week as a java.util.Calendar day constant.
