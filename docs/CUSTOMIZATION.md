@@ -44,12 +44,12 @@ You also have the possibility to use `tileWidth` and `tileHeight` separately. I 
 
 ## Date Selection
 
-We support three modes of selection: single, multiple, or none. The default is single selection.
-The mode can be changed by calling `setSelectionMode()` and passing the appropriate constant (`SELECTION_MODE_NONE`, `SELECTION_MODE_SINGLE`, or `SELECTION_MODE_MULTIPLE`).
+We support four modes of selection: single, multiple, range or none. The default is single selection.
+The mode can be changed by calling `setSelectionMode()` and passing the appropriate constant (`SELECTION_MODE_NONE`, `SELECTION_MODE_SINGLE`, `SELECTION_MODE_RANGE` or `SELECTION_MODE_MULTIPLE`).
 If you change to single selection, all selected days except the last selected will be cleared.
-If you change to none, all selected days will be cleared.
+If you change to none or range, all selected days will be cleared.
 
-You can set an `OnDateSelectedListener` to listen for selections, make sure to take into account multiple calls for the same date and state.
+You can set an `OnDateSelectedListener` to listen for selections, make sure to take into account multiple calls for the same date and state. In case of range selection, use `OnRangeSelectedListener` which returns the list of date from the range including first and last.
 You can manually select or deselect dates by calling `setDateSelected()`.
 Use `setSelectedDate()` to clear the current selection(s) and select the provided date.
 
