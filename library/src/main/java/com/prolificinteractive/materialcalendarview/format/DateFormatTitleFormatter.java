@@ -14,11 +14,11 @@ public class DateFormatTitleFormatter implements TitleFormatter {
     private final DateFormat dateFormat;
 
     /**
-     * Format using "MMMM yyyy" for formatting
+     * Format using "LLLL yyyy" for formatting
      */
     public DateFormatTitleFormatter() {
         this.dateFormat = new SimpleDateFormat(
-                "MMMM yyyy", Locale.getDefault()
+                "LLLL yyyy", Locale.getDefault()
         );
     }
 
