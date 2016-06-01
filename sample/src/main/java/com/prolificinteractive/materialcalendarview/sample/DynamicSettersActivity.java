@@ -123,7 +123,9 @@ public class DynamicSettersActivity extends AppCompatActivity {
         showDatePickerDialog(this, widget.getMinimumDate(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                widget.setMinimumDate(CalendarDay.from(year, monthOfYear, dayOfMonth));
+                widget.state().edit()
+                        .setMinimumDate(CalendarDay.from(year, monthOfYear, dayOfMonth))
+                        .commit();
             }
         });
     }
@@ -133,7 +135,9 @@ public class DynamicSettersActivity extends AppCompatActivity {
         showDatePickerDialog(this, widget.getMaximumDate(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                widget.setMaximumDate(CalendarDay.from(year, monthOfYear, dayOfMonth));
+                widget.state().edit()
+                        .setMaximumDate(CalendarDay.from(year, monthOfYear, dayOfMonth))
+                        .commit();
             }
         });
     }
@@ -226,7 +230,8 @@ public class DynamicSettersActivity extends AppCompatActivity {
         CharSequence[] items = {
                 "No Selection",
                 "Single Date",
-                "Multiple Dates"
+                "Multiple Dates",
+                "Range of Dates"
         };
         new AlertDialog.Builder(this)
                 .setTitle("Selection Mode")
@@ -253,17 +258,24 @@ public class DynamicSettersActivity extends AppCompatActivity {
     @OnClick(R.id.button_set_first_day)
     void onFirstDayOfWeekClicked() {
         int index = random.nextInt(DAYS_OF_WEEK.length);
-        widget.setFirstDayOfWeek(DAYS_OF_WEEK[index]);
+        widget.state().edit()
+                .setFirstDayOfWeek(DAYS_OF_WEEK[index])
+                .commit();
+
     }
 
     @OnClick(R.id.button_weeks)
     public void onSetWeekMode() {
-        widget.setCalendarDisplayMode(CalendarMode.WEEKS);
+        widget.state().edit()
+                .setCalendarDisplayMode(CalendarMode.WEEKS)
+                .commit();
     }
 
     @OnClick(R.id.button_months)
     public void onSetMonthMode() {
-        widget.setCalendarDisplayMode(CalendarMode.MONTHS);
+        widget.state().edit()
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .commit();
     }
 
 

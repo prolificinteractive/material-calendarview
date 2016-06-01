@@ -3,10 +3,10 @@ Customization Options
 
 ```xml
 <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/calendarView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     app:mcv_showOtherDates="boolean"
     app:mcv_arrowColor="color"
     app:mcv_selectionColor="color"
@@ -16,9 +16,12 @@ Customization Options
     app:mcv_weekDayLabels="array"
     app:mcv_monthLabels="array"
     app:mcv_tileSize="dimension"
+    app:mcv_tileWidth="dimension"
+    app:mcv_tileHeight="dimension"
     app:mcv_firstDayOfWeek="enum"
     app:mcv_leftArrowMask="drawable"
     app:mcv_rightArrowMask="drawable"
+    app:mcv_calendarMode="mode"
     />
 ```
 
@@ -34,15 +37,19 @@ If a tileSize is set, that will override the `layout_width` and `layout_height` 
 
 The view is 7 tiles wide and 8 tiles high (with the top bar visible).
 
+### Width and Height
+
+You also have the possibility to use `tileWidth` and `tileHeight` separately. I would recommend using either `tileSize` or, `tileWidth` and `tileHeight`.
+
 
 ## Date Selection
 
-We support three modes of selection: single, multiple, or none. The default is single selection.
-The mode can be changed by calling `setSelectionMode()` and passing the appropriate constant (`SELECTION_MODE_NONE`, `SELECTION_MODE_SINGLE`, or `SELECTION_MODE_MULTIPLE`).
+We support four modes of selection: single, multiple, range or none. The default is single selection.
+The mode can be changed by calling `setSelectionMode()` and passing the appropriate constant (`SELECTION_MODE_NONE`, `SELECTION_MODE_SINGLE`, `SELECTION_MODE_RANGE` or `SELECTION_MODE_MULTIPLE`).
 If you change to single selection, all selected days except the last selected will be cleared.
-If you change to none, all selected days will be cleared.
+If you change to none or range, all selected days will be cleared.
 
-You can set an `OnDateSelectedListener` to listen for selections, make sure to take into account multiple calls for the same date and state.
+You can set an `OnDateSelectedListener` to listen for selections, make sure to take into account multiple calls for the same date and state. In case of range selection, use `OnRangeSelectedListener` which returns the list of date from the range including first and last.
 You can manually select or deselect dates by calling `setDateSelected()`.
 Use `setSelectedDate()` to clear the current selection(s) and select the provided date.
 
@@ -74,20 +81,6 @@ The default color of the calendar selector is the one set referenced by `?androi
 You can provide a custom color by setting `mcv_selectionColor` in xml, or by calling `setSelectionColor()`.
 
 If you want more control than just color, you can use the [decorator api](DECORATORS.md) to set a [custom selector](CUSTOM_SELECTORS.md).
-
-
-## First Day Of The Week
-
-The default first day of the week is Sunday. You can set a custom day of the week by setting `mcv_firstDayOfWeek` in xml, or by calling `setFirstDayOfWeek()`.
-The xml attribute is an enum of `sunday` through `saturday` and `setFirstDayOfWeek()` accepts values from `java.util.Calendar` such as `Calendar.MONDAY`.
-
-
-## Date Ranges
-
-By default, the calendar displays months for 200 years before today and 200 years after.
-You can specify different minimum and maximum dates by calling `setMinimumDate(CalendarDay)` and `setMaximumDate(CalendarDay)`.
-Passing `null` will reset back to the default 200 years.
-There are also convenience methods that accept a `Calendar` or a `Date` object and convert them to a `CalendarDay` using the relevant `CalendarDay.from()` factory method.
 
 
 ## Topbar Options

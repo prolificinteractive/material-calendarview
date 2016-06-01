@@ -1,5 +1,14 @@
 Change Log
 ==========
+Version 1.4.0 *(TBD)*
+----------------------------
+* New: Add select range functionality. Use `setSelectionMode(MaterialCalendarView.SELECTION_MODE_RANGE)` and `setOnRangeSelectedListener`
+* Breaking Change: `setFirstDayOfWeek`, `setMin/MaxDate`, and `setCalendarDisplayMode` are moved to a `State` object. Call `mcv.state().edit()` to edit them and commit the changes with `commit`. See [CUSTOMIZATION_BUILDER](docs/CUSTOMIZATION_BUILDER.md) for usage details.
+* Change: Updated documentation regarding 1.3.0 additions
+* Fix: Current month and title pager updates correctly if minDate is set after the current month
+* Fix: Week number difference calculation correctly accounts for DST offsets. Thanks Igor Levaja!
+* Fix: Date formatter uses L instead of M for month (standalone instead of context sensitive)
+
 Version 1.3.0 *(2016-05-16)*
 ----------------------------
 
@@ -69,7 +78,7 @@ where the view will try and take up as much space as necessary,
 but we base it on tile size instead of an aspect ratio.
 The exception being that if a `tileSize` is set,
 that will override everything and set the view to that size.
-* Fix: Use more efficent method for indexing months
+* Fix: Use more efficient method for indexing months
 
 Version 0.7.0 *(2015-07-09)*
 ----------------------------
