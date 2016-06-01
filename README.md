@@ -55,6 +55,8 @@ Major Change in 1.4.0
   See [CUSTOMIZATION_BUILDER](docs/CUSTOMIZATION_BUILDER.md) for usage details.
 * New: `setSelectionMode(SELECTION_MODE_RANGE)` was added to allow 2 dates to be selected and have the entire range of dates selected. Much thanks to [papageorgiouk](https://github.com/papageorgiouk) for his work on this feature. 
 
+See other changes in the [CHANGELOG](/CHANGELOG.md).
+
 Major Change in 1.3.0
 ---------------------
 * Breaking change: `getTileSize` is deprecated. Use `getTileWidth` or `getTileHeight`.
@@ -63,8 +65,6 @@ Major Change in 1.3.0
 * Set tile width/height separately rather than single tile size with `setTileWidth` and `setTileHeight`
 * Attributes: mcv_tileWidth, mcv_tileHeight, mcv_calendarMode
 * TalkBack APIs: `setContentDescriptionArrowPast`, `ArrowFuture`, `Calendar`
-
-See other changes in the [CHANGELOG](/CHANGELOG.md).
 
 Major Change in 1.2.0
 ---------------------
