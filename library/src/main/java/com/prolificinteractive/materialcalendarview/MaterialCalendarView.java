@@ -1067,6 +1067,7 @@ public class MaterialCalendarView extends ViewGroup {
         ss.maxDate = getMaximumDate();
         ss.selectedDates = getSelectedDates();
         ss.firstDayOfWeek = getFirstDayOfWeek();
+        ss.orientation = getTitleAnimationOrientation();
         ss.selectionMode = getSelectionMode();
         ss.tileWidthPx = getTileWidth();
         ss.tileHeightPx = getTileHeight();
@@ -1096,6 +1097,7 @@ public class MaterialCalendarView extends ViewGroup {
         for (CalendarDay calendarDay : ss.selectedDates) {
             setDateSelected(calendarDay, true);
         }
+        setTitleAnimationOrientation(ss.orientation);
         setTileWidth(ss.tileWidthPx);
         setTileHeight(ss.tileHeightPx);
         setTopbarVisible(ss.topbarVisible);
@@ -1133,6 +1135,7 @@ public class MaterialCalendarView extends ViewGroup {
         CalendarDay maxDate = null;
         List<CalendarDay> selectedDates = new ArrayList<>();
         int firstDayOfWeek = Calendar.SUNDAY;
+        int orientation = 0;
         int tileWidthPx = -1;
         int tileHeightPx = -1;
         boolean topbarVisible = true;
@@ -1157,7 +1160,7 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeParcelable(maxDate, 0);
             out.writeTypedList(selectedDates);
             out.writeInt(firstDayOfWeek);
-            out.writeInt(titleChanger.getOrientation());
+            out.writeInt(orientation);
             out.writeInt(tileWidthPx);
             out.writeInt(tileHeightPx);
             out.writeInt(topbarVisible ? 1 : 0);
@@ -1190,6 +1193,7 @@ public class MaterialCalendarView extends ViewGroup {
             maxDate = in.readParcelable(loader);
             in.readTypedList(selectedDates, CalendarDay.CREATOR);
             firstDayOfWeek = in.readInt();
+            orientation = in.readInt();
             tileWidthPx = in.readInt();
             tileHeightPx = in.readInt();
             topbarVisible = in.readInt() == 1;
@@ -1223,7 +1227,7 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * By default, the calendar will take up all the space needed to show any month (6 rows).
      * By enabling dynamic height, the view will change height dependant on the visible month.
-     * <p/>
+     * <p>
      * This means months that only need 5 or 4 rows to show the entire month will only take up
      * that many rows, and will grow and shrink as necessary.
      *
@@ -1738,7 +1742,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         /**
          * Sets the first day of the week.
-         * <p/>
+         * <p>
          * Uses the java.util.Calendar day constants.
          *
          * @param day The first day of the week as a java.util.Calendar day constant.
