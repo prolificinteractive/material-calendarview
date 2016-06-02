@@ -37,6 +37,7 @@ public class CustomizeCodeActivity extends AppCompatActivity {
         widget.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
         widget.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
         widget.setTileSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics()));
+        widget.setTitleAnimationOrientation(MaterialCalendarView.VERTICAL);
 
         CalendarDay today = CalendarDay.from(2016, 5, 2);
         widget.setCurrentDate(today);

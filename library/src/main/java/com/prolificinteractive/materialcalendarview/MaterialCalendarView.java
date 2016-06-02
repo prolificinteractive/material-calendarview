@@ -144,6 +144,16 @@ public class MaterialCalendarView extends ViewGroup {
     public static final int SHOW_ALL = SHOW_OTHER_MONTHS | SHOW_OUT_OF_RANGE | SHOW_DECORATED_DISABLED;
 
     /**
+     * Use this orientation to animate the title horizontally
+     */
+    public static final int HORIZONTAL = 0;
+
+    /**
+     * Use this orientation to animate the title vertically
+     */
+    public static final int VERTICAL = 1;
+
+    /**
      * Default tile size in DIPs. This is used in cases where there is no tile size specificed and the view is set to {@linkplain ViewGroup.LayoutParams#WRAP_CONTENT WRAP_CONTENT}
      */
     public static final int DEFAULT_TILE_SIZE_DP = 44;
@@ -270,6 +280,10 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_firstDayOfWeek,
                     -1
             );
+
+            titleChanger.setOrientation(
+                    a.getInteger(R.styleable.MaterialCalendarView_mcv_titleAnimationOrientation,
+                            HORIZONTAL));
 
             if (firstDayOfWeek < 0) {
                 //Allowing use of Calendar.getInstance() here as a performance optimization
@@ -1002,6 +1016,24 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void setTitleMonths(@ArrayRes int arrayRes) {
         setTitleMonths(getResources().getTextArray(arrayRes));
+    }
+
+    /**
+     * Change the title animation orientation to have a different look and feel.
+     *
+     * @param orientation {@link MaterialCalendarView#VERTICAL} or {@link MaterialCalendarView#HORIZONTAL}
+     */
+    public void setTitleAnimationOrientation(final int orientation) {
+        titleChanger.setOrientation(orientation);
+    }
+
+    /**
+     * Get the orientation of the animation of the title.
+     *
+     * @return Title animation orientation {@link MaterialCalendarView#VERTICAL} or {@link MaterialCalendarView#HORIZONTAL}
+     */
+    public int getTitleAnimationOrientation() {
+        return titleChanger.getOrientation();
     }
 
     /**
