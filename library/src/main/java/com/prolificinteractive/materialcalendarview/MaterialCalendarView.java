@@ -1157,6 +1157,7 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeParcelable(maxDate, 0);
             out.writeTypedList(selectedDates);
             out.writeInt(firstDayOfWeek);
+            out.writeInt(titleChanger.getOrientation());
             out.writeInt(tileWidthPx);
             out.writeInt(tileHeightPx);
             out.writeInt(topbarVisible ? 1 : 0);
