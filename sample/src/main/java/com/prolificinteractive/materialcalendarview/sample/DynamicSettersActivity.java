@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -243,6 +244,20 @@ public class DynamicSettersActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    @OnClick(R.id.button_change_orientation)
+    void onButtonChangeOrientation() {
+        widget.setTitleAnimationOrientation(
+                widget.getTitleAnimationOrientation() == MaterialCalendarView.VERTICAL
+                        ? MaterialCalendarView.HORIZONTAL
+                        : MaterialCalendarView.VERTICAL);
+
+        Toast.makeText(this,
+                widget.getTitleAnimationOrientation() == MaterialCalendarView.VERTICAL
+                        ? "Vertical"
+                        : "Horizontal",
+                Toast.LENGTH_SHORT).show();
     }
 
     private static final int[] DAYS_OF_WEEK = {

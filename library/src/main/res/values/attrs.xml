@@ -44,6 +44,11 @@
             <enum name="month" value="0" />
             <enum name="week" value="1" />
         </attr>
+
+        <attr name="mcv_titleAnimationOrientation" format="enum">
+            <enum name="vertical" value="0" />
+            <enum name="horizontal" value="1" />
+        </attr>
     </declare-styleable>
 
 </resources>
