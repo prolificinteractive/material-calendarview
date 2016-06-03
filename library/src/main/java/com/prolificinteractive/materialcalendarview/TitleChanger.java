@@ -24,7 +24,7 @@ class TitleChanger {
     private final int translate;
     private final Interpolator interpolator = new DecelerateInterpolator(2f);
 
-    private int orientation = MaterialCalendarView.HORIZONTAL;
+    private int orientation = MaterialCalendarView.VERTICAL;
 
     private long lastAnimTime = 0;
     private CalendarDay previousMonth = null;

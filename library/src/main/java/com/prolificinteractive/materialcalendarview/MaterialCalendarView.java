@@ -144,14 +144,14 @@ public class MaterialCalendarView extends ViewGroup {
     public static final int SHOW_ALL = SHOW_OTHER_MONTHS | SHOW_OUT_OF_RANGE | SHOW_DECORATED_DISABLED;
 
     /**
-     * Use this orientation to animate the title horizontally
-     */
-    public static final int HORIZONTAL = 0;
-
-    /**
      * Use this orientation to animate the title vertically
      */
-    public static final int VERTICAL = 1;
+    public static final int VERTICAL = 0;
+
+    /**
+     * Use this orientation to animate the title horizontally
+     */
+    public static final int HORIZONTAL = 1;
 
     /**
      * Default tile size in DIPs. This is used in cases where there is no tile size specificed and the view is set to {@linkplain ViewGroup.LayoutParams#WRAP_CONTENT WRAP_CONTENT}
@@ -283,7 +283,7 @@ public class MaterialCalendarView extends ViewGroup {
 
             titleChanger.setOrientation(
                     a.getInteger(R.styleable.MaterialCalendarView_mcv_titleAnimationOrientation,
-                            HORIZONTAL));
+                            VERTICAL));
 
             if (firstDayOfWeek < 0) {
                 //Allowing use of Calendar.getInstance() here as a performance optimization

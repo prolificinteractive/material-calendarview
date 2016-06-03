@@ -46,8 +46,8 @@
         </attr>
 
         <attr name="mcv_titleAnimationOrientation" format="enum">
-            <enum name="horizontal" value="0" />
-            <enum name="vertical" value="1" />
+            <enum name="vertical" value="0" />
+            <enum name="horizontal" value="1" />
         </attr>
     </declare-styleable>
 
