@@ -56,22 +56,8 @@ public class UniqueActivity extends AppCompatActivity implements OnDateSelectedL
         calendar.set(calendar.get(Calendar.YEAR), Calendar.JANUARY, 1);
 
         calendar.set(calendar.get(Calendar.YEAR), Calendar.DECEMBER, 31);
-        widget.setTileHeightDp(50);
+        widget.setTileHeightDp(64);
         widget.setTileWidthDp(50);
-
-        Calendar mCal = Calendar.getInstance();
-        mCal.add(Calendar.DATE, 1);
-        Calendar cal = (Calendar) mCal.clone();
-        Calendar cal2 = (Calendar) mCal.clone();
-        cal.add(Calendar.DATE, -3);
-        cal2.add(Calendar.DATE, 3);
-
-        widget.state().edit()
-                .setFirstDayOfWeek(cal.get(Calendar.DAY_OF_WEEK))
-                .setMinimumDate(cal)
-                .setMaximumDate(cal2)
-                .setCalendarDisplayMode(CalendarMode.WEEKS)
-                .commit();
 
         oneDayDecorator = new OneDayUniqueDecorator(this, Color.RED, Color.WHITE);
         widget.addDecorators(oneDayDecorator);
