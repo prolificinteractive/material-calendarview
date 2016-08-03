@@ -22,6 +22,7 @@ import android.widget.CheckedTextView;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
+import com.prolificinteractive.materialcalendarview.spans.OneDayUniqueSpan;
 import com.prolificinteractive.materialcalendarview.spans.UniqueSpan;
 
 import java.util.List;
@@ -248,6 +249,10 @@ class DayView extends CheckedTextView {
                 if (span.span instanceof UniqueSpan) {
                     UniqueSpan uSpan = new UniqueSpan((UniqueSpan) span.span);
                     formattedLabel.setSpan(uSpan, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } else if (span.span instanceof OneDayUniqueSpan) {
+                    label = "  ";
+                    formattedLabel = new SpannableString("  ");
+                    formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else
                     formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
