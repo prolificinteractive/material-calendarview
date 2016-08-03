@@ -22,6 +22,8 @@ import android.widget.CheckedTextView;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
+import com.prolificinteractive.materialcalendarview.spans.OneDayUniqueSpan;
+import com.prolificinteractive.materialcalendarview.spans.UniqueSpan;
 
 import java.util.List;
 
@@ -35,15 +37,14 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 @SuppressLint("ViewConstructor")
 class DayView extends CheckedTextView {
 
+    private final int fadeTime;
+    private final Rect tempRect = new Rect();
     private CalendarDay date;
     private int selectionColor = Color.GRAY;
-
-    private final int fadeTime;
     private Drawable customBackground = null;
     private Drawable selectionDrawable;
     private Drawable mCircleDrawable;
     private DayFormatter formatter = DayFormatter.DEFAULT;
-
     private boolean isInRange = true;
     private boolean isInMonth = true;
     private boolean isDecoratedDisabled = false;
@@ -64,6 +65,46 @@ class DayView extends CheckedTextView {
         }
 
         setDay(day);
+    }
+
+    private static Drawable generateBackground(int color, int fadeTime, Rect bounds) {
+        StateListDrawable drawable = new StateListDrawable();
+        drawable.setExitFadeDuration(fadeTime);
+        drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleDrawable(color, bounds));
+        } else {
+            drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleDrawable(color));
+        }
+
+        drawable.addState(new int[]{}, generateCircleDrawable(Color.TRANSPARENT));
+
+        return drawable;
+    }
+
+    private static Drawable generateCircleDrawable(final int color) {
+        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
+        drawable.getPaint().setColor(color);
+        return drawable;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private static Drawable generateRippleDrawable(final int color, Rect bounds) {
+        ColorStateList list = ColorStateList.valueOf(color);
+        Drawable mask = generateCircleDrawable(Color.WHITE);
+        RippleDrawable rippleDrawable = new RippleDrawable(list, null, mask);
+//        API 21
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            rippleDrawable.setBounds(bounds);
+        }
+
+//        API 22. Technically harmless to leave on for API 21 and 23, but not worth risking for 23+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1) {
+            int center = (bounds.left + bounds.right) / 2;
+            rippleDrawable.setHotspotBounds(center, bounds.top, center, bounds.bottom);
+        }
+
+        return rippleDrawable;
     }
 
     public void setDay(CalendarDay date) {
@@ -166,8 +207,6 @@ class DayView extends CheckedTextView {
         setEnabled();
     }
 
-    private final Rect tempRect = new Rect();
-
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         if (customBackground != null) {
@@ -190,46 +229,6 @@ class DayView extends CheckedTextView {
         }
     }
 
-    private static Drawable generateBackground(int color, int fadeTime, Rect bounds) {
-        StateListDrawable drawable = new StateListDrawable();
-        drawable.setExitFadeDuration(fadeTime);
-        drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleDrawable(color, bounds));
-        } else {
-            drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleDrawable(color));
-        }
-
-        drawable.addState(new int[]{}, generateCircleDrawable(Color.TRANSPARENT));
-
-        return drawable;
-    }
-
-    private static Drawable generateCircleDrawable(final int color) {
-        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
-        drawable.getPaint().setColor(color);
-        return drawable;
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static Drawable generateRippleDrawable(final int color, Rect bounds) {
-        ColorStateList list = ColorStateList.valueOf(color);
-        Drawable mask = generateCircleDrawable(Color.WHITE);
-        RippleDrawable rippleDrawable = new RippleDrawable(list, null, mask);
-//        API 21
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            rippleDrawable.setBounds(bounds);
-        }
-
-//        API 22. Technically harmless to leave on for API 21 and 23, but not worth risking for 23+
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1) {
-            int center = (bounds.left + bounds.right) / 2;
-            rippleDrawable.setHotspotBounds(center, bounds.top, center, bounds.bottom);
-        }
-
-        return rippleDrawable;
-    }
-
     /**
      * @param facade apply the facade to us
      */
@@ -246,7 +245,16 @@ class DayView extends CheckedTextView {
             String label = getLabel();
             SpannableString formattedLabel = new SpannableString(getLabel());
             for (DayViewFacade.Span span : spans) {
-                formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                if (span.span instanceof UniqueSpan) {
+                    UniqueSpan uSpan = new UniqueSpan((UniqueSpan) span.span);
+                    formattedLabel.setSpan(uSpan, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } else if (span.span instanceof OneDayUniqueSpan) {
+                    label = "  ";
+                    formattedLabel = new SpannableString("  ");
+                    formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } else
+                    formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             setText(formattedLabel);
         }
