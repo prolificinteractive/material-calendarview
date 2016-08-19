@@ -393,7 +393,6 @@ public class MaterialCalendarView extends ViewGroup {
         addView(topbar, new LayoutParams(1));
 
         buttonPast.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        buttonPast.setImageResource(R.drawable.mcv_action_previous);
         topbar.addView(buttonPast, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
 
         title.setGravity(Gravity.CENTER);
@@ -402,7 +401,6 @@ public class MaterialCalendarView extends ViewGroup {
         ));
 
         buttonFuture.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        buttonFuture.setImageResource(R.drawable.mcv_action_next);
         topbar.addView(buttonFuture, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
 
         pager.setId(R.id.mcv_pager);
