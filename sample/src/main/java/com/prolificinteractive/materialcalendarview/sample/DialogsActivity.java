@@ -4,8 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +45,7 @@ public class DialogsActivity extends AppCompatActivity {
         new SimpleCalendarDialogFragment().show(getSupportFragmentManager(), "test-simple-calendar");
     }
 
-    public static class SimpleDialogFragment extends DialogFragment {
+    public static class SimpleDialogFragment extends AppCompatDialogFragment {
 
         @NonNull
         @Override
@@ -58,7 +58,7 @@ public class DialogsActivity extends AppCompatActivity {
         }
     }
 
-    public static class SimpleCalendarDialogFragment extends DialogFragment implements OnDateSelectedListener {
+    public static class SimpleCalendarDialogFragment extends AppCompatDialogFragment implements OnDateSelectedListener {
 
         private TextView textView;
 
