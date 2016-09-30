@@ -45,7 +45,7 @@ public class MultipleViewActivity extends AppCompatActivity{
     class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewAdapter.EntryViewHolder> {
         final LayoutInflater inflater;
 
-        public MultipleViewAdapter(Context context) {
+        MultipleViewAdapter(Context context) {
             inflater = LayoutInflater.from(context);
         }
 
@@ -70,10 +70,10 @@ public class MultipleViewActivity extends AppCompatActivity{
         /**
          * View holder for list entry
          */
-        public class EntryViewHolder extends RecyclerView.ViewHolder {
+        class EntryViewHolder extends RecyclerView.ViewHolder {
             final MaterialCalendarView calendarView;
 
-            public EntryViewHolder(View itemView) {
+            EntryViewHolder(View itemView) {
                 super(itemView);
                 calendarView = (MaterialCalendarView) itemView.findViewById(R.id.list_entry);
             }
