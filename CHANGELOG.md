@@ -4,6 +4,7 @@ Version 1.4.1 *(TBD)*
 ----------------------------
 * Fix: Issue with custom arrow mask being overwritten when set in xml
 * Fix: Issue when clicking date outside of current year would trigger the wrong goToNext or goToPrevious method
+* Fix: WeekDayFormatter would overwritten first day of the week
 
 Version 1.4.0 *(2016-06-01)*
 ----------------------------
