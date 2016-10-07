@@ -1430,15 +1430,19 @@ public class MaterialCalendarView extends ViewGroup {
      *
      * @param dayView
      */
-    protected void onDateClicked(DayView dayView) {
+    protected void onDateClicked(final DayView dayView) {
         final int currentMonth = getCurrentDate().getMonth();
         final int selectedMonth = dayView.getDate().getMonth();
+        final int currentYear = getCurrentDate().getYear();
+        final int selectedYear = dayView.getDate().getYear();
 
         if (calendarMode == CalendarMode.MONTHS) {
             if (allowClickDaysOutsideCurrentMonth || currentMonth == selectedMonth) {
-                if (currentMonth > selectedMonth) {
+                if (currentYear == selectedYear && currentMonth > selectedMonth
+                    || currentYear > selectedYear) {
                     goToPrevious();
-                } else if (currentMonth < selectedMonth) {
+                } else if (currentYear == selectedYear && currentMonth < selectedMonth
+                    || currentYear < selectedYear) {
                     goToNext();
                 }
                 onDateClicked(dayView.getDate(), !dayView.isChecked());
