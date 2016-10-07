@@ -25,8 +25,7 @@ public class MultipleViewActivity extends AppCompatActivity{
     //number of MaterialCalendarViews to display in list
     static final int NUM_ENTRIES = 3;
 
-    @Bind(R.id.calendar_list)
-    RecyclerView calendarList;
+    @Bind(R.id.calendar_list) RecyclerView calendarList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +44,13 @@ public class MultipleViewActivity extends AppCompatActivity{
     class MultipleViewAdapter extends RecyclerView.Adapter<MultipleViewAdapter.EntryViewHolder> {
         final LayoutInflater inflater;
 
-        MultipleViewAdapter(Context context) {
+        MultipleViewAdapter(final Context context) {
             inflater = LayoutInflater.from(context);
         }
 
         @Override
         public EntryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = inflater.inflate(R.layout.calendar_list_entry, parent, false);
+            final View view = inflater.inflate(R.layout.calendar_list_entry, parent, false);
             return new EntryViewHolder(view);
         }
 
@@ -63,7 +62,7 @@ public class MultipleViewActivity extends AppCompatActivity{
         @Override
         public void onBindViewHolder(EntryViewHolder holder, int position) {
             //set selected date to today
-            Calendar instance = Calendar.getInstance();
+            final Calendar instance = Calendar.getInstance();
             holder.calendarView.setSelectedDate(instance.getTime());
         }
 
@@ -73,7 +72,7 @@ public class MultipleViewActivity extends AppCompatActivity{
         class EntryViewHolder extends RecyclerView.ViewHolder {
             final MaterialCalendarView calendarView;
 
-            EntryViewHolder(View itemView) {
+            EntryViewHolder(final View itemView) {
                 super(itemView);
                 calendarView = (MaterialCalendarView) itemView.findViewById(R.id.list_entry);
             }
