@@ -2,6 +2,8 @@ Change Log
 ==========
 Version 1.4.1 *(TBD)*
 ----------------------------
+* New: match_parent is now supported by tileSize, tileWidth and tileHeight
+* New: api for title animation orientation horizontal/vertical `setTitleAnimationOrientation`
 * Fix: Issue with custom arrow mask being overwritten when set in xml
 * Fix: Issue when clicking date outside of current year would trigger the wrong goToNext or goToPrevious method
 * Fix: WeekDayFormatter would overwritten first day of the week
