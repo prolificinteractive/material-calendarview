@@ -1,5 +1,10 @@
 Change Log
 ==========
+Version 1.4.1 *(TBD)*
+----------------------------
+* Fix: Issue with custom arrow mask being overwritten when set in xml
+* Fix: Issue when clicking date outside of current year would trigger the wrong goToNext or goToPrevious method
+
 Version 1.4.0 *(2016-06-01)*
 ----------------------------
 * New: Add select range functionality. Use `setSelectionMode(MaterialCalendarView.SELECTION_MODE_RANGE)` and `setOnRangeSelectedListener`
