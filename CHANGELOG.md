@@ -1,6 +1,6 @@
 Change Log
 ==========
-Version 1.4.2 *(TBD)*
+Version 1.4.2 *(2016-10-10)*
 ----------------------------
 * New: match_parent is now supported by tileSize, tileWidth and tileHeight
 * New: api for title animation orientation horizontal/vertical `setTitleAnimationOrientation`
