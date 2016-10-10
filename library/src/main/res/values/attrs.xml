@@ -26,9 +26,18 @@
         <attr name="mcv_weekDayLabels" format="reference" />
         <attr name="mcv_monthLabels" format="reference" />
 
-        <attr name="mcv_tileSize" format="dimension" />
-        <attr name="mcv_tileHeight" format="dimension" />
-        <attr name="mcv_tileWidth" format="dimension" />
+        <!-- We want to accept match_parent but not wrap_content. It'd be better if we could
+        point to the real match_parent constant, but since it hasn't change since API 1,
+        I think it's safe to hardcode it-->
+        <attr name="mcv_tileSize" format="dimension" >
+            <enum name="match_parent" value="-1" />
+        </attr>
+        <attr name="mcv_tileHeight" format="dimension" >
+            <enum name="match_parent" value="-1" />
+        </attr>
+        <attr name="mcv_tileWidth" format="dimension" >
+            <enum name="match_parent" value="-1" />
+        </attr>
 
         <attr name="mcv_firstDayOfWeek" format="enum">
             <enum name="sunday" value="1" />
@@ -43,6 +52,11 @@
         <attr name="mcv_calendarMode" format="enum">
             <enum name="month" value="0" />
             <enum name="week" value="1" />
+        </attr>
+
+        <attr name="mcv_titleAnimationOrientation" format="enum">
+            <enum name="vertical" value="0" />
+            <enum name="horizontal" value="1" />
         </attr>
     </declare-styleable>
 

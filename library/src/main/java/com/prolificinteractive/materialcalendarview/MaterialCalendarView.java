@@ -66,6 +66,8 @@ import java.util.List;
  */
 public class MaterialCalendarView extends ViewGroup {
 
+    public static final int INVALID_TILE_DIMENSION = -10;
+
     /**
      * {@linkplain IntDef} annotation for selection mode.
      *
@@ -149,6 +151,16 @@ public class MaterialCalendarView extends ViewGroup {
     public static final int SHOW_ALL = SHOW_OTHER_MONTHS | SHOW_OUT_OF_RANGE | SHOW_DECORATED_DISABLED;
 
     /**
+     * Use this orientation to animate the title vertically
+     */
+    public static final int VERTICAL = 0;
+
+    /**
+     * Use this orientation to animate the title horizontally
+     */
+    public static final int HORIZONTAL = 1;
+
+    /**
      * Default tile size in DIPs. This is used in cases where there is no tile size specificed and the view is set to {@linkplain ViewGroup.LayoutParams#WRAP_CONTENT WRAP_CONTENT}
      */
     public static final int DEFAULT_TILE_SIZE_DP = 44;
@@ -217,8 +229,8 @@ public class MaterialCalendarView extends ViewGroup {
     private int arrowColor = Color.BLACK;
     private Drawable leftArrowMask;
     private Drawable rightArrowMask;
-    private int tileHeight = -1;
-    private int tileWidth = -1;
+    private int tileHeight = INVALID_TILE_DIMENSION;
+    private int tileWidth = INVALID_TILE_DIMENSION;
     @SelectionMode
     private int selectionMode = SELECTION_MODE_SINGLE;
     private boolean allowClickDaysOutsideCurrentMonth = true;
@@ -278,6 +290,10 @@ public class MaterialCalendarView extends ViewGroup {
                     -1
             );
 
+            titleChanger.setOrientation(
+                    a.getInteger(R.styleable.MaterialCalendarView_mcv_titleAnimationOrientation,
+                            VERTICAL));
+
             if (firstDayOfWeek < 0) {
                 //Allowing use of Calendar.getInstance() here as a performance optimization
                 firstDayOfWeek = Calendar.getInstance().getFirstDayOfWeek();
@@ -288,18 +304,18 @@ public class MaterialCalendarView extends ViewGroup {
                     .setCalendarDisplayMode(CalendarMode.values()[calendarModeIndex])
                     .commit();
 
-            final int tileSize = a.getDimensionPixelSize(R.styleable.MaterialCalendarView_mcv_tileSize, -1);
-            if (tileSize > 0) {
+            final int tileSize = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileSize, INVALID_TILE_DIMENSION);
+            if (tileSize > INVALID_TILE_DIMENSION) {
                 setTileSize(tileSize);
             }
 
-            final int tileWidth = a.getDimensionPixelSize(R.styleable.MaterialCalendarView_mcv_tileWidth, -1);
-            if (tileWidth > 0) {
+            final int tileWidth = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileWidth, INVALID_TILE_DIMENSION);
+            if(tileWidth > INVALID_TILE_DIMENSION){
                 setTileWidth(tileWidth);
             }
 
-            final int tileHeight = a.getDimensionPixelSize(R.styleable.MaterialCalendarView_mcv_tileHeight, -1);
-            if (tileHeight > 0) {
+            final int tileHeight = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileHeight, INVALID_TILE_DIMENSION);
+            if(tileHeight > INVALID_TILE_DIMENSION){
                 setTileHeight(tileHeight);
             }
 
@@ -1014,6 +1030,24 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * Change the title animation orientation to have a different look and feel.
+     *
+     * @param orientation {@link MaterialCalendarView#VERTICAL} or {@link MaterialCalendarView#HORIZONTAL}
+     */
+    public void setTitleAnimationOrientation(final int orientation) {
+        titleChanger.setOrientation(orientation);
+    }
+
+    /**
+     * Get the orientation of the animation of the title.
+     *
+     * @return Title animation orientation {@link MaterialCalendarView#VERTICAL} or {@link MaterialCalendarView#HORIZONTAL}
+     */
+    public int getTitleAnimationOrientation() {
+        return titleChanger.getOrientation();
+    }
+
+    /**
      * Sets the visibility {@link #topbar}, which contains
      * the previous month button {@link #buttonPast}, next month button {@link #buttonFuture},
      * and the month title {@link #title}.
@@ -1044,6 +1078,7 @@ public class MaterialCalendarView extends ViewGroup {
         ss.maxDate = getMaximumDate();
         ss.selectedDates = getSelectedDates();
         ss.firstDayOfWeek = getFirstDayOfWeek();
+        ss.orientation = getTitleAnimationOrientation();
         ss.selectionMode = getSelectionMode();
         ss.tileWidthPx = getTileWidth();
         ss.tileHeightPx = getTileHeight();
@@ -1073,6 +1108,7 @@ public class MaterialCalendarView extends ViewGroup {
         for (CalendarDay calendarDay : ss.selectedDates) {
             setDateSelected(calendarDay, true);
         }
+        setTitleAnimationOrientation(ss.orientation);
         setTileWidth(ss.tileWidthPx);
         setTileHeight(ss.tileHeightPx);
         setTopbarVisible(ss.topbarVisible);
@@ -1114,6 +1150,7 @@ public class MaterialCalendarView extends ViewGroup {
         CalendarDay maxDate = null;
         List<CalendarDay> selectedDates = new ArrayList<>();
         int firstDayOfWeek = Calendar.SUNDAY;
+        int orientation = 0;
         int tileWidthPx = -1;
         int tileHeightPx = -1;
         boolean topbarVisible = true;
@@ -1138,6 +1175,7 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeParcelable(maxDate, 0);
             out.writeTypedList(selectedDates);
             out.writeInt(firstDayOfWeek);
+            out.writeInt(orientation);
             out.writeInt(tileWidthPx);
             out.writeInt(tileHeightPx);
             out.writeInt(topbarVisible ? 1 : 0);
@@ -1170,6 +1208,7 @@ public class MaterialCalendarView extends ViewGroup {
             maxDate = in.readParcelable(loader);
             in.readTypedList(selectedDates, CalendarDay.CREATOR);
             firstDayOfWeek = in.readInt();
+            orientation = in.readInt();
             tileWidthPx = in.readInt();
             tileHeightPx = in.readInt();
             topbarVisible = in.readInt() == 1;
@@ -1523,14 +1562,18 @@ public class MaterialCalendarView extends ViewGroup {
         int measureTileWidth = -1;
         int measureTileHeight = -1;
 
-        if (this.tileWidth > 0 || this.tileHeight > 0) {
+        if (this.tileWidth != INVALID_TILE_DIMENSION || this.tileHeight != INVALID_TILE_DIMENSION) {
             if (this.tileWidth > 0) {
                 //We have a tileWidth set, we should use that
                 measureTileWidth = this.tileWidth;
+            } else {
+                measureTileWidth = desiredTileWidth;
             }
             if (this.tileHeight > 0) {
                 //We have a tileHeight set, we should use that
                 measureTileHeight = this.tileHeight;
+            } else {
+                measureTileHeight = desiredTileHeight;
             }
         } else if (specWidthMode == MeasureSpec.EXACTLY) {
             if (specHeightMode == MeasureSpec.EXACTLY) {
