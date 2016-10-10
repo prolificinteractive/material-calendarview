@@ -28,6 +28,7 @@
         app:mcv_tileSize="36dp"
         app:mcv_firstDayOfWeek="thursday"
         app:mcv_calendarMode="week"
+        app:mcv_titleAnimationOrientation="vertical"
         />
 
 </LinearLayout>

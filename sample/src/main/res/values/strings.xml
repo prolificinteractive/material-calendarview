@@ -9,6 +9,7 @@
     <string name="title_activity_customize_xml">XML Customization Example</string>
     <string name="title_activity_customize_code">Programmatic Customization Example</string>
     <string name="title_activity_dynamic_setters">Dynamic Setters Test</string>
+    <string name="title_activity_custom_tile_size">Custom tile width/height</string>
     <string name="title_activity_old_calendar">Old CalendarView</string>
     <string name="title_activity_dialogs">Calendar in Dialogs</string>
     <string name="title_activity_decorators">Calendar with Decorators</string>

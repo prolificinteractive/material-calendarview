@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.ViewPropertyAnimator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.TextView;
@@ -20,8 +21,10 @@ class TitleChanger {
 
     private final int animDelay;
     private final int animDuration;
-    private final int yTranslate;
+    private final int translate;
     private final Interpolator interpolator = new DecelerateInterpolator(2f);
+
+    private int orientation = MaterialCalendarView.VERTICAL;
 
     private long lastAnimTime = 0;
     private CalendarDay previousMonth = null;
@@ -35,7 +38,7 @@ class TitleChanger {
 
         animDuration = res.getInteger(android.R.integer.config_shortAnimTime) / 2;
 
-        yTranslate = (int) TypedValue.applyDimension(
+        translate = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, DEFAULT_Y_TRANSLATION_DP, res.getDisplayMetrics()
         );
     }
@@ -61,7 +64,8 @@ class TitleChanger {
     private void doChange(final long now, final CalendarDay currentMonth, boolean animate) {
 
         title.animate().cancel();
-        title.setTranslationY(0);
+        doTranslation(title, 0);
+
         title.setAlpha(1);
         lastAnimTime = now;
 
@@ -70,10 +74,16 @@ class TitleChanger {
         if (!animate) {
             title.setText(newTitle);
         } else {
-            final int yTranslation = yTranslate * (previousMonth.isBefore(currentMonth) ? 1 : -1);
+            final int translation = translate * (previousMonth.isBefore(currentMonth) ? 1 : -1);
+            final ViewPropertyAnimator viewPropertyAnimator = title.animate();
 
-            title.animate()
-                    .translationY(yTranslation * -1)
+            if (orientation == MaterialCalendarView.HORIZONTAL) {
+                viewPropertyAnimator.translationX(translation * -1);
+            } else {
+                viewPropertyAnimator.translationY(translation * -1);
+            }
+
+            viewPropertyAnimator
                     .alpha(0)
                     .setDuration(animDuration)
                     .setInterpolator(interpolator)
@@ -81,16 +91,23 @@ class TitleChanger {
 
                         @Override
                         public void onAnimationCancel(Animator animator) {
-                            title.setTranslationY(0);
+                            doTranslation(title, 0);
                             title.setAlpha(1);
                         }
 
                         @Override
                         public void onAnimationEnd(Animator animator) {
                             title.setText(newTitle);
-                            title.setTranslationY(yTranslation);
-                            title.animate()
-                                    .translationY(0)
+                            doTranslation(title, translation);
+
+                            final ViewPropertyAnimator viewPropertyAnimator = title.animate();
+                            if (orientation == MaterialCalendarView.HORIZONTAL) {
+                                viewPropertyAnimator.translationX(0);
+                            } else {
+                                viewPropertyAnimator.translationY(0);
+                            }
+
+                            viewPropertyAnimator
                                     .alpha(1)
                                     .setDuration(animDuration)
                                     .setInterpolator(interpolator)
@@ -103,12 +120,28 @@ class TitleChanger {
         previousMonth = currentMonth;
     }
 
+    private void doTranslation(final TextView title, final int translate) {
+        if (orientation == MaterialCalendarView.HORIZONTAL) {
+            title.setTranslationX(translate);
+        } else {
+            title.setTranslationY(translate);
+        }
+    }
+
     public TitleFormatter getTitleFormatter() {
         return titleFormatter;
     }
 
     public void setTitleFormatter(TitleFormatter titleFormatter) {
         this.titleFormatter = titleFormatter;
+    }
+
+    public void setOrientation(int orientation) {
+        this.orientation = orientation;
+    }
+
+    public int getOrientation() {
+        return orientation;
     }
 
     public void setPreviousMonth(CalendarDay previousMonth) {
