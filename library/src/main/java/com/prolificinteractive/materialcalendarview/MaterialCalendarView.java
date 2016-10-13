@@ -1,7 +1,10 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -193,6 +197,8 @@ public class MaterialCalendarView extends ViewGroup {
                 pager.setCurrentItem(pager.getCurrentItem() + 1, true);
             } else if (v == buttonPast) {
                 pager.setCurrentItem(pager.getCurrentItem() - 1, true);
+            } else if (v == title) {
+                createDialogWithoutDateField(getContext());
             }
         }
     };
@@ -310,12 +316,12 @@ public class MaterialCalendarView extends ViewGroup {
             }
 
             final int tileWidth = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileWidth, INVALID_TILE_DIMENSION);
-            if(tileWidth > INVALID_TILE_DIMENSION){
+            if (tileWidth > INVALID_TILE_DIMENSION) {
                 setTileWidth(tileWidth);
             }
 
             final int tileHeight = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileHeight, INVALID_TILE_DIMENSION);
-            if(tileHeight > INVALID_TILE_DIMENSION){
+            if (tileHeight > INVALID_TILE_DIMENSION) {
                 setTileHeight(tileHeight);
             }
 
@@ -428,6 +434,107 @@ public class MaterialCalendarView extends ViewGroup {
         titleChanger.change(currentMonth);
         buttonPast.setEnabled(canGoBack());
         buttonFuture.setEnabled(canGoForward());
+    }
+
+    /**
+     * Date Picker (Month & Year only)
+     *
+     * @param context
+     * @author chris.chen
+     */
+    private void createDialogWithoutDateField(Context context) {
+
+        Calendar calendar = currentMonth.getCalendar();
+        final int iYear = calendar.get(Calendar.YEAR);
+        final int iMonth = calendar.get(Calendar.MONTH);
+        final int iDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dpd = new DatePickerDialog(context, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(
+                    DatePicker datePicker,
+                    int year,
+                    int monthOfYear,
+                    int dayOfMonth
+            ) {
+
+                int diffMonth = (year - iYear) * 12 + (monthOfYear - iMonth);
+
+                pager.setCurrentItem(pager.getCurrentItem() + diffMonth, true);
+            }
+        }, iYear,
+                iMonth,
+                iDay);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int daySpinnerId = Resources.getSystem().getIdentifier("day", "id", "android");
+            if (daySpinnerId != 0) {
+                View daySpinner = dpd.getDatePicker().findViewById(daySpinnerId);
+                if (daySpinner != null) {
+                    daySpinner.setVisibility(View.GONE);
+                }
+            }
+
+            int monthSpinnerId = Resources.getSystem().getIdentifier("month", "id", "android");
+            if (monthSpinnerId != 0) {
+                View monthSpinner = dpd.getDatePicker().findViewById(monthSpinnerId);
+                if (monthSpinner != null) {
+                    monthSpinner.setVisibility(View.VISIBLE);
+                }
+            }
+
+            int yearSpinnerId = Resources.getSystem().getIdentifier("year", "id", "android");
+            if (yearSpinnerId != 0) {
+                View yearSpinner = dpd.getDatePicker().findViewById(yearSpinnerId);
+                if (yearSpinner != null) {
+                    yearSpinner.setVisibility(View.VISIBLE);
+                }
+            }
+        } else { //Older SDK versions
+            java.lang.reflect.Field f[] = dpd.getDatePicker().getClass().getDeclaredFields();
+            for (java.lang.reflect.Field field : f) {
+                if (field.getName().equals("mDayPicker") || field.getName().equals("mDaySpinner")) {
+                    field.setAccessible(true);
+                    Object dayPicker = null;
+                    try {
+                        dayPicker = field.get(dpd.getDatePicker());
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    ((View) dayPicker).setVisibility(View.GONE);
+                }
+
+                if (field.getName().equals("mMonthPicker") || field.getName().equals("mMonthSpinner")) {
+                    field.setAccessible(true);
+                    Object monthPicker = null;
+                    try {
+                        monthPicker = field.get(dpd.getDatePicker());
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    ((View) monthPicker).setVisibility(View.VISIBLE);
+                }
+
+                if (field.getName().equals("mYearPicker") || field.getName().equals("mYearSpinner")) {
+                    field.setAccessible(true);
+                    Object yearPicker = null;
+                    try {
+                        yearPicker = field.get(dpd.getDatePicker());
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    ((View) yearPicker).setVisibility(View.VISIBLE);
+                }
+            }
+        }
+
+        if (minDate != null) {
+            dpd.getDatePicker().setMinDate(minDate.getDate().getTime());
+        }
+
+        if (maxDate != null)
+            dpd.getDatePicker().setMaxDate(maxDate.getDate().getTime());
+
+        dpd.show();
     }
 
     /**
@@ -1240,7 +1347,7 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * By default, the calendar will take up all the space needed to show any month (6 rows).
      * By enabling dynamic height, the view will change height dependant on the visible month.
-     * <p>
+     * <p/>
      * This means months that only need 5 or 4 rows to show the entire month will only take up
      * that many rows, and will grow and shrink as necessary.
      *
@@ -1474,8 +1581,8 @@ public class MaterialCalendarView extends ViewGroup {
         final int selectedMonth = selectedDate.getMonth();
 
         if (calendarMode == CalendarMode.MONTHS
-            && allowClickDaysOutsideCurrentMonth
-            && currentMonth != selectedMonth) {
+                && allowClickDaysOutsideCurrentMonth
+                && currentMonth != selectedMonth) {
             if (currentDate.isAfter(selectedDate)) {
                 goToPrevious();
             } else if (currentDate.isBefore(selectedDate)) {
@@ -1831,7 +1938,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         /**
          * Sets the first day of the week.
-         * <p>
+         * <p/>
          * Uses the java.util.Calendar day constants.
          *
          * @param day The first day of the week as a java.util.Calendar day constant.
