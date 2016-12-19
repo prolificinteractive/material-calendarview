@@ -1,6 +1,7 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -8,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import butterknife.Bind;
@@ -33,6 +37,8 @@ public class CustomTileDimensions extends AppCompatActivity {
 
     currentTileWidth = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
     currentTileHeight = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
+
+    widget.addDecorator(new TodayDecorator());
   }
 
   @OnClick(R.id.custom_tile_match_parent)
@@ -86,5 +92,26 @@ public class CustomTileDimensions extends AppCompatActivity {
               }
             })
             .show();
+  }
+
+  private class TodayDecorator implements DayViewDecorator {
+
+    private final CalendarDay today;
+    private final Drawable backgroundDrawable;
+
+    public TodayDecorator() {
+      today = CalendarDay.today();
+      backgroundDrawable = getResources().getDrawable(R.drawable.today_circle_background);
+    }
+
+    @Override
+    public boolean shouldDecorate(CalendarDay day) {
+      return today.equals(day);
+    }
+
+    @Override
+    public void decorate(DayViewFacade view) {
+      view.setBackgroundDrawable(backgroundDrawable);
+    }
   }
 }
