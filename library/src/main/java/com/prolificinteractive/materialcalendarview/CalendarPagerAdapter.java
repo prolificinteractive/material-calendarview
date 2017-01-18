@@ -37,6 +37,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private List<CalendarDay> selectedDates = new ArrayList<>();
     private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
     private DayFormatter dayFormatter = DayFormatter.DEFAULT;
+    protected DayViewProvider dayViewProvider = null;
     private List<DayViewDecorator> decorators = new ArrayList<>();
     private List<DecoratorResult> decoratorResults = null;
     private boolean selectionEnabled = true;
@@ -47,6 +48,11 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         currentViews = new ArrayDeque<>();
         currentViews.iterator();
         setRangeDates(null, null);
+    }
+
+    public void setDayViewProvider(DayViewProvider dayViewProvider)
+    {
+        this.dayViewProvider = dayViewProvider;
     }
 
     public void setDecorators(List<DayViewDecorator> decorators) {
