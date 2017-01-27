@@ -68,7 +68,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
 
     protected void addDayView(Collection<DayView> dayViews, Calendar calendar) {
         CalendarDay day = CalendarDay.from(calendar);
-        DayView dayView = dayViewProvider != null ? dayViewProvider.getDayView(day) : new DayView(getContext(), day, null);
+        DayView dayView = dayViewProvider != null ? dayViewProvider.getDayView(day) : new DayView(getContext(), day);
         dayView.setOnClickListener(this);
         dayViews.add(dayView);
         addView(dayView, new LayoutParams());
