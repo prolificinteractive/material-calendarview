@@ -51,8 +51,8 @@ public class DayView extends CheckedTextView {
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
 
-    public DayView(Context context, CalendarDay day, AttributeSet attrs) {
-        super(context, attrs);
+    public DayView(Context context, CalendarDay day) {
+        super(context);
 
         fadeTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
