@@ -222,7 +222,6 @@ public class MaterialCalendarView extends ViewGroup {
     private OnDateSelectedListener listener;
     private OnMonthChangedListener monthListener;
     private OnRangeSelectedListener rangeListener;
-    private OnClickListener titleListener;
 
     CharSequence calendarContentDescription;
     private int accentColor = 0;
@@ -1362,9 +1361,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param listener Listener to be notified.
      */
     public void setOnTitleClickListener(final OnClickListener listener) {
-        if (listener != null) {
-            title.setOnClickListener(listener);
-        }
+        title.setOnClickListener(listener);
     }
 
     /**

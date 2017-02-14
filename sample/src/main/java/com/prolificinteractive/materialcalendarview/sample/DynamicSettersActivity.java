@@ -48,7 +48,7 @@ public class DynamicSettersActivity extends AppCompatActivity {
         widget.setOnTitleClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                Toast.makeText(DynamicSettersActivity.this, "Today is the day", Toast.LENGTH_SHORT)
+                Toast.makeText(DynamicSettersActivity.this, R.string.today, Toast.LENGTH_SHORT)
                         .show();
             }
         });
