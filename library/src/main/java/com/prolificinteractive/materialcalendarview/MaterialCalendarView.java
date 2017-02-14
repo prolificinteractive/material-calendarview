@@ -1084,7 +1084,7 @@ public class MaterialCalendarView extends ViewGroup {
         ss.calendarMode = calendarMode;
         ss.dynamicHeightEnabled = mDynamicHeightEnabled;
         ss.currentMonth = currentMonth;
-        ss.saveCurrentPosition = state.saveCurrentPosition;
+        ss.cacheCurrentPosition = state.cacheCurrentPosition;
         return ss;
     }
 
@@ -1097,7 +1097,7 @@ public class MaterialCalendarView extends ViewGroup {
                 .setCalendarDisplayMode(ss.calendarMode)
                 .setMinimumDate(ss.minDate)
                 .setMaximumDate(ss.maxDate)
-                .isCacheCalendarPositionEnabled(ss.saveCurrentPosition)
+                .isCacheCalendarPositionEnabled(ss.cacheCurrentPosition)
                 .commit();
 
         setSelectionColor(ss.color);
@@ -1159,7 +1159,7 @@ public class MaterialCalendarView extends ViewGroup {
         boolean dynamicHeightEnabled = false;
         CalendarMode calendarMode = CalendarMode.MONTHS;
         CalendarDay currentMonth = null;
-        boolean saveCurrentPosition;
+        boolean cacheCurrentPosition;
 
         SavedState(Parcelable superState) {
             super(superState);
@@ -1185,7 +1185,7 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeInt(dynamicHeightEnabled ? 1 : 0);
             out.writeInt(calendarMode == CalendarMode.WEEKS ? 1 : 0);
             out.writeParcelable(currentMonth, 0);
-            out.writeByte((byte) (saveCurrentPosition ? 1 : 0));
+            out.writeByte((byte) (cacheCurrentPosition ? 1 : 0));
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR
@@ -1219,7 +1219,7 @@ public class MaterialCalendarView extends ViewGroup {
             dynamicHeightEnabled = in.readInt() == 1;
             calendarMode = in.readInt() == 1 ? CalendarMode.WEEKS : CalendarMode.MONTHS;
             currentMonth = in.readParcelable(loader);
-            saveCurrentPosition = in.readByte() != 0;
+            cacheCurrentPosition = in.readByte() != 0;
         }
     }
 
@@ -1802,14 +1802,14 @@ public class MaterialCalendarView extends ViewGroup {
         private final int firstDayOfWeek;
         private final CalendarDay minDate;
         private final CalendarDay maxDate;
-        private final boolean saveCurrentPosition;
+        private final boolean cacheCurrentPosition;
 
         private State(final StateBuilder builder) {
             calendarMode = builder.calendarMode;
             firstDayOfWeek = builder.firstDayOfWeek;
             minDate = builder.minDate;
             maxDate = builder.maxDate;
-            saveCurrentPosition = builder.cacheCurrentPosition;
+            cacheCurrentPosition = builder.cacheCurrentPosition;
         }
 
         /**
@@ -1836,7 +1836,7 @@ public class MaterialCalendarView extends ViewGroup {
             firstDayOfWeek = state.firstDayOfWeek;
             minDate = state.minDate;
             maxDate = state.maxDate;
-            cacheCurrentPosition = state.saveCurrentPosition;
+            cacheCurrentPosition = state.cacheCurrentPosition;
         }
 
         /**
@@ -1934,7 +1934,7 @@ public class MaterialCalendarView extends ViewGroup {
     private void commit(State state) {
         // Use the calendarDayToShow to determine which date to focus on for the case of switching between month and week views
         CalendarDay calendarDayToShow = null;
-        if (adapter != null && state.saveCurrentPosition) {
+        if (adapter != null && state.cacheCurrentPosition) {
             calendarDayToShow = adapter.getItem(pager.getCurrentItem());
             if (calendarMode != state.calendarMode) {
                 CalendarDay currentlySelectedDate = getSelectedDate();
