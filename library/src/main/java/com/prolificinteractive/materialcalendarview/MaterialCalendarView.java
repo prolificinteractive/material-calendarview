@@ -222,7 +222,7 @@ public class MaterialCalendarView extends ViewGroup {
     private OnDateSelectedListener listener;
     private OnMonthChangedListener monthListener;
     private OnRangeSelectedListener rangeListener;
-
+    private OnClickListener titleListener;
 
     CharSequence calendarContentDescription;
     private int accentColor = 0;
@@ -262,7 +262,6 @@ public class MaterialCalendarView extends ViewGroup {
         buttonFuture.setContentDescription(getContext().getString(R.string.next));
         pager = new CalendarPager(getContext());
 
-        title.setOnClickListener(onClickListener);
         buttonPast.setOnClickListener(onClickListener);
         buttonFuture.setOnClickListener(onClickListener);
 
@@ -310,12 +309,12 @@ public class MaterialCalendarView extends ViewGroup {
             }
 
             final int tileWidth = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileWidth, INVALID_TILE_DIMENSION);
-            if(tileWidth > INVALID_TILE_DIMENSION){
+            if (tileWidth > INVALID_TILE_DIMENSION) {
                 setTileWidth(tileWidth);
             }
 
             final int tileHeight = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileHeight, INVALID_TILE_DIMENSION);
-            if(tileHeight > INVALID_TILE_DIMENSION){
+            if (tileHeight > INVALID_TILE_DIMENSION) {
                 setTileHeight(tileHeight);
             }
 
@@ -1351,6 +1350,24 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void setOnRangeSelectedListener(OnRangeSelectedListener listener) {
         this.rangeListener = listener;
+    }
+
+    /**
+     * Add listener to the title.
+     *
+     * @param listener thing to be notified
+     */
+    public void setOnTitleClickListener(final OnClickListener listener) {
+        if (listener != null) {
+            title.setOnClickListener(listener);
+        }
+    }
+
+    /**
+     * Remove listener from title view.
+     */
+    public void removeOnTitleClickListener() {
+        title.setOnClickListener(null);
     }
 
     /**

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -43,6 +44,14 @@ public class DynamicSettersActivity extends AppCompatActivity {
         currentTileSize = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
         currentTileWidth = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
         currentTileHeight = MaterialCalendarView.DEFAULT_TILE_SIZE_DP;
+
+        widget.setOnTitleClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                Toast.makeText(DynamicSettersActivity.this, "Today is the day", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     @OnClick(R.id.button_other_dates)
