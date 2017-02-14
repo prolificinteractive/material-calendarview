@@ -99,6 +99,13 @@ public class DynamicSettersActivity extends AppCompatActivity {
                 .show();
     }
 
+    @OnCheckedChanged(R.id.enable_save_current_position)
+    void onSaveCurrentPositionChecked(boolean checked) {
+        widget.state().edit()
+                .setSaveCurrentPosition(checked)
+                .commit();
+    }
+
     @OnCheckedChanged(R.id.check_text_appearance)
     void onTextAppearanceChecked(boolean checked) {
         if (checked) {

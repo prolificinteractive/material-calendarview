@@ -12,7 +12,7 @@ and feel, rather than 100% parity with the platform's implementation.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:1.4.0'` to your dependencies.
+1. Add `compile 'com.prolificinteractive:material-calendarview:1.4.2'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateSelectedListener` or call `MaterialCalendarView.getSelectedDates()` when you need it.
 
@@ -65,31 +65,6 @@ Major Change in 1.3.0
 * Set tile width/height separately rather than single tile size with `setTileWidth` and `setTileHeight`
 * Attributes: mcv_tileWidth, mcv_tileHeight, mcv_calendarMode
 * TalkBack APIs: `setContentDescriptionArrowPast`, `ArrowFuture`, `Calendar`
-
-Major Change in 1.2.0
----------------------
-You can now collapse the calendar view to single week paging by calling
-`setCalendarDisplayMode(CalendarMode.WEEKS)`. By default it is set to `CalendarMode.MONTHS`. Thanks
-[Dominik Zarzecki](https://github.com/dominikzarzecki)!
-
-Major Change in 1.0.0
----------------------
-
-With the implementation of multiple selection, some of the apis needed to change to support it,
-namely `OnDateChangedListener` is now `OnDateSelectedListener`. There are also a bunch of new apis
-for multiple selection.
-
-Also, `showOtherDates` is now a set of flags for finer control over which extra dates are shown.
-
-Major Change in 0.8.0
----------------------
-
-The view now responds better to layout parameters.
-The functionality is similar to how `adjustViewBounds` works with ImageView,
-where the view will try and take up as much space as necessary,
-but we base it on tile size instead of an aspect ratio.
-The exception being that if a `tileSize` is set,
-that will override everything and set the view to that size.
 
 Documentation
 -------------

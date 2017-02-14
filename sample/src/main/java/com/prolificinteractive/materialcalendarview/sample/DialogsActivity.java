@@ -4,8 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +45,7 @@ public class DialogsActivity extends AppCompatActivity {
         new SimpleCalendarDialogFragment().show(getSupportFragmentManager(), "test-simple-calendar");
     }
 
-    public static class SimpleDialogFragment extends DialogFragment {
+    public static class SimpleDialogFragment extends AppCompatDialogFragment {
 
         @NonNull
         @Override
@@ -58,24 +58,30 @@ public class DialogsActivity extends AppCompatActivity {
         }
     }
 
-    public static class SimpleCalendarDialogFragment extends DialogFragment implements OnDateSelectedListener {
+    public static class SimpleCalendarDialogFragment extends AppCompatDialogFragment implements OnDateSelectedListener {
 
         private TextView textView;
 
+        @NonNull
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.dialog_basic, container, false);
-        }
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
+            //inflate custom layout and get views
+            //pass null as parent view because will be in dialog layout
+            View view = inflater.inflate(R.layout.dialog_basic, null);
 
             textView = (TextView) view.findViewById(R.id.textView);
 
             MaterialCalendarView widget = (MaterialCalendarView) view.findViewById(R.id.calendarView);
 
             widget.setOnDateChangedListener(this);
+
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.title_activity_dialogs)
+                    .setView(view)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create();
         }
 
         @Override
