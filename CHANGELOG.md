@@ -1,6 +1,14 @@
 Change Log
 ==========
-Version 1.4.0 *(TBD)*
+Version 1.4.2 *(2016-10-10)*
+----------------------------
+* New: match_parent is now supported by tileSize, tileWidth and tileHeight
+* New: api for title animation orientation horizontal/vertical `setTitleAnimationOrientation`
+* Fix: Issue with custom arrow mask being overwritten when set in xml
+* Fix: Issue when clicking date outside of current year would trigger the wrong goToNext or goToPrevious method
+* Fix: WeekDayFormatter would overwritten first day of the week
+
+Version 1.4.0 *(2016-06-01)*
 ----------------------------
 * New: Add select range functionality. Use `setSelectionMode(MaterialCalendarView.SELECTION_MODE_RANGE)` and `setOnRangeSelectedListener`
 * Breaking Change: `setFirstDayOfWeek`, `setMin/MaxDate`, and `setCalendarDisplayMode` are moved to a `State` object. Call `mcv.state().edit()` to edit them and commit the changes with `commit`. See [CUSTOMIZATION_BUILDER](docs/CUSTOMIZATION_BUILDER.md) for usage details.

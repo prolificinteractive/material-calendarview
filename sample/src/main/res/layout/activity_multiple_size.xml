@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MultipleSizeActivity"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/textNormalView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_normal"
+            />
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/normalView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/textSmallView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_small"
+            />
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/smallView"
+            android:layout_width="@dimen/calendar_size_small"
+            android:layout_height="@dimen/calendar_size_small"
+            />
+
+        <TextView
+            android:id="@+id/textMediumView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_medium"
+            />
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/mediumView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mcv_tileSize="@dimen/tile_size_medium"
+            />
+
+        <TextView
+            android:id="@+id/textThinView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_thin"
+            />
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/thinView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mcv_tileWidth="@dimen/tile_size_small"
+            app:mcv_tileHeight="@dimen/tile_size_medium"
+            />
+
+        <TextView
+            android:id="@+id/textWideView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_wide"/>
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/wideView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mcv_tileWidth="@dimen/tile_size_medium"
+            app:mcv_tileHeight="@dimen/tile_size_small"
+            />
+    </LinearLayout>
+
+</ScrollView>
