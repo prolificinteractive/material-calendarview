@@ -310,12 +310,12 @@ public class MaterialCalendarView extends ViewGroup {
             }
 
             final int tileWidth = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileWidth, INVALID_TILE_DIMENSION);
-            if(tileWidth > INVALID_TILE_DIMENSION){
+            if (tileWidth > INVALID_TILE_DIMENSION) {
                 setTileWidth(tileWidth);
             }
 
             final int tileHeight = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileHeight, INVALID_TILE_DIMENSION);
-            if(tileHeight > INVALID_TILE_DIMENSION){
+            if (tileHeight > INVALID_TILE_DIMENSION) {
                 setTileHeight(tileHeight);
             }
 
@@ -1480,8 +1480,8 @@ public class MaterialCalendarView extends ViewGroup {
         final int selectedMonth = selectedDate.getMonth();
 
         if (calendarMode == CalendarMode.MONTHS
-            && allowClickDaysOutsideCurrentMonth
-            && currentMonth != selectedMonth) {
+                && allowClickDaysOutsideCurrentMonth
+                && currentMonth != selectedMonth) {
             if (currentDate.isAfter(selectedDate)) {
                 goToPrevious();
             } else if (currentDate.isBefore(selectedDate)) {
@@ -1913,7 +1913,13 @@ public class MaterialCalendarView extends ViewGroup {
             return this;
         }
 
-        public StateBuilder setSaveCurrentPosition(@Nullable boolean saveCurrentPosition) {
+        /**
+         * Use this method  to enable saving the current position when switching
+         * between week and month mode.
+         *
+         * @param saveCurrentPosition Set to true to save the current position, false otherwise.
+         */
+        public StateBuilder setSaveCurrentPosition(final boolean saveCurrentPosition) {
             this.saveCurrentPosition = saveCurrentPosition;
             return this;
         }
