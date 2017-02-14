@@ -1580,15 +1580,15 @@ public class MaterialCalendarView extends ViewGroup {
             } else {
                 measureTileHeight = desiredTileHeight;
             }
-        } else if (specWidthMode == MeasureSpec.EXACTLY) {
+        } else if (specWidthMode == MeasureSpec.EXACTLY || specWidthMode == MeasureSpec.AT_MOST) {
             if (specHeightMode == MeasureSpec.EXACTLY) {
-                //Pick the larger of the two explicit sizes
-                measureTileSize = Math.max(desiredTileWidth, desiredTileHeight);
+                //Pick the smaller of the two explicit sizes
+                measureTileSize = Math.min(desiredTileWidth, desiredTileHeight);
             } else {
                 //Be the width size the user wants
                 measureTileSize = desiredTileWidth;
             }
-        } else if (specHeightMode == MeasureSpec.EXACTLY) {
+        } else if (specHeightMode == MeasureSpec.EXACTLY || specHeightMode == MeasureSpec.AT_MOST) {
             //Be the height size the user wants
             measureTileSize = desiredTileHeight;
         }
