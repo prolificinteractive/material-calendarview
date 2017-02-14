@@ -1097,7 +1097,7 @@ public class MaterialCalendarView extends ViewGroup {
                 .setCalendarDisplayMode(ss.calendarMode)
                 .setMinimumDate(ss.minDate)
                 .setMaximumDate(ss.maxDate)
-                .setSaveCurrentPosition(ss.saveCurrentPosition)
+                .isCacheCalendarPositionEnabled(ss.saveCurrentPosition)
                 .commit();
 
         setSelectionColor(ss.color);
@@ -1798,18 +1798,18 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     public class State {
-        public final CalendarMode calendarMode;
-        public final int firstDayOfWeek;
-        public final CalendarDay minDate;
-        public final CalendarDay maxDate;
-        public final boolean saveCurrentPosition;
+        private final CalendarMode calendarMode;
+        private final int firstDayOfWeek;
+        private final CalendarDay minDate;
+        private final CalendarDay maxDate;
+        private final boolean saveCurrentPosition;
 
-        public State(StateBuilder builder) {
+        private State(final StateBuilder builder) {
             calendarMode = builder.calendarMode;
             firstDayOfWeek = builder.firstDayOfWeek;
             minDate = builder.minDate;
             maxDate = builder.maxDate;
-            saveCurrentPosition = builder.saveCurrentPosition;
+            saveCurrentPosition = builder.cacheCurrentPosition;
         }
 
         /**
@@ -1824,9 +1824,9 @@ public class MaterialCalendarView extends ViewGroup {
     public class StateBuilder {
         private CalendarMode calendarMode = CalendarMode.MONTHS;
         private int firstDayOfWeek = Calendar.getInstance().getFirstDayOfWeek();
-        public CalendarDay minDate = null;
-        public CalendarDay maxDate = null;
-        public boolean saveCurrentPosition = false;
+        private boolean cacheCurrentPosition = false;
+        private CalendarDay minDate = null;
+        private CalendarDay maxDate = null;
 
         public StateBuilder() {
         }
@@ -1836,7 +1836,7 @@ public class MaterialCalendarView extends ViewGroup {
             firstDayOfWeek = state.firstDayOfWeek;
             minDate = state.minDate;
             maxDate = state.maxDate;
-            saveCurrentPosition = state.saveCurrentPosition;
+            cacheCurrentPosition = state.saveCurrentPosition;
         }
 
         /**
@@ -1914,13 +1914,15 @@ public class MaterialCalendarView extends ViewGroup {
         }
 
         /**
-         * Use this method  to enable saving the current position when switching
-         * between week and month mode.
+         * Use this method to enable saving the current position when switching
+         * between week and month mode. By default, the calendar update to the latest selected date
+         * or the current date. When set to true, the view will used the month that the calendar is
+         * currently on.
          *
-         * @param saveCurrentPosition Set to true to save the current position, false otherwise.
+         * @param cacheCurrentPosition Set to true to cache the current position, false otherwise.
          */
-        public StateBuilder setSaveCurrentPosition(final boolean saveCurrentPosition) {
-            this.saveCurrentPosition = saveCurrentPosition;
+        public StateBuilder isCacheCalendarPositionEnabled(final boolean cacheCurrentPosition) {
+            this.cacheCurrentPosition = cacheCurrentPosition;
             return this;
         }
 

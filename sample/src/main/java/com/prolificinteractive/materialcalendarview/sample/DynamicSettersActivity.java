@@ -93,7 +93,7 @@ public class DynamicSettersActivity extends AppCompatActivity {
     @OnCheckedChanged(R.id.enable_save_current_position)
     void onSaveCurrentPositionChecked(boolean checked) {
         widget.state().edit()
-                .setSaveCurrentPosition(checked)
+                .isCacheCalendarPositionEnabled(checked)
                 .commit();
     }
 
