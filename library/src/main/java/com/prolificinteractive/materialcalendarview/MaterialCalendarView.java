@@ -1082,6 +1082,7 @@ public class MaterialCalendarView extends ViewGroup {
         ss.tileHeightPx = getTileHeight();
         ss.topbarVisible = getTopbarVisible();
         ss.calendarMode = calendarMode;
+        ss.dynamicHeightEnabled = mDynamicHeightEnabled;
         ss.currentMonth = currentMonth;
         return ss;
     }
