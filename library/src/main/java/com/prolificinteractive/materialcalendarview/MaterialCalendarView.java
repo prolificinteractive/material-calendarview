@@ -1357,21 +1357,14 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * Add listener to the title.
+     * Add listener to the title or null to remove it.
      *
-     * @param listener thing to be notified
+     * @param listener Listener to be notified.
      */
     public void setOnTitleClickListener(final OnClickListener listener) {
         if (listener != null) {
             title.setOnClickListener(listener);
         }
-    }
-
-    /**
-     * Remove listener from title view.
-     */
-    public void removeOnTitleClickListener() {
-        title.setOnClickListener(null);
     }
 
     /**
