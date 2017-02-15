@@ -12,6 +12,10 @@ android {
         versionCode project.ext.versionCodeInt
         versionName version
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {

@@ -223,7 +223,6 @@ public class MaterialCalendarView extends ViewGroup {
     private OnMonthChangedListener monthListener;
     private OnRangeSelectedListener rangeListener;
 
-
     CharSequence calendarContentDescription;
     private int accentColor = 0;
     private int arrowColor = Color.BLACK;
@@ -262,7 +261,6 @@ public class MaterialCalendarView extends ViewGroup {
         buttonFuture.setContentDescription(getContext().getString(R.string.next));
         pager = new CalendarPager(getContext());
 
-        title.setOnClickListener(onClickListener);
         buttonPast.setOnClickListener(onClickListener);
         buttonFuture.setOnClickListener(onClickListener);
 
@@ -1355,6 +1353,15 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void setOnRangeSelectedListener(OnRangeSelectedListener listener) {
         this.rangeListener = listener;
+    }
+
+    /**
+     * Add listener to the title or null to remove it.
+     *
+     * @param listener Listener to be notified.
+     */
+    public void setOnTitleClickListener(final OnClickListener listener) {
+        title.setOnClickListener(listener);
     }
 
     /**

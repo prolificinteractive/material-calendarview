@@ -48,4 +48,6 @@
     <string name="label_thin">Tile width and height specified (thin)</string>
     <string name="label_wide">Tile width and height specified (wide)</string>
 
+
+    <string name="today">Today is the day</string>
 </resources>
