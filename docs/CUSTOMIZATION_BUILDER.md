@@ -13,6 +13,7 @@ mcv.state().edit()
    .setMinimumDate(CalendarDay.from(2016, 4, 3))
    .setMaximumDate(CalendarDay.from(2016, 5, 12))
    .setCalendarDisplayMode(CalendarMode.WEEKS)
+   .setSaveCurrentPosition(true)
    .commit();
 ```
 
@@ -48,3 +49,9 @@ There are also convenience methods that accept a `Calendar` or a `Date` object a
 You can also use the builder `setCalendarDisplayMode(CalendarMode)` parameter.
 
 It is **important** to note that the `CalendarMode.WEEKS` is still experimental.
+
+### Save current position between week and month mode
+
+`SaveCurrentPosition` is set to false by default. When switching between week and month mode, the view redirect you to the today's date. 
+
+When `setSaveCurrentPosition` is set to `true`, the calendar will stay on the current position or last selected date.
