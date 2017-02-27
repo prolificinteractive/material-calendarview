@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.3.0-beta4'
         classpath 'com.github.dcendents:android-maven-plugin:1.2'
     }
 }
@@ -15,7 +15,7 @@ allprojects {
 //        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     // Is Release Build?
-    ext.isReleaseVersion = has("release")
+    ext.isReleaseVersion = hasProperty("release")
     ext.versionCodeInt = getProperty('VERSION_CODE').toInteger()
     version = VERSION_NAME
 }

@@ -167,6 +167,7 @@ class DayView extends CheckedTextView {
     }
 
     private final Rect tempRect = new Rect();
+    private final Rect circleDrawableRect = new Rect();
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
@@ -176,7 +177,7 @@ class DayView extends CheckedTextView {
             customBackground.draw(canvas);
         }
 
-        mCircleDrawable.setBounds(tempRect);
+        mCircleDrawable.setBounds(circleDrawableRect);
 
         super.onDraw(canvas);
     }
@@ -185,7 +186,7 @@ class DayView extends CheckedTextView {
         if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
         } else {
-            mCircleDrawable = generateBackground(selectionColor, fadeTime, tempRect);
+            mCircleDrawable = generateBackground(selectionColor, fadeTime, circleDrawableRect);
             setBackgroundDrawable(mCircleDrawable);
         }
     }
@@ -265,14 +266,17 @@ class DayView extends CheckedTextView {
 
     private void calculateBounds(int width, int height) {
         final int radius = Math.min(height, width);
-        // Lollipop platform bug. Rect offset needs to be divided by 4 instead of 2
-        final int offsetDivisor = Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP ? 4 : 2;
-        final int offset = Math.abs(height - width) / offsetDivisor;
+        final int offset = Math.abs(height - width) / 2;
+
+        // Lollipop platform bug. Circle drawable offset needs to be half of normal offset
+        final int circleOffset = Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP ? offset / 2 : offset;
 
         if (width >= height) {
             tempRect.set(offset, 0, radius + offset, height);
+            circleDrawableRect.set(circleOffset, 0, radius + circleOffset, height);
         } else {
             tempRect.set(0, offset, width, radius + offset);
+            circleDrawableRect.set(0, circleOffset, width, radius + circleOffset);
         }
     }
 }
