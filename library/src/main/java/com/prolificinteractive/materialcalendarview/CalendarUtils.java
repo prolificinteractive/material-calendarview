@@ -3,6 +3,8 @@ package com.prolificinteractive.materialcalendarview;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.jalalicalendarutil.JalaliCalendar;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,6 +12,9 @@ import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_WEEK;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
+
+
+//change in furure
 
 /**
  * Utilities for Calendar
@@ -21,7 +26,7 @@ public class CalendarUtils {
      * @return a new Calendar instance with the date set to the provided date. Time set to zero.
      */
     public static Calendar getInstance(@Nullable Date date) {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = new JalaliCalendar();
         if (date != null) {
             calendar.setTime(date);
         }
@@ -34,7 +39,7 @@ public class CalendarUtils {
      */
     @NonNull
     public static Calendar getInstance() {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = new JalaliCalendar();
         copyDateTo(calendar, calendar);
         return calendar;
     }
