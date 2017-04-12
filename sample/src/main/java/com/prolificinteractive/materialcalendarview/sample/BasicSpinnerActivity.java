@@ -19,6 +19,7 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,7 +49,22 @@ public class BasicSpinnerActivity extends AppCompatActivity implements OnDateSel
 
         spinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, CalendarMonth.getList());
+        List<String> monthYear = new ArrayList<>();
+        monthYear.add("Jan 2017");
+        monthYear.add("Feb 2017");
+        monthYear.add("Mac 2017");
+        monthYear.add("Apr 2017");
+        monthYear.add("May 2017");
+        monthYear.add("Jun 2017");
+        monthYear.add("July 2017");
+        monthYear.add("Aug 2017");
+        monthYear.add("Sep 2017");
+        monthYear.add("Oct 2017");
+        monthYear.add("Nov 2017");
+        monthYear.add("Dec 2017");
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, monthYear);
+//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, CalendarMonth.getList());
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -78,7 +94,7 @@ public class BasicSpinnerActivity extends AppCompatActivity implements OnDateSel
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        widget.setCurrentMonth(CalendarMonth.valueOf(parent.getItemAtPosition(position).toString()));
+        widget.setCurrentMonth(position);
 //        widget.setCurrentMonth(CalendarMonth.valueOf(parent.getItemAtPosition(position).toString()),2017);
     }
 
