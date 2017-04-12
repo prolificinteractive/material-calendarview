@@ -1,5 +1,8 @@
 package com.prolificinteractive.materialcalendarview;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author : hafiq on 12/04/2017.
  */
@@ -22,5 +25,14 @@ public enum  CalendarMonth {
 
     CalendarMonth(int x) {
         this.monthNum = x;
+    }
+
+    public static List<String> getList(){
+        List<String> month = new ArrayList<>();
+        for (CalendarMonth calendarMonth:values()){
+            month.add(calendarMonth.name());
+        }
+
+        return month;
     }
 }
