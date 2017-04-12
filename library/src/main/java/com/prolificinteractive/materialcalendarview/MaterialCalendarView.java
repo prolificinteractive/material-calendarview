@@ -856,6 +856,21 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * @param month a Month to focus the calendar on. Null will do nothing, only work month of current year
+     */
+    public void setCurrentMonth(@Nullable CalendarMonth month) {
+        setCurrentDate(CalendarDay.from(month));
+    }
+
+    /**
+     * @param month a Month to focus the calendar on. Null will do nothing
+     * @param year set a specific year
+     */
+    public void setCurrentMonth(@Nullable CalendarMonth month,int year) {
+        setCurrentDate(CalendarDay.from(month,year));
+    }
+
+    /**
      * @return The current month shown, will be set to first day of the month
      */
     public CalendarDay getCurrentDate() {
