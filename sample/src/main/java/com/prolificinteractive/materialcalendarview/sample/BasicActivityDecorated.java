@@ -103,7 +103,9 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateS
                 return;
             }
 
-            widget.addDecorator(new EventDecorator(Color.RED, calendarDays));
+            widget.addDecorator(new EventDecorator(calendarDays.subList(0, calendarDays.size() /2), Color.GRAY));
+            widget.addDecorator(new EventDecorator(calendarDays.subList(calendarDays.size() /2, calendarDays.size()), Color.BLUE, Color.RED));
+
         }
     }
 }
