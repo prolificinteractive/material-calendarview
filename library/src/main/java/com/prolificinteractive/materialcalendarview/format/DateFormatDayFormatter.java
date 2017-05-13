@@ -13,13 +13,33 @@ import java.util.Locale;
  */
 public class DateFormatDayFormatter implements DayFormatter {
 
-    private final DateFormat dateFormat;
+    private DateFormat dateFormat;
+    private Locale lastKnownLocal;
+
+    //create singleton instance from DateFormatDayFormatter to avoid creating redundant instance for each DayView.
+    private static DateFormatDayFormatter dateFormatDayFormatter;
+
+
+    public static DateFormatDayFormatter getInstance() {
+        if (dateFormatDayFormatter == null)
+            dateFormatDayFormatter = new DateFormatDayFormatter();
+        else {
+            //if user change local and resume the activity the calender now will draw DayView text with the new Local.
+            Locale currentLocal = Locale.getDefault();
+            if (!dateFormatDayFormatter.getLastKnownLocal().equals(currentLocal)) {
+                dateFormatDayFormatter.setLastKnownLocal(currentLocal);
+                dateFormatDayFormatter.setDateFormat(new SimpleDateFormat("d", currentLocal));
+            }
+        }
+        return dateFormatDayFormatter;
+    }
 
     /**
      * Format using a default format
      */
-    public DateFormatDayFormatter() {
+    private DateFormatDayFormatter() {
         this.dateFormat = new SimpleDateFormat("d", Locale.getDefault());
+        this.lastKnownLocal = Locale.getDefault();
     }
 
     /**
@@ -27,8 +47,24 @@ public class DateFormatDayFormatter implements DayFormatter {
      *
      * @param format the format to use
      */
-    public DateFormatDayFormatter(@NonNull DateFormat format) {
+    private DateFormatDayFormatter(@NonNull DateFormat format) {
         this.dateFormat = format;
+    }
+
+    public Locale getLastKnownLocal() {
+        return lastKnownLocal;
+    }
+
+    public void setLastKnownLocal(Locale lastKnownLocal) {
+        this.lastKnownLocal = lastKnownLocal;
+    }
+
+    public DateFormat getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(DateFormat dateFormat) {
+        this.dateFormat = dateFormat;
     }
 
     /**

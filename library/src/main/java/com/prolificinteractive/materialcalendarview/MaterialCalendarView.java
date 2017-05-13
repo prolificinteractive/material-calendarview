@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
+import com.prolificinteractive.materialcalendarview.format.DateFormatDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
@@ -939,7 +940,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param formatter the new formatter, null for default
      */
     public void setDayFormatter(DayFormatter formatter) {
-        adapter.setDayFormatter(formatter == null ? DayFormatter.DEFAULT : formatter);
+        adapter.setDayFormatter(formatter == null ? DateFormatDayFormatter.getInstance() : formatter);
     }
 
     /**
