@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
+import com.prolificinteractive.materialcalendarview.format.DateFormatDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
@@ -36,7 +37,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private DateRangeIndex rangeIndex;
     private List<CalendarDay> selectedDates = new ArrayList<>();
     private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
-    private DayFormatter dayFormatter = DayFormatter.DEFAULT;
+    private DayFormatter dayFormatter = DateFormatDayFormatter.getInstance();
     private List<DayViewDecorator> decorators = new ArrayList<>();
     private List<DecoratorResult> decoratorResults = null;
     private boolean selectionEnabled = true;
