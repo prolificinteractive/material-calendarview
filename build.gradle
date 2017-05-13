@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0-beta4'
+        classpath 'com.android.tools.build:gradle:2.3.1'
         classpath 'com.github.dcendents:android-maven-plugin:1.2'
     }
 }
@@ -11,6 +11,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://jitpack.io' }
         // Here for convience when testing new releases
 //        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
