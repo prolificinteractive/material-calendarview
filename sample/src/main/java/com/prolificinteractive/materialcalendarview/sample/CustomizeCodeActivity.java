@@ -12,12 +12,12 @@ import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormat
 
 import java.util.Calendar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CustomizeCodeActivity extends AppCompatActivity {
 
-    @Bind(R.id.calendarView)
+    @BindView(R.id.calendarView)
     MaterialCalendarView widget;
 
     @Override

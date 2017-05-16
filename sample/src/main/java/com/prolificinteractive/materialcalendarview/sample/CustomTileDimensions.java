@@ -14,7 +14,7 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -23,7 +23,7 @@ import butterknife.OnClick;
  */
 public class CustomTileDimensions extends AppCompatActivity {
 
-  @Bind(R.id.calendarView)
+  @BindView(R.id.calendarView)
   MaterialCalendarView widget;
 
   private int currentTileWidth;
