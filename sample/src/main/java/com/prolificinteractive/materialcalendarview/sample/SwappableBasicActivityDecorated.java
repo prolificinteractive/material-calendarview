@@ -14,7 +14,7 @@ import com.prolificinteractive.materialcalendarview.sample.decorators.OneDayDeco
 
 import java.util.Calendar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -25,7 +25,7 @@ public class SwappableBasicActivityDecorated extends AppCompatActivity implement
 
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
 
-    @Bind(R.id.calendarView)
+    @BindView(R.id.calendarView)
     MaterialCalendarView widget;
 
     @Override

@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -29,7 +29,7 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateS
 
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
 
-    @Bind(R.id.calendarView)
+    @BindView(R.id.calendarView)
     MaterialCalendarView widget;
 
     @Override
