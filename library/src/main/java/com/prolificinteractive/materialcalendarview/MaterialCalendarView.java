@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
@@ -751,6 +752,17 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * @param calenderTextTypeFace Custom font for calender title.
+     */
+    public void setHeaderTextTypeFace(String calenderTextTypeFace) {
+        try {
+            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), calenderTextTypeFace);
+            title.setTypeface(tf);
+        } catch (RuntimeException ignored) {
+        }
+    }
+
+    /**
      * @param resourceId The text appearance resource id.
      */
     public void setDateTextAppearance(int resourceId) {
@@ -769,6 +781,7 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void setTextTypeFace(String calendarTextTypeFace) {
         adapter.setCalendarTextTypeFace(calendarTextTypeFace);
+        setHeaderTextTypeFace(calendarTextTypeFace);
     }
 
 
