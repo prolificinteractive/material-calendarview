@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.sample.decorators.DoubleEventDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.EventDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.HighlightWeekendsDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.MySelectorDecorator;
@@ -55,8 +56,12 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateS
                 .setMaximumDate(instance2.getTime())
                 .commit();
 
+        List<CalendarDay> doubleEventDays = new ArrayList<>();
+        doubleEventDays.add(CalendarDay.today());
+
         widget.addDecorators(
                 new MySelectorDecorator(this),
+                new DoubleEventDecorator(Color.BLUE, Color.GREEN, doubleEventDays),
                 new HighlightWeekendsDecorator(),
                 oneDayDecorator
         );
