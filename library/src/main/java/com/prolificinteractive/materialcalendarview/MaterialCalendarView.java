@@ -234,6 +234,7 @@ public class MaterialCalendarView extends ViewGroup {
     private int selectionMode = SELECTION_MODE_SINGLE;
     private boolean allowClickDaysOutsideCurrentMonth = true;
     private int firstDayOfWeek;
+    private String calenderTextTypeFace;
 
     private State state;
 
@@ -371,6 +372,10 @@ public class MaterialCalendarView extends ViewGroup {
                     SHOW_DEFAULTS
             ));
 
+            calenderTextTypeFace = a.getString(R.styleable.MaterialCalendarView_mcv_textTypeFace);
+            setTextTypeFace(calenderTextTypeFace);
+
+
             setAllowClickDaysOutsideCurrentMonth(a.getBoolean(
                     R.styleable.MaterialCalendarView_mcv_allowClickDaysOutsideCurrentMonth,
                     true
@@ -393,6 +398,7 @@ public class MaterialCalendarView extends ViewGroup {
             MonthView monthView = new MonthView(this, currentMonth, getFirstDayOfWeek());
             monthView.setSelectionColor(getSelectionColor());
             monthView.setDateTextAppearance(adapter.getDateTextAppearance());
+            monthView.setCalendarTextTypeFace(adapter.getCalendarTextTypeFace());
             monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance());
             monthView.setShowOtherDates(getShowOtherDates());
             addView(monthView, new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
@@ -759,6 +765,14 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * @param calendarTextTypeFace Font source from the assets.
+     */
+    public void setTextTypeFace(String calendarTextTypeFace) {
+        adapter.setCalendarTextTypeFace(calendarTextTypeFace);
+    }
+
+
+    /**
      * @return the selected day, or null if no selection. If in multiple selection mode, this
      * will return the last selected date
      */
@@ -1101,6 +1115,7 @@ public class MaterialCalendarView extends ViewGroup {
         setSelectionColor(ss.color);
         setDateTextAppearance(ss.dateTextAppearance);
         setWeekDayTextAppearance(ss.weekDayTextAppearance);
+        setTextTypeFace(ss.calenderTextTypeFace);
         setShowOtherDates(ss.showOtherDates);
         setAllowClickDaysOutsideCurrentMonth(ss.allowClickDaysOutsideCurrentMonth);
         clearSelection();
@@ -1145,6 +1160,7 @@ public class MaterialCalendarView extends ViewGroup {
         int weekDayTextAppearance = 0;
         int showOtherDates = SHOW_DEFAULTS;
         boolean allowClickDaysOutsideCurrentMonth = true;
+        String calenderTextTypeFace = null;
         CalendarDay minDate = null;
         CalendarDay maxDate = null;
         List<CalendarDay> selectedDates = new ArrayList<>();

@@ -8,6 +8,7 @@
         <attr name="mcv_headerTextAppearance" format="reference" />
 
         <attr name="mcv_arrowColor" format="color" />
+        <attr name="mcv_textTypeFace" format="string" />
         <attr name="mcv_leftArrowMask" format="reference" />
         <attr name="mcv_rightArrowMask" format="reference" />
         <attr name="mcv_selectionColor" format="color" />

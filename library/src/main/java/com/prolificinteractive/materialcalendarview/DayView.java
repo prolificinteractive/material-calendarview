@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -278,5 +279,9 @@ class DayView extends CheckedTextView {
             tempRect.set(0, offset, width, radius + offset);
             circleDrawableRect.set(0, circleOffset, width, radius + circleOffset);
         }
+    }
+
+    public void setTypeFace(Typeface typeFace) {
+        this.setTypeface(typeFace);
     }
 }
