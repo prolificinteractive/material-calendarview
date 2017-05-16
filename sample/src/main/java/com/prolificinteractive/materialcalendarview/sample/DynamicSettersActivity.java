@@ -21,14 +21,14 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import java.util.Calendar;
 import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 public class DynamicSettersActivity extends AppCompatActivity {
 
-    @Bind(R.id.calendarView)
+    @BindView(R.id.calendarView)
     MaterialCalendarView widget;
 
     private int currentTileSize;

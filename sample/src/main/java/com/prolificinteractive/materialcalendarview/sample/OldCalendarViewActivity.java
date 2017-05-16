@@ -8,7 +8,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -19,10 +19,10 @@ public class OldCalendarViewActivity extends AppCompatActivity
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
-    @Bind(R.id.calendarView)
+    @BindView(R.id.calendarView)
     CalendarView widget;
 
-    @Bind(R.id.textView)
+    @BindView(R.id.textView)
     TextView textView;
 
     @Override

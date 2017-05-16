@@ -13,7 +13,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.util.Calendar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -25,7 +25,7 @@ public class MultipleViewActivity extends AppCompatActivity{
     //number of MaterialCalendarViews to display in list
     static final int NUM_ENTRIES = 3;
 
-    @Bind(R.id.calendar_list) RecyclerView calendarList;
+    @BindView(R.id.calendar_list) RecyclerView calendarList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
