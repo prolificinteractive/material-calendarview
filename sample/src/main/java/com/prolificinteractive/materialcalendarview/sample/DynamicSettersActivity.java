@@ -52,6 +52,8 @@ public class DynamicSettersActivity extends AppCompatActivity {
                         .show();
             }
         });
+        //set Custom font to material calendar calendar text.
+        widget.setTextTypeFace(getString(R.string.font));
     }
 
     @OnClick(R.id.button_other_dates)
@@ -112,10 +114,14 @@ public class DynamicSettersActivity extends AppCompatActivity {
             widget.setHeaderTextAppearance(R.style.TextAppearance_AppCompat_Large);
             widget.setDateTextAppearance(R.style.TextAppearance_AppCompat_Medium);
             widget.setWeekDayTextAppearance(R.style.TextAppearance_AppCompat_Medium);
+            // we need to set the custom font again after set text appearance.
+            widget.setTextTypeFace(getString(R.string.font));
         } else {
             widget.setHeaderTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_Header);
             widget.setDateTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_Date);
             widget.setWeekDayTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_WeekDay);
+            // we need to set the custom font again after set text appearance.
+            widget.setTextTypeFace(getString(R.string.font));
         }
         widget.setShowOtherDates(checked ? MaterialCalendarView.SHOW_ALL : MaterialCalendarView.SHOW_NONE);
     }
