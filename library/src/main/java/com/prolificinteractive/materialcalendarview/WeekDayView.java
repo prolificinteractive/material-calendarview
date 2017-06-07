@@ -42,6 +42,10 @@ class WeekDayView extends TextView {
         setText(formatter.format(dayOfWeek));
     }
 
+    public int getDayOfWeek() {
+        return dayOfWeek;
+    }
+
     public void setDayOfWeek(Calendar calendar) {
         setDayOfWeek(CalendarUtils.getDayOfWeek(calendar));
     }

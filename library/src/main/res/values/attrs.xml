@@ -5,6 +5,7 @@
 
         <attr name="mcv_dateTextAppearance" format="reference" />
         <attr name="mcv_weekDayTextAppearance" format="reference" />
+        <attr name="mcv_weekendTextAppearance" format="reference" />
         <attr name="mcv_headerTextAppearance" format="reference" />
 
         <attr name="mcv_arrowColor" format="color" />
