@@ -362,10 +362,10 @@ public class MaterialCalendarView extends ViewGroup {
                     R.style.TextAppearance_MaterialCalendarWidget_WeekDay
             ));
             setWeekDayTextAppearance(a.getResourceId(
-                    R.styleable.MaterialCalendarView_mcv_weekendTextAppearance,
+                    R.styleable.MaterialCalendarView_mcv_weekDayTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_WeekDay
             ), a.getResourceId(
-                    R.styleable.MaterialCalendarView_mcv_weekDayTextAppearance,
+                    R.styleable.MaterialCalendarView_mcv_weekendTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_WeekDay
             ));
             setDateTextAppearance(a.getResourceId(
