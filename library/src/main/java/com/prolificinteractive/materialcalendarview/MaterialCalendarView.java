@@ -361,6 +361,13 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_weekDayTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_WeekDay
             ));
+            setWeekDayTextAppearance(a.getResourceId(
+                    R.styleable.MaterialCalendarView_mcv_weekDayTextAppearance,
+                    R.style.TextAppearance_MaterialCalendarWidget_WeekDay
+            ), a.getResourceId(
+                    R.styleable.MaterialCalendarView_mcv_weekendTextAppearance,
+                    R.style.TextAppearance_MaterialCalendarWidget_WeekDay
+            ));
             setDateTextAppearance(a.getResourceId(
                     R.styleable.MaterialCalendarView_mcv_dateTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_Date
@@ -393,7 +400,9 @@ public class MaterialCalendarView extends ViewGroup {
             MonthView monthView = new MonthView(this, currentMonth, getFirstDayOfWeek());
             monthView.setSelectionColor(getSelectionColor());
             monthView.setDateTextAppearance(adapter.getDateTextAppearance());
-            monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance());
+            if (adapter.getWeekendTextAppearance() != 0) {
+                monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance(), adapter.getWeekendTextAppearance());
+            } else monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance());
             monthView.setShowOtherDates(getShowOtherDates());
             addView(monthView, new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
         }
@@ -756,6 +765,14 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void setWeekDayTextAppearance(int resourceId) {
         adapter.setWeekDayTextAppearance(resourceId);
+    }
+
+    /**
+     * @param weekdayResourceId The text appearance resource id.
+     * @param weekendResourceId The text appearance resource id.
+     */
+    public void setWeekDayTextAppearance(int weekdayResourceId, int weekendResourceId) {
+        adapter.setWeekDayTextAppearance(weekdayResourceId, weekendResourceId);
     }
 
     /**

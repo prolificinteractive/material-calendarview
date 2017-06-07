@@ -29,6 +29,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private Integer color = null;
     private Integer dateTextAppearance = null;
     private Integer weekDayTextAppearance = null;
+    private Integer weekendTextAppearance = null;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
     private CalendarDay minDate = null;
@@ -148,8 +149,11 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         if (dateTextAppearance != null) {
             pagerView.setDateTextAppearance(dateTextAppearance);
         }
-        if (weekDayTextAppearance != null) {
+        if (weekDayTextAppearance != null &&  weekendTextAppearance ==null) {
             pagerView.setWeekDayTextAppearance(weekDayTextAppearance);
+        }
+        if (weekDayTextAppearance != null &&  weekendTextAppearance !=null) {
+            pagerView.setWeekDayTextAppearance(weekDayTextAppearance, weekendTextAppearance);
         }
         pagerView.setShowOtherDates(showOtherDates);
         pagerView.setMinimumDate(minDate);
@@ -240,6 +244,17 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         }
     }
 
+    public void setWeekDayTextAppearance(int weekdayResourceId, int weekendResourceId) {
+        if (weekdayResourceId == 0 || weekendResourceId == 0) {
+            return;
+        }
+        this.weekDayTextAppearance = weekdayResourceId;
+        this.weekendTextAppearance = weekendResourceId;
+        for (V pagerView : currentViews) {
+            pagerView.setWeekDayTextAppearance(weekdayResourceId, weekendResourceId);
+        }
+    }
+
     public void setRangeDates(CalendarDay min, CalendarDay max) {
         this.minDate = min;
         this.maxDate = max;
@@ -319,5 +334,9 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
 
     protected int getWeekDayTextAppearance() {
         return weekDayTextAppearance == null ? 0 : weekDayTextAppearance;
+    }
+
+    public Integer getWeekendTextAppearance() {
+        return weekendTextAppearance == null ? 0 : weekendTextAppearance;
     }
 }

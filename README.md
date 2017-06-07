@@ -2,8 +2,6 @@
 
 Material Calendar View 
 ======================
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Material%20Calendar%20View-blue.svg?style=flat)](https://android-arsenal.com/details/1/1531) [![Maven Central](https://img.shields.io/maven-central/v/com.prolificinteractive/material-calendarview.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22material-calendarview%22) [![Travis branch](https://img.shields.io/travis/prolificinteractive/material-calendarview.svg?maxAge=2592000)](https://travis-ci.org/prolificinteractive/material-calendarview)
-
 A Material design back port of Android's CalendarView. The goal is to have a Material look
 and feel, rather than 100% parity with the platform's implementation.
 
@@ -12,7 +10,7 @@ and feel, rather than 100% parity with the platform's implementation.
 Usage
 -----
 
-1. Add `compile 'com.prolificinteractive:material-calendarview:1.4.3'` to your dependencies.
+1. Add `compile 'com.github.Erdemtsynduev:material-calendarview:v1.4.3.2'` to your dependencies.
 2. Add `MaterialCalendarView` into your layouts or view hierarchy.
 3. Set a `OnDateSelectedListener` or call `MaterialCalendarView.getSelectedDates()` when you need it.
 
@@ -35,6 +33,10 @@ Example:
 `CalendarMode.WEEK` and all week mode functionality is officially marked `@Experimental`. All APIs
 marked `@Experimental` are subject to change quickly and should not be used in production code. They
 are allowed for testing and feedback.
+
+Minor Change in 1.4.3.2
+---------------------
+* Now in the library, you can change the color of the weekend in WeekDayTextAppearance. You can change the color in the app: mcv_weekendTextAppearance and programmatically in public void setWeekDayTextAppearance (int weekdayResourceId, int weekendResourceId)
 
 Major Change in 1.4.0
 ---------------------
