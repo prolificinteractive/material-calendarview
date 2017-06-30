@@ -228,6 +228,7 @@ public class MaterialCalendarView extends ViewGroup {
     private int arrowColor = Color.BLACK;
     private Drawable leftArrowMask;
     private Drawable rightArrowMask;
+    private Drawable topbarBackground;
     private int tileHeight = INVALID_TILE_DIMENSION;
     private int tileWidth = INVALID_TILE_DIMENSION;
     @SelectionMode
@@ -375,6 +376,10 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_allowClickDaysOutsideCurrentMonth,
                     true
             ));
+
+            setTopbarBackground(a.getDrawable(
+                    R.styleable.MaterialCalendarView_mcv_topbarBackground
+            ));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -404,6 +409,8 @@ public class MaterialCalendarView extends ViewGroup {
         topbar.setOrientation(LinearLayout.HORIZONTAL);
         topbar.setClipChildren(false);
         topbar.setClipToPadding(false);
+        //noinspection deprecation
+        topbar.setBackgroundDrawable(getTopbarBackground());
         addView(topbar, new LayoutParams(1));
 
         buttonPast.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
@@ -1060,6 +1067,20 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public boolean getTopbarVisible() {
         return topbar.getVisibility() == View.VISIBLE;
+    }
+
+    /**
+     * @return drawable used as the background of topbar.
+     */
+    public Drawable getTopbarBackground() {
+        return topbarBackground;
+    }
+
+    /**
+     * @param topbarBackground drawable to be used as the background of topbar.
+     */
+    private void setTopbarBackground(Drawable topbarBackground) {
+        this.topbarBackground = topbarBackground;
     }
 
     @Override

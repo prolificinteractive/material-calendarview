@@ -13,6 +13,7 @@ Customization Options
     app:mcv_headerTextAppearance="style"
     app:mcv_dateTextAppearance="style"
     app:mcv_weekDayTextAppearance="style"
+    app:mcv_toopbarBackground="drawable"
     app:mcv_weekDayLabels="array"
     app:mcv_monthLabels="array"
     app:mcv_tileSize="dimension"
@@ -101,6 +102,9 @@ Arrow masks are drawables that will be colored with arrow color and be drawn for
 The color is applied with a color filter using `PorterDuff.Mode.SRC_ATOP`.
 They can be set in xml using `mcv_leftArrowMask` and `mcv_rightArrowMask` or by calling `setLeftArrowMask()` and `setRightArrowMask()`.
 
+### Custom background
+
+You can change the topbar background by setting `mcv_toopbarBackground` in xml.
 
 ## Custom Labels
 
