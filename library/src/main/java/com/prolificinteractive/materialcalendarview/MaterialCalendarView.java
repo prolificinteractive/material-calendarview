@@ -1079,7 +1079,7 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * @param topbarBackground drawable to be used as the background of topbar.
      */
-    public void setTopbarBackground(Drawable topbarBackground) {
+    private void setTopbarBackground(Drawable topbarBackground) {
         this.topbarBackground = topbarBackground;
     }
 
