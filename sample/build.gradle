@@ -29,5 +29,4 @@ dependencies {
     compile rootProject.ext.recyclerviewV7
     compile rootProject.ext.butterknife
     annotationProcessor rootProject.ext.butterknifeCompiler
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
