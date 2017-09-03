@@ -1498,7 +1498,9 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void selectRange(final CalendarDay firstDay, final CalendarDay lastDay) {
         clearSelection();
-        if (firstDay.isAfter(lastDay)) {
+        if (firstDay == null || lastDay == null) {
+            return;
+        } else if (firstDay.isAfter(lastDay)) {
             dispatchOnRangeSelected(lastDay, firstDay);
         } else {
             dispatchOnRangeSelected(firstDay, lastDay);

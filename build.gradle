@@ -12,10 +12,12 @@ allprojects {
     repositories {
         jcenter()
         // Here for convience when testing new releases
-//        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        // maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
-    // Is Release Build?
-    ext.isReleaseVersion = hasProperty("release")
-    ext.versionCodeInt = getProperty('VERSION_CODE').toInteger()
-    version = VERSION_NAME
 }
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+apply from: rootProject.file('dependencies.gradle')
