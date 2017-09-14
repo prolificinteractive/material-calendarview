@@ -153,6 +153,14 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     *
+     * @return the day in a week
+     */
+    public int getDayOfWeek(){
+        return CalendarUtils.getDayOfWeek(getCalendar());
+    }
+
+    /**
      * Get this day as a {@linkplain Date}
      *
      * @return a date with this days information
