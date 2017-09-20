@@ -13,6 +13,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -24,7 +25,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
@@ -171,7 +171,7 @@ public class MaterialCalendarView extends ViewGroup {
     private static final TitleFormatter DEFAULT_TITLE_FORMATTER = new DateFormatTitleFormatter();
     private final TitleChanger titleChanger;
 
-    private final TextView title;
+    private final AppCompatTextView title;
     private final DirectionButton buttonPast;
     private final DirectionButton buttonFuture;
     private final CalendarPager pager;
@@ -256,7 +256,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         buttonPast = new DirectionButton(getContext());
         buttonPast.setContentDescription(getContext().getString(R.string.previous));
-        title = new TextView(getContext());
+        title = new AppCompatTextView(getContext());
         buttonFuture = new DirectionButton(getContext());
         buttonFuture.setContentDescription(getContext().getString(R.string.next));
         pager = new CalendarPager(getContext());

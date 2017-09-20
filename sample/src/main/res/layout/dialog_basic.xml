@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         />
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/textView"
         android:layout_margin="16dp"
         android:layout_width="match_parent"
