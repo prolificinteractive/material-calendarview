@@ -2,12 +2,12 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.animation.Animator;
 import android.content.res.Resources;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 
@@ -16,7 +16,7 @@ class TitleChanger {
     public static final int DEFAULT_ANIMATION_DELAY = 400;
     public static final int DEFAULT_Y_TRANSLATION_DP = 20;
 
-    private final TextView title;
+    private final AppCompatTextView title;
     private TitleFormatter titleFormatter;
 
     private final int animDelay;
@@ -29,7 +29,7 @@ class TitleChanger {
     private long lastAnimTime = 0;
     private CalendarDay previousMonth = null;
 
-    public TitleChanger(TextView title) {
+    public TitleChanger(AppCompatTextView title) {
         this.title = title;
 
         Resources res = title.getResources();
@@ -122,7 +122,7 @@ class TitleChanger {
         previousMonth = currentMonth;
     }
 
-    private void doTranslation(final TextView title, final int translate) {
+    private void doTranslation(final AppCompatTextView title, final int translate) {
         if (orientation == MaterialCalendarView.HORIZONTAL) {
             title.setTranslationX(translate);
         } else {

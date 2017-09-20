@@ -1,14 +1,16 @@
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.4.0-alpha7'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta6'
     }
 }
 
 allprojects {
     repositories {
+        google()
         jcenter()
         // Here for convience when testing new releases
         // maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }

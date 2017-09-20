@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme"
@@ -11,6 +11,7 @@
     <style name="CustomDayTextAppearance"
         parent="TextAppearance.AppCompat.Medium">
         <item name="android:textColor">@color/mcv_text_date_light</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_regular</item>
     </style>
 
 </resources>

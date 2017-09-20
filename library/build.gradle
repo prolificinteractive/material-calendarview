@@ -19,6 +19,7 @@ android {
 
 dependencies {
     compile rootProject.ext.supportV4
+    compile rootProject.ext.supportAppCompat
     compile rootProject.ext.supportAnnotations
 
     rootProject.ext.testDep.each { testCompile it }
