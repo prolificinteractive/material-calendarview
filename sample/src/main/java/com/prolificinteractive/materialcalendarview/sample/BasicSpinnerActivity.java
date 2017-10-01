@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -32,11 +32,11 @@ import butterknife.ButterKnife;
 
 public class BasicSpinnerActivity extends AppCompatActivity implements OnDateSelectedListener, OnMonthChangedListener,AdapterView.OnItemSelectedListener {
 
-    @Bind(R.id.spinner)
+    @BindView(R.id.spinner)
     Spinner spinner;
-    @Bind(R.id.calendarView)
+    @BindView(R.id.calendarView)
     MaterialCalendarView widget;
-    @Bind(R.id.textView)
+    @BindView(R.id.textView)
     TextView textView;
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
