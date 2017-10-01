@@ -37,6 +37,33 @@ public final class CalendarDay implements Parcelable {
     }
 
     /**
+     * Get a new instance set to specified month of current year
+     *
+     * @param month {@linkplain CalendarMonth} to pull month information. Passing null will return null
+     * @return CalendarDay set to the specified date
+     */
+    public static CalendarDay from(@Nullable CalendarMonth month){
+        if (month == null) {
+            return null;
+        }
+        return from(Calendar.getInstance().get(Calendar.YEAR),month.monthNum,1);
+    }
+
+    /**
+     * Get a new instance set to specified month of specific year
+     *
+     * @param month {@linkplain CalendarMonth} to pull month information. Passing null will return null
+     * @param year - specific year
+     * @return CalendarDay set to the specified date
+     */
+    public static CalendarDay from(@Nullable CalendarMonth month,int year){
+        if (month == null) {
+            return null;
+        }
+        return from(year,month.monthNum,1);
+    }
+
+    /**
      * Get a new instance set to the specified day
      *
      * @param calendar {@linkplain Calendar} to pull date information from. Passing null will return null

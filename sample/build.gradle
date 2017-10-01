@@ -24,9 +24,9 @@ dependencies {
     // We depend on the source directly here so that development is easier.
     compile project(':library')
     //compile 'com.prolificinteractive:material-calendarview:1.4.3'
-
     compile rootProject.ext.supportAppCompat
     compile rootProject.ext.recyclerviewV7
     compile rootProject.ext.butterknife
+    compile rootProject.ext.supportDesign
     annotationProcessor rootProject.ext.butterknifeCompiler
 }
