@@ -1,5 +1,10 @@
 Change Log
 ==========
+Version 1.4.4 *(2017-06-30)*
+----------------------------
+* New: Added `mcv_topbarBackground` to apply a custom background drawable for topbar
+* Fix: Fixed issue in `showOtherDates` when applying combined flags `out_of_range|decorated_disabled`
+
 Version 1.4.3 *(2017-02-21)*
 ----------------------------
 * New: Added set click listener method for title
