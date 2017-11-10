@@ -16,13 +16,11 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -172,8 +170,6 @@ public class MaterialCalendarView extends ViewGroup {
     private final TitleChanger titleChanger;
 
     private final TextView title;
-    private final DirectionButton buttonPast;
-    private final DirectionButton buttonFuture;
     private final CalendarPager pager;
     private CalendarPagerAdapter<?> adapter;
     private CalendarDay currentMonth;
@@ -185,17 +181,6 @@ public class MaterialCalendarView extends ViewGroup {
     private boolean mDynamicHeightEnabled;
 
     private final ArrayList<DayViewDecorator> dayViewDecorators = new ArrayList<>();
-
-    private final OnClickListener onClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v == buttonFuture) {
-                pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-            } else if (v == buttonPast) {
-                pager.setCurrentItem(pager.getCurrentItem() - 1, true);
-            }
-        }
-    };
 
     private final ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
@@ -226,8 +211,6 @@ public class MaterialCalendarView extends ViewGroup {
     CharSequence calendarContentDescription;
     private int accentColor = 0;
     private int arrowColor = Color.BLACK;
-    private Drawable leftArrowMask;
-    private Drawable rightArrowMask;
     private Drawable topbarBackground;
     private int tileHeight = INVALID_TILE_DIMENSION;
     private int tileWidth = INVALID_TILE_DIMENSION;
@@ -255,15 +238,8 @@ public class MaterialCalendarView extends ViewGroup {
             setClipToPadding(true);
         }
 
-        buttonPast = new DirectionButton(getContext());
-        buttonPast.setContentDescription(getContext().getString(R.string.previous));
         title = new TextView(getContext());
-        buttonFuture = new DirectionButton(getContext());
-        buttonFuture.setContentDescription(getContext().getString(R.string.next));
         pager = new CalendarPager(getContext());
-
-        buttonPast.setOnClickListener(onClickListener);
-        buttonFuture.setOnClickListener(onClickListener);
 
         titleChanger = new TitleChanger(title);
         titleChanger.setTitleFormatter(DEFAULT_TITLE_FORMATTER);
@@ -318,25 +294,6 @@ public class MaterialCalendarView extends ViewGroup {
                 setTileHeight(tileHeight);
             }
 
-            setArrowColor(a.getColor(
-                    R.styleable.MaterialCalendarView_mcv_arrowColor,
-                    Color.BLACK
-            ));
-            Drawable leftMask = a.getDrawable(
-                    R.styleable.MaterialCalendarView_mcv_leftArrowMask
-            );
-            if (leftMask == null) {
-                leftMask = getResources().getDrawable(R.drawable.mcv_action_previous);
-            }
-            setLeftArrowMask(leftMask);
-            Drawable rightMask = a.getDrawable(
-                    R.styleable.MaterialCalendarView_mcv_rightArrowMask
-            );
-            if (rightMask == null) {
-                rightMask = getResources().getDrawable(R.drawable.mcv_action_next);
-            }
-            setRightArrowMask(rightMask);
-
             setSelectionColor(
                     a.getColor(
                             R.styleable.MaterialCalendarView_mcv_selectionColor,
@@ -366,6 +323,7 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_dateTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_Date
             ));
+
             //noinspection ResourceType
             setShowOtherDates(a.getInteger(
                     R.styleable.MaterialCalendarView_mcv_showOtherDates,
@@ -377,9 +335,6 @@ public class MaterialCalendarView extends ViewGroup {
                     true
             ));
 
-            setTopbarBackground(a.getDrawable(
-                    R.styleable.MaterialCalendarView_mcv_topbarBackground
-            ));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -409,20 +364,6 @@ public class MaterialCalendarView extends ViewGroup {
         topbar.setOrientation(LinearLayout.HORIZONTAL);
         topbar.setClipChildren(false);
         topbar.setClipToPadding(false);
-        //noinspection deprecation
-        topbar.setBackgroundDrawable(getTopbarBackground());
-        addView(topbar, new LayoutParams(1));
-
-        buttonPast.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        topbar.addView(buttonPast, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
-
-        title.setGravity(Gravity.CENTER);
-        topbar.addView(title, new LinearLayout.LayoutParams(
-                0, LayoutParams.MATCH_PARENT, DEFAULT_DAYS_IN_WEEK - 2
-        ));
-
-        buttonFuture.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        topbar.addView(buttonFuture, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
 
         pager.setId(R.id.mcv_pager);
         pager.setOffscreenPageLimit(1);
@@ -431,8 +372,6 @@ public class MaterialCalendarView extends ViewGroup {
 
     private void updateUi() {
         titleChanger.change(currentMonth);
-        buttonPast.setEnabled(canGoBack());
-        buttonFuture.setEnabled(canGoForward());
     }
 
     /**
@@ -480,7 +419,7 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * Go to previous month or week without using the button {@link #buttonPast}. Should only go to
+     * Go to previous month or week without using the button {@link //buttonPast}. Should only go to
      * previous if {@link #canGoBack()} is true, meaning it's possible to go to the previous month
      * or week.
      */
@@ -491,7 +430,7 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * Go to next month or week without using the button {@link #buttonFuture}. Should only go to
+     * Go to next month or week without using the button {@link //buttonFuture}. Should only go to
      * next if {@link #canGoForward()} is enabled, meaning it's possible to go to the next month or
      * week.
      */
@@ -671,28 +610,13 @@ public class MaterialCalendarView extends ViewGroup {
             return;
         }
         arrowColor = color;
-        buttonPast.setColor(color);
-        buttonFuture.setColor(color);
         invalidate();
     }
 
-    /**
-     * Set content description for button past
-     *
-     * @param description String to use as content description
-     */
-    public void setContentDescriptionArrowPast(final CharSequence description) {
-        buttonPast.setContentDescription(description);
-    }
+    public void setLeftArrowMask(Drawable drawable) {}
 
-    /**
-     * Set content description for button future
-     *
-     * @param description String to use as content description
-     */
-    public void setContentDescriptionArrowFuture(final CharSequence description) {
-        buttonFuture.setContentDescription(description);
-    }
+    public void setRightArrowMask(Drawable drawable) {}
+
 
     /**
      * Set content description for calendar
@@ -714,35 +638,6 @@ public class MaterialCalendarView extends ViewGroup {
                 : getContext().getString(R.string.calendar);
     }
 
-    /**
-     * @return icon used for the left arrow
-     */
-    public Drawable getLeftArrowMask() {
-        return leftArrowMask;
-    }
-
-    /**
-     * @param icon the new icon to use for the left paging arrow
-     */
-    public void setLeftArrowMask(Drawable icon) {
-        leftArrowMask = icon;
-        buttonPast.setImageDrawable(icon);
-    }
-
-    /**
-     * @return icon used for the right arrow
-     */
-    public Drawable getRightArrowMask() {
-        return rightArrowMask;
-    }
-
-    /**
-     * @param icon the new icon to use for the right paging arrow
-     */
-    public void setRightArrowMask(Drawable icon) {
-        rightArrowMask = icon;
-        buttonFuture.setImageDrawable(icon);
-    }
 
     /**
      * @param resourceId The text appearance resource id.
@@ -1052,13 +947,13 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Sets the visibility {@link #topbar}, which contains
-     * the previous month button {@link #buttonPast}, next month button {@link #buttonFuture},
+     * the previous month button {@link //buttonPast}, next month button {@link //buttonFuture},
      * and the month title {@link #title}.
      *
      * @param visible Boolean indicating if the topbar is visible
      */
     public void setTopbarVisible(boolean visible) {
-        topbar.setVisibility(visible ? View.VISIBLE : View.GONE);
+        topbar.setVisibility(View.GONE);
         requestLayout();
     }
 
@@ -1066,7 +961,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if the topbar is visible
      */
     public boolean getTopbarVisible() {
-        return topbar.getVisibility() == View.VISIBLE;
+        return topbar.getVisibility() == View.GONE;
     }
 
     /**
@@ -1173,7 +1068,7 @@ public class MaterialCalendarView extends ViewGroup {
         int orientation = 0;
         int tileWidthPx = -1;
         int tileHeightPx = -1;
-        boolean topbarVisible = true;
+        boolean topbarVisible = false;
         int selectionMode = SELECTION_MODE_SINGLE;
         boolean dynamicHeightEnabled = false;
         CalendarMode calendarMode = CalendarMode.MONTHS;
