@@ -236,7 +236,9 @@ public class MaterialCalendarView extends ViewGroup {
     private int selectionMode = SELECTION_MODE_SINGLE;
     private boolean allowClickDaysOutsideCurrentMonth = true;
     private int firstDayOfWeek;
-    private String calenderTextTypeFace;
+    private String headerTextTypeFace;
+    private String weekDayTextTypeFace;
+    private String dateTextTypeFace;
 
     private State state;
 
@@ -374,9 +376,13 @@ public class MaterialCalendarView extends ViewGroup {
                     SHOW_DEFAULTS
             ));
 
-            calenderTextTypeFace = a.getString(R.styleable.MaterialCalendarView_mcv_textTypeFace);
-            setTextTypeFace(calenderTextTypeFace);
+            headerTextTypeFace = a.getString(R.styleable.MaterialCalendarView_mcv_headerTextTypeFace);
+            weekDayTextTypeFace = a.getString(R.styleable.MaterialCalendarView_mcv_weekDayTextTypeFace);
+            dateTextTypeFace = a.getString(R.styleable.MaterialCalendarView_mcv_dateTextTypeFace);
 
+            setHeaderTypeFace(headerTextTypeFace);
+            setWeekDayTextTypeFace(weekDayTextTypeFace);
+            setDateTextTypeFace(weekDayTextTypeFace);
 
             setAllowClickDaysOutsideCurrentMonth(a.getBoolean(
                     R.styleable.MaterialCalendarView_mcv_allowClickDaysOutsideCurrentMonth,
@@ -399,8 +405,9 @@ public class MaterialCalendarView extends ViewGroup {
             removeView(pager);
             MonthView monthView = new MonthView(this, currentMonth, getFirstDayOfWeek());
             monthView.setSelectionColor(getSelectionColor());
+            monthView.setDateTextTypeFace(adapter.getDateTextTypeFace());
             monthView.setDateTextAppearance(adapter.getDateTextAppearance());
-            monthView.setCalendarTextTypeFace(adapter.getCalendarTextTypeFace());
+            monthView.setWeekDayTextTypeFace(adapter.getWeekDayTextTypeFace());
             monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance());
             monthView.setShowOtherDates(getShowOtherDates());
             addView(monthView, new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
@@ -755,7 +762,7 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * @param calenderTextTypeFace Custom font for calender title.
      */
-    public void setHeaderTextTypeFace(String calenderTextTypeFace) {
+    public void setHeaderTypeFace(String calenderTextTypeFace) {
         try {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(), calenderTextTypeFace);
             title.setTypeface(tf);
@@ -778,11 +785,31 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * @param calendarTextTypeFace Font source from the assets.
+     * @param typeface Font source from the assets.
      */
-    public void setTextTypeFace(String calendarTextTypeFace) {
-        adapter.setCalendarTextTypeFace(calendarTextTypeFace);
-        setHeaderTextTypeFace(calendarTextTypeFace);
+    public void setHeaderTextTypeFace(String typeface) {
+        adapter.setHeaderTextTypeFace(typeface);
+
+        try {
+            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), typeface);
+            title.setTypeface(tf);
+        } catch (RuntimeException ignored) {
+        }
+
+    }
+
+    /**
+     * @param typeface Font source from the assets.
+     */
+    public void setWeekDayTextTypeFace(String typeface) {
+        adapter.setWeekDayTextTypeFace(typeface);
+    }
+
+    /**
+     * @param typeface Font source from the assets.
+     */
+    public void setDateTextTypeFace(String typeface) {
+        adapter.setDateTextTypeFace(typeface);
     }
 
 
@@ -1098,6 +1125,9 @@ public class MaterialCalendarView extends ViewGroup {
         ss.weekDayTextAppearance = adapter.getWeekDayTextAppearance();
         ss.showOtherDates = getShowOtherDates();
         ss.allowClickDaysOutsideCurrentMonth = allowClickDaysOutsideCurrentMonth();
+        ss.headerTextTypeFace = adapter.getHeaderTextTypeFace();
+        ss.weekDayTextTypeFace = adapter.getWeekDayTextTypeFace();
+        ss.dateTextTypeFace = adapter.getDateTextTypeFace();
         ss.minDate = getMinimumDate();
         ss.maxDate = getMaximumDate();
         ss.selectedDates = getSelectedDates();
@@ -1129,7 +1159,9 @@ public class MaterialCalendarView extends ViewGroup {
         setSelectionColor(ss.color);
         setDateTextAppearance(ss.dateTextAppearance);
         setWeekDayTextAppearance(ss.weekDayTextAppearance);
-        setTextTypeFace(ss.calenderTextTypeFace);
+        setHeaderTextTypeFace(ss.headerTextTypeFace);
+        setWeekDayTextTypeFace(ss.weekDayTextTypeFace);
+        setDateTextTypeFace(ss.dateTextTypeFace);
         setShowOtherDates(ss.showOtherDates);
         setAllowClickDaysOutsideCurrentMonth(ss.allowClickDaysOutsideCurrentMonth);
         clearSelection();
@@ -1174,7 +1206,9 @@ public class MaterialCalendarView extends ViewGroup {
         int weekDayTextAppearance = 0;
         int showOtherDates = SHOW_DEFAULTS;
         boolean allowClickDaysOutsideCurrentMonth = true;
-        String calenderTextTypeFace = null;
+        String headerTextTypeFace = null;
+        String weekDayTextTypeFace = null;
+        String dateTextTypeFace = null;
         CalendarDay minDate = null;
         CalendarDay maxDate = null;
         List<CalendarDay> selectedDates = new ArrayList<>();
@@ -1201,6 +1235,9 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeInt(weekDayTextAppearance);
             out.writeInt(showOtherDates);
             out.writeByte((byte) (allowClickDaysOutsideCurrentMonth ? 1 : 0));
+            out.writeString(headerTextTypeFace);
+            out.writeString(weekDayTextTypeFace);
+            out.writeString(dateTextTypeFace);
             out.writeParcelable(minDate, 0);
             out.writeParcelable(maxDate, 0);
             out.writeTypedList(selectedDates);
@@ -1234,6 +1271,9 @@ public class MaterialCalendarView extends ViewGroup {
             weekDayTextAppearance = in.readInt();
             showOtherDates = in.readInt();
             allowClickDaysOutsideCurrentMonth = in.readByte() != 0;
+            headerTextTypeFace = in.readString();
+            weekDayTextTypeFace = in.readString();
+            dateTextTypeFace = in.readString();
             ClassLoader loader = CalendarDay.class.getClassLoader();
             minDate = in.readParcelable(loader);
             maxDate = in.readParcelable(loader);

@@ -29,7 +29,9 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private TitleFormatter titleFormatter = null;
     private Integer color = null;
     private Integer dateTextAppearance = null;
-    private String calendarTextTypeFace = null;
+    private String headerTextTypeFace = null;
+    private String weekDayTextTypeFace = null;
+    private String dateTextTypeFace = null;
     private Integer weekDayTextAppearance = null;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
@@ -84,7 +86,9 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         newAdapter.titleFormatter = titleFormatter;
         newAdapter.color = color;
         newAdapter.dateTextAppearance = dateTextAppearance;
-        newAdapter.calendarTextTypeFace = calendarTextTypeFace;
+        newAdapter.headerTextTypeFace = headerTextTypeFace;
+        newAdapter.weekDayTextTypeFace = weekDayTextTypeFace;
+        newAdapter.dateTextTypeFace = dateTextTypeFace;
         newAdapter.weekDayTextAppearance = weekDayTextAppearance;
         newAdapter.showOtherDates = showOtherDates;
         newAdapter.minDate = minDate;
@@ -156,8 +160,12 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
             pagerView.setWeekDayTextAppearance(weekDayTextAppearance);
         }
 
-        if (calendarTextTypeFace != null) {
-            pagerView.setCalendarTextTypeFace(calendarTextTypeFace);
+        if (weekDayTextTypeFace != null) {
+            pagerView.setWeekDayTextTypeFace(weekDayTextTypeFace);
+        }
+
+        if (dateTextTypeFace != null) {
+            pagerView.setDateTextTypeFace(dateTextTypeFace);
         }
 
         pagerView.setShowOtherDates(showOtherDates);
@@ -213,13 +221,30 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         }
     }
 
-    public void setCalendarTextTypeFace(String calendarTextTypeFace) {
-        if (calendarTextTypeFace == null) {
+    public void setHeaderTextTypeFace(String typeface) {
+        if (typeface == null) {
             return;
         }
-        this.calendarTextTypeFace = calendarTextTypeFace;
+        this.headerTextTypeFace = typeface;
+    }
+
+    public void setWeekDayTextTypeFace(String typeface) {
+        if (typeface == null) {
+            return;
+        }
+        this.weekDayTextTypeFace = typeface;
         for (V pagerView : currentViews) {
-            pagerView.setCalendarTextTypeFace(calendarTextTypeFace);
+            pagerView.setWeekDayTextTypeFace(typeface);
+        }
+    }
+
+    public void setDateTextTypeFace(String typeface) {
+        if (typeface == null) {
+            return;
+        }
+        this.dateTextTypeFace = typeface;
+        for (V pagerView : currentViews) {
+            pagerView.setDateTextTypeFace(typeface);
         }
     }
 
@@ -336,8 +361,16 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         return dateTextAppearance == null ? 0 : dateTextAppearance;
     }
 
-    protected String getCalendarTextTypeFace() {
-        return calendarTextTypeFace == null ? null : calendarTextTypeFace;
+    protected String getHeaderTextTypeFace() {
+        return headerTextTypeFace;
+    }
+
+    protected String getWeekDayTextTypeFace() {
+        return weekDayTextTypeFace;
+    }
+
+    protected String getDateTextTypeFace() {
+        return dateTextTypeFace;
     }
 
     protected int getWeekDayTextAppearance() {
