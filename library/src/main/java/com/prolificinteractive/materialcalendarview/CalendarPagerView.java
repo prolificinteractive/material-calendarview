@@ -123,16 +123,22 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         }
     }
 
-    public void setCalendarTextTypeFace(String calendarTextTypeFace) {
+    public void setWeekDayTextTypeFace(String calendarTextTypeFace) {
+        try {
+            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), calendarTextTypeFace);
+            for (WeekDayView weekDayView : weekDayViews) {
+                weekDayView.setTypeFace(tf);
+            }
+        } catch (RuntimeException ignored) {
+        }
+    }
+
+    public void setDateTextTypeFace(String calendarTextTypeFace) {
         try {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(), calendarTextTypeFace);
             for (DayView dayView : dayViews) {
                 dayView.setTypeFace(tf);
             }
-            for (WeekDayView weekDayView : weekDayViews) {
-                weekDayView.setTypeFace(tf);
-            }
-
         } catch (RuntimeException ignored) {
         }
     }
