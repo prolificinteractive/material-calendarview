@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,7 +20,6 @@ import java.util.List;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SHOW_DEFAULTS;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
 import static java.util.Calendar.DATE;
-import static java.util.Calendar.DAY_OF_WEEK;
 
 abstract class CalendarPagerView extends ViewGroup implements View.OnClickListener {
 
@@ -42,7 +42,14 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     public CalendarPagerView(@NonNull MaterialCalendarView view,
                              CalendarDay firstViewDay,
                              int firstDayOfWeek) {
+
         super(view.getContext());
+
+        if (LocalUtils.isRTL()) {
+            this.setRotationY(180);
+        }
+
+
         this.mcv = view;
         this.firstViewDay = firstViewDay;
         this.firstDayOfWeek = firstDayOfWeek;
@@ -113,6 +120,26 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     public void setDateTextAppearance(int taId) {
         for (DayView dayView : dayViews) {
             dayView.setTextAppearance(getContext(), taId);
+        }
+    }
+
+    public void setWeekDayTextTypeFace(String calendarTextTypeFace) {
+        try {
+            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), calendarTextTypeFace);
+            for (WeekDayView weekDayView : weekDayViews) {
+                weekDayView.setTypeFace(tf);
+            }
+        } catch (RuntimeException ignored) {
+        }
+    }
+
+    public void setDateTextTypeFace(String calendarTextTypeFace) {
+        try {
+            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), calendarTextTypeFace);
+            for (DayView dayView : dayViews) {
+                dayView.setTypeFace(tf);
+            }
+        } catch (RuntimeException ignored) {
         }
     }
 
@@ -249,6 +276,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
 
     /**
      * Return the number of rows to display per page
+     *
      * @return
      */
     protected abstract int getRows();
@@ -258,12 +286,14 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
      */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        final int parentWidth = getWidth();
         final int count = getChildCount();
-
         final int parentLeft = 0;
+        final int parentRight = parentWidth;
 
         int childTop = 0;
         int childLeft = parentLeft;
+        int childRight = parentRight;
 
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
@@ -271,13 +301,18 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
             final int width = child.getMeasuredWidth();
             final int height = child.getMeasuredHeight();
 
-            child.layout(childLeft, childTop, childLeft + width, childTop + height);
-
-            childLeft += width;
+            if (LocalUtils.isRTL()) {
+                child.layout(childRight - width, childTop, childRight, childTop + height);
+                childRight -= width;
+            } else {
+                child.layout(childLeft, childTop, childLeft + width, childTop + height);
+                childLeft += width;
+            }
 
             //We should warp every so many children
             if (i % DEFAULT_DAYS_IN_WEEK == (DEFAULT_DAYS_IN_WEEK - 1)) {
                 childLeft = parentLeft;
+                childRight = parentRight;
                 childTop += height;
             }
 

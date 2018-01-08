@@ -3,6 +3,9 @@
 
     <string name="app_name">Material CalendarView Samples</string>
     <string name="hello_world">Hello world!</string>
+    <string name="header_font">fonts/stuntcroft.ttf</string>
+    <string name="date_font">fonts/stuntcroft.ttf</string>
+    <string name="week_day_font">fonts/stuntcroft.ttf</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_basic">Basic Example</string>
     <string name="title_activity_disable">Disabled Days Example</string>

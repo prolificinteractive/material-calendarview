@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
+import com.prolificinteractive.materialcalendarview.format.DateFormatDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
@@ -28,6 +29,9 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private TitleFormatter titleFormatter = null;
     private Integer color = null;
     private Integer dateTextAppearance = null;
+    private String headerTextTypeFace = null;
+    private String weekDayTextTypeFace = null;
+    private String dateTextTypeFace = null;
     private Integer weekDayTextAppearance = null;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
@@ -36,7 +40,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private DateRangeIndex rangeIndex;
     private List<CalendarDay> selectedDates = new ArrayList<>();
     private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
-    private DayFormatter dayFormatter = DayFormatter.DEFAULT;
+    private DayFormatter dayFormatter = DateFormatDayFormatter.getInstance();
     private List<DayViewDecorator> decorators = new ArrayList<>();
     private List<DecoratorResult> decoratorResults = null;
     private boolean selectionEnabled = true;
@@ -82,6 +86,9 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         newAdapter.titleFormatter = titleFormatter;
         newAdapter.color = color;
         newAdapter.dateTextAppearance = dateTextAppearance;
+        newAdapter.headerTextTypeFace = headerTextTypeFace;
+        newAdapter.weekDayTextTypeFace = weekDayTextTypeFace;
+        newAdapter.dateTextTypeFace = dateTextTypeFace;
         newAdapter.weekDayTextAppearance = weekDayTextAppearance;
         newAdapter.showOtherDates = showOtherDates;
         newAdapter.minDate = minDate;
@@ -148,9 +155,19 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         if (dateTextAppearance != null) {
             pagerView.setDateTextAppearance(dateTextAppearance);
         }
+
         if (weekDayTextAppearance != null) {
             pagerView.setWeekDayTextAppearance(weekDayTextAppearance);
         }
+
+        if (weekDayTextTypeFace != null) {
+            pagerView.setWeekDayTextTypeFace(weekDayTextTypeFace);
+        }
+
+        if (dateTextTypeFace != null) {
+            pagerView.setDateTextTypeFace(dateTextTypeFace);
+        }
+
         pagerView.setShowOtherDates(showOtherDates);
         pagerView.setMinimumDate(minDate);
         pagerView.setMaximumDate(maxDate);
@@ -201,6 +218,33 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         this.dateTextAppearance = taId;
         for (V pagerView : currentViews) {
             pagerView.setDateTextAppearance(taId);
+        }
+    }
+
+    public void setHeaderTextTypeFace(String typeface) {
+        if (typeface == null) {
+            return;
+        }
+        this.headerTextTypeFace = typeface;
+    }
+
+    public void setWeekDayTextTypeFace(String typeface) {
+        if (typeface == null) {
+            return;
+        }
+        this.weekDayTextTypeFace = typeface;
+        for (V pagerView : currentViews) {
+            pagerView.setWeekDayTextTypeFace(typeface);
+        }
+    }
+
+    public void setDateTextTypeFace(String typeface) {
+        if (typeface == null) {
+            return;
+        }
+        this.dateTextTypeFace = typeface;
+        for (V pagerView : currentViews) {
+            pagerView.setDateTextTypeFace(typeface);
         }
     }
 
@@ -315,6 +359,18 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
 
     protected int getDateTextAppearance() {
         return dateTextAppearance == null ? 0 : dateTextAppearance;
+    }
+
+    protected String getHeaderTextTypeFace() {
+        return headerTextTypeFace;
+    }
+
+    protected String getWeekDayTextTypeFace() {
+        return weekDayTextTypeFace;
+    }
+
+    protected String getDateTextTypeFace() {
+        return dateTextTypeFace;
     }
 
     protected int getWeekDayTextAppearance() {

@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.widget.CheckedTextView;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
+import com.prolificinteractive.materialcalendarview.format.DateFormatDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 
 import java.util.List;
@@ -42,7 +44,7 @@ class DayView extends CheckedTextView {
     private Drawable customBackground = null;
     private Drawable selectionDrawable;
     private Drawable mCircleDrawable;
-    private DayFormatter formatter = DayFormatter.DEFAULT;
+    private DayFormatter formatter = DateFormatDayFormatter.getInstance();
 
     private boolean isInRange = true;
     private boolean isInMonth = true;
@@ -77,7 +79,7 @@ class DayView extends CheckedTextView {
      * @param formatter new label formatter
      */
     public void setDayFormatter(DayFormatter formatter) {
-        this.formatter = formatter == null ? DayFormatter.DEFAULT : formatter;
+        this.formatter = formatter == null ? DateFormatDayFormatter.getInstance(): formatter;
         CharSequence currentLabel = getText();
         Object[] spans = null;
         if (currentLabel instanceof Spanned) {
@@ -278,5 +280,9 @@ class DayView extends CheckedTextView {
             tempRect.set(0, offset, width, radius + offset);
             circleDrawableRect.set(0, circleOffset, width, radius + circleOffset);
         }
+    }
+
+    public void setTypeFace(Typeface typeFace) {
+        this.setTypeface(typeFace);
     }
 }

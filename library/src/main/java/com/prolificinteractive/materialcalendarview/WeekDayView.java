@@ -2,6 +2,7 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -39,10 +40,14 @@ class WeekDayView extends TextView {
 
     public void setDayOfWeek(int dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
-        setText(formatter.format(dayOfWeek));
+        setText(formatter.format(dayOfWeek).toString());
     }
 
     public void setDayOfWeek(Calendar calendar) {
         setDayOfWeek(CalendarUtils.getDayOfWeek(calendar));
+    }
+
+    public void setTypeFace(Typeface typeFace) {
+        this.setTypeface(typeFace);
     }
 }
