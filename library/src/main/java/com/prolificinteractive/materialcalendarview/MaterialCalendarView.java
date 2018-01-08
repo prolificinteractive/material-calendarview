@@ -1661,6 +1661,9 @@ public class MaterialCalendarView extends ViewGroup {
             cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
             //noinspection ResourceType
             cal.setFirstDayOfWeek(getFirstDayOfWeek());
+            // By default this is '4', causes weeks to be counted incorrectly,
+            // when using dynamic height on Nougat devices
+            cal.setMinimalDaysInFirstWeek(1);
             weekCount = cal.get(Calendar.WEEK_OF_MONTH);
         }
         return weekCount + DAY_NAMES_ROW;
