@@ -234,6 +234,7 @@ public class MaterialCalendarView extends ViewGroup {
     private int selectionMode = SELECTION_MODE_SINGLE;
     private boolean allowClickDaysOutsideCurrentMonth = true;
     private int firstDayOfWeek;
+    private boolean clearOldSelection = true;
 
     private State state;
 
@@ -462,7 +463,7 @@ public class MaterialCalendarView extends ViewGroup {
             default:
             case SELECTION_MODE_NONE:
                 this.selectionMode = SELECTION_MODE_NONE;
-                if (oldMode != SELECTION_MODE_NONE) {
+                if (oldMode != SELECTION_MODE_NONE && clearOldSelection) {
                     //No selection! Clear out!
                     clearSelection();
                 }
@@ -470,6 +471,10 @@ public class MaterialCalendarView extends ViewGroup {
         }
 
         adapter.setSelectionEnabled(selectionMode != SELECTION_MODE_NONE);
+    }
+
+    public void clearOldSelectionWhenStateIsNone(boolean clearOldSelection) {
+        this.clearOldSelection = clearOldSelection;
     }
 
     /**
