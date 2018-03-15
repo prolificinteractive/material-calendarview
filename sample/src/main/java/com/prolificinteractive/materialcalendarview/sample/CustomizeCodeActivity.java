@@ -38,10 +38,15 @@ public class CustomizeCodeActivity extends AppCompatActivity {
         widget.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
         widget.setTileSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics()));
         widget.setTitleAnimationOrientation(MaterialCalendarView.VERTICAL);
+        widget.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE);
 
         CalendarDay today = CalendarDay.from(2016, 5, 2);
         widget.setCurrentDate(today);
         widget.setSelectedDate(today);
+        widget.setDateSelected(CalendarDay.from(2016, 5, 3), true);
+
+        widget.clearOldSelectionWhenStateIsNone(false);
+        widget.setSelectionMode(MaterialCalendarView.SELECTION_MODE_NONE);
 
         widget.state().edit()
                 .setFirstDayOfWeek(Calendar.WEDNESDAY)
