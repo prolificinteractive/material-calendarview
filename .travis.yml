@@ -12,7 +12,7 @@ android:
     - extra-android-m2repository
     - extra-google-m2repository
 
-licenses:
+  licenses:
     - 'android-sdk-preview-license-.+'
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
