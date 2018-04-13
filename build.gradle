@@ -11,6 +11,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        google()
         // Here for convience when testing new releases
         // maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
