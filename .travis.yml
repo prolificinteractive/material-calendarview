@@ -3,6 +3,9 @@ language: android
 jdk:
  - oraclejdk8
 
+before_install:
+  - yes | sdkmanager "platforms;android-27"
+
 android:
   components:
     - tools
@@ -11,6 +14,11 @@ android:
     - android-25
     - extra-android-m2repository
     - extra-google-m2repository
+
+  licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
 
 script:
   - ./gradlew clean check assemble -Dpre-dex=false

@@ -18,11 +18,11 @@ android {
 }
 
 dependencies {
-    compile rootProject.ext.supportV4
-    compile rootProject.ext.supportAnnotations
+    implementation rootProject.ext.supportV4
+    implementation rootProject.ext.supportAnnotations
 
-    rootProject.ext.testDep.each { testCompile it }
-    rootProject.ext.androidTestDep.each { androidTestCompile it }
+    rootProject.ext.testDep.each { testImplementation it }
+    rootProject.ext.androidTestDep.each { androidTestImplementation it }
 }
 
 tasks.withType(Javadoc) {
@@ -35,8 +35,10 @@ android.libraryVariants.all { variant ->
     task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
         title "Material CalendarView ${version}"
         description "Generates Javadoc for $variant.name."
-        source = variant.javaCompile.source
-        classpath = files(variant.javaCompile.classpath.files, project.android.getBootClasspath())
+        source = variant.javaCompiler.source
+        doFirst {
+            classpath = files(variant.javaCompiler.classpath.files, project.android.getBootClasspath())
+        }
         exclude '**/BuildConfig.java'
         exclude '**/R.java'
         exclude 'android/support/v4/view/BetterViewPager.java'
