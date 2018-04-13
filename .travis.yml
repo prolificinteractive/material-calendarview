@@ -7,10 +7,15 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-25.0.2
+    - build-tools-27.0.3
     - android-25
     - extra-android-m2repository
     - extra-google-m2repository
+
+licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
 
 script:
   - ./gradlew clean check assemble -Dpre-dex=false
