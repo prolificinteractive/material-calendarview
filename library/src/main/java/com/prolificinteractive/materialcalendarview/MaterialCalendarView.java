@@ -110,10 +110,11 @@ public class MaterialCalendarView extends ViewGroup {
      */
     @SuppressLint("UniqueConstants")
     @Retention(RetentionPolicy.RUNTIME)
-    @IntDef(flag = true, value = {
-            SHOW_NONE, SHOW_ALL, SHOW_DEFAULTS,
-            SHOW_OUT_OF_RANGE, SHOW_OTHER_MONTHS, SHOW_DECORATED_DISABLED
-    })
+    @IntDef(flag = true,
+            value = {
+                    SHOW_NONE, SHOW_ALL, SHOW_DEFAULTS,
+                    SHOW_OUT_OF_RANGE, SHOW_OTHER_MONTHS, SHOW_DECORATED_DISABLED
+            })
     public @interface ShowOtherDates {
     }
 
@@ -220,6 +221,7 @@ public class MaterialCalendarView extends ViewGroup {
     private CalendarDay maxDate = null;
 
     private OnDateSelectedListener listener;
+    private OnDatePickedListener pickListener;
     private OnMonthChangedListener monthListener;
     private OnRangeSelectedListener rangeListener;
 
@@ -442,7 +444,8 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #SELECTION_MODE_RANGE
      */
     public void setSelectionMode(final @SelectionMode int mode) {
-        final @SelectionMode int oldMode = this.selectionMode;
+        final @SelectionMode
+        int oldMode = this.selectionMode;
         this.selectionMode = mode;
         switch (mode) {
             case SELECTION_MODE_RANGE:
@@ -1338,6 +1341,15 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * Sets the listener to be notified upon picked date changes.
+     *
+     * @param listener thing to be notified
+     */
+    public void setOnDatePickedListener(OnDatePickedListener listener) {
+        this.pickListener = listener;
+    }
+
+    /**
      * Sets the listener to be notified upon month changes.
      *
      * @param listener thing to be notified
@@ -1371,9 +1383,23 @@ public class MaterialCalendarView extends ViewGroup {
      * @param selected true if the day is now currently selected, false otherwise
      */
     protected void dispatchOnDateSelected(final CalendarDay day, final boolean selected) {
+        dispatchOnDateSelected(day, null, selected);
+    }
+
+    /**
+     * Dispatch date change events to a listener, if set
+     *
+     * @param day      the day that was selected
+     * @param selected true if the day is now currently selected, false otherwise
+     */
+    protected void dispatchOnDateSelected(final CalendarDay day, final DayView dayView, final boolean selected) {
         OnDateSelectedListener l = listener;
         if (l != null) {
             l.onDateSelected(MaterialCalendarView.this, day, selected);
+        }
+        OnDatePickedListener p = pickListener;
+        if (p != null) {
+            p.onDatePicked(MaterialCalendarView.this, dayView, day, selected);
         }
     }
 
@@ -1424,11 +1450,11 @@ public class MaterialCalendarView extends ViewGroup {
      * @param date        date of the day that was clicked
      * @param nowSelected true if the date is now selected, false otherwise
      */
-    protected void onDateClicked(@NonNull CalendarDay date, boolean nowSelected) {
+    protected void onDateClicked(@NonNull CalendarDay date, @NonNull DayView dayView, boolean nowSelected) {
         switch (selectionMode) {
             case SELECTION_MODE_MULTIPLE: {
                 adapter.setDateSelected(date, nowSelected);
-                dispatchOnDateSelected(date, nowSelected);
+                dispatchOnDateSelected(date, dayView, nowSelected);
             }
             break;
             case SELECTION_MODE_RANGE: {
@@ -1436,7 +1462,7 @@ public class MaterialCalendarView extends ViewGroup {
                 if (adapter.getSelectedDates().size() > 2) {
                     adapter.clearSelections();
                     adapter.setDateSelected(date, nowSelected);  //  re-set because adapter has been cleared
-                    dispatchOnDateSelected(date, nowSelected);
+                    dispatchOnDateSelected(date, dayView, nowSelected);
                 } else if (adapter.getSelectedDates().size() == 2) {
                     final List<CalendarDay> dates = adapter.getSelectedDates();
                     if (dates.get(0).isAfter(dates.get(1))) {
@@ -1446,7 +1472,7 @@ public class MaterialCalendarView extends ViewGroup {
                     }
                 } else {
                     adapter.setDateSelected(date, nowSelected);
-                    dispatchOnDateSelected(date, nowSelected);
+                    dispatchOnDateSelected(date, dayView, nowSelected);
                 }
             }
             break;
@@ -1454,7 +1480,7 @@ public class MaterialCalendarView extends ViewGroup {
             case SELECTION_MODE_SINGLE: {
                 adapter.clearSelections();
                 adapter.setDateSelected(date, true);
-                dispatchOnDateSelected(date, true);
+                dispatchOnDateSelected(date, dayView, true);
             }
             break;
         }
@@ -1497,7 +1523,7 @@ public class MaterialCalendarView extends ViewGroup {
                 goToNext();
             }
         }
-        onDateClicked(dayView.getDate(), !dayView.isChecked());
+        onDateClicked(dayView.getDate(), dayView, !dayView.isChecked());
 
     }
 
@@ -1639,6 +1665,7 @@ public class MaterialCalendarView extends ViewGroup {
 
             LayoutParams p = (LayoutParams) child.getLayoutParams();
 
+            @SuppressLint("Range")
             int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
                     DEFAULT_DAYS_IN_WEEK * measureTileWidth,
                     MeasureSpec.EXACTLY
@@ -1653,6 +1680,7 @@ public class MaterialCalendarView extends ViewGroup {
         }
     }
 
+    @SuppressLint("WrongConstant")
     private int getWeekCountBasedOnMode() {
         int weekCount = calendarMode.visibleWeeksCount;
         boolean isInMonthsMode = calendarMode.equals(CalendarMode.MONTHS);

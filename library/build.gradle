@@ -1,15 +1,17 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
+        applicationId "com.prolificinteractive.materialcalendarview.sample"
+
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
 
-        versionCode Integer.parseInt(project.VERSION_CODE)
-        versionName project.VERSION_NAME
+        versionCode 1
+        versionName "1.0"
     }
 
     lintOptions {
@@ -18,34 +20,13 @@ android {
 }
 
 dependencies {
-    compile rootProject.ext.supportV4
-    compile rootProject.ext.supportAnnotations
+    // You should use the commented out line below in you're application.
+    // We depend on the source directly here so that development is easier.
+    compile project(':library')
+    //compile 'com.prolificinteractive:material-calendarview:1.4.3'
 
-    rootProject.ext.testDep.each { testCompile it }
-    rootProject.ext.androidTestDep.each { androidTestCompile it }
+    compile rootProject.ext.supportAppCompat
+    compile rootProject.ext.recyclerviewV7
+    compile rootProject.ext.butterknife
+    annotationProcessor rootProject.ext.butterknifeCompiler
 }
-
-tasks.withType(Javadoc) {
-    options.addStringOption('Xdoclint:none', '-quiet')
-    options.addStringOption('encoding', 'UTF-8')
-    options.addStringOption('charSet', 'UTF-8')
-}
-
-android.libraryVariants.all { variant ->
-    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
-        title "Material CalendarView ${version}"
-        description "Generates Javadoc for $variant.name."
-        source = variant.javaCompile.source
-        classpath = files(variant.javaCompile.classpath.files, project.android.getBootClasspath())
-        exclude '**/BuildConfig.java'
-        exclude '**/R.java'
-        exclude 'android/support/v4/view/BetterViewPager.java'
-        options {
-            links "http://docs.oracle.com/javase/7/docs/api/"
-            linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
-        }
-    }
-}
-
-
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
