@@ -117,7 +117,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     protected abstract DateRangeIndex createRangeIndex(CalendarDay min, CalendarDay max);
 
     @Override
-    public int getItemPosition(Object object) {
+    public int getItemPosition(@NonNull Object object) {
         if (!(isInstanceOfView(object))) {
             return POSITION_NONE;
         }
@@ -133,8 +133,9 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         return index;
     }
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         V pagerView = createView(position);
         pagerView.setContentDescription(mcv.getCalendarContentDescription());
         pagerView.setAlpha(0);
@@ -172,14 +173,14 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        CalendarPagerView pagerView = (CalendarPagerView) object;
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        V pagerView = (V) object;
         currentViews.remove(pagerView);
         container.removeView(pagerView);
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 

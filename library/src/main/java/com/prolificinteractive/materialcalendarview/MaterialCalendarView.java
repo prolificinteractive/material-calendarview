@@ -74,7 +74,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #setSelectionMode(int)
      * @see #getSelectionMode()
      */
-    @Retention(RetentionPolicy.RUNTIME)
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE, SELECTION_MODE_RANGE})
     public @interface SelectionMode {
     }
@@ -109,7 +109,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #getShowOtherDates()
      */
     @SuppressLint("UniqueConstants")
-    @Retention(RetentionPolicy.RUNTIME)
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef(flag = true, value = {
             SHOW_NONE, SHOW_ALL, SHOW_DEFAULTS,
             SHOW_OUT_OF_RANGE, SHOW_OTHER_MONTHS, SHOW_DECORATED_DISABLED
@@ -132,13 +132,13 @@ public class MaterialCalendarView extends ViewGroup {
      * Show dates that are outside of the min-max range.
      * This will only show days from the current month unless {@link #SHOW_OTHER_MONTHS} is enabled.
      */
-    public static final int SHOW_OUT_OF_RANGE = 2;
+    public static final int SHOW_OUT_OF_RANGE = 1 << 1;
 
     /**
      * Show days that are individually disabled with decorators.
      * This will only show dates in the current month and inside the minimum and maximum date range.
      */
-    public static final int SHOW_DECORATED_DISABLED = 4;
+    public static final int SHOW_DECORATED_DISABLED = 1 << 2;
 
     /**
      * The default flags for showing non-enabled dates. Currently only shows {@link #SHOW_DECORATED_DISABLED}
