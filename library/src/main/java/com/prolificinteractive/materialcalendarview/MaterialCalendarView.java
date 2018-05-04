@@ -444,8 +444,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #SELECTION_MODE_RANGE
      */
     public void setSelectionMode(final @SelectionMode int mode) {
-        final @SelectionMode
-        int oldMode = this.selectionMode;
+        final @SelectionMode int oldMode = this.selectionMode;
         this.selectionMode = mode;
         switch (mode) {
             case SELECTION_MODE_RANGE:
