@@ -38,7 +38,7 @@ public class DayViewFacade {
     }
 
     public void setTextColor(Integer textColor) {
-        if (textColor!=null){
+        if (textColor != null) {
             this.textColor = textColor;
             isDecorated = true;
         }
