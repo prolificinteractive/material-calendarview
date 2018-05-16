@@ -1,7 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
 /**
- * Use math to calculate first days of months by postion from a minium date
+ * Use math to calculate first days of months by position from a minimum date.
  */
 interface DateRangeIndex {
 

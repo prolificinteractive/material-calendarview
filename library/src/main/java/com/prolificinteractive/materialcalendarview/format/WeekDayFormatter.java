@@ -17,5 +17,5 @@ public interface WeekDayFormatter {
     /**
      * Default implementation used by {@linkplain com.prolificinteractive.materialcalendarview.MaterialCalendarView}
      */
-    public static final WeekDayFormatter DEFAULT = new CalendarWeekDayFormatter(CalendarUtils.getInstance());
+    WeekDayFormatter DEFAULT = new CalendarWeekDayFormatter(CalendarUtils.getInstance());
 }
