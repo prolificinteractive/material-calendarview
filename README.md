@@ -49,6 +49,30 @@ Example:
     />
 ```
 
+
+## Documentation
+
+Make sure to check all the documentation available [here](https://github.com/prolificinteractive/material-calendarview/wiki).
+
+## Customization
+
+One of the aims of this library is to be customizable. The many options include:
+
+* [Define the view's width and height in terms of tile size](https://github.com/prolificinteractive/material-calendarview/wiki/Customization#tile-size)
+* [Single or Multiple date selection, or disabling selection entirely](https://github.com/prolificinteractive/material-calendarview/wiki/Customization#date-selection)
+* [Showing dates from other months or those out of range](https://github.com/prolificinteractive/material-calendarview/wiki/Customization#showing-other-dates)
+* [Setting the first day of the week](https://github.com/prolificinteractive/material-calendarview/wiki/Customization-Builder#first-day-of-the-week)
+* [Show only a range of dates](https://github.com/prolificinteractive/material-calendarview/wiki/Customization-Builder#date-ranges)
+* [Customize the top bar](https://github.com/prolificinteractive/material-calendarview/wiki/Customization#topbar-options)
+* [Custom labels for the header, weekdays, or individual days](https://github.com/prolificinteractive/material-calendarview/wiki/Customization#custom-labels)
+
+
+### Events, Highlighting, Custom Selectors, and More!
+
+All of this and more can be done via the decorator api. Please check out the [decorator documentation](https://github.com/prolificinteractive/material-calendarview/wiki/Decorators).
+
+## Recent Changes
+
 ### Major Change in 1.5.0
 
 We recently updated to the latest gradle and decided to move over our libraries to the hosting service Jitpack.
@@ -70,36 +94,10 @@ Please refer to the installation section for more details.
 
   `mcv.state().edit()` will retain previously set values; `mcv.newState()` will create a new state using default values. Calling `commit` will trigger the rebuild of adapters and date ranges. It is recommended these state changes occur as the first modification to MCV (before configuring anything else like current date or selected date); we make no guarantee those modifications will be retained when the state is modified.
 
-  See [CUSTOMIZATION_BUILDER](docs/CUSTOMIZATION_BUILDER.md) for usage details.
+  See [CUSTOMIZATION_BUILDER](https://github.com/prolificinteractive/material-calendarview/wiki/Customization-Builder) for usage details.
 * New: `setSelectionMode(SELECTION_MODE_RANGE)` was added to allow 2 dates to be selected and have the entire range of dates selected. Much thanks to [papageorgiouk](https://github.com/papageorgiouk) for his work on this feature. 
 
 See other changes in the [CHANGELOG](/CHANGELOG.md).
-
-## Documentation
-
-Make sure to check all the documentation available [here](docs/README.md).
-
-## Customization
-
-One of the aims of this library is to be customizable. The many options include:
-
-* [Define the view's width and height in terms of tile size](docs/CUSTOMIZATION.md#tile-size)
-* [Single or Multiple date selection, or disabling selection entirely](docs/CUSTOMIZATION.md#date-selection)
-* [Showing dates from other months or those out of range](docs/CUSTOMIZATION.md#showing-other-dates)
-* [Setting the first day of the week](docs/CUSTOMIZATION_BUILDER.md#first-day-of-the-week)
-* [Show only a range of dates](docs/CUSTOMIZATION_BUILDER.md#date-ranges)
-* [Customize the top bar](docs/CUSTOMIZATION.md#topbar-options)
-* [Custom labels for the header, weekdays, or individual days](docs/CUSTOMIZATION.md#custom-labels)
-
-
-### Events, Highlighting, Custom Selectors, and More!
-
-All of this and more can be done via the decorator api. Please check out the [decorator documentation](docs/DECORATORS.md).
-
-### Custom Selectors and Colors
-
-If you provide custom drawables or colors, you'll want to make sure they respond to state.
-Check out the [documentation for custom states](docs/CUSTOM_SELECTORS.md).
 
 # Contributing
 
