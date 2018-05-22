@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -75,7 +77,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @see #getSelectionMode()
      */
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE, SELECTION_MODE_RANGE})
+    @IntDef({SELECTION_MODE_NONE, SELECTION_MODE_SINGLE, SELECTION_MODE_MULTIPLE, SELECTION_MODE_RANGE, SELECTION_MODE_MULTI_RANGE})
     public @interface SelectionMode {
     }
 
@@ -101,6 +103,11 @@ public class MaterialCalendarView extends ViewGroup {
      * Selection mode which allows selection of a range between two dates
      */
     public static final int SELECTION_MODE_RANGE = 3;
+
+    /**
+     * Selection mode which allows selection of multiple ranges between two dates for each range
+     */
+    public static final int SELECTION_MODE_MULTI_RANGE = 4;
 
     /**
      * {@linkplain IntDef} annotation for showOtherDates.
@@ -466,6 +473,10 @@ public class MaterialCalendarView extends ViewGroup {
                     //No selection! Clear out!
                     clearSelection();
                 }
+                break;
+
+            case SELECTION_MODE_MULTI_RANGE:
+                clearSelection();
                 break;
         }
 
@@ -1429,6 +1440,36 @@ public class MaterialCalendarView extends ViewGroup {
             case SELECTION_MODE_MULTIPLE: {
                 adapter.setDateSelected(date, nowSelected);
                 dispatchOnDateSelected(date, nowSelected);
+            }
+            break;
+            case SELECTION_MODE_MULTI_RANGE: {
+                adapter.setDateSelected(date, nowSelected);
+                final List<CalendarDay> dates = adapter.getSelectedDates();
+
+                CalendarDay rangeStart = null;
+                CalendarDay lastSelectedDate = null;
+
+                for (CalendarDay day : dates) {
+                    if (rangeStart == null) {
+                        rangeStart = day;
+                    } else {
+                        Calendar calendar = (Calendar) day.getCalendar().clone();
+                        calendar.add(Calendar.DAY_OF_YEAR, -1);
+                        if (calendar.compareTo(lastSelectedDate.getCalendar()) != 0) {
+                            // They're not adjacent, so they must be part of different ranges
+                            dispatchOnRangeSelected(rangeStart, lastSelectedDate);
+
+                            rangeStart = day;
+                        }
+                    }
+
+                    lastSelectedDate = day;
+                }
+
+                if (rangeStart != null) {
+                    // We left with a range start with no end
+                    dispatchOnRangeSelected(rangeStart, lastSelectedDate);
+                }
             }
             break;
             case SELECTION_MODE_RANGE: {

@@ -13,6 +13,7 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -311,7 +312,15 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
 
     @NonNull
     public List<CalendarDay> getSelectedDates() {
-        return Collections.unmodifiableList(selectedDates);
+        List<CalendarDay> dates = new ArrayList<>(selectedDates);
+        Collections.sort(dates, new Comparator<CalendarDay>() {
+            @Override
+            public int compare(CalendarDay o1, CalendarDay o2) {
+                return o1.getCalendar().compareTo(o2.getCalendar());
+            }
+        });
+
+        return dates;
     }
 
     protected int getDateTextAppearance() {
