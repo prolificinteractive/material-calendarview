@@ -1,5 +1,11 @@
 Change Log
 ==========
+
+Version 1.5.0 *(2018-05-15)*
+----------------------------
+*Update:Dependency has now been migrated to Jitpack. Refer to the installation section to install the latest using gradle.
+*Update:Gradle has been updated to the latest.
+
 Version 1.4.3 *(2017-02-21)*
 ----------------------------
 * New: Added set click listener method for title
