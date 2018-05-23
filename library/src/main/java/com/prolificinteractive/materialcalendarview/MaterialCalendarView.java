@@ -69,6 +69,11 @@ import java.util.List;
 public class MaterialCalendarView extends ViewGroup {
 
     public static final int INVALID_TILE_DIMENSION = -10;
+    private OnMultiRangeSelectedListener multiRangeListener;
+
+    public void setMultiRangeListener(OnMultiRangeSelectedListener multiRangeListener) {
+        this.multiRangeListener = multiRangeListener;
+    }
 
     /**
      * {@linkplain IntDef} annotation for selection mode.
@@ -1417,6 +1422,36 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * Dispatch the several ranges to a listener, if set.
+     */
+    protected void dispatchMultiRangeSelected(List<CalendarDay> ranges) {
+        final OnMultiRangeSelectedListener listener = multiRangeListener;
+        final List<CalendarDay> days = new ArrayList<>();
+
+        final Calendar counter = Calendar.getInstance();
+        final Calendar end = Calendar.getInstance();
+
+        for (int i = 0; i < ranges.size(); i = i + 2) {
+            CalendarDay firstDay = ranges.get(i);
+            CalendarDay lastDay = ranges.get(i + 1);
+            counter.setTime(firstDay.getDate());  //  start from the first day and increment
+            end.setTime(lastDay.getDate());  //  for comparison
+
+            while (counter.before(end) || counter.equals(end)) {
+                final CalendarDay current = CalendarDay.from(counter);
+                adapter.setDateSelected(current, true);
+                days.add(current);
+                counter.add(Calendar.DATE, 1);
+            }
+        }
+
+        if (listener != null) {
+            listener.onMultiRangeSelected(MaterialCalendarView.this, days);
+        }
+
+    }
+
+    /**
      * Dispatch date change events to a listener, if set
      *
      * @param day first day of the new month
@@ -1449,6 +1484,7 @@ public class MaterialCalendarView extends ViewGroup {
                 CalendarDay rangeStart = null;
                 CalendarDay lastSelectedDate = null;
 
+                List<CalendarDay> ranges = new ArrayList<>();
                 for (CalendarDay day : dates) {
                     if (rangeStart == null) {
                         rangeStart = day;
@@ -1457,7 +1493,8 @@ public class MaterialCalendarView extends ViewGroup {
                         calendar.add(Calendar.DAY_OF_YEAR, -1);
                         if (calendar.compareTo(lastSelectedDate.getCalendar()) != 0) {
                             // They're not adjacent, so they must be part of different ranges
-                            dispatchOnRangeSelected(rangeStart, lastSelectedDate);
+                            ranges.add(rangeStart);
+                            ranges.add(lastSelectedDate);
 
                             rangeStart = day;
                         }
@@ -1468,8 +1505,11 @@ public class MaterialCalendarView extends ViewGroup {
 
                 if (rangeStart != null) {
                     // We left with a range start with no end
-                    dispatchOnRangeSelected(rangeStart, lastSelectedDate);
+                    ranges.add(rangeStart);
+                    ranges.add(lastSelectedDate);
                 }
+
+                dispatchMultiRangeSelected(ranges);
             }
             break;
             case SELECTION_MODE_RANGE: {

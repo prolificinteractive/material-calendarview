@@ -1,8 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        Config {
+            keyAlias 'Android'
+            keyPassword 'Casper123$'
+            storeFile file('/Users/oscarr/Tennis Locker/TennisLockerKS.jks')
+            storePassword 'Casper123$'
+        }
+    }
     compileSdkVersion rootProject.ext.compileSdkVersion
-
     defaultConfig {
         applicationId "com.prolificinteractive.materialcalendarview.sample"
 
@@ -12,9 +19,13 @@ android {
         versionCode 1
         versionName "1.0"
     }
-
     lintOptions {
         abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -23,7 +34,6 @@ dependencies {
     // We depend on the source directly here so that development is easier.
     implementation project(':library')
     //compile 'com.prolificinteractive:material-calendarview:1.4.3'
-
     implementation rootProject.ext.supportAppCompat
     implementation rootProject.ext.recyclerviewV7
     implementation rootProject.ext.butterknife
