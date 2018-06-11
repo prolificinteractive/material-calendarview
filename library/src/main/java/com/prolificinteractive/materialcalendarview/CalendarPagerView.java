@@ -2,6 +2,7 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
@@ -174,15 +175,28 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
 
     protected void invalidateDecorators() {
         final DayViewFacade facadeAccumulator = new DayViewFacade();
-        for (DayView dayView : dayViews) {
-            facadeAccumulator.reset();
-            for (DecoratorResult result : decoratorResults) {
-                if (result.decorator.shouldDecorate(dayView.getDate())) {
-                    result.result.applyTo(facadeAccumulator);
+//        for (DayView dayView : dayViews) {
+//            facadeAccumulator.reset();
+//            Log.d("CalendarPagerView", "Setting for a dayView");
+//            for (DecoratorResult result : decoratorResults) {
+//                if (result.decorator.shouldDecorate(dayView.getDate())) {
+//                    result.result.applyTo(facadeAccumulator);
+//                }
+//            }
+//            dayView.applyFacade(facadeAccumulator);
+//        }
+        new Thread(() -> {
+            for (DayView dayView : dayViews) {
+                facadeAccumulator.reset();
+                Log.d("CalendarPagerView", "Setting for a dayView");
+                for (DecoratorResult result : decoratorResults) {
+                    if (result.decorator.shouldDecorate(dayView.getDate())) {
+                        result.result.applyTo(facadeAccumulator);
+                    }
                 }
+                post(() -> dayView.applyFacade(facadeAccumulator));
             }
-            dayView.applyFacade(facadeAccumulator);
-        }
+        }).start();
     }
 
     @Override
