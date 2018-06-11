@@ -173,30 +173,19 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         postInvalidate();
     }
 
+
     protected void invalidateDecorators() {
         final DayViewFacade facadeAccumulator = new DayViewFacade();
-//        for (DayView dayView : dayViews) {
-//            facadeAccumulator.reset();
-//            Log.d("CalendarPagerView", "Setting for a dayView");
-//            for (DecoratorResult result : decoratorResults) {
-//                if (result.decorator.shouldDecorate(dayView.getDate())) {
-//                    result.result.applyTo(facadeAccumulator);
-//                }
-//            }
-//            dayView.applyFacade(facadeAccumulator);
-//        }
-        new Thread(() -> {
-            for (DayView dayView : dayViews) {
-                facadeAccumulator.reset();
-                Log.d("CalendarPagerView", "Setting for a dayView");
-                for (DecoratorResult result : decoratorResults) {
-                    if (result.decorator.shouldDecorate(dayView.getDate())) {
-                        result.result.applyTo(facadeAccumulator);
-                    }
+        for (DayView dayView : dayViews) {
+            facadeAccumulator.reset();
+            Log.d("CalendarPagerView", "Setting for a dayView");
+            for (DecoratorResult result : decoratorResults) {
+                if (result.decorator.shouldDecorate(dayView.getDate())) {
+                    result.result.applyTo(facadeAccumulator);
                 }
-                post(() -> dayView.applyFacade(facadeAccumulator));
             }
-        }).start();
+            dayView.applyFacade(facadeAccumulator);
+        }
     }
 
     @Override
