@@ -40,6 +40,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private List<DayViewDecorator> decorators = new ArrayList<>();
     private List<DecoratorResult> decoratorResults = null;
     private boolean selectionEnabled = true;
+    boolean dragEnabled;
 
     CalendarPagerAdapter(MaterialCalendarView mcv) {
         this.mcv = mcv;
@@ -170,6 +171,14 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         for (V pagerView : currentViews) {
             pagerView.setSelectionEnabled(selectionEnabled);
         }
+    }
+
+    public void setDragEnabled(boolean dragEnabled) {
+        this.dragEnabled = dragEnabled;
+    }
+
+    public boolean isDragEnabled() {
+        return dragEnabled;
     }
 
     @Override

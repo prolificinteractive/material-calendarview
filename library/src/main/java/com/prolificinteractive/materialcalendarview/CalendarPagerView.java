@@ -1,7 +1,9 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
@@ -35,16 +37,18 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private int firstDayOfWeek;
+    private boolean dragEnabled;
 
     private final Collection<DayView> dayViews = new ArrayList<>();
 
     public CalendarPagerView(@NonNull MaterialCalendarView view,
                              CalendarDay firstViewDay,
-                             int firstDayOfWeek) {
+                             int firstDayOfWeek, boolean dragEnabled) {
         super(view.getContext());
         this.mcv = view;
         this.firstViewDay = firstViewDay;
         this.firstDayOfWeek = firstDayOfWeek;
+        this.dragEnabled = dragEnabled;
 
         setClipChildren(false);
         setClipToPadding(false);
@@ -66,10 +70,93 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         CalendarDay day = CalendarDay.from(calendar);
         DayView dayView = new DayView(getContext(), day);
         dayView.setOnClickListener(this);
+        if (dragEnabled) {
+            dayView.setOnTouchListener(new DayViewOnTouchListener());
+        }
         dayViews.add(dayView);
         addView(dayView, new LayoutParams());
 
         calendar.add(DATE, 1);
+    }
+
+    private class DayViewOnTouchListener implements View.OnTouchListener {
+
+        private Rect viewRect;
+        private float dX;
+        private float dY;
+        private int vWidth;
+        private int vHeight;
+        private boolean initCheck;
+        private Calendar initDay;
+        private Calendar currentDay;
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+
+            if (!(v instanceof DayView))
+                return false;
+
+            switch (event.getAction()) {
+
+                case MotionEvent.ACTION_DOWN:
+
+                    viewRect = new Rect(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
+                    initDay = ((DayView) v).getDate().getCalendar();
+                    vWidth = v.getWidth();
+                    vHeight = v.getHeight();
+                    initCheck = ((DayView) v).isChecked();
+                    return true;
+
+                case MotionEvent.ACTION_MOVE:
+
+                    dX = event.getX();
+                    dY = event.getY();
+
+                    if (initCheck) {
+                        performDrag();
+                    }
+                    return true;
+
+                case MotionEvent.ACTION_UP:
+                    if (viewRect.contains((int) (v.getLeft() + event.getX()),
+                            (int) (v.getTop() + event.getY()))) {
+                        ((DayView)v).setInDragMode(false);
+                        v.performClick();
+                    }
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        private void performDrag() {
+            int xBlocks = (int) ((dX / vWidth) < 0f ? (dX / vWidth) - 1 : (dX / vWidth));
+            int yBlocks = (int) ((dY / vHeight) < 0f ? (dY / vHeight) - 1 : (dY / vHeight));
+            Calendar nextDay = Calendar.getInstance();
+            nextDay.setTime(initDay.getTime());
+
+            nextDay.add(DATE, xBlocks);
+            nextDay.add(DATE, 7 * yBlocks);
+
+            if (!nextDay.equals(currentDay)) {
+                DayView nextDayView = getDayView(CalendarDay.from(nextDay));
+                if (nextDayView != null && nextDayView.isEnabled()) {
+                    nextDayView.setInDragMode(true);
+                    nextDayView.performClick();
+                    currentDay = nextDay;
+                }
+            }
+        }
+
+        private DayView getDayView(CalendarDay day) {
+            for (DayView view : dayViews) {
+                if (view.getDate().equals(day))
+                    return view;
+            }
+
+            return null;
+        }
     }
 
     protected Calendar resetAndGetWorkingCalendar() {
@@ -189,7 +276,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     public void onClick(View v) {
         if (v instanceof DayView) {
             final DayView dayView = (DayView) v;
-            mcv.onDateClicked(dayView);
+            mcv.onDateClicked(dayView, dayView.isInDragMode());
         }
     }
 
