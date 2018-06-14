@@ -40,6 +40,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private List<DayViewDecorator> decorators = new ArrayList<>();
     private List<DecoratorResult> decoratorResults = null;
     private boolean selectionEnabled = true;
+    boolean showWeekDays;
 
     CalendarPagerAdapter(MaterialCalendarView mcv) {
         this.mcv = mcv;
@@ -163,6 +164,14 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         pagerView.setDayViewDecorators(decoratorResults);
 
         return pagerView;
+    }
+
+    public void setShowWeekDays(boolean showWeekDays) {
+        this.showWeekDays = showWeekDays;
+    }
+
+    public boolean isShowWeekDays() {
+        return showWeekDays;
     }
 
     public void setSelectionEnabled(boolean enabled) {

@@ -35,21 +35,26 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private int firstDayOfWeek;
+    protected boolean showWeekDays;
 
     private final Collection<DayView> dayViews = new ArrayList<>();
 
     public CalendarPagerView(@NonNull MaterialCalendarView view,
                              CalendarDay firstViewDay,
-                             int firstDayOfWeek) {
+                             int firstDayOfWeek,
+                             boolean showWeekDays) {
         super(view.getContext());
         this.mcv = view;
         this.firstViewDay = firstViewDay;
         this.firstDayOfWeek = firstDayOfWeek;
+        this.showWeekDays = showWeekDays;
 
         setClipChildren(false);
         setClipToPadding(false);
 
-        buildWeekDays(resetAndGetWorkingCalendar());
+        if (showWeekDays) {
+            buildWeekDays(resetAndGetWorkingCalendar());
+        }
         buildDayViews(dayViews, resetAndGetWorkingCalendar());
     }
 
