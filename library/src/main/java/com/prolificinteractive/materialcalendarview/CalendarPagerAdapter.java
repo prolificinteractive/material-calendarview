@@ -226,6 +226,12 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         }
     }
 
+    public void setDayFormatterContentDescription(DayFormatter formatter) {
+        for (V pagerView : currentViews) {
+            pagerView.setDayFormatterContentDescription(formatter);
+        }
+    }
+
     @ShowOtherDates
     public int getShowOtherDates() {
         return showOtherDates;
