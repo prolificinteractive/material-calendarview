@@ -147,7 +147,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
 
     public void setDayFormatterContentDescription(DayFormatter formatter) {
         for (DayView dayView : dayViews) {
-            dayView.setDayFormatter(formatter);
+            dayView.setDayFormatterContentDescription(formatter);
         }
     }
 
