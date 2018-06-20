@@ -102,18 +102,7 @@ class DayView extends CheckedTextView {
      */
     public void setDayFormatterContentDescription(DayFormatter formatter) {
         this.contentDescriptionFormatter = formatter == null ? this.formatter : formatter;
-        CharSequence currentContentDescriptionLabel = getContentDescription();
-        Object[] spans = null;
-        if (currentContentDescriptionLabel instanceof Spanned) {
-            spans = ((Spanned) currentContentDescriptionLabel).getSpans(0, currentContentDescriptionLabel.length(), Object.class);
-        }
-        SpannableString newContentDescriptionLabel = new SpannableString(getContentDescriptionLabel());
-        if (spans != null) {
-            for (Object span : spans) {
-                newContentDescriptionLabel.setSpan(span, 0, newContentDescriptionLabel.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
-        setContentDescription(newContentDescriptionLabel);
+        setContentDescription(getContentDescriptionLabel());
     }
 
     @NonNull
