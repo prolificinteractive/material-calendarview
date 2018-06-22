@@ -31,9 +31,9 @@ public class CustomizeCodeActivity extends AppCompatActivity {
         widget.setLeftArrowMask(getResources().getDrawable(R.drawable.ic_navigation_arrow_back));
         widget.setRightArrowMask(getResources().getDrawable(R.drawable.ic_navigation_arrow_forward));
         widget.setSelectionColor(getResources().getColor(R.color.sample_primary));
-        widget.setHeaderTextAppearance(R.style.TextAppearance_AppCompat_Medium);
-        widget.setWeekDayTextAppearance(R.style.TextAppearance_AppCompat_Medium);
-        widget.setDateTextAppearance(R.style.CustomDayTextAppearance);
+        widget.setWeekDayTextAppearance(R.style.CustomTextAppearance);
+        widget.setHeaderTextAppearance(R.style.CustomTextAppearance);
+        widget.setDateTextAppearance(R.style.CustomTextAppearance);
         widget.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
         widget.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
         widget.setTileSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics()));
