@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
@@ -61,6 +62,9 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     private void buildWeekDays(Calendar calendar) {
         for (int i = 0; i < DEFAULT_DAYS_IN_WEEK; i++) {
             WeekDayView weekDayView = new WeekDayView(getContext(), CalendarUtils.getDayOfWeek(calendar));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                weekDayView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+            }
             weekDayViews.add(weekDayView);
             addView(weekDayView);
             calendar.add(DATE, 1);
