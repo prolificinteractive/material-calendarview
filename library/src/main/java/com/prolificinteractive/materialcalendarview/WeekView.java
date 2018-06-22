@@ -16,8 +16,8 @@ public class WeekView extends CalendarPagerView {
 
     public WeekView(@NonNull MaterialCalendarView view,
                     CalendarDay firstViewDay,
-                    int firstDayOfWeek) {
-        super(view, firstViewDay, firstDayOfWeek);
+                    int firstDayOfWeek, boolean dragEnable) {
+        super(view, firstViewDay, firstDayOfWeek, dragEnable);
     }
 
     @Override

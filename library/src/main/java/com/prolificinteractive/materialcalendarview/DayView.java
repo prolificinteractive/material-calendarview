@@ -49,6 +49,7 @@ class DayView extends CheckedTextView {
     private boolean isDecoratedDisabled = false;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
+    private boolean inDragMode;
 
     public DayView(Context context, CalendarDay day) {
         super(context);
@@ -64,6 +65,14 @@ class DayView extends CheckedTextView {
         }
 
         setDay(day);
+    }
+
+    public void setInDragMode(boolean inDragMode) {
+        this.inDragMode = inDragMode;
+    }
+
+    public boolean isInDragMode() {
+        return inDragMode;
     }
 
     public void setDay(CalendarDay date) {

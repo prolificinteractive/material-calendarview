@@ -85,7 +85,8 @@ public class DialogsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date,
+                                   boolean selected, boolean fromDrag) {
             textView.setText(FORMATTER.format(date.getDate()));
         }
     }

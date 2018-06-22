@@ -44,7 +44,8 @@ public class BasicActivity extends AppCompatActivity implements OnDateSelectedLi
     }
 
     @Override
-    public void onDateSelected(@NonNull MaterialCalendarView widget, @Nullable CalendarDay date, boolean selected) {
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @Nullable CalendarDay date,
+                               boolean selected, boolean fromDrag) {
         textView.setText(getSelectedDatesString());
     }
 
