@@ -101,9 +101,12 @@ public class DynamicSettersActivity extends AppCompatActivity {
 
     @OnCheckedChanged(R.id.enable_save_current_position)
     void onSaveCurrentPositionChecked(boolean checked) {
-        widget.state().edit()
-                .isCacheCalendarPositionEnabled(checked)
-                .commit();
+        widget.state().edit().isCacheCalendarPositionEnabled(checked).commit();
+    }
+
+    @OnCheckedChanged(R.id.show_week_days)
+    void onShowWeekDaysChecked(boolean checked) {
+        widget.state().edit().setShowWeekDays(checked).commit();
     }
 
     @OnCheckedChanged(R.id.check_text_appearance)
