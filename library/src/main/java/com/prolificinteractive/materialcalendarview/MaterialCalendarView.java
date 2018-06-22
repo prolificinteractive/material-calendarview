@@ -179,6 +179,7 @@ public class MaterialCalendarView extends ViewGroup {
     private CalendarDay currentMonth;
     private LinearLayout topbar;
     private CalendarMode calendarMode;
+    private DayViewProvider mDayViewProvider;
     /**
      * Used for the dynamic calendar height.
      */
@@ -390,13 +391,18 @@ public class MaterialCalendarView extends ViewGroup {
 
         if (isInEditMode()) {
             removeView(pager);
-            MonthView monthView = new MonthView(this, currentMonth, getFirstDayOfWeek());
+            MonthView monthView = new MonthView(this, currentMonth, mDayViewProvider, getFirstDayOfWeek());
             monthView.setSelectionColor(getSelectionColor());
             monthView.setDateTextAppearance(adapter.getDateTextAppearance());
             monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance());
             monthView.setShowOtherDates(getShowOtherDates());
             addView(monthView, new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
         }
+    }
+
+    public void setDayViewProvider(DayViewProvider dayViewProvider) {
+        this.mDayViewProvider = dayViewProvider;
+        this.adapter.setDayViewProvider(mDayViewProvider);
     }
 
     private void setupChildren() {

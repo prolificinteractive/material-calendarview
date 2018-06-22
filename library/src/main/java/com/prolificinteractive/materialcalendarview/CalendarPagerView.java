@@ -34,15 +34,18 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     private CalendarDay firstViewDay;
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
+    private DayViewProvider dayViewProvider = null;
     private int firstDayOfWeek;
 
     private final Collection<DayView> dayViews = new ArrayList<>();
 
     public CalendarPagerView(@NonNull MaterialCalendarView view,
                              CalendarDay firstViewDay,
+                             DayViewProvider dayViewProvider,
                              int firstDayOfWeek) {
         super(view.getContext());
         this.mcv = view;
+        this.dayViewProvider = dayViewProvider;
         this.firstViewDay = firstViewDay;
         this.firstDayOfWeek = firstDayOfWeek;
 
@@ -64,7 +67,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
 
     protected void addDayView(Collection<DayView> dayViews, Calendar calendar) {
         CalendarDay day = CalendarDay.from(calendar);
-        DayView dayView = new DayView(getContext(), day);
+        DayView dayView = dayViewProvider != null ? dayViewProvider.getDayView(day) : new DayView(getContext(), day);
         dayView.setOnClickListener(this);
         dayViews.add(dayView);
         addView(dayView, new LayoutParams());

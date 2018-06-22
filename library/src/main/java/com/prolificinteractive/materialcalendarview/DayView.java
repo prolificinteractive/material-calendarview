@@ -16,6 +16,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -33,7 +34,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
  * Display one day of a {@linkplain MaterialCalendarView}
  */
 @SuppressLint("ViewConstructor")
-class DayView extends CheckedTextView {
+public class DayView extends CheckedTextView {
 
     private CalendarDay date;
     private int selectionColor = Color.GRAY;
