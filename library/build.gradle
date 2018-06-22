@@ -25,6 +25,7 @@ android {
 
 dependencies {
     implementation rootProject.ext.supportV4
+    implementation rootProject.ext.supportAppCompat
     implementation rootProject.ext.supportAnnotations
 
     rootProject.ext.testDep.each { testImplementation it }
