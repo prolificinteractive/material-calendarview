@@ -37,6 +37,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private List<CalendarDay> selectedDates = new ArrayList<>();
     private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
     private DayFormatter dayFormatter = DayFormatter.DEFAULT;
+    private DayFormatter dayFormatterContentDescription = dayFormatter;
     private List<DayViewDecorator> decorators = new ArrayList<>();
     private List<DecoratorResult> decoratorResults = null;
     private boolean selectionEnabled = true;
@@ -90,6 +91,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         newAdapter.selectedDates = selectedDates;
         newAdapter.weekDayFormatter = weekDayFormatter;
         newAdapter.dayFormatter = dayFormatter;
+        newAdapter.dayFormatterContentDescription = dayFormatterContentDescription;
         newAdapter.decorators = decorators;
         newAdapter.decoratorResults = decoratorResults;
         newAdapter.selectionEnabled = selectionEnabled;
@@ -144,6 +146,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
 
         pagerView.setWeekDayFormatter(weekDayFormatter);
         pagerView.setDayFormatter(dayFormatter);
+        pagerView.setDayFormatterContentDescription(dayFormatterContentDescription);
         if (color != null) {
             pagerView.setSelectionColor(color);
         }
@@ -229,9 +232,18 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     }
 
     public void setDayFormatter(DayFormatter formatter) {
+        dayFormatterContentDescription = dayFormatterContentDescription == dayFormatter ?
+                formatter : dayFormatterContentDescription;
         this.dayFormatter = formatter;
         for (V pagerView : currentViews) {
             pagerView.setDayFormatter(formatter);
+        }
+    }
+
+    public void setDayFormatterContentDescription(DayFormatter formatter) {
+        dayFormatterContentDescription = formatter;
+        for (V pagerView : currentViews) {
+            pagerView.setDayFormatterContentDescription(formatter);
         }
     }
 

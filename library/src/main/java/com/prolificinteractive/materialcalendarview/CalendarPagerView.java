@@ -154,6 +154,12 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         }
     }
 
+    public void setDayFormatterContentDescription(DayFormatter formatter) {
+        for (DayView dayView : dayViews) {
+            dayView.setDayFormatterContentDescription(formatter);
+        }
+    }
+
     public void setMinimumDate(CalendarDay minDate) {
         this.minDate = minDate;
         updateUi();

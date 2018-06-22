@@ -713,6 +713,15 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * Set a formatter for day content description.
+     *
+     * @param formatter the new formatter, null for default
+     */
+    public void setDayFormatterContentDescription(DayFormatter formatter) {
+        adapter.setDayFormatterContentDescription(formatter);
+    }
+
+    /**
      * @return icon used for the left arrow
      */
     public Drawable getLeftArrowMask() {
