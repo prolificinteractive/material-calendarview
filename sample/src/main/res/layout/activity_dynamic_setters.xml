@@ -226,17 +226,25 @@
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
 
             <CheckBox
+                android:id="@+id/show_week_days"
+                android:text="Show week days"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:padding="8dp"
+                />
+            <CheckBox
                 android:id="@+id/enable_save_current_position"
                 android:text="Enable save current position"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:padding="8dp"
                 />
 
         </LinearLayout>
