@@ -2,12 +2,11 @@ package com.prolificinteractive.materialcalendarview;
 
 import java.util.Locale;
 
-/**
- * Created by Anas AlaaEldin on 5/12/2017.
- */
+class LocalUtils {
 
-public class LocalUtils {
-    public static boolean isRTL() {
+    private LocalUtils() { }
+
+    static boolean isRTL() {
         return isRTL(Locale.getDefault());
     }
 

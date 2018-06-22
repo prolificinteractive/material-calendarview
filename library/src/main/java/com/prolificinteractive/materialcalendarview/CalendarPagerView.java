@@ -44,11 +44,6 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
                              int firstDayOfWeek,
                              boolean showWeekDays) {
         super(view.getContext());
-
-        if (LocalUtils.isRTL()) {
-            this.setRotationY(180);
-        }
-
         this.mcv = view;
         this.firstViewDay = firstViewDay;
         this.firstDayOfWeek = firstDayOfWeek;
@@ -56,6 +51,10 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
 
         setClipChildren(false);
         setClipToPadding(false);
+
+        if (LocalUtils.isRTL()) {
+            this.setRotationY(180);
+        }
 
         if (showWeekDays) {
             buildWeekDays(resetAndGetWorkingCalendar());
