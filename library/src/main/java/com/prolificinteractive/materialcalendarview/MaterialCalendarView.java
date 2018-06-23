@@ -13,6 +13,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -234,6 +235,7 @@ public class MaterialCalendarView extends ViewGroup {
     private int selectionMode = SELECTION_MODE_SINGLE;
     private boolean allowClickDaysOutsideCurrentMonth = true;
     private int firstDayOfWeek;
+    private boolean showWeekDays;
 
     private State state;
 
@@ -256,7 +258,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         buttonPast = new DirectionButton(getContext());
         buttonPast.setContentDescription(getContext().getString(R.string.previous));
-        title = new TextView(getContext());
+        title = new AppCompatTextView(getContext());
         buttonFuture = new DirectionButton(getContext());
         buttonFuture.setContentDescription(getContext().getString(R.string.next));
         pager = new CalendarPager(getContext());
@@ -297,9 +299,12 @@ public class MaterialCalendarView extends ViewGroup {
                 firstDayOfWeek = Calendar.getInstance().getFirstDayOfWeek();
             }
 
+            showWeekDays = a.getBoolean(R.styleable.MaterialCalendarView_mcv_showWeekDays, true);
+
             newState()
                     .setFirstDayOfWeek(firstDayOfWeek)
                     .setCalendarDisplayMode(CalendarMode.values()[calendarModeIndex])
+                    .setShowWeekDays(showWeekDays)
                     .commit();
 
             final int tileSize = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileSize, INVALID_TILE_DIMENSION);
@@ -390,7 +395,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         if (isInEditMode()) {
             removeView(pager);
-            MonthView monthView = new MonthView(this, currentMonth, getFirstDayOfWeek());
+            MonthView monthView = new MonthView(this, currentMonth, getFirstDayOfWeek(), true);
             monthView.setSelectionColor(getSelectionColor());
             monthView.setDateTextAppearance(adapter.getDateTextAppearance());
             monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance());
@@ -419,7 +424,8 @@ public class MaterialCalendarView extends ViewGroup {
 
         pager.setId(R.id.mcv_pager);
         pager.setOffscreenPageLimit(1);
-        addView(pager, new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
+        int tileHeight = showWeekDays ? calendarMode.visibleWeeksCount + DAY_NAMES_ROW : calendarMode.visibleWeeksCount;
+        addView(pager, new LayoutParams(tileHeight));
     }
 
     private void updateUi() {
@@ -708,6 +714,15 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * Set a formatter for day content description.
+     *
+     * @param formatter the new formatter, null for default
+     */
+    public void setDayFormatterContentDescription(DayFormatter formatter) {
+        adapter.setDayFormatterContentDescription(formatter);
+    }
+
+    /**
      * @return icon used for the left arrow
      */
     public Drawable getLeftArrowMask() {
@@ -988,6 +1003,14 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     *
+     * @return true if the week days names are shown
+     */
+    public boolean isShowWeekDays() {
+        return showWeekDays;
+    }
+
+    /**
      * Set a custom formatter for the month/year title
      *
      * @param titleFormatter new formatter to use, null to use default formatter
@@ -1096,6 +1119,7 @@ public class MaterialCalendarView extends ViewGroup {
                 .setMinimumDate(ss.minDate)
                 .setMaximumDate(ss.maxDate)
                 .isCacheCalendarPositionEnabled(ss.cacheCurrentPosition)
+                .setShowWeekDays(ss.showWeekDays)
                 .commit();
 
         setSelectionColor(ss.color);
@@ -1158,6 +1182,7 @@ public class MaterialCalendarView extends ViewGroup {
         CalendarMode calendarMode = CalendarMode.MONTHS;
         CalendarDay currentMonth = null;
         boolean cacheCurrentPosition;
+        boolean showWeekDays;
 
         SavedState(Parcelable superState) {
             super(superState);
@@ -1184,6 +1209,7 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeInt(calendarMode == CalendarMode.WEEKS ? 1 : 0);
             out.writeParcelable(currentMonth, 0);
             out.writeByte((byte) (cacheCurrentPosition ? 1 : 0));
+            out.writeByte((byte) (showWeekDays ? 1 : 0));
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR
@@ -1218,6 +1244,7 @@ public class MaterialCalendarView extends ViewGroup {
             calendarMode = in.readInt() == 1 ? CalendarMode.WEEKS : CalendarMode.MONTHS;
             currentMonth = in.readParcelable(loader);
             cacheCurrentPosition = in.readByte() != 0;
+            showWeekDays = in.readByte() != 0;
         }
     }
 
@@ -1661,9 +1688,12 @@ public class MaterialCalendarView extends ViewGroup {
             cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
             //noinspection ResourceType
             cal.setFirstDayOfWeek(getFirstDayOfWeek());
+            // By default this is '4', causes weeks to be counted incorrectly,
+            // when using dynamic height on Nougat devices
+            cal.setMinimalDaysInFirstWeek(1);
             weekCount = cal.get(Calendar.WEEK_OF_MONTH);
         }
-        return weekCount + DAY_NAMES_ROW;
+        return showWeekDays ? weekCount + DAY_NAMES_ROW : weekCount;
     }
 
     /**
@@ -1812,6 +1842,7 @@ public class MaterialCalendarView extends ViewGroup {
         private final CalendarDay minDate;
         private final CalendarDay maxDate;
         private final boolean cacheCurrentPosition;
+        private final boolean showWeekDays;
 
         private State(final StateBuilder builder) {
             calendarMode = builder.calendarMode;
@@ -1819,6 +1850,7 @@ public class MaterialCalendarView extends ViewGroup {
             minDate = builder.minDate;
             maxDate = builder.maxDate;
             cacheCurrentPosition = builder.cacheCurrentPosition;
+            showWeekDays = builder.showWeekDays;
         }
 
         /**
@@ -1836,6 +1868,7 @@ public class MaterialCalendarView extends ViewGroup {
         private boolean cacheCurrentPosition = false;
         private CalendarDay minDate = null;
         private CalendarDay maxDate = null;
+        private boolean showWeekDays;
 
         public StateBuilder() {
         }
@@ -1846,6 +1879,7 @@ public class MaterialCalendarView extends ViewGroup {
             minDate = state.minDate;
             maxDate = state.maxDate;
             cacheCurrentPosition = state.cacheCurrentPosition;
+            showWeekDays = state.showWeekDays;
         }
 
         /**
@@ -1923,6 +1957,14 @@ public class MaterialCalendarView extends ViewGroup {
         }
 
         /**
+         * @param showWeekDays true to show week days names
+         */
+        public StateBuilder setShowWeekDays(boolean showWeekDays) {
+            this.showWeekDays = showWeekDays;
+            return this;
+        }
+
+        /**
          * Use this method to enable saving the current position when switching
          * between week and month mode. By default, the calendar update to the latest selected date
          * or the current date. When set to true, the view will used the month that the calendar is
@@ -1980,6 +2022,7 @@ public class MaterialCalendarView extends ViewGroup {
         firstDayOfWeek = state.firstDayOfWeek;
         minDate = state.minDate;
         maxDate = state.maxDate;
+        showWeekDays = state.showWeekDays;
 
         // Recreate adapter
         final CalendarPagerAdapter<?> newAdapter;
@@ -1998,11 +2041,13 @@ public class MaterialCalendarView extends ViewGroup {
         } else {
             adapter = adapter.migrateStateAndReturn(newAdapter);
         }
+        adapter.setShowWeekDays(showWeekDays);
         pager.setAdapter(adapter);
         setRangeDates(minDate, maxDate);
 
         // Reset height params after mode change
-        pager.setLayoutParams(new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
+        int tileHeight = showWeekDays ? calendarMode.visibleWeeksCount + DAY_NAMES_ROW : calendarMode.visibleWeeksCount;
+        pager.setLayoutParams(new LayoutParams(tileHeight));
 
         setCurrentDate(
                 selectionMode == SELECTION_MODE_SINGLE && !adapter.getSelectedDates().isEmpty()

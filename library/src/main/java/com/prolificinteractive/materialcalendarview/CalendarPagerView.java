@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
@@ -35,27 +36,35 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private int firstDayOfWeek;
+    protected boolean showWeekDays;
 
     private final Collection<DayView> dayViews = new ArrayList<>();
 
     public CalendarPagerView(@NonNull MaterialCalendarView view,
                              CalendarDay firstViewDay,
-                             int firstDayOfWeek) {
+                             int firstDayOfWeek,
+                             boolean showWeekDays) {
         super(view.getContext());
         this.mcv = view;
         this.firstViewDay = firstViewDay;
         this.firstDayOfWeek = firstDayOfWeek;
+        this.showWeekDays = showWeekDays;
 
         setClipChildren(false);
         setClipToPadding(false);
 
-        buildWeekDays(resetAndGetWorkingCalendar());
+        if (showWeekDays) {
+            buildWeekDays(resetAndGetWorkingCalendar());
+        }
         buildDayViews(dayViews, resetAndGetWorkingCalendar());
     }
 
     private void buildWeekDays(Calendar calendar) {
         for (int i = 0; i < DEFAULT_DAYS_IN_WEEK; i++) {
             WeekDayView weekDayView = new WeekDayView(getContext(), CalendarUtils.getDayOfWeek(calendar));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                weekDayView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+            }
             weekDayViews.add(weekDayView);
             addView(weekDayView);
             calendar.add(DATE, 1);
@@ -142,6 +151,12 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     public void setDayFormatter(DayFormatter formatter) {
         for (DayView dayView : dayViews) {
             dayView.setDayFormatter(formatter);
+        }
+    }
+
+    public void setDayFormatterContentDescription(DayFormatter formatter) {
+        for (DayView dayView : dayViews) {
+            dayView.setDayFormatterContentDescription(formatter);
         }
     }
 

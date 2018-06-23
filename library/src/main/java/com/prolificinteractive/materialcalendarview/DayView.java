@@ -14,6 +14,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatCheckedTextView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.view.Gravity;
@@ -33,7 +34,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
  * Display one day of a {@linkplain MaterialCalendarView}
  */
 @SuppressLint("ViewConstructor")
-class DayView extends CheckedTextView {
+class DayView extends AppCompatCheckedTextView {
 
     private CalendarDay date;
     private int selectionColor = Color.GRAY;
@@ -43,6 +44,7 @@ class DayView extends CheckedTextView {
     private Drawable selectionDrawable;
     private Drawable mCircleDrawable;
     private DayFormatter formatter = DayFormatter.DEFAULT;
+    private DayFormatter contentDescriptionFormatter = formatter;
 
     private boolean isInRange = true;
     private boolean isInMonth = true;
@@ -77,6 +79,8 @@ class DayView extends CheckedTextView {
      * @param formatter new label formatter
      */
     public void setDayFormatter(DayFormatter formatter) {
+        this.contentDescriptionFormatter = contentDescriptionFormatter == this.formatter ?
+                formatter : contentDescriptionFormatter;
         this.formatter = formatter == null ? DayFormatter.DEFAULT : formatter;
         CharSequence currentLabel = getText();
         Object[] spans = null;
@@ -92,9 +96,24 @@ class DayView extends CheckedTextView {
         setText(newLabel);
     }
 
+    /**
+     * Set the new content description formatter and reformat the current content description.
+     *
+     * @param formatter new content description formatter
+     */
+    public void setDayFormatterContentDescription(DayFormatter formatter) {
+        this.contentDescriptionFormatter = formatter == null ? this.formatter : formatter;
+        setContentDescription(getContentDescriptionLabel());
+    }
+
     @NonNull
     public String getLabel() {
         return formatter.format(date);
+    }
+
+    @NonNull
+    public String getContentDescriptionLabel() {
+        return contentDescriptionFormatter == null ? formatter.format(date) : contentDescriptionFormatter.format(date);
     }
 
     public void setSelectionColor(int color) {
