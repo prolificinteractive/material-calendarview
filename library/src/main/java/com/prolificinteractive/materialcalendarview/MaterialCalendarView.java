@@ -1003,7 +1003,6 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     *
      * @return true if the week days names are shown
      */
     public boolean isShowWeekDays() {
@@ -1083,6 +1082,15 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public boolean getTopbarVisible() {
         return topbar.getVisibility() == View.VISIBLE;
+    }
+
+    /**
+     * Get the current {@link CalendarMode} set of the Calendar.
+     *
+     * @return Whichever mode the calendar is currently in.
+     */
+    public CalendarMode getCalendarMode() {
+        return calendarMode;
     }
 
     @Override
