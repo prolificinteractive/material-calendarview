@@ -13,8 +13,9 @@ import java.util.Collection;
 @SuppressLint("ViewConstructor")
 class MonthView extends CalendarPagerView {
 
-    public MonthView(@NonNull MaterialCalendarView view, CalendarDay month, int firstDayOfWeek) {
-        super(view, month, firstDayOfWeek);
+    public MonthView(@NonNull MaterialCalendarView view, CalendarDay month,
+                     int firstDayOfWeek, boolean showWeekDays) {
+        super(view, month, firstDayOfWeek, showWeekDays);
     }
 
     @Override
@@ -37,6 +38,6 @@ class MonthView extends CalendarPagerView {
 
     @Override
     protected int getRows() {
-        return DEFAULT_MAX_WEEKS + DAY_NAMES_ROW;
+        return showWeekDays ? DEFAULT_MAX_WEEKS + DAY_NAMES_ROW : DEFAULT_MAX_WEEKS;
     }
 }

@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.prolificinteractive.materialcalendarview.sample"
@@ -17,16 +16,21 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     // You should use the commented out line below in you're application.
     // We depend on the source directly here so that development is easier.
-    compile project(':library')
+    implementation project(':library')
     //compile 'com.prolificinteractive:material-calendarview:1.4.3'
 
-    compile rootProject.ext.supportAppCompat
-    compile rootProject.ext.recyclerviewV7
-    compile rootProject.ext.butterknife
+    implementation rootProject.ext.supportAppCompat
+    implementation rootProject.ext.recyclerviewV7
+    implementation rootProject.ext.butterknife
     annotationProcessor rootProject.ext.butterknifeCompiler
 }

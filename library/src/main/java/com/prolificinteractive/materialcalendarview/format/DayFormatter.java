@@ -23,5 +23,5 @@ public interface DayFormatter {
     /**
      * Default implementation used by {@linkplain com.prolificinteractive.materialcalendarview.MaterialCalendarView}
      */
-    public static final DayFormatter DEFAULT = new DateFormatDayFormatter();
+    DayFormatter DEFAULT = new DateFormatDayFormatter();
 }

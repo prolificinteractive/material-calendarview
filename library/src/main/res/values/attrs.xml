@@ -22,6 +22,7 @@
         </attr>
 
         <attr name="mcv_allowClickDaysOutsideCurrentMonth" format="boolean" />
+        <attr name="mcv_showWeekDays" format="boolean" />
 
         <attr name="mcv_weekDayLabels" format="reference" />
         <attr name="mcv_monthLabels" format="reference" />

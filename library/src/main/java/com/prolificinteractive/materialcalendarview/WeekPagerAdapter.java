@@ -15,7 +15,7 @@ public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
     @Override
     protected WeekView createView(int position) {
-        return new WeekView(mcv, getItem(position), mcv.getFirstDayOfWeek());
+        return new WeekView(mcv, getItem(position), mcv.getFirstDayOfWeek(), showWeekDays);
     }
 
     @Override
