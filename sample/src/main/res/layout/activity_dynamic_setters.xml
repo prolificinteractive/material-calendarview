@@ -246,6 +246,13 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 />
+            <CheckBox
+                android:id="@+id/dynamic_height_enabled"
+                android:text="Dynamic Height Enabled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                />
 
         </LinearLayout>
 
