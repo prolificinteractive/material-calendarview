@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.TimeZone;
 
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SHOW_DEFAULTS;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
@@ -27,6 +28,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     protected static final int DEFAULT_MAX_WEEKS = 6;
     protected static final int DAY_NAMES_ROW = 1;
     private static final Calendar tempWorkingCalendar = CalendarUtils.getInstance();
+    private static final String TIME_ZONE_DEFAULT = "UTC";
     private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
     private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
     @ShowOtherDates
@@ -49,6 +51,15 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         this.firstViewDay = firstViewDay;
         this.firstDayOfWeek = firstDayOfWeek;
         this.showWeekDays = showWeekDays;
+
+        /*
+        *   Set the defaultTimeZone to avoid wrong calculations that are positioning the last day of the
+        *   previous month on the first day of the current month when changing the TimeZone of the device
+        *
+        *   It's recommended that when manipulating Date objects that TimeZone could change according to
+        *   device configuration to use a default TimeZone to do the calculations.
+        */
+        TimeZone.setDefault(TimeZone.getTimeZone(TIME_ZONE_DEFAULT));
 
         setClipChildren(false);
         setClipToPadding(false);
