@@ -128,6 +128,11 @@ public class DynamicSettersActivity extends AppCompatActivity {
         widget.setPagingEnabled(checked);
     }
 
+    @OnCheckedChanged(R.id.dynamic_height_enabled)
+    void onDynamicHeightChecked(boolean checked) {
+        widget.setDynamicHeightEnabled(checked);
+    }
+
     @OnClick(R.id.button_previous)
     void onPreviousClicked() {
         widget.goToPrevious();
