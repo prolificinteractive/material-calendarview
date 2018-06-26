@@ -18,6 +18,8 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -25,8 +27,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import com.prolificinteractive.materialcalendarview.OnDateLongClickListener;
 
-public class DynamicSettersActivity extends AppCompatActivity {
+public class DynamicSettersActivity extends AppCompatActivity implements OnDateLongClickListener {
+
+    private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
     @BindView(R.id.calendarView)
     MaterialCalendarView widget;
@@ -48,10 +53,11 @@ public class DynamicSettersActivity extends AppCompatActivity {
         widget.setOnTitleClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                Toast.makeText(DynamicSettersActivity.this, R.string.today, Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(DynamicSettersActivity.this, R.string.today, Toast.LENGTH_SHORT).show();
             }
         });
+
+        widget.setOnDateLongClickListener(this);
     }
 
     @OnClick(R.id.button_other_dates)
@@ -327,5 +333,10 @@ public class DynamicSettersActivity extends AppCompatActivity {
                 context, 0, callback, day.getYear(), day.getMonth(), day.getDay()
         );
         dialog.show();
+    }
+
+    @Override
+    public void onDateLongClick(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
+        Toast.makeText(this, FORMATTER.format(date.getDate()), Toast.LENGTH_SHORT).show();
     }
 }
