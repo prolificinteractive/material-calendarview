@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
-import java.util.TimeZone;
 
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SHOW_DEFAULTS;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
@@ -51,15 +50,6 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         this.firstViewDay = firstViewDay;
         this.firstDayOfWeek = firstDayOfWeek;
         this.showWeekDays = showWeekDays;
-
-        /*
-         *   Set the defaultTimeZone to avoid wrong calculations that are positioning the last day of the
-         *   previous month on the first day of the current month when changing the TimeZone of the device
-         *
-         *   It's recommended that when manipulating Date objects that TimeZone could change according to
-         *   device configuration to use a default TimeZone to do the calculations.
-         */
-        TimeZone.setDefault(TimeZone.getTimeZone(TIME_ZONE_DEFAULT));
 
         setClipChildren(false);
         setClipToPadding(false);
