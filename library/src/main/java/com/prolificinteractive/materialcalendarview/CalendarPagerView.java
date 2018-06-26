@@ -53,12 +53,12 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         this.showWeekDays = showWeekDays;
 
         /*
-        *   Set the defaultTimeZone to avoid wrong calculations that are positioning the last day of the
-        *   previous month on the first day of the current month when changing the TimeZone of the device
-        *
-        *   It's recommended that when manipulating Date objects that TimeZone could change according to
-        *   device configuration to use a default TimeZone to do the calculations.
-        */
+         *   Set the defaultTimeZone to avoid wrong calculations that are positioning the last day of the
+         *   previous month on the first day of the current month when changing the TimeZone of the device
+         *
+         *   It's recommended that when manipulating Date objects that TimeZone could change according to
+         *   device configuration to use a default TimeZone to do the calculations.
+         */
         TimeZone.setDefault(TimeZone.getTimeZone(TIME_ZONE_DEFAULT));
 
         setClipChildren(false);
@@ -274,6 +274,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
 
     /**
      * Return the number of rows to display per page
+     *
      * @return
      */
     protected abstract int getRows();
