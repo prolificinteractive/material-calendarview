@@ -260,6 +260,11 @@ class DayView extends AppCompatCheckedTextView {
         setCustomBackground(facade.getBackgroundDrawable());
         setSelectionDrawable(facade.getSelectionDrawable());
 
+        Integer textColor = facade.getTextColor();
+        if (textColor != null) {
+            setTextColor(facade.getTextColor());
+        }
+
         // Facade has spans
         List<DayViewFacade.Span> spans = facade.getSpans();
         if (!spans.isEmpty()) {

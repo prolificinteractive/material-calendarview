@@ -14,6 +14,7 @@ public class DayViewFacade {
 
     private boolean isDecorated;
 
+    private Integer textColor = null;
     private Drawable backgroundDrawable = null;
     private Drawable selectionDrawable = null;
     private final LinkedList<Span> spans = new LinkedList<>();
@@ -34,6 +35,13 @@ public class DayViewFacade {
         }
         this.backgroundDrawable = drawable;
         isDecorated = true;
+    }
+
+    public void setTextColor(Integer textColor) {
+        if (textColor != null) {
+            this.textColor = textColor;
+            isDecorated = true;
+        }
     }
 
     /**
@@ -80,6 +88,7 @@ public class DayViewFacade {
         spans.clear();
         isDecorated = false;
         daysDisabled = false;
+        textColor = null;
     }
 
     /**
@@ -97,6 +106,7 @@ public class DayViewFacade {
         other.spans.addAll(spans);
         other.isDecorated |= this.isDecorated;
         other.daysDisabled = daysDisabled;
+        other.textColor = textColor;
     }
 
     boolean isDecorated() {
@@ -105,6 +115,10 @@ public class DayViewFacade {
 
     Drawable getSelectionDrawable() {
         return selectionDrawable;
+    }
+
+    public Integer getTextColor() {
+        return textColor;
     }
 
     Drawable getBackgroundDrawable() {
