@@ -221,6 +221,7 @@ public class MaterialCalendarView extends ViewGroup {
     private CalendarDay maxDate = null;
 
     private OnDateSelectedListener listener;
+    private OnDateLongClickListener longClickListener;
     private OnMonthChangedListener monthListener;
     private OnRangeSelectedListener rangeListener;
 
@@ -1373,6 +1374,15 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * Sets the listener to be notified upon long clicks on dates.
+     *
+     * @param longClickListener thing to be notified
+     */
+    public void setOnDateLongClickListener(OnDateLongClickListener longClickListener) {
+        this.longClickListener = longClickListener;
+    }
+
+    /**
      * Sets the listener to be notified upon month changes.
      *
      * @param listener thing to be notified
@@ -1406,9 +1416,8 @@ public class MaterialCalendarView extends ViewGroup {
      * @param selected true if the day is now currently selected, false otherwise
      */
     protected void dispatchOnDateSelected(final CalendarDay day, final boolean selected) {
-        OnDateSelectedListener l = listener;
-        if (l != null) {
-            l.onDateSelected(MaterialCalendarView.this, day, selected);
+        if (listener != null) {
+            listener.onDateSelected(MaterialCalendarView.this, day, selected);
         }
     }
 
@@ -1446,9 +1455,8 @@ public class MaterialCalendarView extends ViewGroup {
      * @param day first day of the new month
      */
     protected void dispatchOnMonthChanged(final CalendarDay day) {
-        OnMonthChangedListener l = monthListener;
-        if (l != null) {
-            l.onMonthChanged(MaterialCalendarView.this, day);
+        if (monthListener != null) {
+            monthListener.onMonthChanged(MaterialCalendarView.this, day);
         }
     }
 
@@ -1534,6 +1542,17 @@ public class MaterialCalendarView extends ViewGroup {
         }
         onDateClicked(dayView.getDate(), !dayView.isChecked());
 
+    }
+
+    /**
+     * Call by {@link CalendarPagerView} to indicate that a day was long clicked and we should handle it
+     *
+     * @param dayView
+     */
+    protected void onDateLongClicked(final DayView dayView) {
+        if (longClickListener != null) {
+            longClickListener.onDateLongClick(MaterialCalendarView.this, dayView.getDate());
+        }
     }
 
     /**

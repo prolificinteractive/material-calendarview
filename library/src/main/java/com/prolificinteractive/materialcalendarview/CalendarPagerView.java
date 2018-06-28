@@ -21,13 +21,14 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
 import static java.util.Calendar.DATE;
 
-abstract class CalendarPagerView extends ViewGroup implements View.OnClickListener {
+abstract class CalendarPagerView extends ViewGroup implements View.OnClickListener, View.OnLongClickListener {
 
     protected static final int DEFAULT_DAYS_IN_WEEK = 7;
     protected static final int DEFAULT_MAX_WEEKS = 6;
     protected static final int DAY_NAMES_ROW = 1;
+
     private static final Calendar tempWorkingCalendar = CalendarUtils.getInstance();
-    private static final String TIME_ZONE_DEFAULT = "UTC";
+
     private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
     private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
     @ShowOtherDates
@@ -76,6 +77,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         CalendarDay day = CalendarDay.from(calendar);
         DayView dayView = new DayView(getContext(), day);
         dayView.setOnClickListener(this);
+        dayView.setOnLongClickListener(this);
         dayViews.add(dayView);
         addView(dayView, new LayoutParams());
 
@@ -202,11 +204,21 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         if (v instanceof DayView) {
             final DayView dayView = (DayView) v;
             mcv.onDateClicked(dayView);
         }
+    }
+
+    @Override
+    public boolean onLongClick(final View v) {
+        if (v instanceof DayView) {
+            final DayView dayView = (DayView) v;
+            mcv.onDateLongClicked(dayView);
+            return true;
+        }
+        return false;
     }
 
     /*
