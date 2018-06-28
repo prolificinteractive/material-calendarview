@@ -28,10 +28,13 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import com.prolificinteractive.materialcalendarview.OnDateLongClickListener;
+import com.prolificinteractive.materialcalendarview.OnWeekNumberClickListener;
+import com.prolificinteractive.materialcalendarview.OnWeekNumberLongClickListener;
 
-public class DynamicSettersActivity extends AppCompatActivity implements OnDateLongClickListener {
+public class DynamicSettersActivity extends AppCompatActivity implements OnDateLongClickListener, OnWeekNumberClickListener, OnWeekNumberLongClickListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
+    private static final SimpleDateFormat WEEK_FORMATTER = new SimpleDateFormat("'Week' ww");
 
     @BindView(R.id.calendarView)
     MaterialCalendarView widget;
@@ -58,6 +61,8 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateL
         });
 
         widget.setOnDateLongClickListener(this);
+        widget.setOnWeekNumberClickListener(this);
+        widget.setOnWeekNumberLongClickListener(this);
     }
 
     @OnClick(R.id.button_other_dates)
@@ -115,16 +120,23 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateL
         widget.state().edit().setShowWeekDays(checked).commit();
     }
 
+    @OnCheckedChanged(R.id.show_week_numbers)
+    void onShowWeekNumbersChecked(boolean checked) {
+        widget.state().edit().setShowWeekNumbers(checked).commit();
+    }
+
     @OnCheckedChanged(R.id.check_text_appearance)
     void onTextAppearanceChecked(boolean checked) {
         if (checked) {
             widget.setHeaderTextAppearance(R.style.TextAppearance_AppCompat_Large);
             widget.setDateTextAppearance(R.style.TextAppearance_AppCompat_Medium);
             widget.setWeekDayTextAppearance(R.style.TextAppearance_AppCompat_Medium);
+            widget.setWeekNumberTextAppearance(R.style.TextAppearance_AppCompat_Medium);
         } else {
             widget.setHeaderTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_Header);
             widget.setDateTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_Date);
             widget.setWeekDayTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_WeekDay);
+            widget.setWeekNumberTextAppearance(R.style.TextAppearance_MaterialCalendarWidget_WeekNumber);
         }
         widget.setShowOtherDates(checked ? MaterialCalendarView.SHOW_ALL : MaterialCalendarView.SHOW_NONE);
     }
@@ -338,5 +350,15 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateL
     @Override
     public void onDateLongClick(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
         Toast.makeText(this, FORMATTER.format(date.getDate()), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onWeekNumberLongClick ( @NonNull MaterialCalendarView widget, @NonNull CalendarDay date ) {
+        Toast.makeText(this, WEEK_FORMATTER.format(date.getDate()), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onWeekNumberClick ( @NonNull MaterialCalendarView widget, @NonNull CalendarDay date ) {
+        widget.selectRange(date, CalendarDay.from(date.getYear(), date.getMonth(), date.getDay() + 6));
     }
 }

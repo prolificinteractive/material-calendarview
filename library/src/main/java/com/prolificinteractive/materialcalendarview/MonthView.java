@@ -8,7 +8,7 @@ import java.util.Collection;
 
 /**
  * Display a month of {@linkplain DayView}s and
- * seven {@linkplain WeekDayView}s.
+ * seven {@linkplain WeekDayView}s. And optionally, {@link WeekNumberView}s
  */
 @SuppressLint("ViewConstructor")
 class MonthView extends CalendarPagerView {
@@ -21,6 +21,9 @@ class MonthView extends CalendarPagerView {
     @Override
     protected void buildDayViews(Collection<DayView> dayViews, Calendar calendar) {
         for (int r = 0; r < DEFAULT_MAX_WEEKS; r++) {
+            if (showWeekNumbers()) {
+                addWeekNumberView(calendar);
+            }
             for (int i = 0; i < DEFAULT_DAYS_IN_WEEK; i++) {
                 addDayView(dayViews, calendar);
             }
@@ -39,5 +42,10 @@ class MonthView extends CalendarPagerView {
     @Override
     protected int getRows() {
         return showWeekDays ? DEFAULT_MAX_WEEKS + DAY_NAMES_ROW : DEFAULT_MAX_WEEKS;
+    }
+
+    @Override
+    protected int getCols () {
+        return DEFAULT_DAYS_IN_WEEK + (showWeekNumbers() ? 1 : 0);
     }
 }

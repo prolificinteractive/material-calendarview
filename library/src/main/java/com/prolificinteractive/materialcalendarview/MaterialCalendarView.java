@@ -164,7 +164,8 @@ public class MaterialCalendarView extends ViewGroup {
     /**
      * Default tile size in DIPs. This is used in cases where there is no tile size specificed and the view is set to {@linkplain ViewGroup.LayoutParams#WRAP_CONTENT WRAP_CONTENT}
      */
-    public static final int DEFAULT_TILE_SIZE_DP = 44;
+    //public static final int DEFAULT_TILE_SIZE_DP = 44;
+    public static final int DEFAULT_TILE_SIZE_DP = 38;
     private static final int DEFAULT_DAYS_IN_WEEK = 7;
     private static final int DEFAULT_MAX_WEEKS = 6;
     private static final int DAY_NAMES_ROW = 1;
@@ -222,8 +223,10 @@ public class MaterialCalendarView extends ViewGroup {
 
     private OnDateSelectedListener listener;
     private OnDateLongClickListener longClickListener;
+    private OnWeekNumberLongClickListener weekNumberLongClickListener;
     private OnMonthChangedListener monthListener;
     private OnRangeSelectedListener rangeListener;
+    private OnWeekNumberClickListener weekNumberClickListener;
 
     CharSequence calendarContentDescription;
     private int accentColor = 0;
@@ -237,6 +240,7 @@ public class MaterialCalendarView extends ViewGroup {
     private boolean allowClickDaysOutsideCurrentMonth = true;
     private int firstDayOfWeek;
     private boolean showWeekDays;
+    private boolean showWeekNumbers = false;
 
     private State state;
 
@@ -302,10 +306,15 @@ public class MaterialCalendarView extends ViewGroup {
 
             showWeekDays = a.getBoolean(R.styleable.MaterialCalendarView_mcv_showWeekDays, true);
 
+            showWeekNumbers = a.getBoolean(
+                    R.styleable.MaterialCalendarView_mcv_showWeekNumbers,
+                    false);
+
             newState()
                     .setFirstDayOfWeek(firstDayOfWeek)
                     .setCalendarDisplayMode(CalendarMode.values()[calendarModeIndex])
                     .setShowWeekDays(showWeekDays)
+                    .setShowWeekNumbers(showWeekNumbers)
                     .commit();
 
             final int tileSize = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileSize, INVALID_TILE_DIMENSION);
@@ -371,6 +380,10 @@ public class MaterialCalendarView extends ViewGroup {
                     R.styleable.MaterialCalendarView_mcv_dateTextAppearance,
                     R.style.TextAppearance_MaterialCalendarWidget_Date
             ));
+            setWeekNumberTextAppearance(a.getResourceId(
+                    R.styleable.MaterialCalendarView_mcv_weekNumberTextAppearance,
+                    R.style.TextAppearance_MaterialCalendarWidget_WeekNumber
+            ));
             //noinspection ResourceType
             setShowOtherDates(a.getInteger(
                     R.styleable.MaterialCalendarView_mcv_showOtherDates,
@@ -400,6 +413,7 @@ public class MaterialCalendarView extends ViewGroup {
             monthView.setSelectionColor(getSelectionColor());
             monthView.setDateTextAppearance(adapter.getDateTextAppearance());
             monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance());
+            monthView.setWeekNumberTextAppearance(adapter.getWeekNumberTextAppearance());
             monthView.setShowOtherDates(getShowOtherDates());
             addView(monthView, new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
         }
@@ -775,6 +789,13 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * @param resourceId The text appearance resource id.
+     */
+    public void setWeekNumberTextAppearance(int resourceId) {
+        adapter.setWeekNumberTextAppearance(resourceId);
+    }
+
+    /**
      * @return the selected day, or null if no selection. If in multiple selection mode, this
      * will return the last selected date
      */
@@ -1094,12 +1115,18 @@ public class MaterialCalendarView extends ViewGroup {
         return calendarMode;
     }
 
+    /**
+     * @return if the week numbers are shown
+     */
+    public boolean isShowWeekNumbers() { return showWeekNumbers; }
+
     @Override
     protected Parcelable onSaveInstanceState() {
         SavedState ss = new SavedState(super.onSaveInstanceState());
         ss.color = getSelectionColor();
         ss.dateTextAppearance = adapter.getDateTextAppearance();
         ss.weekDayTextAppearance = adapter.getWeekDayTextAppearance();
+        ss.weekNumberTextAppearance = adapter.getWeekNumberTextAppearance();
         ss.showOtherDates = getShowOtherDates();
         ss.allowClickDaysOutsideCurrentMonth = allowClickDaysOutsideCurrentMonth();
         ss.minDate = getMinimumDate();
@@ -1115,6 +1142,7 @@ public class MaterialCalendarView extends ViewGroup {
         ss.dynamicHeightEnabled = mDynamicHeightEnabled;
         ss.currentMonth = currentMonth;
         ss.cacheCurrentPosition = state.cacheCurrentPosition;
+        ss.showWeekNumbers = showWeekNumbers;
         return ss;
     }
 
@@ -1127,6 +1155,7 @@ public class MaterialCalendarView extends ViewGroup {
                 .setCalendarDisplayMode(ss.calendarMode)
                 .setMinimumDate(ss.minDate)
                 .setMaximumDate(ss.maxDate)
+                .setShowWeekNumbers(ss.showWeekNumbers)
                 .isCacheCalendarPositionEnabled(ss.cacheCurrentPosition)
                 .setShowWeekDays(ss.showWeekDays)
                 .commit();
@@ -1134,6 +1163,7 @@ public class MaterialCalendarView extends ViewGroup {
         setSelectionColor(ss.color);
         setDateTextAppearance(ss.dateTextAppearance);
         setWeekDayTextAppearance(ss.weekDayTextAppearance);
+        setWeekNumberTextAppearance(ss.weekNumberTextAppearance);
         setShowOtherDates(ss.showOtherDates);
         setAllowClickDaysOutsideCurrentMonth(ss.allowClickDaysOutsideCurrentMonth);
         clearSelection();
@@ -1176,6 +1206,7 @@ public class MaterialCalendarView extends ViewGroup {
         int color = 0;
         int dateTextAppearance = 0;
         int weekDayTextAppearance = 0;
+        int weekNumberTextAppearance = 0;
         int showOtherDates = SHOW_DEFAULTS;
         boolean allowClickDaysOutsideCurrentMonth = true;
         CalendarDay minDate = null;
@@ -1192,6 +1223,7 @@ public class MaterialCalendarView extends ViewGroup {
         CalendarDay currentMonth = null;
         boolean cacheCurrentPosition;
         boolean showWeekDays;
+        boolean showWeekNumbers;
 
         SavedState(Parcelable superState) {
             super(superState);
@@ -1203,6 +1235,7 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeInt(color);
             out.writeInt(dateTextAppearance);
             out.writeInt(weekDayTextAppearance);
+            out.writeInt(weekNumberTextAppearance);
             out.writeInt(showOtherDates);
             out.writeByte((byte) (allowClickDaysOutsideCurrentMonth ? 1 : 0));
             out.writeParcelable(minDate, 0);
@@ -1219,6 +1252,7 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeParcelable(currentMonth, 0);
             out.writeByte((byte) (cacheCurrentPosition ? 1 : 0));
             out.writeByte((byte) (showWeekDays ? 1 : 0));
+            out.writeByte((byte) (showWeekNumbers ? 1 : 0));
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR
@@ -1237,6 +1271,7 @@ public class MaterialCalendarView extends ViewGroup {
             color = in.readInt();
             dateTextAppearance = in.readInt();
             weekDayTextAppearance = in.readInt();
+            weekNumberTextAppearance = in.readInt();
             showOtherDates = in.readInt();
             allowClickDaysOutsideCurrentMonth = in.readByte() != 0;
             ClassLoader loader = CalendarDay.class.getClassLoader();
@@ -1254,6 +1289,7 @@ public class MaterialCalendarView extends ViewGroup {
             currentMonth = in.readParcelable(loader);
             cacheCurrentPosition = in.readByte() != 0;
             showWeekDays = in.readByte() != 0;
+            showWeekNumbers = in.readByte() != 0;
         }
     }
 
@@ -1383,6 +1419,24 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * Sets the listener to be notified when a week number is selected.
+     *
+     * @param listener Listener to be notified
+     */
+    public void setOnWeekNumberClickListener( final OnWeekNumberClickListener listener ) {
+        this.weekNumberClickListener = listener;
+    }
+
+    /**
+     * Sets the listener to be notified upon long clicks on week numbers.
+     *
+     * @param longClickListener thing to be notified
+     */
+    public void setOnWeekNumberLongClickListener ( OnWeekNumberLongClickListener longClickListener) {
+        this.weekNumberLongClickListener = longClickListener;
+    }
+
+    /**
      * Sets the listener to be notified upon month changes.
      *
      * @param listener thing to be notified
@@ -1457,6 +1511,17 @@ public class MaterialCalendarView extends ViewGroup {
     protected void dispatchOnMonthChanged(final CalendarDay day) {
         if (monthListener != null) {
             monthListener.onMonthChanged(MaterialCalendarView.this, day);
+        }
+    }
+
+    /**
+     * Dispatch week selected events to a listener, if set
+     *
+     * @param day first day of the week selected
+     */
+    protected void dispatchOnWeekSelected(final CalendarDay day) {
+        if (weekNumberClickListener != null) {
+            weekNumberClickListener.onWeekNumberClick(MaterialCalendarView.this, day);
         }
     }
 
@@ -1545,6 +1610,15 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * Call by {@link CalendarPagerView} to indicate that a week number was clicked and we should handle it
+     *
+     * @param weekNumberView
+     */
+    protected void onWeekNumberClicked(final WeekNumberView weekNumberView) {
+        dispatchOnWeekSelected(weekNumberView.getDate());
+    }
+
+    /**
      * Call by {@link CalendarPagerView} to indicate that a day was long clicked and we should handle it
      *
      * @param dayView
@@ -1552,6 +1626,17 @@ public class MaterialCalendarView extends ViewGroup {
     protected void onDateLongClicked(final DayView dayView) {
         if (longClickListener != null) {
             longClickListener.onDateLongClick(MaterialCalendarView.this, dayView.getDate());
+        }
+    }
+
+    /**
+     * Call by {@link CalendarPagerView} to indicate that a week number was long clicked and we should handle it
+     *
+     * @param weekNumberView
+     */
+    protected void onWeekNumberLongClicked(final WeekNumberView weekNumberView) {
+        if (weekNumberLongClickListener != null) {
+            weekNumberLongClickListener.onWeekNumberLongClick(MaterialCalendarView.this, weekNumberView.getDate());
         }
     }
 
@@ -1621,9 +1706,10 @@ public class MaterialCalendarView extends ViewGroup {
         final int weekCount = getWeekCountBasedOnMode();
 
         final int viewTileHeight = getTopbarVisible() ? (weekCount + 1) : weekCount;
+        final int viewTileWidth = DEFAULT_DAYS_IN_WEEK;
 
         //Calculate independent tile sizes for later
-        int desiredTileWidth = desiredWidth / DEFAULT_DAYS_IN_WEEK;
+        int desiredTileWidth = desiredWidth / viewTileWidth;
         int desiredTileHeight = desiredHeight / viewTileHeight;
 
         int measureTileSize = -1;
@@ -1672,7 +1758,7 @@ public class MaterialCalendarView extends ViewGroup {
         }
 
         //Calculate our size based off our measured tile size
-        int measuredWidth = measureTileWidth * DEFAULT_DAYS_IN_WEEK;
+        int measuredWidth = measureTileWidth * viewTileWidth;
         int measuredHeight = measureTileHeight * viewTileHeight;
 
         //Put padding back in from when we took it away
@@ -1694,7 +1780,7 @@ public class MaterialCalendarView extends ViewGroup {
             LayoutParams p = (LayoutParams) child.getLayoutParams();
 
             int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    DEFAULT_DAYS_IN_WEEK * measureTileWidth,
+                    viewTileWidth * measureTileWidth,
                     MeasureSpec.EXACTLY
             );
 
@@ -1870,6 +1956,7 @@ public class MaterialCalendarView extends ViewGroup {
         private final CalendarDay maxDate;
         private final boolean cacheCurrentPosition;
         private final boolean showWeekDays;
+        private final boolean showWeekNumbers;
 
         private State(final StateBuilder builder) {
             calendarMode = builder.calendarMode;
@@ -1878,6 +1965,7 @@ public class MaterialCalendarView extends ViewGroup {
             maxDate = builder.maxDate;
             cacheCurrentPosition = builder.cacheCurrentPosition;
             showWeekDays = builder.showWeekDays;
+            showWeekNumbers = builder.showWeekNumbers;
         }
 
         /**
@@ -1896,6 +1984,7 @@ public class MaterialCalendarView extends ViewGroup {
         private CalendarDay minDate = null;
         private CalendarDay maxDate = null;
         private boolean showWeekDays;
+        private boolean showWeekNumbers = false;
 
         public StateBuilder() {
         }
@@ -1907,6 +1996,7 @@ public class MaterialCalendarView extends ViewGroup {
             maxDate = state.maxDate;
             cacheCurrentPosition = state.cacheCurrentPosition;
             showWeekDays = state.showWeekDays;
+            showWeekNumbers = state.showWeekNumbers;
         }
 
         /**
@@ -2004,6 +2094,14 @@ public class MaterialCalendarView extends ViewGroup {
             return this;
         }
 
+        /**
+         * @param showWeekNumbers true to show week numbers
+         */
+        public StateBuilder setShowWeekNumbers(boolean showWeekNumbers) {
+            this.showWeekNumbers = showWeekNumbers;
+            return this;
+        }
+
         public void commit() {
             MaterialCalendarView.this.commit(new State(this));
         }
@@ -2050,6 +2148,7 @@ public class MaterialCalendarView extends ViewGroup {
         minDate = state.minDate;
         maxDate = state.maxDate;
         showWeekDays = state.showWeekDays;
+        showWeekNumbers = state.showWeekNumbers;
 
         // Recreate adapter
         final CalendarPagerAdapter<?> newAdapter;
