@@ -1496,7 +1496,7 @@ public class MaterialCalendarView extends ViewGroup {
 
                     final long daysSelected = daysPassedBetweenCalendarDays(startDay, endDay) + 1;
 
-                    if (daysSelected == beforeSelectedSize) {
+                    if (daysSelected <= beforeSelectedSize) {
                         clearSelectedDates(date, nowSelected);
                     } else {
                         dispatchOnRangeSelected(startDay, endDay);
