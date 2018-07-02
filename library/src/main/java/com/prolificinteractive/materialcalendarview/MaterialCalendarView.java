@@ -67,6 +67,7 @@ import java.util.List;
  */
 public class MaterialCalendarView extends ViewGroup {
 
+    private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
     public static final int INVALID_TILE_DIMENSION = -10;
 
     /**
@@ -1470,25 +1471,38 @@ public class MaterialCalendarView extends ViewGroup {
     protected void onDateClicked(@NonNull CalendarDay date, boolean nowSelected) {
         switch (selectionMode) {
             case SELECTION_MODE_MULTIPLE: {
-                adapter.setDateSelected(date, nowSelected);
                 dispatchOnDateSelected(date, nowSelected);
             }
             break;
             case SELECTION_MODE_RANGE: {
+                final int beforeSelectedSize = adapter.getSelectedDates().size();
                 adapter.setDateSelected(date, nowSelected);
+
                 if (adapter.getSelectedDates().size() > 2) {
-                    adapter.clearSelections();
-                    adapter.setDateSelected(date, nowSelected);  //  re-set because adapter has been cleared
-                    dispatchOnDateSelected(date, nowSelected);
+                    clearSelectedDates(date, nowSelected);
+
                 } else if (adapter.getSelectedDates().size() == 2) {
                     final List<CalendarDay> dates = adapter.getSelectedDates();
+                    final CalendarDay startDay;
+                    final CalendarDay endDay;
+
                     if (dates.get(0).isAfter(dates.get(1))) {
-                        dispatchOnRangeSelected(dates.get(1), dates.get(0));
+                        startDay = dates.get(1);
+                        endDay = dates.get(0);
                     } else {
-                        dispatchOnRangeSelected(dates.get(0), dates.get(1));
+                        startDay = dates.get(0);
+                        endDay = dates.get(1);
                     }
+
+                    final long daysSelected = daysPassedBetweenCalendarDays(startDay, endDay) + 1;
+
+                    if (daysSelected <= beforeSelectedSize) {
+                        clearSelectedDates(date, nowSelected);
+                    } else {
+                        dispatchOnRangeSelected(startDay, endDay);
+                    }
+
                 } else {
-                    adapter.setDateSelected(date, nowSelected);
                     dispatchOnDateSelected(date, nowSelected);
                 }
             }
@@ -1501,6 +1515,16 @@ public class MaterialCalendarView extends ViewGroup {
             }
             break;
         }
+    }
+
+    private void clearSelectedDates(@NonNull CalendarDay date, boolean nowSelected) {
+        adapter.clearSelections();
+        adapter.setDateSelected(date, nowSelected);  //  re-set because adapter has been cleared
+        dispatchOnDateSelected(date, nowSelected);
+    }
+
+    private long daysPassedBetweenCalendarDays(CalendarDay startDay, CalendarDay endDay) {
+        return (endDay.getDate().getTime() - startDay.getDate().getTime()) / DAY_IN_MILLIS;
     }
 
     /**
