@@ -1,10 +1,19 @@
 Change Log
 ==========
 
+Version 1.6.0 *(2018-07-06)*
+----------------------------
+* New: Added api for setting long click listener for cells using `void setOnDateLongClickListener(OnDateLongClickListener longClickListener)`.
+* New: Show and Hide WeekDays row in xml and Programmatically.
+* New: Added api for setting content description formatter `void setDayFormatterContentDescription(DayFormatter formatter)`.
+* New: Apply custom fonts through text appearance styling.
+* Fix: Talkback improvements.
+* Fix: Range mode selection issues.
+
 Version 1.5.0 *(2018-05-15)*
 ----------------------------
-*Update:Dependency has now been migrated to Jitpack. Refer to the installation section to install the latest using gradle.
-*Update:Gradle has been updated to the latest.
+* Update: Dependency has now been migrated to Jitpack. Refer to the installation section to install the latest using gradle.
+* Update: Gradle has been updated to the latest.
 
 Version 1.4.3 *(2017-02-21)*
 ----------------------------
