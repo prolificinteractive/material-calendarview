@@ -73,6 +73,10 @@ All of this and more can be done via the decorator api. Please check out the [de
 
 ## Recent Changes
 
+### Major Change in 1.6.0
+
+Also this release doesn't have any break changes, it provides significant improvements to the widget. More customization have been added for the user (custom fonts, long click listener, show/hide weekdays) as well as various fixes, improvements to the sample app, and general cleanup. Make sure to check the CHANGELOG and the release section for more details. 
+
 ### Major Change in 1.5.0
 
 We recently updated to the latest gradle and decided to move over our libraries to the hosting service Jitpack.
