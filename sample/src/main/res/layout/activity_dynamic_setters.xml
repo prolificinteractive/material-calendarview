@@ -240,6 +240,14 @@
                 android:padding="8dp"
                 />
             <CheckBox
+                android:id="@+id/show_week_numbers"
+                android:text="Show week numbers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:padding="8dp"
+                />
+            <CheckBox
                 android:id="@+id/enable_save_current_position"
                 android:text="Enable save current position"
                 android:layout_width="match_parent"

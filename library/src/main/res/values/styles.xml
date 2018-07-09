@@ -17,4 +17,9 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="TextAppearance.MaterialCalendarWidget.WeekNumber"
+        parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

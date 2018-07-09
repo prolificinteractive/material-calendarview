@@ -2,7 +2,6 @@ package com.prolificinteractive.materialcalendarview.sample;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
@@ -18,9 +17,10 @@ import butterknife.ButterKnife;
 /**
  * Shows off the most basic usage
  */
-public class BasicActivity extends AppCompatActivity implements OnDateSelectedListener, OnMonthChangedListener, OnDateLongClickListener {
+public class BasicActivity extends AppCompatActivity implements OnDateSelectedListener, OnMonthChangedListener, OnDateLongClickListener, OnWeekNumberClickListener, OnWeekNumberLongClickListener {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
+    private static final SimpleDateFormat WEEK_FORMATTER = new SimpleDateFormat("'Week' ww");
 
     @BindView(R.id.calendarView)
     MaterialCalendarView widget;
@@ -36,6 +36,8 @@ public class BasicActivity extends AppCompatActivity implements OnDateSelectedLi
 
         widget.setOnDateChangedListener(this);
         widget.setOnDateLongClickListener(this);
+        widget.setOnWeekNumberClickListener(this);
+        widget.setOnWeekNumberLongClickListener(this);
         widget.setOnMonthChangedListener(this);
 
         //Setup initial text
@@ -50,6 +52,17 @@ public class BasicActivity extends AppCompatActivity implements OnDateSelectedLi
     @Override
     public void onDateLongClick(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
         final String text = String.format("%s is available", FORMATTER.format(date.getDate()));
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onWeekNumberClick ( @NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
+        textView.setText(WEEK_FORMATTER.format(date.getDate()));
+    }
+
+    @Override
+    public void onWeekNumberLongClick ( @NonNull MaterialCalendarView widget, @NonNull CalendarDay date ) {
+        final String text = String.format("%s is available", WEEK_FORMATTER.format(date.getDate()));
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 

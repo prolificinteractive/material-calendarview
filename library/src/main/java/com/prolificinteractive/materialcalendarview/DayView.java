@@ -19,7 +19,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.CheckedTextView;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
@@ -52,7 +51,7 @@ class DayView extends AppCompatCheckedTextView {
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
 
-    public DayView(Context context, CalendarDay day) {
+    DayView(Context context) {
         super(context);
 
         fadeTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
@@ -64,6 +63,10 @@ class DayView extends AppCompatCheckedTextView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             setTextAlignment(TEXT_ALIGNMENT_CENTER);
         }
+    }
+
+    public DayView(Context context, CalendarDay day) {
+        this(context);
 
         setDay(day);
     }
@@ -108,7 +111,7 @@ class DayView extends AppCompatCheckedTextView {
 
     @NonNull
     public String getLabel() {
-        return formatter.format(date);
+        return date != null ? formatter.format(date) : "";
     }
 
     @NonNull
