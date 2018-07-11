@@ -13,6 +13,7 @@
     <string name="title_activity_old_calendar">Old CalendarView</string>
     <string name="title_activity_dialogs">Calendar in Dialogs</string>
     <string name="title_activity_decorators">Calendar with Decorators</string>
+    <string name="title_activity_selections">Calendar Selection Modes</string>
     <string name="title_activity_basic_modes">Calendar with Dynamic Modes</string>
     <string name="title_activity_multiple_view">Multiple Basic Calendars</string>
     <string name="title_activity_multiple_size">Many-Sized Calendars</string>

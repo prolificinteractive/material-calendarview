@@ -309,6 +309,11 @@ public class MaterialCalendarView extends ViewGroup {
                     .setShowWeekDays(showWeekDays)
                     .commit();
 
+            setSelectionMode(a.getInteger(
+                R.styleable.MaterialCalendarView_mcv_selectionMode,
+                SELECTION_MODE_NONE
+            ));
+
             final int tileSize = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileSize, INVALID_TILE_DIMENSION);
             if (tileSize > INVALID_TILE_DIMENSION) {
                 setTileSize(tileSize);
