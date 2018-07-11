@@ -55,6 +55,13 @@
             <enum name="week" value="1" />
         </attr>
 
+        <attr name="mcv_selectionMode" format="enum">
+            <enum name="none" value="0" />
+            <enum name="single" value="1" />
+            <enum name="multiple" value="2" />
+            <enum name="range" value="3" />
+        </attr>
+
         <attr name="mcv_titleAnimationOrientation" format="enum">
             <enum name="vertical" value="0" />
             <enum name="horizontal" value="1" />

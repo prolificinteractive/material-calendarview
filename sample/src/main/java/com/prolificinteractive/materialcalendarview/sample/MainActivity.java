@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView list = (RecyclerView) findViewById(R.id.list);
+        RecyclerView list = findViewById(R.id.list);
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(new ResolveInfoAdapter(this, getAllSampleActivities()));
     }
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
             public ResolveInfoViewHolder(View view) {
                 super(view);
-                this.textView = (TextView) view.findViewById(android.R.id.text1);
+                this.textView = view.findViewById(android.R.id.text1);
                 view.setOnClickListener(this);
             }
 
