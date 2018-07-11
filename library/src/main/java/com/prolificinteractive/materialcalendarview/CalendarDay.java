@@ -56,14 +56,13 @@ public final class CalendarDay implements Parcelable {
     /**
      * Get a new instance set to the specified day
      *
-     * @param date {@linkplain Date} to pull date information from. Passing null will return null.
+     * @param date long to pull date information from.
      * @return CalendarDay set to the specified date
      */
-    public static CalendarDay from(@Nullable Date date) {
-        if (date == null) {
-            return null;
-        }
-        return from(CalendarUtils.getInstance(date));
+    public static CalendarDay from(long date) {
+        final Calendar instance = CalendarUtils.getInstance();
+        instance.setTimeInMillis(date);
+        return from(instance);
     }
 
     private final int year;
@@ -114,15 +113,6 @@ public final class CalendarDay implements Parcelable {
         this.year = year;
         this.month = month;
         this.day = day;
-    }
-
-    /**
-     * @param date source to pull date information from for this instance
-     * @see CalendarDay#from(Date)
-     */
-    @Deprecated
-    public CalendarDay(Date date) {
-        this(CalendarUtils.getInstance(date));
     }
 
     /**
@@ -180,7 +170,6 @@ public final class CalendarDay implements Parcelable {
     }
 
     void copyToMonthOnly(@NonNull Calendar calendar) {
-        calendar.clear();
         calendar.set(year, month, 1);
     }
 
@@ -190,7 +179,6 @@ public final class CalendarDay implements Parcelable {
      * @param calendar calendar to set date information to
      */
     public void copyTo(@NonNull Calendar calendar) {
-        calendar.clear();
         calendar.set(year, month, day);
     }
 

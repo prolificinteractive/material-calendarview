@@ -34,7 +34,7 @@ public class DisableDaysActivity extends AppCompatActivity {
         widget.addDecorator(new EnableOneToTenDecorator());
 
         Calendar calendar = Calendar.getInstance();
-        widget.setSelectedDate(calendar.getTime());
+        widget.setSelectedDate(calendar);
 
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
@@ -43,8 +43,8 @@ public class DisableDaysActivity extends AppCompatActivity {
         instance2.set(instance2.get(Calendar.YEAR) + 2, Calendar.OCTOBER, 31);
 
         widget.state().edit()
-                .setMinimumDate(instance1.getTime())
-                .setMaximumDate(instance2.getTime())
+                .setMinimumDate(instance1)
+                .setMaximumDate(instance2)
                 .commit();
     }
 
