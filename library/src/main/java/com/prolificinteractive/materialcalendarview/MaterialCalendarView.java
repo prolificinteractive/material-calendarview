@@ -1116,6 +1116,7 @@ public class MaterialCalendarView extends ViewGroup {
         ss.dynamicHeightEnabled = mDynamicHeightEnabled;
         ss.currentMonth = currentMonth;
         ss.cacheCurrentPosition = state.cacheCurrentPosition;
+        ss.showWeekDays = showWeekDays;
         return ss;
     }
 
