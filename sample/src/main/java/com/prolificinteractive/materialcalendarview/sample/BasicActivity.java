@@ -2,25 +2,20 @@ package com.prolificinteractive.materialcalendarview.sample;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-
 import android.widget.Toast;
 import com.prolificinteractive.materialcalendarview.*;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import org.threeten.bp.format.DateTimeFormatter;
 
 /**
  * Shows off the most basic usage
  */
 public class BasicActivity extends AppCompatActivity implements OnDateSelectedListener, OnMonthChangedListener, OnDateLongClickListener {
 
-    private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
 
     @BindView(R.id.calendarView)
     MaterialCalendarView widget;

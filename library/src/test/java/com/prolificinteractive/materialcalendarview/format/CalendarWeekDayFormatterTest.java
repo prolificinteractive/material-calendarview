@@ -4,8 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Calendar;
 import java.util.Locale;
+import org.threeten.bp.DayOfWeek;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -29,36 +29,36 @@ public class CalendarWeekDayFormatterTest {
 
     @Test
     public void testFormattedDayOfWeek_Sunday() throws Exception {
-        assertThat(formatter.format(Calendar.SUNDAY).toString(), is("Sun"));
+        assertThat(formatter.format(DayOfWeek.SUNDAY).toString(), is("Sun"));
     }
 
     @Test
     public void testFormattedDayOfWeek_Monday() throws Exception {
-        assertThat(formatter.format(Calendar.MONDAY).toString(), is("Mon"));
+        assertThat(formatter.format(DayOfWeek.MONDAY).toString(), is("Mon"));
     }
 
     @Test
     public void testFormattedDayOfWeek_Tuesday() throws Exception {
-        assertThat(formatter.format(Calendar.TUESDAY).toString(), is("Tue"));
+        assertThat(formatter.format(DayOfWeek.TUESDAY).toString(), is("Tue"));
     }
 
     @Test
     public void testFormattedDayOfWeek_Wednesday() throws Exception {
-        assertThat(formatter.format(Calendar.WEDNESDAY).toString(), is("Wed"));
+        assertThat(formatter.format(DayOfWeek.WEDNESDAY).toString(), is("Wed"));
     }
 
     @Test
     public void testFormattedDayOfWeek_Thursday() throws Exception {
-        assertThat(formatter.format(Calendar.THURSDAY).toString(), is("Thu"));
+        assertThat(formatter.format(DayOfWeek.THURSDAY).toString(), is("Thu"));
     }
 
     @Test
     public void testFormattedDayOfWeek_Friday() throws Exception {
-        assertThat(formatter.format(Calendar.FRIDAY).toString(), is("Fri"));
+        assertThat(formatter.format(DayOfWeek.FRIDAY).toString(), is("Fri"));
     }
 
     @Test
     public void shouldReturnCorrectFormattedEnglishTextOfSaturday() throws Exception {
-        assertThat(formatter.format(Calendar.SATURDAY).toString(), is("Sat"));
+        assertThat(formatter.format(DayOfWeek.SATURDAY).toString(), is("Sat"));
     }
 }

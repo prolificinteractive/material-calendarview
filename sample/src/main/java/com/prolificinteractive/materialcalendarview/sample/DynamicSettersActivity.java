@@ -13,25 +13,21 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Toast;
-
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Random;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import com.prolificinteractive.materialcalendarview.OnDateLongClickListener;
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.format.DateTimeFormatter;
 
 public class DynamicSettersActivity extends AppCompatActivity implements OnDateLongClickListener {
 
-    private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
 
     @BindView(R.id.calendarView)
     MaterialCalendarView widget;
@@ -290,23 +286,20 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateL
                 Toast.LENGTH_SHORT).show();
     }
 
-    private static final int[] DAYS_OF_WEEK = {
-            Calendar.SUNDAY,
-            Calendar.MONDAY,
-            Calendar.TUESDAY,
-            Calendar.WEDNESDAY,
-            Calendar.THURSDAY,
-            Calendar.FRIDAY,
-            Calendar.SATURDAY,
+    private static final DayOfWeek[] DAYS_OF_WEEK = {
+            DayOfWeek.SUNDAY,
+            DayOfWeek.MONDAY,
+            DayOfWeek.TUESDAY,
+            DayOfWeek.WEDNESDAY,
+            DayOfWeek.THURSDAY,
+            DayOfWeek.FRIDAY,
+            DayOfWeek.SATURDAY,
     };
 
     @OnClick(R.id.button_set_first_day)
     void onFirstDayOfWeekClicked() {
         int index = random.nextInt(DAYS_OF_WEEK.length);
-        widget.state().edit()
-                .setFirstDayOfWeek(DAYS_OF_WEEK[index])
-                .commit();
-
+        widget.state().edit().setFirstDayOfWeek(DAYS_OF_WEEK[index]).commit();
     }
 
     @OnClick(R.id.button_weeks)

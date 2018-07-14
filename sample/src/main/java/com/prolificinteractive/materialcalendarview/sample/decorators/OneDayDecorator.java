@@ -9,9 +9,7 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import org.threeten.bp.LocalDate;
 
 /**
  * Decorate a day by making the text big and bold
@@ -38,7 +36,7 @@ public class OneDayDecorator implements DayViewDecorator {
     /**
      * We're changing the internals, so make sure to call {@linkplain MaterialCalendarView#invalidateDecorators()}
      */
-    public void setDate(Date date) {
-        this.date = CalendarDay.from(date.getTime());
+    public void setDate(LocalDate date) {
+        this.date = CalendarDay.from(date);
     }
 }
