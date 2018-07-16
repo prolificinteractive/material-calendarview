@@ -311,7 +311,7 @@ public class MaterialCalendarView extends ViewGroup {
 
             setSelectionMode(a.getInteger(
                 R.styleable.MaterialCalendarView_mcv_selectionMode,
-                SELECTION_MODE_NONE
+                SELECTION_MODE_SINGLE
             ));
 
             final int tileSize = a.getLayoutDimension(R.styleable.MaterialCalendarView_mcv_tileSize, INVALID_TILE_DIMENSION);
