@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.TemporalField;
 import org.threeten.bp.temporal.WeekFields;
 
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SHOW_DEFAULTS;
@@ -85,7 +86,8 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     }
 
     protected LocalDate resetAndGetWorkingCalendar() {
-        final LocalDate temp = getFirstViewDay().getDate().with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
+        final TemporalField firstDayOfWeek = WeekFields.of(this.firstDayOfWeek, 1).dayOfWeek();
+        final LocalDate temp = getFirstViewDay().getDate().with(firstDayOfWeek, 1);
         int dow = temp.getDayOfWeek().getValue();
         int delta = getFirstDayOfWeek().getValue() - dow;
         //If the delta is positive, we want to remove a week

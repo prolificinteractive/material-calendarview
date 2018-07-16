@@ -55,15 +55,9 @@ class MonthPagerAdapter extends CalendarPagerAdapter<MonthView> {
     }
 
     @Override public int indexOf(final CalendarDay day) {
-      final int months = (int) Period
+      return (int) Period
           .between(min.getDate().withDayOfMonth(1), day.getDate().withDayOfMonth(1))
           .toTotalMonths();
-      //Log.e("MONTHs", "Count: " + months);
-      //final int months = (int) ChronoUnit.MONTHS.between(
-      //    min.getDate(),
-      //    day.getDate().withDayOfMonth(1)
-      //);
-      return months;
     }
 
     @Override public CalendarDay getItem(final int position) {

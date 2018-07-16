@@ -4,10 +4,12 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import java.sql.Date;
 import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -147,36 +150,30 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateL
 
     @OnClick(R.id.button_min_date)
     void onMinClicked() {
-        showDatePickerDialog(this, widget.getMinimumDate(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        showDatePickerDialog(this, widget.getMinimumDate(),
+            (view, year, monthOfYear, dayOfMonth) ->
                 widget.state().edit()
-                        .setMinimumDate(CalendarDay.from(year, monthOfYear, dayOfMonth))
-                        .commit();
-            }
-        });
+                    .setMinimumDate(CalendarDay.from(year, monthOfYear + 1, dayOfMonth))
+                    .commit()
+        );
     }
 
     @OnClick(R.id.button_max_date)
     void onMaxClicked() {
-        showDatePickerDialog(this, widget.getMaximumDate(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        showDatePickerDialog(this, widget.getMaximumDate(),
+            (view, year, monthOfYear, dayOfMonth) ->
                 widget.state().edit()
-                        .setMaximumDate(CalendarDay.from(year, monthOfYear, dayOfMonth))
-                        .commit();
-            }
-        });
+                    .setMaximumDate(CalendarDay.from(year, monthOfYear + 1, dayOfMonth))
+                    .commit()
+        );
     }
 
     @OnClick(R.id.button_selected_date)
     void onSelectedClicked() {
-        showDatePickerDialog(this, widget.getSelectedDate(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                widget.setSelectedDate(CalendarDay.from(year, monthOfYear, dayOfMonth));
-            }
-        });
+        showDatePickerDialog(this, widget.getSelectedDate(),
+            (view, year, monthOfYear, dayOfMonth) ->
+                widget.setSelectedDate(CalendarDay.from(year, monthOfYear + 1, dayOfMonth))
+        );
     }
 
     @OnClick(R.id.button_toggle_topbar)
@@ -323,7 +320,7 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateL
             day = CalendarDay.today();
         }
         DatePickerDialog dialog = new DatePickerDialog(
-                context, 0, callback, day.getYear(), day.getMonth(), day.getDay()
+                context, 0, callback, day.getYear(), day.getMonth() - 1, day.getDay()
         );
         dialog.show();
     }
