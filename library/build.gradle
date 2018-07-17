@@ -31,7 +31,6 @@ dependencies {
 
     rootProject.ext.testDep.each { testImplementation it }
     rootProject.ext.androidTestDep.each { androidTestImplementation it }
-    compile 'com.jakewharton.threetenabp:threetenabp:1.1.0'
 }
 
 tasks.withType(Javadoc) {
