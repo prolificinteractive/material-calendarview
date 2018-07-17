@@ -4,11 +4,15 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.TransitionManager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -33,8 +37,9 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateL
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
-    @BindView(R.id.calendarView)
-    MaterialCalendarView widget;
+    @BindView(R.id.calendarView) MaterialCalendarView widget;
+    @BindView(R.id.animate_mode_transition) CheckBox animateModeTransition;
+    @BindView(R.id.parent) ViewGroup parent;
 
     private int currentTileSize;
     private int currentTileWidth;
@@ -303,24 +308,24 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateL
     @OnClick(R.id.button_set_first_day)
     void onFirstDayOfWeekClicked() {
         int index = random.nextInt(DAYS_OF_WEEK.length);
-        widget.state().edit()
-                .setFirstDayOfWeek(DAYS_OF_WEEK[index])
-                .commit();
+        widget.state().edit().setFirstDayOfWeek(DAYS_OF_WEEK[index]).commit();
 
     }
 
     @OnClick(R.id.button_weeks)
     public void onSetWeekMode() {
-        widget.state().edit()
-                .setCalendarDisplayMode(CalendarMode.WEEKS)
-                .commit();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && animateModeTransition.isChecked()) {
+            TransitionManager.beginDelayedTransition(parent);
+        }
+        widget.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit();
     }
 
     @OnClick(R.id.button_months)
     public void onSetMonthMode() {
-        widget.state().edit()
-                .setCalendarDisplayMode(CalendarMode.MONTHS)
-                .commit();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && animateModeTransition.isChecked()) {
+            TransitionManager.beginDelayedTransition(parent);
+        }
+        widget.state().edit().setCalendarDisplayMode(CalendarMode.MONTHS).commit();
     }
 
 

@@ -6,6 +6,7 @@
     >
 
     <LinearLayout
+        android:id="@+id/parent"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -231,6 +232,14 @@
             android:layout_height="wrap_content"
             >
 
+            <CheckBox
+                android:id="@+id/animate_mode_transition"
+                android:text="Animate Month/Week mode transition (KitKat and above)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:checked="true"
+                />
             <CheckBox
                 android:id="@+id/show_week_days"
                 android:text="Show week days"

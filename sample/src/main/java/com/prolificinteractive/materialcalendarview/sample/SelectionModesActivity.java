@@ -1,8 +1,11 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.TransitionManager;
+import android.view.ViewGroup;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +28,7 @@ public class SelectionModesActivity extends AppCompatActivity
 
   private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
+  @BindView(R.id.parent) ViewGroup parent;
   @BindView(R.id.calendar_view_single) MaterialCalendarView single;
   @BindView(R.id.calendar_view_multi) MaterialCalendarView multi;
   @BindView(R.id.calendar_view_range) MaterialCalendarView range;
@@ -66,11 +70,13 @@ public class SelectionModesActivity extends AppCompatActivity
 
   @OnCheckedChanged(R.id.calendar_mode)
   void onCalendarModeChanged(boolean checked) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      TransitionManager.beginDelayedTransition(parent);
+    }
     final CalendarMode mode = checked ? CalendarMode.WEEKS : CalendarMode.MONTHS;
     single.state().edit().setCalendarDisplayMode(mode).commit();
     multi.state().edit().setCalendarDisplayMode(mode).commit();
     range.state().edit().setCalendarDisplayMode(mode).commit();
     none.state().edit().setCalendarDisplayMode(mode).commit();
   }
-
 }
