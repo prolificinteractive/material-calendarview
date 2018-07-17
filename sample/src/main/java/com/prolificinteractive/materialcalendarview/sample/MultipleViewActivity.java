@@ -21,11 +21,12 @@ import butterknife.ButterKnife;
  * https://github.com/prolificinteractive/material-calendarview/issues/8#issuecomment-241205704
  * , test activity with multiple MaterialCalendarViews
  */
-public class MultipleViewActivity extends AppCompatActivity{
+public class MultipleViewActivity extends AppCompatActivity {
     //number of MaterialCalendarViews to display in list
     static final int NUM_ENTRIES = 3;
 
-    @BindView(R.id.calendar_list) RecyclerView calendarList;
+    @BindView(R.id.calendar_list)
+    RecyclerView calendarList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,7 @@ public class MultipleViewActivity extends AppCompatActivity{
         public void onBindViewHolder(EntryViewHolder holder, int position) {
             //set selected date to today
             final Calendar instance = Calendar.getInstance();
-            holder.calendarView.setSelectedDate(instance.getTime());
+            holder.calendarView.setSelectedDate(instance);
         }
 
         /**
@@ -74,7 +75,7 @@ public class MultipleViewActivity extends AppCompatActivity{
 
             EntryViewHolder(final View itemView) {
                 super(itemView);
-                calendarView = (MaterialCalendarView) itemView.findViewById(R.id.list_entry);
+                calendarView = itemView.findViewById(R.id.list_entry);
             }
         }
     }

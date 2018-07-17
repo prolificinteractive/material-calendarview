@@ -39,7 +39,7 @@ public class SwappableBasicActivityDecorated extends AppCompatActivity implement
 
 
         Calendar instance = Calendar.getInstance();
-        widget.setSelectedDate(instance.getTime());
+        widget.setSelectedDate(instance);
 
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
@@ -48,8 +48,8 @@ public class SwappableBasicActivityDecorated extends AppCompatActivity implement
         instance2.set(instance2.get(Calendar.YEAR), Calendar.DECEMBER, 31);
 
         widget.state().edit()
-                .setMinimumDate(instance1.getTime())
-                .setMaximumDate(instance2.getTime())
+                .setMinimumDate(instance1)
+                .setMaximumDate(instance2)
                 .commit();
 
         widget.addDecorators(

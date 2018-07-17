@@ -9,13 +9,14 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Highlight Saturdays and Sundays with a background
  */
 public class HighlightWeekendsDecorator implements DayViewDecorator {
 
-    private final Calendar calendar = Calendar.getInstance();
+    private final Calendar calendar = Calendar.getInstance(Locale.getDefault());
     private final Drawable highlightDrawable;
     private static final int color = Color.parseColor("#228BC34A");
 
