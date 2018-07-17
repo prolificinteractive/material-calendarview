@@ -8,15 +8,14 @@ import android.support.annotation.Nullable;
 import org.threeten.bp.LocalDate;
 
 /**
- * An imputable representation of a day on a calendar
+ * An imputable representation of a day on a calendar, based on {@link LocalDate}.
  */
 public final class CalendarDay implements Parcelable {
 
-
     /**
-     * Cache for calls to {@linkplain #getDate()}
+     * Everything is based on this variable for {@link CalendarDay}.
      */
-    @NonNull private final transient LocalDate _calendar;
+    @NonNull private final LocalDate date;
 
     /**
      * @param year  new instance's year
@@ -24,14 +23,14 @@ public final class CalendarDay implements Parcelable {
      * @param day   new instance's day of month
      */
     private CalendarDay(final int year, final int month, final int day) {
-      _calendar = LocalDate.of(year, month, day);
+      date = LocalDate.of(year, month, day);
     }
 
     /**
      * @param date {@link LocalDate} instance
      */
     private CalendarDay(@NonNull final LocalDate date) {
-      _calendar = date;
+      this.date = date;
     }
 
     /**
@@ -74,7 +73,7 @@ public final class CalendarDay implements Parcelable {
      * @return the year for this day
      */
     public int getYear() {
-        return _calendar.getYear();
+        return date.getYear();
     }
 
     /**
@@ -83,7 +82,7 @@ public final class CalendarDay implements Parcelable {
      * @return the month of the year as defined by {@linkplain LocalDate}
      */
     public int getMonth() {
-        return _calendar.getMonthValue();
+        return date.getMonthValue();
     }
 
     /**
@@ -92,7 +91,7 @@ public final class CalendarDay implements Parcelable {
      * @return the day of the month for this day
      */
     public int getDay() {
-        return _calendar.getDayOfMonth();
+        return date.getDayOfMonth();
     }
 
     /**
@@ -101,7 +100,7 @@ public final class CalendarDay implements Parcelable {
      * @return a date with this days information
      */
     @NonNull public LocalDate getDate() {
-        return _calendar;
+        return date;
     }
 
     /**
@@ -123,7 +122,7 @@ public final class CalendarDay implements Parcelable {
      * @return true if this is before other, false if equal or after
      */
     public boolean isBefore(@NonNull final CalendarDay other) {
-        return _calendar.isBefore(other.getDate());
+        return date.isBefore(other.getDate());
     }
 
     /**
@@ -133,16 +132,16 @@ public final class CalendarDay implements Parcelable {
      * @return true if this is after other, false if equal or before
      */
     public boolean isAfter(@NonNull final CalendarDay other) {
-        return _calendar.isAfter(other.getDate());
+        return date.isAfter(other.getDate());
     }
 
     @Override public boolean equals(Object o) {
-      return o instanceof CalendarDay && _calendar.equals(((CalendarDay) o).getDate());
+      return o instanceof CalendarDay && date.equals(((CalendarDay) o).getDate());
     }
 
     @Override
     public int hashCode() {
-        return hashCode(_calendar.getYear(), _calendar.getMonthValue(), _calendar.getDayOfMonth());
+        return hashCode(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
     }
 
     private static int hashCode(int year, int month, int day) {
@@ -152,8 +151,8 @@ public final class CalendarDay implements Parcelable {
 
     @Override
     public String toString() {
-        return "CalendarDay{" + _calendar.getYear() + "-" + _calendar.getMonthValue() + "-"
-            + _calendar.getDayOfMonth() + "}";
+        return "CalendarDay{" + date.getYear() + "-" + date.getMonthValue() + "-"
+            + date.getDayOfMonth() + "}";
     }
 
     /*
@@ -171,9 +170,9 @@ public final class CalendarDay implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(_calendar.getYear());
-        dest.writeInt(_calendar.getMonthValue());
-        dest.writeInt(_calendar.getDayOfMonth());
+        dest.writeInt(date.getYear());
+        dest.writeInt(date.getMonthValue());
+        dest.writeInt(date.getDayOfMonth());
     }
 
     public static final Creator<CalendarDay> CREATOR = new Creator<CalendarDay>() {
