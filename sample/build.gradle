@@ -29,6 +29,7 @@ dependencies {
     implementation project(':library')
     //compile 'com.prolificinteractive:material-calendarview:1.4.3'
 
+    implementation rootProject.ext.threeTenAbp
     implementation rootProject.ext.supportAppCompat
     implementation rootProject.ext.recyclerviewV7
     implementation rootProject.ext.butterknife

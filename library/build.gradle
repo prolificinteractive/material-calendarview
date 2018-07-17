@@ -24,13 +24,13 @@ android {
 }
 
 dependencies {
+    implementation rootProject.ext.threeTenAbp
     implementation rootProject.ext.supportV4
     implementation rootProject.ext.supportAppCompat
     implementation rootProject.ext.supportAnnotations
 
     rootProject.ext.testDep.each { testImplementation it }
     rootProject.ext.androidTestDep.each { androidTestImplementation it }
-    compile 'com.jakewharton.threetenabp:threetenabp:1.1.0'
 }
 
 tasks.withType(Javadoc) {
