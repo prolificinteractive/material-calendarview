@@ -15,7 +15,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -29,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
-import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
@@ -45,7 +43,6 @@ import java.util.List;
 import java.util.Locale;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.temporal.TemporalField;
 import org.threeten.bp.temporal.WeekFields;
 
 /**
@@ -1699,7 +1696,7 @@ public class MaterialCalendarView extends ViewGroup {
         if (isInMonthsMode && mDynamicHeightEnabled && adapter != null && pager != null) {
             final LocalDate cal = adapter.getItem(pager.getCurrentItem()).getDate();
             final LocalDate tempLastDay = cal.withDayOfMonth(cal.lengthOfMonth());
-            weekCount = tempLastDay.get(WeekFields.of(Locale.getDefault()).weekOfMonth());
+            weekCount = tempLastDay.get(WeekFields.of(firstDayOfWeek, 1).weekOfMonth());
         }
         return showWeekDays ? weekCount + DAY_NAMES_ROW : weekCount;
     }
