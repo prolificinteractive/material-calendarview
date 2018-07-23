@@ -780,10 +780,19 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * @return the selected day, or null if no selection. If in multiple selection mode, this
-     * will return the last selected date
+     * Get the currently selected date, or null if no selection. Depending on the selection mode,
+     * you might get different results.
+     *
+     * <p>For {@link #SELECTION_MODE_SINGLE}, returns the selected date.</p>
+     * <p>For {@link #SELECTION_MODE_MULTIPLE}, returns the last date selected.</p>
+     * <p>For {@link #SELECTION_MODE_RANGE}, returns the last date of the range. In most cases, you should probably be using {@link #getSelectedDates()}.</p>
+     * <p>For {@link #SELECTION_MODE_NONE}, returns null.</p>
+     *
+     * @return The selected day, or null if no selection. If in multiple selection mode, this
+     * will return the last date of the list of selected dates.
+     * @see MaterialCalendarView#getSelectedDates()
      */
-    public CalendarDay getSelectedDate() {
+    @Nullable public CalendarDay getSelectedDate() {
         List<CalendarDay> dates = adapter.getSelectedDates();
         if (dates.isEmpty()) {
             return null;
@@ -793,10 +802,16 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * @return all of the currently selected dates
+     * Return the list of currently selected dates. Mostly useful for {@link #SELECTION_MODE_MULTIPLE}
+     * and {@link #SELECTION_MODE_RANGE}. For the other modes, check {@link #getSelectedDate()}.
+     *
+     * <p>For {@link #SELECTION_MODE_MULTIPLE}, returns the list in the order of selection.</p>
+     * <p>For {@link #SELECTION_MODE_RANGE}, returns the range of dates ordered chronologically.</p>
+     *
+     * @return All of the currently selected dates.
+     * @see MaterialCalendarView#getSelectedDate()
      */
-    @NonNull
-    public List<CalendarDay> getSelectedDates() {
+    @NonNull public List<CalendarDay> getSelectedDates() {
         return adapter.getSelectedDates();
     }
 
@@ -1395,30 +1410,13 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * Dispatch a range of days to a listener, if set. First day must be before last Day.
+     * Dispatch a range of days to a range listener, if set, ordered chronologically.
      *
-     * @param firstDay first day enclosing a range
-     * @param lastDay  last day enclosing a range
+     * @param days Enclosing days ordered from first to last day.
      */
-    protected void dispatchOnRangeSelected(final CalendarDay firstDay, final CalendarDay lastDay) {
-        final OnRangeSelectedListener listener = rangeListener;
-        final List<CalendarDay> days = new ArrayList<>();
-
-        // Copy to start from the first day and increment
-        LocalDate temp = LocalDate.of(firstDay.getYear(), firstDay.getMonth(), firstDay.getDay());
-
-        // for comparison
-        final LocalDate end = lastDay.getDate();
-
-        while (temp.isBefore(end) || temp.equals(end)) {
-            final CalendarDay current = CalendarDay.from(temp);
-            adapter.setDateSelected(current, true);
-            days.add(current);
-            temp = temp.plusDays(1);
-        }
-
-        if (listener != null) {
-            listener.onRangeSelected(MaterialCalendarView.this, days);
+    protected void dispatchOnRangeSelected(@NonNull final List<CalendarDay> days) {
+        if (rangeListener != null) {
+            rangeListener.onRangeSelected(MaterialCalendarView.this, days);
         }
     }
 
@@ -1457,16 +1455,18 @@ public class MaterialCalendarView extends ViewGroup {
                 } else if (currentSelection.size() == 1) {
                     // Selecting the second date of a range
                     final CalendarDay firstDaySelected = currentSelection.get(0);
-                    adapter.setDateSelected(date, nowSelected);
                     if (firstDaySelected.equals(date)) {
                         // Right now, we are not supporting a range of one day, so we are removing the day instead.
+                        adapter.setDateSelected(date, nowSelected);
                         dispatchOnDateSelected(date, nowSelected);
                     } else if (firstDaySelected.isAfter(date)) {
-                        // Selecting a range, dispatching...
-                        dispatchOnRangeSelected(date, firstDaySelected);
-                    } else {
                         // Selecting a range, dispatching in reverse order...
-                        dispatchOnRangeSelected(firstDaySelected, date);
+                        adapter.selectRange(date, firstDaySelected);
+                        dispatchOnRangeSelected(adapter.getSelectedDates());
+                    } else {
+                        // Selecting a range, dispatching in order...
+                        adapter.selectRange(firstDaySelected, date);
+                        dispatchOnRangeSelected(adapter.getSelectedDates());
                     }
                 } else {
                     // Clearing selection and making a selection of the new date.
@@ -1493,13 +1493,14 @@ public class MaterialCalendarView extends ViewGroup {
      * @param lastDay  last day of the range to select
      */
     public void selectRange(final CalendarDay firstDay, final CalendarDay lastDay) {
-        clearSelection();
         if (firstDay == null || lastDay == null) {
             return;
         } else if (firstDay.isAfter(lastDay)) {
-            dispatchOnRangeSelected(lastDay, firstDay);
+            adapter.selectRange(lastDay, firstDay);
+            dispatchOnRangeSelected(adapter.getSelectedDates());
         } else {
-            dispatchOnRangeSelected(firstDay, lastDay);
+            adapter.selectRange(firstDay, lastDay);
+            dispatchOnRangeSelected(adapter.getSelectedDates());
         }
     }
 
