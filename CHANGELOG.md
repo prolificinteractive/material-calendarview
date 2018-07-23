@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.6.1 *(2018-07-23)*
+----------------------------
+* New: A new xml parameter for choosing selection mode `app:mcv_selectionMode="single"` with the possible values being none, single, multiple and range. Default mode is still single.
+* Fix: Issue with weekdays not being shown after rotation changes.
+
 Version 1.6.0 *(2018-07-06)*
 ----------------------------
 * New: Added api for setting long click listener for cells using `void setOnDateLongClickListener(OnDateLongClickListener longClickListener)`.
