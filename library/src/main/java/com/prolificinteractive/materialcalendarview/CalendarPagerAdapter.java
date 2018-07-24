@@ -15,6 +15,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.threeten.bp.LocalDate;
 
 /**
  * Pager adapter backing the calendar view
@@ -294,6 +295,13 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         invalidateSelectedDates();
     }
 
+    /**
+     * Select or un-select a day.
+     *
+     * @param day Day to select or un-select
+     * @param selected Whether to select or un-select the day from the list.
+     * @see CalendarPagerAdapter#selectRange(CalendarDay, CalendarDay)
+     */
     public void setDateSelected(CalendarDay day, boolean selected) {
         if (selected) {
             if (!selectedDates.contains(day)) {
@@ -306,6 +314,31 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
                 invalidateSelectedDates();
             }
         }
+    }
+
+    /**
+     * Clear the previous selection, select the range of days from first to last, and finally
+     * invalidate. First day should be before last day, otherwise the selection won't happen.
+     *
+     * @param first The first day of the range.
+     * @param last The last day in the range.
+     * @see CalendarPagerAdapter#setDateSelected(CalendarDay, boolean)
+     */
+    public void selectRange(final CalendarDay first, final CalendarDay last) {
+        selectedDates.clear();
+
+        // Copy to start from the first day and increment
+        LocalDate temp = LocalDate.of(first.getYear(), first.getMonth(), first.getDay());
+
+        // for comparison
+        final LocalDate end = last.getDate();
+
+        while (temp.isBefore(end) || temp.equals(end)) {
+            selectedDates.add(CalendarDay.from(temp));
+            temp = temp.plusDays(1);
+        }
+
+        invalidateSelectedDates();
     }
 
     private void invalidateSelectedDates() {
