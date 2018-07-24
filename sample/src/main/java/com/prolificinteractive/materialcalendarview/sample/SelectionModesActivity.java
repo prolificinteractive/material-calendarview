@@ -13,9 +13,8 @@ import butterknife.OnCheckedChanged;
 import com.prolificinteractive.materialcalendarview.*;
 
 import com.prolificinteractive.materialcalendarview.sample.decorators.RangeDayDecorator;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
+import org.threeten.bp.format.DateTimeFormatter;
 
 /**
  * An activity that demonstrate the multiple selection mode that the calendar offers.
@@ -26,7 +25,7 @@ import java.util.List;
 public class SelectionModesActivity extends AppCompatActivity
     implements OnDateSelectedListener, OnRangeSelectedListener {
 
-  private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
+  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
 
   @BindView(R.id.parent) ViewGroup parent;
   @BindView(R.id.calendar_view_single) MaterialCalendarView single;
