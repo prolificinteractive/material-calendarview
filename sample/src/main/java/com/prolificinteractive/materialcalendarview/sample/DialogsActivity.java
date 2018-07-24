@@ -8,25 +8,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import org.threeten.bp.format.DateTimeFormatter;
 
 /**
  * Shows off the most basic usage
  */
 public class DialogsActivity extends AppCompatActivity {
 
-    private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +66,9 @@ public class DialogsActivity extends AppCompatActivity {
             //pass null as parent view because will be in dialog layout
             View view = inflater.inflate(R.layout.dialog_basic, null);
 
-            textView = (TextView) view.findViewById(R.id.textView);
+            textView = view.findViewById(R.id.textView);
 
-            MaterialCalendarView widget = (MaterialCalendarView) view.findViewById(R.id.calendarView);
+            MaterialCalendarView widget = view.findViewById(R.id.calendarView);
 
             widget.setOnDateChangedListener(this);
 

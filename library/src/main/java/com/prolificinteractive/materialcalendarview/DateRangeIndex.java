@@ -1,13 +1,23 @@
 package com.prolificinteractive.materialcalendarview;
 
 /**
- * Use math to calculate first days of months by position from a minimum date.
+ * Use math to calculate first days of months or weeks by position from a minimum date (and first
+ * day of week in case of weekly range).
  */
 interface DateRangeIndex {
 
-    int getCount();
+  /**
+   * Count of pages displayed between 2 dates.
+   */
+  int getCount();
 
-    int indexOf(CalendarDay day);
+  /**
+   * Index of the page where the date is displayed.
+   */
+  int indexOf(CalendarDay day);
 
-    CalendarDay getItem(int position);
+  /**
+   * Get the first date at the position within the index.
+   */
+  CalendarDay getItem(int position);
 }

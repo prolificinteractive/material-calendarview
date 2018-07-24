@@ -11,12 +11,11 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.sample.decorators.HighlightWeekendsDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.MySelectorDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.OneDayDecorator;
-
-import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.Month;
 
 /**
  * Shows off the most basic usage
@@ -25,11 +24,9 @@ public class SwappableBasicActivityDecorated extends AppCompatActivity implement
 
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
 
-    @BindView(R.id.calendarView)
-    MaterialCalendarView widget;
+    @BindView(R.id.calendarView) MaterialCalendarView widget;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_modes);
         ButterKnife.bind(this);
@@ -38,19 +35,13 @@ public class SwappableBasicActivityDecorated extends AppCompatActivity implement
         widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
 
 
-        Calendar instance = Calendar.getInstance();
+        final LocalDate instance = LocalDate.now();
         widget.setSelectedDate(instance);
 
-        Calendar instance1 = Calendar.getInstance();
-        instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
+        final LocalDate min = LocalDate.of(instance.getYear(), Month.JANUARY, 1);
+        final LocalDate max = LocalDate.of(instance.getYear(), Month.DECEMBER, 31);
 
-        Calendar instance2 = Calendar.getInstance();
-        instance2.set(instance2.get(Calendar.YEAR), Calendar.DECEMBER, 31);
-
-        widget.state().edit()
-                .setMinimumDate(instance1)
-                .setMaximumDate(instance2)
-                .commit();
+        widget.state().edit().setMinimumDate(min).setMaximumDate(max).commit();
 
         widget.addDecorators(
                 new MySelectorDecorator(this),

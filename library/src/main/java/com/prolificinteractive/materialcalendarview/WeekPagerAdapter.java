@@ -2,90 +2,85 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.support.annotation.NonNull;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.ChronoUnit;
+import org.threeten.bp.temporal.WeekFields;
 
-@Experimental
 public class WeekPagerAdapter extends CalendarPagerAdapter<WeekView> {
 
-    public WeekPagerAdapter(MaterialCalendarView mcv) {
-        super(mcv);
+  public WeekPagerAdapter(MaterialCalendarView mcv) {
+    super(mcv);
+  }
+
+  @Override
+  protected WeekView createView(int position) {
+    return new WeekView(mcv, getItem(position), mcv.getFirstDayOfWeek(), showWeekDays);
+  }
+
+  @Override
+  protected int indexOf(WeekView view) {
+    CalendarDay week = view.getFirstViewDay();
+    return getRangeIndex().indexOf(week);
+  }
+
+  @Override
+  protected boolean isInstanceOfView(Object object) {
+    return object instanceof WeekView;
+  }
+
+  @Override
+  protected DateRangeIndex createRangeIndex(CalendarDay min, CalendarDay max) {
+    return new Weekly(min, max, mcv.getFirstDayOfWeek());
+  }
+
+  public static class Weekly implements DateRangeIndex {
+
+    /**
+     * Minimum day of the first week to display.
+     */
+    private final CalendarDay min;
+
+    /**
+     * Number of weeks to show.
+     */
+    private final int count;
+
+    /**
+     * First day of the week to base the weeks on.
+     */
+    private final DayOfWeek firstDayOfWeek;
+
+    public Weekly(
+        @NonNull final CalendarDay min,
+        @NonNull final CalendarDay max,
+        final DayOfWeek firstDayOfWeek) {
+      this.firstDayOfWeek = firstDayOfWeek;
+      this.min = getFirstDayOfWeek(min);
+      this.count = indexOf(max) + 1;
     }
 
-    @Override
-    protected WeekView createView(int position) {
-        return new WeekView(mcv, getItem(position), mcv.getFirstDayOfWeek(), showWeekDays);
+    @Override public int getCount() {
+      return count;
     }
 
-    @Override
-    protected int indexOf(WeekView view) {
-        CalendarDay week = view.getFirstViewDay();
-        return getRangeIndex().indexOf(week);
+    @Override public int indexOf(final CalendarDay day) {
+      final WeekFields weekFields = WeekFields.of(firstDayOfWeek, 1);
+      final LocalDate temp = day.getDate().with(weekFields.dayOfWeek(), 1L);
+      return (int) ChronoUnit.WEEKS.between(min.getDate(), temp);
     }
 
-    @Override
-    protected boolean isInstanceOfView(Object object) {
-        return object instanceof WeekView;
+    @Override public CalendarDay getItem(final int position) {
+      return CalendarDay.from(min.getDate().plusWeeks(position));
     }
 
-    @Override
-    protected DateRangeIndex createRangeIndex(CalendarDay min, CalendarDay max) {
-        return new Weekly(min, max, mcv.getFirstDayOfWeek());
+    /**
+     * Getting the first day of a week for a specific date based on a specific week day as first
+     * day.
+     */
+    private CalendarDay getFirstDayOfWeek(@NonNull final CalendarDay day) {
+      final LocalDate temp = day.getDate().with(WeekFields.of(firstDayOfWeek, 1).dayOfWeek(), 1L);
+      return CalendarDay.from(temp);
     }
-
-    public static class Weekly implements DateRangeIndex {
-
-        private static final int DAYS_IN_WEEK = 7;
-        private final CalendarDay min;
-        private final int count;
-
-        public Weekly(@NonNull CalendarDay min, @NonNull CalendarDay max, int firstDayOfWeek) {
-            this.min = getFirstDayOfWeek(min, firstDayOfWeek);
-            this.count = weekNumberDifference(this.min, max) + 1;
-        }
-
-        @Override
-        public int getCount() {
-            return count;
-        }
-
-        @Override
-        public int indexOf(CalendarDay day) {
-            return weekNumberDifference(min, day);
-        }
-
-        @Override
-        public CalendarDay getItem(int position) {
-            long minMillis = min.getDate().getTime();
-            long millisOffset = TimeUnit.MILLISECONDS.convert(
-                    position * DAYS_IN_WEEK,
-                    TimeUnit.DAYS);
-            long positionMillis = minMillis + millisOffset;
-            return CalendarDay.from(positionMillis);
-        }
-
-        private int weekNumberDifference(@NonNull CalendarDay min, @NonNull CalendarDay max) {
-            long millisDiff = max.getDate().getTime() - min.getDate().getTime();
-
-            int dstOffsetMax = max.getCalendar().get(Calendar.DST_OFFSET);
-            int dstOffsetMin = min.getCalendar().get(Calendar.DST_OFFSET);
-
-            long dayDiff = TimeUnit.DAYS.convert(millisDiff + dstOffsetMax - dstOffsetMin, TimeUnit.MILLISECONDS);
-            return (int) (dayDiff / DAYS_IN_WEEK);
-        }
-
-        /*
-         * Necessary because of how Calendar handles getting the first day of week internally.
-         * TODO: WTF IS THIS
-         */
-        private CalendarDay getFirstDayOfWeek(@NonNull CalendarDay min, int wantedFirstDayOfWeek) {
-            Calendar calendar = Calendar.getInstance();
-            min.copyTo(calendar);
-            while (calendar.get(Calendar.DAY_OF_WEEK) != wantedFirstDayOfWeek) {
-                calendar.add(Calendar.DAY_OF_WEEK, -1);
-            }
-            return CalendarDay.from(calendar);
-        }
-    }
+  }
 }

@@ -5,22 +5,41 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.Calendar;
-import java.util.Date;
+import org.threeten.bp.LocalDate;
 
 /**
- * An imputable representation of a day on a calendar
+ * An imputable representation of a day on a calendar, based on {@link LocalDate}.
  */
 public final class CalendarDay implements Parcelable {
+
+    /**
+     * Everything is based on this variable for {@link CalendarDay}.
+     */
+    @NonNull private final LocalDate date;
+
+    /**
+     * @param year  new instance's year
+     * @param month new instance's month as defined by {@linkplain java.util.Calendar}
+     * @param day   new instance's day of month
+     */
+    private CalendarDay(final int year, final int month, final int day) {
+      date = LocalDate.of(year, month, day);
+    }
+
+    /**
+     * @param date {@link LocalDate} instance
+     */
+    private CalendarDay(@NonNull final LocalDate date) {
+      this.date = date;
+    }
 
     /**
      * Get a new instance set to today
      *
      * @return CalendarDay set to today's date
      */
-    @NonNull
-    public static CalendarDay today() {
-        return from(CalendarUtils.getInstance());
+    @NonNull public static CalendarDay today() {
+        return from(LocalDate.now());
     }
 
     /**
@@ -31,88 +50,21 @@ public final class CalendarDay implements Parcelable {
      * @param day   new instance's day of month
      * @return CalendarDay set to the specified date
      */
-    @NonNull
-    public static CalendarDay from(int year, int month, int day) {
+    @NonNull public static CalendarDay from(int year, int month, int day) {
         return new CalendarDay(year, month, day);
     }
 
     /**
      * Get a new instance set to the specified day
      *
-     * @param calendar {@linkplain Calendar} to pull date information from. Passing null will return null
+     * @param date {@linkplain LocalDate} to pull date information from. Passing null will return null
      * @return CalendarDay set to the specified date
      */
-    public static CalendarDay from(@Nullable Calendar calendar) {
-        if (calendar == null) {
+    public static CalendarDay from(@Nullable LocalDate date) {
+        if (date == null) {
             return null;
         }
-        return from(
-                CalendarUtils.getYear(calendar),
-                CalendarUtils.getMonth(calendar),
-                CalendarUtils.getDay(calendar)
-        );
-    }
-
-    /**
-     * Get a new instance set to the specified day
-     *
-     * @param date long to pull date information from.
-     * @return CalendarDay set to the specified date
-     */
-    public static CalendarDay from(long date) {
-        final Calendar instance = CalendarUtils.getInstance();
-        instance.setTimeInMillis(date);
-        return from(instance);
-    }
-
-    private final int year;
-    private final int month;
-    private final int day;
-
-    /**
-     * Cache for calls to {@linkplain #getCalendar()}
-     */
-    private transient Calendar _calendar;
-
-    /**
-     * Cache for calls to {@linkplain #getDate()}
-     */
-    private transient Date _date;
-
-    /**
-     * Initialized to the current day
-     *
-     * @see CalendarDay#today()
-     */
-    @Deprecated
-    public CalendarDay() {
-        this(CalendarUtils.getInstance());
-    }
-
-    /**
-     * @param calendar source to pull date information from for this instance
-     * @see CalendarDay#from(Calendar)
-     */
-    @Deprecated
-    public CalendarDay(Calendar calendar) {
-        this(
-                CalendarUtils.getYear(calendar),
-                CalendarUtils.getMonth(calendar),
-                CalendarUtils.getDay(calendar)
-        );
-    }
-
-    /**
-     * @param year  new instance's year
-     * @param month new instance's month as defined by {@linkplain java.util.Calendar}
-     * @param day   new instance's day of month
-     * @see CalendarDay#from(Calendar)
-     */
-    @Deprecated
-    public CalendarDay(int year, int month, int day) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
+        return new CalendarDay(date);
     }
 
     /**
@@ -121,16 +73,16 @@ public final class CalendarDay implements Parcelable {
      * @return the year for this day
      */
     public int getYear() {
-        return year;
+        return date.getYear();
     }
 
     /**
-     * Get the month, represented by values from {@linkplain Calendar}
+     * Get the month, represented by values from {@linkplain LocalDate}
      *
-     * @return the month of the year as defined by {@linkplain Calendar}
+     * @return the month of the year as defined by {@linkplain LocalDate}
      */
     public int getMonth() {
-        return month;
+        return date.getMonthValue();
     }
 
     /**
@@ -139,47 +91,16 @@ public final class CalendarDay implements Parcelable {
      * @return the day of the month for this day
      */
     public int getDay() {
-        return day;
+        return date.getDayOfMonth();
     }
 
     /**
-     * Get this day as a {@linkplain Date}
+     * Get this day as a {@linkplain LocalDate}
      *
      * @return a date with this days information
      */
-    @NonNull
-    public Date getDate() {
-        if (_date == null) {
-            _date = getCalendar().getTime();
-        }
-        return _date;
-    }
-
-    /**
-     * Get this day as a {@linkplain Calendar}
-     *
-     * @return a new calendar instance with this day information
-     */
-    @NonNull
-    public Calendar getCalendar() {
-        if (_calendar == null) {
-            _calendar = CalendarUtils.getInstance();
-            copyTo(_calendar);
-        }
-        return _calendar;
-    }
-
-    void copyToMonthOnly(@NonNull Calendar calendar) {
-        calendar.set(year, month, 1);
-    }
-
-    /**
-     * Copy this day's information to the given calendar instance
-     *
-     * @param calendar calendar to set date information to
-     */
-    public void copyTo(@NonNull Calendar calendar) {
-        calendar.set(year, month, day);
+    @NonNull public LocalDate getDate() {
+        return date;
     }
 
     /**
@@ -200,15 +121,8 @@ public final class CalendarDay implements Parcelable {
      * @param other the other day to test
      * @return true if this is before other, false if equal or after
      */
-    public boolean isBefore(@NonNull CalendarDay other) {
-        if (other == null) {
-            throw new IllegalArgumentException("other cannot be null");
-        }
-        if (year == other.year) {
-            return ((month == other.month) ? (day < other.day) : (month < other.month));
-        } else {
-            return year < other.year;
-        }
+    public boolean isBefore(@NonNull final CalendarDay other) {
+        return date.isBefore(other.getDate());
     }
 
     /**
@@ -217,35 +131,17 @@ public final class CalendarDay implements Parcelable {
      * @param other the other day to test
      * @return true if this is after other, false if equal or before
      */
-    public boolean isAfter(@NonNull CalendarDay other) {
-        if (other == null) {
-            throw new IllegalArgumentException("other cannot be null");
-        }
-
-        if (year == other.year) {
-            return (month == other.month) ? (day > other.day) : (month > other.month);
-        } else {
-            return year > other.year;
-        }
+    public boolean isAfter(@NonNull final CalendarDay other) {
+        return date.isAfter(other.getDate());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        CalendarDay that = (CalendarDay) o;
-
-        return day == that.day && month == that.month && year == that.year;
+    @Override public boolean equals(Object o) {
+      return o instanceof CalendarDay && date.equals(((CalendarDay) o).getDate());
     }
 
     @Override
     public int hashCode() {
-        return hashCode(year, month, day);
+        return hashCode(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
     }
 
     private static int hashCode(int year, int month, int day) {
@@ -255,7 +151,8 @@ public final class CalendarDay implements Parcelable {
 
     @Override
     public String toString() {
-        return "CalendarDay{" + year + "-" + month + "-" + day + "}";
+        return "CalendarDay{" + date.getYear() + "-" + date.getMonthValue() + "-"
+            + date.getDayOfMonth() + "}";
     }
 
     /*
@@ -273,9 +170,9 @@ public final class CalendarDay implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(year);
-        dest.writeInt(month);
-        dest.writeInt(day);
+        dest.writeInt(date.getYear());
+        dest.writeInt(date.getMonthValue());
+        dest.writeInt(date.getDayOfMonth());
     }
 
     public static final Creator<CalendarDay> CREATOR = new Creator<CalendarDay>() {
