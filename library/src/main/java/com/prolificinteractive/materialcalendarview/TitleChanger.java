@@ -2,6 +2,8 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.animation.Animator;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.ViewPropertyAnimator;
@@ -17,7 +19,7 @@ class TitleChanger {
     public static final int DEFAULT_Y_TRANSLATION_DP = 20;
 
     private final TextView title;
-    private TitleFormatter titleFormatter;
+    @NonNull private TitleFormatter titleFormatter = TitleFormatter.DEFAULT;
 
     private final int animDelay;
     private final int animDuration;
@@ -130,12 +132,8 @@ class TitleChanger {
         }
     }
 
-    public TitleFormatter getTitleFormatter() {
-        return titleFormatter;
-    }
-
-    public void setTitleFormatter(TitleFormatter titleFormatter) {
-        this.titleFormatter = titleFormatter;
+    public void setTitleFormatter(@Nullable final TitleFormatter titleFormatter) {
+        this.titleFormatter = titleFormatter == null ? TitleFormatter.DEFAULT : titleFormatter;
     }
 
     public void setOrientation(int orientation) {

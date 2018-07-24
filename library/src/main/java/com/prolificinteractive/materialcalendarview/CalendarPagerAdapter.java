@@ -1,6 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     protected final MaterialCalendarView mcv;
     private final CalendarDay today;
 
-    private TitleFormatter titleFormatter = null;
+    @NonNull private TitleFormatter titleFormatter = TitleFormatter.DEFAULT;
     private Integer color = null;
     private Integer dateTextAppearance = null;
     private Integer weekDayTextAppearance = null;
@@ -77,7 +78,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return titleFormatter == null ? "" : titleFormatter.format(getItem(position));
+        return titleFormatter.format(getItem(position));
     }
 
     public CalendarPagerAdapter<?> migrateStateAndReturn(CalendarPagerAdapter<?> newAdapter) {
@@ -196,8 +197,8 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         return view == object;
     }
 
-    public void setTitleFormatter(@NonNull TitleFormatter titleFormatter) {
-        this.titleFormatter = titleFormatter;
+    public void setTitleFormatter(@Nullable TitleFormatter titleFormatter) {
+        this.titleFormatter = titleFormatter == null ? TitleFormatter.DEFAULT : titleFormatter;
     }
 
     public void setSelectionColor(int color) {

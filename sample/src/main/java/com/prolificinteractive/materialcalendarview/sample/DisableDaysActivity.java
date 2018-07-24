@@ -8,21 +8,19 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.Month;
 
 /**
  * Show off setting min and max dates and disabling individual days
  */
 public class DisableDaysActivity extends AppCompatActivity {
 
-    @BindView(R.id.calendarView)
-    MaterialCalendarView widget;
+    @BindView(R.id.calendarView) MaterialCalendarView widget;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
         ButterKnife.bind(this);
@@ -30,33 +28,28 @@ public class DisableDaysActivity extends AppCompatActivity {
         // Add a decorator to disable prime numbered days
         widget.addDecorator(new PrimeDayDisableDecorator());
         // Add a second decorator that explicitly enables days <= 10. This will work because
-        //  decorators are applied in order, and the system allows re-enabling
+        // decorators are applied in order, and the system allows re-enabling
         widget.addDecorator(new EnableOneToTenDecorator());
 
-        Calendar calendar = Calendar.getInstance();
+        final LocalDate calendar = LocalDate.now();
         widget.setSelectedDate(calendar);
 
-        Calendar instance1 = Calendar.getInstance();
-        instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
-
-        Calendar instance2 = Calendar.getInstance();
-        instance2.set(instance2.get(Calendar.YEAR) + 2, Calendar.OCTOBER, 31);
+        final LocalDate min = LocalDate.of(calendar.getYear(), Month.JANUARY, 1);
+        final LocalDate max = LocalDate.of(calendar.getYear() + 1, Month.OCTOBER, 31);
 
         widget.state().edit()
-                .setMinimumDate(instance1)
-                .setMaximumDate(instance2)
+                .setMinimumDate(min)
+                .setMaximumDate(max)
                 .commit();
     }
 
     private static class PrimeDayDisableDecorator implements DayViewDecorator {
 
-        @Override
-        public boolean shouldDecorate(CalendarDay day) {
+        @Override public boolean shouldDecorate(final CalendarDay day) {
             return PRIME_TABLE[day.getDay()];
         }
 
-        @Override
-        public void decorate(DayViewFacade view) {
+        @Override public void decorate(final DayViewFacade view) {
             view.setDaysDisabled(true);
         }
 

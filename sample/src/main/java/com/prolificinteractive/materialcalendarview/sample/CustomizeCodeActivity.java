@@ -10,10 +10,9 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 
-import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import org.threeten.bp.DayOfWeek;
 
 public class CustomizeCodeActivity extends AppCompatActivity {
 
@@ -44,7 +43,7 @@ public class CustomizeCodeActivity extends AppCompatActivity {
         widget.setSelectedDate(today);
 
         widget.state().edit()
-                .setFirstDayOfWeek(Calendar.WEDNESDAY)
+                .setFirstDayOfWeek(DayOfWeek.WEDNESDAY)
                 .setMinimumDate(CalendarDay.from(2016, 4, 3))
                 .setMaximumDate(CalendarDay.from(2016, 5, 12))
                 .setCalendarDisplayMode(CalendarMode.WEEKS)
