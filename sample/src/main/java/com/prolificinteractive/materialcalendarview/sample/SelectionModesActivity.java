@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.transition.TransitionManager;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.prolificinteractive.materialcalendarview.sample.decorators.RangeDayDe
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import org.threeten.bp.format.DateTimeFormatter;
 
 /**
  * An activity that demonstrate the multiple selection mode that the calendar offers.
@@ -26,7 +28,7 @@ import java.util.List;
 public class SelectionModesActivity extends AppCompatActivity
     implements OnDateSelectedListener, OnRangeSelectedListener {
 
-  private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
+  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
 
   @BindView(R.id.parent) ViewGroup parent;
   @BindView(R.id.calendar_view_single) MaterialCalendarView single;

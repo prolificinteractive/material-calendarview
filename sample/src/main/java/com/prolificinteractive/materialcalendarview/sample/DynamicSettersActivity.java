@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import java.sql.Date;
 import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
