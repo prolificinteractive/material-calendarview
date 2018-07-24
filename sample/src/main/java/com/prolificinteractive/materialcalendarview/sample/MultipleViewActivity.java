@@ -11,10 +11,9 @@ import android.view.ViewGroup;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import org.threeten.bp.LocalDate;
 
 /**
  * In response to the issue comment at
@@ -63,8 +62,7 @@ public class MultipleViewActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(EntryViewHolder holder, int position) {
             //set selected date to today
-            final Calendar instance = Calendar.getInstance();
-            holder.calendarView.setSelectedDate(instance);
+            holder.calendarView.setSelectedDate(LocalDate.now());
         }
 
         /**
