@@ -55,6 +55,10 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         setClipChildren(false);
         setClipToPadding(false);
 
+        if (LocalUtils.isRTL()) {
+            this.setRotationY(180);
+        }
+
         if (showWeekDays) {
             buildWeekDays(resetAndGetWorkingCalendar());
         }
@@ -286,12 +290,14 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
      */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        final int parentWidth = getWidth();
         final int count = getChildCount();
-
         final int parentLeft = 0;
+        final int parentRight = parentWidth;
 
         int childTop = 0;
         int childLeft = parentLeft;
+        int childRight = parentRight;
 
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
@@ -299,13 +305,18 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
             final int width = child.getMeasuredWidth();
             final int height = child.getMeasuredHeight();
 
-            child.layout(childLeft, childTop, childLeft + width, childTop + height);
-
-            childLeft += width;
+            if (LocalUtils.isRTL()) {
+                child.layout(childRight - width, childTop, childRight, childTop + height);
+                childRight -= width;
+            } else {
+                child.layout(childLeft, childTop, childLeft + width, childTop + height);
+                childLeft += width;
+            }
 
             //We should warp every so many children
             if (i % DEFAULT_DAYS_IN_WEEK == (DEFAULT_DAYS_IN_WEEK - 1)) {
                 childLeft = parentLeft;
+                childRight = parentRight;
                 childTop += height;
             }
 
