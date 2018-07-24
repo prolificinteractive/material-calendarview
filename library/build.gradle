@@ -24,6 +24,7 @@ android {
 }
 
 dependencies {
+    implementation rootProject.ext.threeTenAbp
     implementation rootProject.ext.supportV4
     implementation rootProject.ext.supportAppCompat
     implementation rootProject.ext.supportAnnotations

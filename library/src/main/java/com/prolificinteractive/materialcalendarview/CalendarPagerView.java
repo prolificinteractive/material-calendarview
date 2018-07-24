@@ -13,13 +13,16 @@ import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.TemporalField;
+import org.threeten.bp.temporal.WeekFields;
 
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SHOW_DEFAULTS;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
-import static java.util.Calendar.DATE;
 
 abstract class CalendarPagerView extends ViewGroup implements View.OnClickListener, View.OnLongClickListener {
 
@@ -27,26 +30,25 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     protected static final int DEFAULT_MAX_WEEKS = 6;
     protected static final int DAY_NAMES_ROW = 1;
 
-    private static final Calendar tempWorkingCalendar = CalendarUtils.getInstance();
-
     private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
     private final ArrayList<DecoratorResult> decoratorResults = new ArrayList<>();
-    @ShowOtherDates
-    protected int showOtherDates = SHOW_DEFAULTS;
+    private final DayOfWeek firstDayOfWeek;
+    @ShowOtherDates protected int showOtherDates = SHOW_DEFAULTS;
     private MaterialCalendarView mcv;
     private CalendarDay firstViewDay;
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
-    private int firstDayOfWeek;
     protected boolean showWeekDays;
 
     private final Collection<DayView> dayViews = new ArrayList<>();
 
-    public CalendarPagerView(@NonNull MaterialCalendarView view,
-                             CalendarDay firstViewDay,
-                             int firstDayOfWeek,
-                             boolean showWeekDays) {
+    public CalendarPagerView(
+            @NonNull MaterialCalendarView view,
+            CalendarDay firstViewDay,
+            DayOfWeek firstDayOfWeek,
+            boolean showWeekDays) {
         super(view.getContext());
+
         this.mcv = view;
         this.firstViewDay = firstViewDay;
         this.firstDayOfWeek = firstDayOfWeek;
@@ -61,49 +63,46 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         buildDayViews(dayViews, resetAndGetWorkingCalendar());
     }
 
-    private void buildWeekDays(Calendar calendar) {
+    private void buildWeekDays(LocalDate calendar) {
+        LocalDate local = calendar;
         for (int i = 0; i < DEFAULT_DAYS_IN_WEEK; i++) {
-            WeekDayView weekDayView = new WeekDayView(getContext(), CalendarUtils.getDayOfWeek(calendar));
+            WeekDayView weekDayView = new WeekDayView(getContext(), local.getDayOfWeek());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 weekDayView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
             }
             weekDayViews.add(weekDayView);
             addView(weekDayView);
-            calendar.add(DATE, 1);
+            local = local.plusDays(1);
         }
     }
 
-    protected void addDayView(Collection<DayView> dayViews, Calendar calendar) {
-        CalendarDay day = CalendarDay.from(calendar);
+    protected void addDayView(Collection<DayView> dayViews, LocalDate temp) {
+        CalendarDay day = CalendarDay.from(temp);
         DayView dayView = new DayView(getContext(), day);
         dayView.setOnClickListener(this);
         dayView.setOnLongClickListener(this);
         dayViews.add(dayView);
         addView(dayView, new LayoutParams());
-
-        calendar.add(DATE, 1);
     }
 
-    protected Calendar resetAndGetWorkingCalendar() {
-        getFirstViewDay().copyTo(tempWorkingCalendar);
-        //noinspection ResourceType
-        tempWorkingCalendar.setFirstDayOfWeek(getFirstDayOfWeek());
-        int dow = CalendarUtils.getDayOfWeek(tempWorkingCalendar);
-        int delta = getFirstDayOfWeek() - dow;
+    protected LocalDate resetAndGetWorkingCalendar() {
+        final TemporalField firstDayOfWeek = WeekFields.of(this.firstDayOfWeek, 1).dayOfWeek();
+        final LocalDate temp = getFirstViewDay().getDate().with(firstDayOfWeek, 1);
+        int dow = temp.getDayOfWeek().getValue();
+        int delta = getFirstDayOfWeek().getValue() - dow;
         //If the delta is positive, we want to remove a week
         boolean removeRow = showOtherMonths(showOtherDates) ? delta >= 0 : delta > 0;
         if (removeRow) {
             delta -= DEFAULT_DAYS_IN_WEEK;
         }
-        tempWorkingCalendar.add(DATE, delta);
-        return tempWorkingCalendar;
+        return temp.plusDays(delta);
     }
 
-    protected int getFirstDayOfWeek() {
+    protected DayOfWeek getFirstDayOfWeek() {
         return firstDayOfWeek;
     }
 
-    protected abstract void buildDayViews(Collection<DayView> dayViews, Calendar calendar);
+    protected abstract void buildDayViews(Collection<DayView> dayViews, LocalDate calendar);
 
     protected abstract boolean isDayEnabled(CalendarDay day);
 
@@ -184,8 +183,7 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
     protected void updateUi() {
         for (DayView dayView : dayViews) {
             CalendarDay day = dayView.getDate();
-            dayView.setupSelection(
-                    showOtherDates, day.isInRange(minDate, maxDate), isDayEnabled(day));
+            dayView.setupSelection(showOtherDates, day.isInRange(minDate, maxDate), isDayEnabled(day));
         }
         postInvalidate();
     }

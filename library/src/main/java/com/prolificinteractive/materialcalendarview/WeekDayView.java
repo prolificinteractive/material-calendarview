@@ -3,25 +3,23 @@ package com.prolificinteractive.materialcalendarview;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Gravity;
-import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
-
-import java.util.Calendar;
+import org.threeten.bp.DayOfWeek;
 
 /**
  * Display a day of the week
  */
-@Experimental
 @SuppressLint("ViewConstructor")
 class WeekDayView extends AppCompatTextView {
 
     private WeekDayFormatter formatter = WeekDayFormatter.DEFAULT;
-    private int dayOfWeek;
+    private DayOfWeek dayOfWeek;
 
-    public WeekDayView(Context context, int dayOfWeek) {
+    public WeekDayView(final Context context, final DayOfWeek dayOfWeek) {
         super(context);
 
         setGravity(Gravity.CENTER);
@@ -33,17 +31,13 @@ class WeekDayView extends AppCompatTextView {
         setDayOfWeek(dayOfWeek);
     }
 
-    public void setWeekDayFormatter(WeekDayFormatter formatter) {
+    public void setWeekDayFormatter(@Nullable final WeekDayFormatter formatter) {
         this.formatter = formatter == null ? WeekDayFormatter.DEFAULT : formatter;
         setDayOfWeek(dayOfWeek);
     }
 
-    public void setDayOfWeek(int dayOfWeek) {
+    public void setDayOfWeek(final DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
         setText(formatter.format(dayOfWeek));
-    }
-
-    public void setDayOfWeek(Calendar calendar) {
-        setDayOfWeek(CalendarUtils.getDayOfWeek(calendar));
     }
 }
