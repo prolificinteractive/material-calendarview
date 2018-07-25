@@ -12,37 +12,37 @@ import android.widget.ImageView;
  */
 class DirectionButton extends ImageView {
 
-    public DirectionButton(Context context) {
-        super(context);
+  public DirectionButton(Context context) {
+    super(context);
 
-        setBackgroundResource(getThemeSelectableBackgroundId(context));
+    setBackgroundResource(getThemeSelectableBackgroundId(context));
+  }
+
+  public void setColor(int color) {
+    setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+  }
+
+  @Override
+  public void setEnabled(boolean enabled) {
+    super.setEnabled(enabled);
+    setAlpha(enabled ? 1f : 0.1f);
+  }
+
+  private static int getThemeSelectableBackgroundId(Context context) {
+    //Get selectableItemBackgroundBorderless defined for AppCompat
+    int colorAttr = context.getResources().getIdentifier(
+        "selectableItemBackgroundBorderless", "attr", context.getPackageName());
+
+    if (colorAttr == 0) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        colorAttr = android.R.attr.selectableItemBackgroundBorderless;
+      } else {
+        colorAttr = android.R.attr.selectableItemBackground;
+      }
     }
 
-    public void setColor(int color) {
-        setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
-        setAlpha(enabled ? 1f : 0.1f);
-    }
-
-    private static int getThemeSelectableBackgroundId(Context context) {
-        //Get selectableItemBackgroundBorderless defined for AppCompat
-        int colorAttr = context.getResources().getIdentifier(
-                "selectableItemBackgroundBorderless", "attr", context.getPackageName());
-
-        if (colorAttr == 0) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                colorAttr = android.R.attr.selectableItemBackgroundBorderless;
-            } else {
-                colorAttr = android.R.attr.selectableItemBackground;
-            }
-        }
-
-        TypedValue outValue = new TypedValue();
-        context.getTheme().resolveAttribute(colorAttr, outValue, true);
-        return outValue.resourceId;
-    }
+    TypedValue outValue = new TypedValue();
+    context.getTheme().resolveAttribute(colorAttr, outValue, true);
+    return outValue.resourceId;
+  }
 }
