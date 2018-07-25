@@ -3,16 +3,13 @@
     android:enterFadeDuration="@android:integer/config_shortAnimTime"
     android:exitFadeDuration="@android:integer/config_shortAnimTime">
 
-    <item android:state_checked="true"
-        android:color="@android:color/white" />
+  <item android:color="@android:color/white" android:state_checked="true"/>
 
-    <item android:state_pressed="true"
-        android:color="@android:color/white" />
+  <item android:color="@android:color/white" android:state_pressed="true"/>
 
-    <item android:state_enabled="false"
-        android:color="#808080" />
+  <item android:color="#808080" android:state_enabled="false"/>
 
-    <item android:color="@android:color/black" />
+  <item android:color="@android:color/black"/>
 
 
 </selector>
