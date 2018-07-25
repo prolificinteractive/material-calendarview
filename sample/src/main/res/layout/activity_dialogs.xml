@@ -11,18 +11,18 @@
     tools:context=".BasicActivity"
     >
 
-    <Button
-        android:id="@+id/button_normal_dialog"
-        android:text="Normal Dialog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+  <Button
+      android:id="@+id/button_normal_dialog"
+      android:text="Normal Dialog"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      />
 
-    <Button
-        android:id="@+id/button_simple_dialog"
-        android:text="Simple Calendar Dialog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+  <Button
+      android:id="@+id/button_simple_dialog"
+      android:text="Simple Calendar Dialog"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      />
 
 </LinearLayout>

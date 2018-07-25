@@ -1,71 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="MaterialCalendarView">
+  <declare-styleable name="MaterialCalendarView">
 
-        <attr name="mcv_dateTextAppearance" format="reference" />
-        <attr name="mcv_weekDayTextAppearance" format="reference" />
-        <attr name="mcv_headerTextAppearance" format="reference" />
+    <attr name="mcv_dateTextAppearance" format="reference"/>
+    <attr name="mcv_weekDayTextAppearance" format="reference"/>
+    <attr name="mcv_headerTextAppearance" format="reference"/>
 
-        <attr name="mcv_arrowColor" format="color" />
-        <attr name="mcv_leftArrowMask" format="reference" />
-        <attr name="mcv_rightArrowMask" format="reference" />
-        <attr name="mcv_selectionColor" format="color" />
+    <attr name="mcv_arrowColor" format="color"/>
+    <attr name="mcv_leftArrowMask" format="reference"/>
+    <attr name="mcv_rightArrowMask" format="reference"/>
+    <attr name="mcv_selectionColor" format="color"/>
 
-        <attr name="mcv_showOtherDates" format="integer">
-            <flag name="none" value="0" />
-            <flag name="other_months" value="1" />
-            <flag name="out_of_range" value="2" />
-            <flag name="decorated_disabled" value="4" />
-            <flag name="defaults" value="4" />
-            <flag name="all" value="7" />
-        </attr>
+    <attr name="mcv_showOtherDates" format="integer">
+      <flag name="none" value="0"/>
+      <flag name="other_months" value="1"/>
+      <flag name="out_of_range" value="2"/>
+      <flag name="decorated_disabled" value="4"/>
+      <flag name="defaults" value="4"/>
+      <flag name="all" value="7"/>
+    </attr>
 
-        <attr name="mcv_allowClickDaysOutsideCurrentMonth" format="boolean" />
-        <attr name="mcv_showWeekDays" format="boolean" />
+    <attr name="mcv_allowClickDaysOutsideCurrentMonth" format="boolean"/>
+    <attr name="mcv_showWeekDays" format="boolean"/>
 
-        <attr name="mcv_weekDayLabels" format="reference" />
-        <attr name="mcv_monthLabels" format="reference" />
+    <attr name="mcv_weekDayLabels" format="reference"/>
+    <attr name="mcv_monthLabels" format="reference"/>
 
-        <!-- We want to accept match_parent but not wrap_content. It'd be better if we could
-        point to the real match_parent constant, but since it hasn't change since API 1,
-        I think it's safe to hardcode it-->
-        <attr name="mcv_tileSize" format="dimension" >
-            <enum name="match_parent" value="-1" />
-        </attr>
-        <attr name="mcv_tileHeight" format="dimension" >
-            <enum name="match_parent" value="-1" />
-        </attr>
-        <attr name="mcv_tileWidth" format="dimension" >
-            <enum name="match_parent" value="-1" />
-        </attr>
+    <!-- We want to accept match_parent but not wrap_content. It'd be better if we could
+    point to the real match_parent constant, but since it hasn't change since API 1,
+    I think it's safe to hardcode it-->
+    <attr name="mcv_tileSize" format="dimension">
+      <enum name="match_parent" value="-1"/>
+    </attr>
+    <attr name="mcv_tileHeight" format="dimension">
+      <enum name="match_parent" value="-1"/>
+    </attr>
+    <attr name="mcv_tileWidth" format="dimension">
+      <enum name="match_parent" value="-1"/>
+    </attr>
 
-        <attr name="mcv_firstDayOfWeek" format="enum">
-            <enum name="monday" value="1" />
-            <enum name="tuesday" value="2" />
-            <enum name="wednesday" value="3" />
-            <enum name="thursday" value="4" />
-            <enum name="friday" value="5" />
-            <enum name="saturday" value="6" />
-            <enum name="sunday" value="7" />
-        </attr>
+    <attr name="mcv_firstDayOfWeek" format="enum">
+      <enum name="monday" value="1"/>
+      <enum name="tuesday" value="2"/>
+      <enum name="wednesday" value="3"/>
+      <enum name="thursday" value="4"/>
+      <enum name="friday" value="5"/>
+      <enum name="saturday" value="6"/>
+      <enum name="sunday" value="7"/>
+    </attr>
 
-        <attr name="mcv_calendarMode" format="enum">
-            <enum name="month" value="0" />
-            <enum name="week" value="1" />
-        </attr>
+    <attr name="mcv_calendarMode" format="enum">
+      <enum name="month" value="0"/>
+      <enum name="week" value="1"/>
+    </attr>
 
-        <attr name="mcv_selectionMode" format="enum">
-            <enum name="none" value="0" />
-            <enum name="single" value="1" />
-            <enum name="multiple" value="2" />
-            <enum name="range" value="3" />
-        </attr>
+    <attr name="mcv_selectionMode" format="enum">
+      <enum name="none" value="0"/>
+      <enum name="single" value="1"/>
+      <enum name="multiple" value="2"/>
+      <enum name="range" value="3"/>
+    </attr>
 
-        <attr name="mcv_titleAnimationOrientation" format="enum">
-            <enum name="vertical" value="0" />
-            <enum name="horizontal" value="1" />
-        </attr>
-    </declare-styleable>
+    <attr name="mcv_titleAnimationOrientation" format="enum">
+      <enum name="vertical" value="0"/>
+      <enum name="horizontal" value="1"/>
+    </attr>
+  </declare-styleable>
 
 </resources>
