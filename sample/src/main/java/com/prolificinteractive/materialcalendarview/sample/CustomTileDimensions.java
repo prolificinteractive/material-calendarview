@@ -8,15 +8,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by maragues on 17/06/16.
@@ -64,15 +62,15 @@ public class CustomTileDimensions extends AppCompatActivity {
     view.setWrapSelectorWheel(false);
     view.setValue(currentTileWidth);
     new AlertDialog.Builder(this)
-            .setView(view)
-            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-              @Override
-              public void onClick(@NonNull DialogInterface dialog, int which) {
-                currentTileWidth = view.getValue();
-                widget.setTileWidthDp(currentTileWidth);
-              }
-            })
-            .show();
+        .setView(view)
+        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(@NonNull DialogInterface dialog, int which) {
+            currentTileWidth = view.getValue();
+            widget.setTileWidthDp(currentTileWidth);
+          }
+        })
+        .show();
   }
 
   @OnClick(R.id.custom_tile_height_size)
@@ -83,15 +81,15 @@ public class CustomTileDimensions extends AppCompatActivity {
     view.setWrapSelectorWheel(false);
     view.setValue(currentTileHeight);
     new AlertDialog.Builder(this)
-            .setView(view)
-            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-              @Override
-              public void onClick(@NonNull DialogInterface dialog, int which) {
-                currentTileHeight = view.getValue();
-                widget.setTileHeightDp(currentTileHeight);
-              }
-            })
-            .show();
+        .setView(view)
+        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(@NonNull DialogInterface dialog, int which) {
+            currentTileHeight = view.getValue();
+            widget.setTileHeightDp(currentTileHeight);
+          }
+        })
+        .show();
   }
 
   private class TodayDecorator implements DayViewDecorator {

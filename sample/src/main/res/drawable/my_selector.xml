@@ -2,12 +2,10 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
     android:exitFadeDuration="@android:integer/config_shortAnimTime">
 
-    <item android:state_checked="true"
-        android:drawable="@drawable/ic_my_selector" />
+  <item android:drawable="@drawable/ic_my_selector" android:state_checked="true"/>
 
-    <item android:state_pressed="true"
-        android:drawable="@drawable/ic_my_selector" />
+  <item android:drawable="@drawable/ic_my_selector" android:state_pressed="true"/>
 
-    <item android:drawable="@android:color/transparent" />
+  <item android:drawable="@android:color/transparent"/>
 
 </selector>

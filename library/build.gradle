@@ -3,55 +3,55 @@ apply plugin: 'maven'
 apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+  compileSdkVersion rootProject.ext.compileSdkVersion
 
-    defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
 
-        versionCode Integer.parseInt(project.VERSION_CODE)
-        versionName project.VERSION_NAME
-    }
+    versionCode Integer.parseInt(project.VERSION_CODE)
+    versionName project.VERSION_NAME
+  }
 
-    lintOptions {
-        abortOnError false
-    }
+  lintOptions {
+    abortOnError false
+  }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 
 dependencies {
-    implementation rootProject.ext.threeTenAbp
-    implementation rootProject.ext.supportV4
-    implementation rootProject.ext.supportAppCompat
-    implementation rootProject.ext.supportAnnotations
+  implementation rootProject.ext.threeTenAbp
+  implementation rootProject.ext.supportV4
+  implementation rootProject.ext.supportAppCompat
+  implementation rootProject.ext.supportAnnotations
 
-    rootProject.ext.testDep.each { testImplementation it }
-    rootProject.ext.androidTestDep.each { androidTestImplementation it }
+  rootProject.ext.testDep.each { testImplementation it }
+  rootProject.ext.androidTestDep.each { androidTestImplementation it }
 }
 
 tasks.withType(Javadoc) {
-    options.addStringOption('Xdoclint:none', '-quiet')
-    options.addStringOption('encoding', 'UTF-8')
-    options.addStringOption('charSet', 'UTF-8')
+  options.addStringOption('Xdoclint:none', '-quiet')
+  options.addStringOption('encoding', 'UTF-8')
+  options.addStringOption('charSet', 'UTF-8')
 }
 
 android.libraryVariants.all { variant ->
-    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
-        title "Material CalendarView ${version}"
-        description "Generates Javadoc for $variant.name."
-        source = variant.javaCompiler.source
-        doFirst {
-            classpath = files(variant.javaCompiler.classpath.files, project.android.getBootClasspath())
-        }
-        exclude '**/BuildConfig.java'
-        exclude '**/R.java'
-        options {
-            links "http://docs.oracle.com/javase/7/docs/api/"
-            linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
-        }
+  task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+    title "Material CalendarView ${version}"
+    description "Generates Javadoc for $variant.name."
+    source = variant.javaCompiler.source
+    doFirst {
+      classpath = files(variant.javaCompiler.classpath.files, project.android.getBootClasspath())
     }
+    exclude '**/BuildConfig.java'
+    exclude '**/R.java'
+    options {
+      links "http://docs.oracle.com/javase/7/docs/api/"
+      linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
+    }
+  }
 }
