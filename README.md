@@ -73,6 +73,11 @@ All of this and more can be done via the decorator api. Please check out the [de
 
 ## Recent Changes
 
+### Major Change in 2.0
+
+Material CalendarView 2.0 comes in with a major change into the core of it's API, we transitioned from using `java.util.Calendar` to `java.time.LocalDate`. Also that should not impact the public api (we are still using `CalendarDay`), both `Calendar` and `LocalDate` function a little bit differently.
+One example of that: Months are now indexed from 1 (January) to 12 (December). You can access from the `LocalDate` from `CalendarDay` using `getDate()`.
+
 ### Major Change in 1.6.0
 
 Also this release doesn't have any break changes, it provides significant improvements to the widget. More customization have been added for the user (custom fonts, long click listener, show/hide weekdays) as well as various fixes, improvements to the sample app, and general cleanup. Make sure to check the CHANGELOG and the release section for more details. 
