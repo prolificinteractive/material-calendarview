@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 2.0 *(TBD)*
+----------------------------
+* New: Changed `java.util.Calendar` in favor of `java.time.LocalDate`.
+* Fix: Range selection ordering & Issues
+* Fix: Timezone Issues
+* Fix: Now the Month is indexed from 1 to 12 (previously 0-11 due to `java.util` api)
+* Code Style Reformat
+  
 Version 1.6.1 *(2018-07-23)*
 ----------------------------
 * New: A new xml parameter for choosing selection mode `app:mcv_selectionMode="single"` with the possible values being none, single, multiple and range. Default mode is still single.
