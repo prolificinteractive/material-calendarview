@@ -437,6 +437,23 @@ public class MaterialCalendarView extends ViewGroup {
         buttonPast.setEnabled(canGoBack());
         buttonFuture.setEnabled(canGoForward());
     }
+    
+    /**
+     * Change the title text color of the calendar.
+     *
+     * @param color The color (int) for the title text
+     */
+    public void setTitleColor(int color) {
+        title.setTextColor(color);
+    }
+    
+    /**
+     * Returns the title text color of the calendar.
+     *
+     */
+    public void getTitleColor() {
+        return title.getCurrentTextColor();
+    }
 
     /**
      * Change the selection mode of the calendar. The default mode is {@linkplain #SELECTION_MODE_SINGLE}
