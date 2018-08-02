@@ -451,7 +451,7 @@ public class MaterialCalendarView extends ViewGroup {
      * Returns the title text color of the calendar.
      *
      */
-    public void getTitleColor() {
+    public int getTitleColor() {
         return title.getCurrentTextColor();
     }
 
