@@ -1120,25 +1120,16 @@ public class MaterialCalendarView extends ViewGroup {
   @Override
   protected Parcelable onSaveInstanceState() {
     SavedState ss = new SavedState(super.onSaveInstanceState());
-    ss.color = getSelectionColor();
-    ss.dateTextAppearance = adapter.getDateTextAppearance();
-    ss.weekDayTextAppearance = adapter.getWeekDayTextAppearance();
     ss.showOtherDates = getShowOtherDates();
     ss.allowClickDaysOutsideCurrentMonth = allowClickDaysOutsideCurrentMonth();
     ss.minDate = getMinimumDate();
     ss.maxDate = getMaximumDate();
     ss.selectedDates = getSelectedDates();
-    ss.firstDayOfWeek = getFirstDayOfWeek();
-    ss.orientation = getTitleAnimationOrientation();
     ss.selectionMode = getSelectionMode();
-    ss.tileWidthPx = getTileWidth();
-    ss.tileHeightPx = getTileHeight();
     ss.topbarVisible = getTopbarVisible();
-    ss.calendarMode = calendarMode;
     ss.dynamicHeightEnabled = mDynamicHeightEnabled;
     ss.currentMonth = currentMonth;
     ss.cacheCurrentPosition = state.cacheCurrentPosition;
-    ss.showWeekDays = showWeekDays;
     return ss;
   }
 
@@ -1146,27 +1137,18 @@ public class MaterialCalendarView extends ViewGroup {
   protected void onRestoreInstanceState(Parcelable state) {
     SavedState ss = (SavedState) state;
     super.onRestoreInstanceState(ss.getSuperState());
-    newState()
-        .setFirstDayOfWeek(ss.firstDayOfWeek)
-        .setCalendarDisplayMode(ss.calendarMode)
+    state().edit()
         .setMinimumDate(ss.minDate)
         .setMaximumDate(ss.maxDate)
         .isCacheCalendarPositionEnabled(ss.cacheCurrentPosition)
-        .setShowWeekDays(ss.showWeekDays)
         .commit();
 
-    setSelectionColor(ss.color);
-    setDateTextAppearance(ss.dateTextAppearance);
-    setWeekDayTextAppearance(ss.weekDayTextAppearance);
     setShowOtherDates(ss.showOtherDates);
     setAllowClickDaysOutsideCurrentMonth(ss.allowClickDaysOutsideCurrentMonth);
     clearSelection();
     for (CalendarDay calendarDay : ss.selectedDates) {
       setDateSelected(calendarDay, true);
     }
-    setTitleAnimationOrientation(ss.orientation);
-    setTileWidth(ss.tileWidthPx);
-    setTileHeight(ss.tileHeightPx);
     setTopbarVisible(ss.topbarVisible);
     setSelectionMode(ss.selectionMode);
     setDynamicHeightEnabled(ss.dynamicHeightEnabled);
@@ -1197,25 +1179,16 @@ public class MaterialCalendarView extends ViewGroup {
 
   public static class SavedState extends BaseSavedState {
 
-    int color = 0;
-    int dateTextAppearance = 0;
-    int weekDayTextAppearance = 0;
     int showOtherDates = SHOW_DEFAULTS;
     boolean allowClickDaysOutsideCurrentMonth = true;
     CalendarDay minDate = null;
     CalendarDay maxDate = null;
     List<CalendarDay> selectedDates = new ArrayList<>();
-    DayOfWeek firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
-    int orientation = 0;
-    int tileWidthPx = -1;
-    int tileHeightPx = -1;
     boolean topbarVisible = true;
     int selectionMode = SELECTION_MODE_SINGLE;
     boolean dynamicHeightEnabled = false;
-    CalendarMode calendarMode = CalendarMode.MONTHS;
     CalendarDay currentMonth = null;
     boolean cacheCurrentPosition;
-    boolean showWeekDays;
 
     SavedState(Parcelable superState) {
       super(superState);
@@ -1224,25 +1197,16 @@ public class MaterialCalendarView extends ViewGroup {
     @Override
     public void writeToParcel(@NonNull Parcel out, int flags) {
       super.writeToParcel(out, flags);
-      out.writeInt(color);
-      out.writeInt(dateTextAppearance);
-      out.writeInt(weekDayTextAppearance);
       out.writeInt(showOtherDates);
       out.writeByte((byte) (allowClickDaysOutsideCurrentMonth ? 1 : 0));
       out.writeParcelable(minDate, 0);
       out.writeParcelable(maxDate, 0);
       out.writeTypedList(selectedDates);
-      out.writeInt(firstDayOfWeek.getValue());
-      out.writeInt(orientation);
-      out.writeInt(tileWidthPx);
-      out.writeInt(tileHeightPx);
       out.writeInt(topbarVisible ? 1 : 0);
       out.writeInt(selectionMode);
       out.writeInt(dynamicHeightEnabled ? 1 : 0);
-      out.writeInt(calendarMode == CalendarMode.WEEKS ? 1 : 0);
       out.writeParcelable(currentMonth, 0);
       out.writeByte((byte) (cacheCurrentPosition ? 1 : 0));
-      out.writeByte((byte) (showWeekDays ? 1 : 0));
     }
 
     public static final Parcelable.Creator<SavedState> CREATOR
@@ -1258,26 +1222,17 @@ public class MaterialCalendarView extends ViewGroup {
 
     private SavedState(Parcel in) {
       super(in);
-      color = in.readInt();
-      dateTextAppearance = in.readInt();
-      weekDayTextAppearance = in.readInt();
       showOtherDates = in.readInt();
       allowClickDaysOutsideCurrentMonth = in.readByte() != 0;
       ClassLoader loader = CalendarDay.class.getClassLoader();
       minDate = in.readParcelable(loader);
       maxDate = in.readParcelable(loader);
       in.readTypedList(selectedDates, CalendarDay.CREATOR);
-      firstDayOfWeek = DayOfWeek.of(in.readInt());
-      orientation = in.readInt();
-      tileWidthPx = in.readInt();
-      tileHeightPx = in.readInt();
       topbarVisible = in.readInt() == 1;
       selectionMode = in.readInt();
       dynamicHeightEnabled = in.readInt() == 1;
-      calendarMode = in.readInt() == 1 ? CalendarMode.WEEKS : CalendarMode.MONTHS;
       currentMonth = in.readParcelable(loader);
       cacheCurrentPosition = in.readByte() != 0;
-      showWeekDays = in.readByte() != 0;
     }
   }
 

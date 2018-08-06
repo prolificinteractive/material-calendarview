@@ -14,6 +14,7 @@
   <string name="title_activity_dialogs">Calendar in Dialogs</string>
   <string name="title_activity_decorators">Calendar with Decorators</string>
   <string name="title_activity_getters">Calendar with Getters</string>
+  <string name="title_activity_rotation">Rotation Example</string>
   <string name="title_activity_selections">Calendar Selection Modes</string>
   <string name="title_activity_basic_modes">Calendar with Dynamic Modes</string>
   <string name="title_activity_multiple_view">Multiple Basic Calendars</string>
