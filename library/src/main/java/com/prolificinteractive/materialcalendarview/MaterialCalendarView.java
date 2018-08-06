@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ArrayRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -229,9 +230,6 @@ public class MaterialCalendarView extends ViewGroup {
 
   CharSequence calendarContentDescription;
   private int accentColor = 0;
-  private int arrowColor = Color.BLACK;
-  private Drawable leftArrowMask;
-  private Drawable rightArrowMask;
   private int tileHeight = INVALID_TILE_DIMENSION;
   private int tileWidth = INVALID_TILE_DIMENSION;
   @SelectionMode
@@ -341,24 +339,18 @@ public class MaterialCalendarView extends ViewGroup {
         setTileHeight(tileHeight);
       }
 
-      setArrowColor(a.getColor(
-          R.styleable.MaterialCalendarView_mcv_arrowColor,
-          Color.BLACK
-      ));
-      Drawable leftMask = a.getDrawable(
-          R.styleable.MaterialCalendarView_mcv_leftArrowMask
+      setLeftArrow(
+          a.getResourceId(
+              R.styleable.MaterialCalendarView_mcv_leftArrowMask,
+              R.drawable.mcv_action_previous
+          )
       );
-      if (leftMask == null) {
-        leftMask = getResources().getDrawable(R.drawable.mcv_action_previous);
-      }
-      setLeftArrowMask(leftMask);
-      Drawable rightMask = a.getDrawable(
-          R.styleable.MaterialCalendarView_mcv_rightArrowMask
+      setRightArrow(
+          a.getResourceId(
+              R.styleable.MaterialCalendarView_mcv_rightArrowMask,
+              R.drawable.mcv_action_next
+          )
       );
-      if (rightMask == null) {
-        rightMask = getResources().getDrawable(R.drawable.mcv_action_next);
-      }
-      setRightArrowMask(rightMask);
 
       setSelectionColor(
           a.getColor(
@@ -672,26 +664,6 @@ public class MaterialCalendarView extends ViewGroup {
   }
 
   /**
-   * @return color used to draw arrows
-   */
-  public int getArrowColor() {
-    return arrowColor;
-  }
-
-  /**
-   * @param color the new color for the paging arrows
-   */
-  public void setArrowColor(int color) {
-    if (color == 0) {
-      return;
-    }
-    arrowColor = color;
-    buttonPast.setColor(color);
-    buttonFuture.setColor(color);
-    invalidate();
-  }
-
-  /**
    * Set content description for button past
    *
    * @param description String to use as content description
@@ -741,31 +713,29 @@ public class MaterialCalendarView extends ViewGroup {
   /**
    * @return icon used for the left arrow
    */
-  public Drawable getLeftArrowMask() {
-    return leftArrowMask;
+  public Drawable getLeftArrow() {
+    return buttonPast.getDrawable();
   }
 
   /**
    * @param icon the new icon to use for the left paging arrow
    */
-  public void setLeftArrowMask(Drawable icon) {
-    leftArrowMask = icon;
-    buttonPast.setImageDrawable(icon);
+  public void setLeftArrow(@DrawableRes final int icon) {
+    buttonPast.setImageResource(icon);
   }
 
   /**
    * @return icon used for the right arrow
    */
-  public Drawable getRightArrowMask() {
-    return rightArrowMask;
+  public Drawable getRightArrow() {
+    return buttonFuture.getDrawable();
   }
 
   /**
    * @param icon the new icon to use for the right paging arrow
    */
-  public void setRightArrowMask(Drawable icon) {
-    rightArrowMask = icon;
-    buttonFuture.setImageDrawable(icon);
+  public void setRightArrow(@DrawableRes final int icon) {
+    buttonFuture.setImageResource(icon);
   }
 
   /**

@@ -1,25 +1,20 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Build;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.TypedValue;
-import android.widget.ImageView;
 
 /**
  * An {@linkplain android.widget.ImageView} to pragmatically set the color of arrows
  * using a {@linkplain android.graphics.ColorFilter}
  */
-class DirectionButton extends ImageView {
+class DirectionButton extends AppCompatImageView {
 
   public DirectionButton(Context context) {
     super(context);
 
     setBackgroundResource(getThemeSelectableBackgroundId(context));
-  }
-
-  public void setColor(int color) {
-    setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
   }
 
   @Override
