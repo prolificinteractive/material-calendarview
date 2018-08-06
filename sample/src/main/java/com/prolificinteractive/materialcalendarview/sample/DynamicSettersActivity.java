@@ -196,7 +196,6 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateL
         1f,
         0.75f
     });
-    widget.setArrowColor(color);
     widget.setSelectionColor(color);
   }
 
