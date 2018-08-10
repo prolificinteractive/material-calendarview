@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    >
+
+  <ImageButton
+      android:id="@+id/previous"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/mcv_arrow_margin"
+      android:background="?selectableItemBackgroundBorderless"
+      android:contentDescription="@string/previous"
+      android:padding="@dimen/mcv_arrow_padding"
+      app:srcCompat="@drawable/mcv_action_previous"
+      />
+
+  <TextView
+      android:id="@+id/month_name"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_weight="1"
+      android:gravity="center"
+      tools:text="August 2018"
+      style="?android:attr/textAppearanceMedium"
+      />
+
+  <ImageButton
+      android:id="@+id/next"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/mcv_arrow_margin"
+      android:background="?selectableItemBackgroundBorderless"
+      android:contentDescription="@string/next"
+      android:padding="@dimen/mcv_arrow_padding"
+      app:srcCompat="@drawable/mcv_action_next"
+      />
+
+</LinearLayout>
