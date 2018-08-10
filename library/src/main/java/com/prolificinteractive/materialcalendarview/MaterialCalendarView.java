@@ -1,6 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.annotation.SuppressLint;
+import android.app.Service;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -14,11 +15,10 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -175,8 +175,8 @@ public class MaterialCalendarView extends ViewGroup {
   private final TitleChanger titleChanger;
 
   private final TextView title;
-  private final DirectionButton buttonPast;
-  private final DirectionButton buttonFuture;
+  private final ImageView buttonPast;
+  private final ImageView buttonFuture;
   private final CalendarPager pager;
   private CalendarPagerAdapter<?> adapter;
   private CalendarDay currentMonth;
@@ -257,11 +257,14 @@ public class MaterialCalendarView extends ViewGroup {
       setClipToPadding(true);
     }
 
-    buttonPast = new DirectionButton(getContext());
-    buttonPast.setContentDescription(getContext().getString(R.string.previous));
-    title = new AppCompatTextView(getContext());
-    buttonFuture = new DirectionButton(getContext());
-    buttonFuture.setContentDescription(getContext().getString(R.string.next));
+    final LayoutInflater inflater =
+        (LayoutInflater) getContext().getSystemService(Service.LAYOUT_INFLATER_SERVICE);
+    final View content = inflater.inflate(R.layout.calendar_view, null, false);
+
+    topbar = content.findViewById(R.id.header);
+    buttonPast = content.findViewById(R.id.previous);
+    title = content.findViewById(R.id.month_name);
+    buttonFuture = content.findViewById(R.id.next);
     pager = new CalendarPager(getContext());
 
     buttonPast.setOnClickListener(onClickListener);
@@ -415,22 +418,7 @@ public class MaterialCalendarView extends ViewGroup {
   }
 
   private void setupChildren() {
-    topbar = new LinearLayout(getContext());
-    topbar.setOrientation(LinearLayout.HORIZONTAL);
-    topbar.setClipChildren(false);
-    topbar.setClipToPadding(false);
-    addView(topbar, new LayoutParams(1));
-
-    buttonPast.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-    topbar.addView(buttonPast, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
-
-    title.setGravity(Gravity.CENTER);
-    topbar.addView(title, new LinearLayout.LayoutParams(
-        0, LayoutParams.MATCH_PARENT, DEFAULT_DAYS_IN_WEEK - 2
-    ));
-
-    buttonFuture.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-    topbar.addView(buttonFuture, new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
+    addView(topbar);
 
     pager.setId(R.id.mcv_pager);
     pager.setOffscreenPageLimit(1);
@@ -441,8 +429,8 @@ public class MaterialCalendarView extends ViewGroup {
 
   private void updateUi() {
     titleChanger.change(currentMonth);
-    buttonPast.setEnabled(canGoBack());
-    buttonFuture.setEnabled(canGoForward());
+    enableView(buttonPast, canGoBack());
+    enableView(buttonFuture, canGoForward());
   }
 
   /**
@@ -2007,5 +1995,16 @@ public class MaterialCalendarView extends ViewGroup {
 
     invalidateDecorators();
     updateUi();
+  }
+
+  /**
+   * Used for enabling or disabling views, while also changing the alpha.
+   *
+   * @param view The view to enable or disable.
+   * @param enable Whether to enable or disable the view.
+   */
+  private static void enableView(final View view, final boolean enable) {
+    view.setEnabled(enable);
+    view.setAlpha(enable ? 1f : 0.1f);
   }
 }
