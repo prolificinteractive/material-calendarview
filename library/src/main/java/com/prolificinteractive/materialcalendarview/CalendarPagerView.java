@@ -55,10 +55,6 @@ abstract class CalendarPagerView extends ViewGroup
     setClipChildren(false);
     setClipToPadding(false);
 
-    if (LocalUtils.isRTL()) {
-      this.setRotationY(180);
-    }
-
     if (showWeekDays) {
       buildWeekDays(resetAndGetWorkingCalendar());
     }
