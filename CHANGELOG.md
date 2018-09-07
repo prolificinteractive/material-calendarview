@@ -1,13 +1,17 @@
 Change Log
 ==========
 
-Version 2.0 *(TBD)*
+Version 2.0.0 *(2018-09-07)*
 ----------------------------
 * New: Changed `java.util.Calendar` in favor of `java.time.LocalDate`.
+* New: Api naming for setting the arrows drawable: `setLeftArrow` and `setRightArrow`
 * Fix: Range selection ordering & Issues
 * Fix: Timezone Issues
 * Fix: Now the Month is indexed from 1 to 12 (previously 0-11 due to `java.util` api)
+* Fix: RTL Support
+* Fix: Remove Restored XML Parameters
 * Code Style Reformat
+* Replaced arrows pngs with vectors
   
 Version 1.6.1 *(2018-07-23)*
 ----------------------------
