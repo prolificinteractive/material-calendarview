@@ -190,7 +190,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 
   @Override
   protected void onDraw(@NonNull Canvas canvas) {
-    if (customBackground != null) {
+    if (customBackground != null && !isChecked()) {
       customBackground.setBounds(tempRect);
       customBackground.setState(getDrawableState());
       customBackground.draw(canvas);
@@ -201,8 +201,14 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
     super.onDraw(canvas);
   }
 
+  @Override
+  public void setChecked(boolean checked) {
+    super.setChecked(checked);
+    regenerateBackground();
+  }
+
   private void regenerateBackground() {
-    if (selectionDrawable != null) {
+    if (selectionDrawable != null && isChecked()) {
       setBackgroundDrawable(selectionDrawable);
     } else {
       mCircleDrawable = generateBackground(selectionColor, fadeTime, circleDrawableRect);
