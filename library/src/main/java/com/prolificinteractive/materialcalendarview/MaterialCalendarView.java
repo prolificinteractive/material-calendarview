@@ -208,7 +208,12 @@ public class MaterialCalendarView extends ViewGroup {
           currentMonth = adapter.getItem(position);
           updateUi();
 
-          dispatchOnMonthChanged(currentMonth);
+          if (adapter instanceof MonthPagerAdapter) {
+            dispatchOnMonthChanged(currentMonth);
+          }
+          if (adapter instanceof WeekPagerAdapter) {
+            dispatchOnWeekChanged(currentMonth);
+          }
         }
 
         @Override
@@ -226,6 +231,7 @@ public class MaterialCalendarView extends ViewGroup {
   private OnDateSelectedListener listener;
   private OnDateLongClickListener longClickListener;
   private OnMonthChangedListener monthListener;
+  private OnWeekChangedListener weekListener;
   private OnRangeSelectedListener rangeListener;
 
   CharSequence calendarContentDescription;
@@ -1329,6 +1335,15 @@ public class MaterialCalendarView extends ViewGroup {
   }
 
   /**
+   * Sets the listener to be notified upon week changes.
+   *
+   * @param listener thing to be notified
+   */
+  public void setOnWeekChangedListener(OnWeekChangedListener listener) {
+    this.weekListener = listener;
+  }
+
+  /**
    * Sets the listener to be notified upon a range has been selected.
    *
    * @param listener thing to be notified
@@ -1377,6 +1392,17 @@ public class MaterialCalendarView extends ViewGroup {
   protected void dispatchOnMonthChanged(final CalendarDay day) {
     if (monthListener != null) {
       monthListener.onMonthChanged(MaterialCalendarView.this, day);
+    }
+  }
+
+  /**
+   * Dispatch date change events to a listener, if set
+   *
+   * @param day first day of the new week
+   */
+  protected void dispatchOnWeekChanged(final CalendarDay day) {
+    if (weekListener != null) {
+      weekListener.onWeekChanged(MaterialCalendarView.this, day);
     }
   }
 
