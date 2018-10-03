@@ -8,7 +8,6 @@ Customization Options
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:mcv_showOtherDates="boolean"
-    app:mcv_arrowColor="color"
     app:mcv_selectionColor="color"
     app:mcv_headerTextAppearance="style"
     app:mcv_dateTextAppearance="style"
@@ -19,8 +18,8 @@ Customization Options
     app:mcv_tileWidth="dimension"
     app:mcv_tileHeight="dimension"
     app:mcv_firstDayOfWeek="enum"
-    app:mcv_leftArrowMask="drawable"
-    app:mcv_rightArrowMask="drawable"
+    app:mcv_leftArrow="drawable"
+    app:mcv_rightArrow="drawable"
     app:mcv_calendarMode="mode"
     />
 ```
@@ -90,17 +89,9 @@ If you want more control than just color, you can use the [decorator api](DECORA
 You can hide or show the topbar (arrow buttons and month label) by calling `setTopbarVisible(boolean)`
 The default is visible.
 
-### Arrow Color
+### Arrows
 
-You can change the topbar arrow colors by setting `mcv_arrowColor` in xml, or calling `setArrowColor(int)`.
-This will color the left and right arrow masks using a color filter.
-
-### Arrow Masks
-
-Arrow masks are drawables that will be colored with arrow color and be drawn for previous and next month buttons.
-The color is applied with a color filter using `PorterDuff.Mode.SRC_ATOP`.
-They can be set in xml using `mcv_leftArrowMask` and `mcv_rightArrowMask` or by calling `setLeftArrowMask()` and `setRightArrowMask()`.
-
+If you want to change the color or the drawables, they can be set in xml using `mcv_leftArrow` and `mcv_rightArrow` or by calling `setLeftArrow()` and `setRightArrow()`.
 
 ## Custom Labels
 
