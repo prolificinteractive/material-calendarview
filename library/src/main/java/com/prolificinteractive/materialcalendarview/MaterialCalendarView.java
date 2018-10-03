@@ -144,7 +144,8 @@ public class MaterialCalendarView extends ViewGroup {
   public static final int SHOW_DECORATED_DISABLED = 1 << 2;
 
   /**
-   * The default flags for showing non-enabled dates. Currently only shows {@link #SHOW_DECORATED_DISABLED}
+   * The default flags for showing non-enabled dates. Currently only shows {@link
+   * #SHOW_DECORATED_DISABLED}
    */
   public static final int SHOW_DEFAULTS = SHOW_DECORATED_DISABLED;
 
@@ -165,7 +166,8 @@ public class MaterialCalendarView extends ViewGroup {
   public static final int HORIZONTAL = 1;
 
   /**
-   * Default tile size in DIPs. This is used in cases where there is no tile size specificed and the view is set to {@linkplain ViewGroup.LayoutParams#WRAP_CONTENT WRAP_CONTENT}
+   * Default tile size in DIPs. This is used in cases where there is no tile size specificed and the
+   * view is set to {@linkplain ViewGroup.LayoutParams#WRAP_CONTENT WRAP_CONTENT}
    */
   public static final int DEFAULT_TILE_SIZE_DP = 44;
   private static final int DEFAULT_DAYS_IN_WEEK = 7;
@@ -344,13 +346,13 @@ public class MaterialCalendarView extends ViewGroup {
 
       setLeftArrow(
           a.getResourceId(
-              R.styleable.MaterialCalendarView_mcv_leftArrowMask,
+              R.styleable.MaterialCalendarView_mcv_leftArrow,
               R.drawable.mcv_action_previous
           )
       );
       setRightArrow(
           a.getResourceId(
-              R.styleable.MaterialCalendarView_mcv_rightArrowMask,
+              R.styleable.MaterialCalendarView_mcv_rightArrow,
               R.drawable.mcv_action_next
           )
       );
@@ -434,7 +436,8 @@ public class MaterialCalendarView extends ViewGroup {
   }
 
   /**
-   * Change the selection mode of the calendar. The default mode is {@linkplain #SELECTION_MODE_SINGLE}
+   * Change the selection mode of the calendar. The default mode is {@linkplain
+   * #SELECTION_MODE_SINGLE}
    *
    * @param mode the selection mode to change to. This must be one of
    * {@linkplain #SELECTION_MODE_NONE}, {@linkplain #SELECTION_MODE_SINGLE},
@@ -753,7 +756,8 @@ public class MaterialCalendarView extends ViewGroup {
    *
    * <p>For {@link #SELECTION_MODE_SINGLE}, returns the selected date.</p>
    * <p>For {@link #SELECTION_MODE_MULTIPLE}, returns the last date selected.</p>
-   * <p>For {@link #SELECTION_MODE_RANGE}, returns the last date of the range. In most cases, you should probably be using {@link #getSelectedDates()}.</p>
+   * <p>For {@link #SELECTION_MODE_RANGE}, returns the last date of the range. In most cases, you
+   * should probably be using {@link #getSelectedDates()}.</p>
    * <p>For {@link #SELECTION_MODE_NONE}, returns null.</p>
    *
    * @return The selected day, or null if no selection. If in multiple selection mode, this
@@ -897,7 +901,8 @@ public class MaterialCalendarView extends ViewGroup {
   }
 
   /**
-   * The default value is {@link #SHOW_DEFAULTS}, which currently is just {@link #SHOW_DECORATED_DISABLED}.
+   * The default value is {@link #SHOW_DEFAULTS}, which currently is just {@link
+   * #SHOW_DECORATED_DISABLED}.
    * This means that the default visible days are of the current month, in the min-max range.
    *
    * @param showOtherDates flags for showing non-enabled dates
@@ -1032,7 +1037,8 @@ public class MaterialCalendarView extends ViewGroup {
   /**
    * Change the title animation orientation to have a different look and feel.
    *
-   * @param orientation {@link MaterialCalendarView#VERTICAL} or {@link MaterialCalendarView#HORIZONTAL}
+   * @param orientation {@link MaterialCalendarView#VERTICAL} or {@link
+   * MaterialCalendarView#HORIZONTAL}
    */
   public void setTitleAnimationOrientation(final int orientation) {
     titleChanger.setOrientation(orientation);
@@ -1041,7 +1047,8 @@ public class MaterialCalendarView extends ViewGroup {
   /**
    * Get the orientation of the animation of the title.
    *
-   * @return Title animation orientation {@link MaterialCalendarView#VERTICAL} or {@link MaterialCalendarView#HORIZONTAL}
+   * @return Title animation orientation {@link MaterialCalendarView#VERTICAL} or {@link
+   * MaterialCalendarView#HORIZONTAL}
    */
   public int getTitleAnimationOrientation() {
     return titleChanger.getOrientation();
@@ -1475,7 +1482,8 @@ public class MaterialCalendarView extends ViewGroup {
   }
 
   /**
-   * Call by {@link CalendarPagerView} to indicate that a day was long clicked and we should handle it
+   * Call by {@link CalendarPagerView} to indicate that a day was long clicked and we should handle
+   * it
    */
   protected void onDateLongClicked(final DayView dayView) {
     if (longClickListener != null) {

@@ -7,9 +7,8 @@
     <attr name="mcv_weekDayTextAppearance" format="reference"/>
     <attr name="mcv_headerTextAppearance" format="reference"/>
 
-    <attr name="mcv_arrowColor" format="color"/>
-    <attr name="mcv_leftArrowMask" format="reference"/>
-    <attr name="mcv_rightArrowMask" format="reference"/>
+    <attr name="mcv_leftArrow" format="reference"/>
+    <attr name="mcv_rightArrow" format="reference"/>
     <attr name="mcv_selectionColor" format="color"/>
 
     <attr name="mcv_showOtherDates" format="integer">
