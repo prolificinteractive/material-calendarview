@@ -318,6 +318,14 @@ public class DynamicSettersActivity extends AppCompatActivity implements OnDateL
     widget.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit();
   }
 
+  @OnClick(R.id.button_two_weeks)
+  public void onSetTwoWeekMode() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && animateModeTransition.isChecked()) {
+      TransitionManager.beginDelayedTransition(parent);
+    }
+    widget.state().edit().setCalendarDisplayMode(CalendarMode.TWO_WEEKS).commit();
+  }
+
   @OnClick(R.id.button_months)
   public void onSetMonthMode() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && animateModeTransition.isChecked()) {
