@@ -12,6 +12,11 @@ import android.view.animation.Interpolator;
 import android.widget.TextView;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.WeekFields;
+
+import java.util.Locale;
+
 class TitleChanger {
 
   public static final int DEFAULT_ANIMATION_DELAY = 400;
@@ -28,7 +33,7 @@ class TitleChanger {
   private int orientation = MaterialCalendarView.VERTICAL;
 
   private long lastAnimTime = 0;
-  private CalendarDay previousMonth = null;
+  private CalendarDay previousDate = null;
 
   public TitleChanger(TextView title) {
     this.title = title;
@@ -44,24 +49,39 @@ class TitleChanger {
     );
   }
 
-  public void change(final CalendarDay currentMonth) {
+  public void change(final CalendarDay currentDate, CalendarMode mode) {
     long currentTime = System.currentTimeMillis();
 
-    if (currentMonth == null) {
+    if (currentDate == null) {
       return;
     }
 
     if (TextUtils.isEmpty(title.getText()) || (currentTime - lastAnimTime) < animDelay) {
-      doChange(currentTime, currentMonth, false);
+      doChange(currentTime, currentDate, false);
     }
 
-    if (currentMonth.equals(previousMonth) ||
-        (currentMonth.getMonth() == previousMonth.getMonth()
-            && currentMonth.getYear() == previousMonth.getYear())) {
-      return;
+    if (mode == CalendarMode.MONTHS) {
+      if (currentDate.equals(previousDate) ||
+              (currentDate.getMonth() == previousDate.getMonth()
+                      && currentDate.getYear() == previousDate.getYear())) {
+        return;
+      }
+    }
+    else if (mode == CalendarMode.WEEKS) {
+      LocalDate current = currentDate.getDate();
+      LocalDate previous = previousDate.getDate();
+      WeekFields weekFields = WeekFields.of(Locale.getDefault());
+      int currentWeek = current.get(weekFields.weekOfWeekBasedYear());
+      int previousWeek = previous.get(weekFields.weekOfWeekBasedYear());
+
+      if (currentDate.equals(previousDate) ||
+              (currentWeek == previousWeek
+                      && currentDate.getYear() == previousDate.getYear())) {
+        return;
+      }
     }
 
-    doChange(currentTime, currentMonth, true);
+    doChange(currentTime, currentDate, true);
   }
 
   private void doChange(final long now, final CalendarDay currentMonth, boolean animate) {
@@ -77,7 +97,7 @@ class TitleChanger {
     if (!animate) {
       title.setText(newTitle);
     } else {
-      final int translation = translate * (previousMonth.isBefore(currentMonth) ? 1 : -1);
+      final int translation = translate * (previousDate.isBefore(currentMonth) ? 1 : -1);
       final ViewPropertyAnimator viewPropertyAnimator = title.animate();
 
       if (orientation == MaterialCalendarView.HORIZONTAL) {
@@ -120,7 +140,7 @@ class TitleChanger {
           }).start();
     }
 
-    previousMonth = currentMonth;
+    previousDate = currentMonth;
   }
 
   private void doTranslation(final TextView title, final int translate) {
@@ -143,7 +163,7 @@ class TitleChanger {
     return orientation;
   }
 
-  public void setPreviousMonth(CalendarDay previousMonth) {
-    this.previousMonth = previousMonth;
+  public void setPreviousDate(CalendarDay previousDate) {
+    this.previousDate = previousDate;
   }
 }
