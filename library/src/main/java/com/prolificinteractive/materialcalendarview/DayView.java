@@ -287,6 +287,8 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
   }
 
   private void calculateBounds(int width, int height) {
+    tempRect.set(0, 0, width, height);
+    
     final int radius = Math.min(height, width);
     final int offset = Math.abs(height - width) / 2;
 
@@ -295,10 +297,8 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
         Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP ? offset / 2 : offset;
 
     if (width >= height) {
-      tempRect.set(offset, 0, radius + offset, height);
       circleDrawableRect.set(circleOffset, 0, radius + circleOffset, height);
     } else {
-      tempRect.set(0, offset, width, radius + offset);
       circleDrawableRect.set(0, circleOffset, width, radius + circleOffset);
     }
   }
