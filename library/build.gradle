@@ -25,6 +25,10 @@ android {
   }
 }
 
+group = "com.github.prolificinteractive"
+version = android.defaultConfig.versionName
+archivesBaseName = 'material-calendarview'
+
 dependencies {
   implementation rootProject.ext.threeTenAbp
   implementation rootProject.ext.supportV4
