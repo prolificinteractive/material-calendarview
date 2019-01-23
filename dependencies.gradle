@@ -1,6 +1,6 @@
 ext {
   minSdkVersion = 16
-  compileSdkVersion = 27
+  compileSdkVersion = 28
   targetSdkVersion = 27
 
   hamcrestVersion = '1.3'

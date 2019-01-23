@@ -1,6 +1,6 @@
-task wrapper(type: Wrapper) {
+wrapper {
   //if you change this version you will need to run the 'gradlew wrapper' command twice from the command line to auto update the gradle cache
-  gradleVersion = "4.7"
+  gradleVersion = "5.1.1"
 }
 buildscript {
   repositories {
@@ -8,7 +8,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.1.2'
+    classpath 'com.android.tools.build:gradle:3.3.0'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
   }
 }
@@ -17,7 +17,7 @@ allprojects {
   repositories {
     google()
     jcenter()
-    // Here for convience when testing new releases
+    // Here for convenience when testing new releases
     // maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
   }
 }
