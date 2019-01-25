@@ -206,7 +206,7 @@ public class MaterialCalendarView extends ViewGroup {
       new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageSelected(int position) {
-          titleChanger.setPreviousMonth(currentMonth);
+          titleChanger.setPreviousDate(currentMonth);
           currentMonth = adapter.getItem(position);
           updateUi();
 
@@ -430,7 +430,7 @@ public class MaterialCalendarView extends ViewGroup {
   }
 
   private void updateUi() {
-    titleChanger.change(currentMonth);
+    titleChanger.change(currentMonth, calendarMode);
     enableView(buttonPast, canGoBack());
     enableView(buttonFuture, canGoForward());
   }
