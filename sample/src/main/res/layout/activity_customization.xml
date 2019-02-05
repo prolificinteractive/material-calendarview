@@ -19,7 +19,6 @@
       app:mcv_dateTextAppearance="@style/CustomTextAppearance"
       app:mcv_firstDayOfWeek="thursday"
       app:mcv_headerTextAppearance="@style/CustomTextAppearance"
-      app:mcv_leftArrow="@drawable/ic_arrow_back"
       app:mcv_monthLabels="@array/custom_months"
       app:mcv_rightArrow="@drawable/ic_arrow_forward"
       app:mcv_selectionColor="?attr/colorPrimary"

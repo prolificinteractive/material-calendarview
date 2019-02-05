@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
@@ -24,12 +25,11 @@ public class CustomizeCodeActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+    Typeface typeface =  Typeface.createFromAsset(getAssets(),"fonts/shrikhand_regular.ttf");
+    widget.setDateTextFontAppearance(typeface);
     widget.setLeftArrow(R.drawable.ic_arrow_back);
     widget.setRightArrow(R.drawable.ic_arrow_forward);
     widget.setSelectionColor(getResources().getColor(R.color.sample_primary));
-    widget.setWeekDayTextAppearance(R.style.CustomTextAppearance);
-    widget.setHeaderTextAppearance(R.style.CustomTextAppearance);
-    widget.setDateTextAppearance(R.style.CustomTextAppearance);
     widget.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
     widget.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
     widget.setTileSize((int) TypedValue.applyDimension(

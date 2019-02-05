@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -42,6 +43,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
   private List<DecoratorResult> decoratorResults = null;
   private boolean selectionEnabled = true;
   boolean showWeekDays;
+  private Typeface typerface=null;
 
   CalendarPagerAdapter(MaterialCalendarView mcv) {
     this.mcv = mcv;
@@ -85,6 +87,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     newAdapter.color = color;
     newAdapter.dateTextAppearance = dateTextAppearance;
     newAdapter.weekDayTextAppearance = weekDayTextAppearance;
+    newAdapter.typerface = typerface;
     newAdapter.showOtherDates = showOtherDates;
     newAdapter.minDate = minDate;
     newAdapter.maxDate = maxDate;
@@ -151,9 +154,15 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
       pagerView.setSelectionColor(color);
     }
     if (dateTextAppearance != null) {
-      pagerView.setDateTextAppearance(dateTextAppearance);
+      if (typerface !=null)
+        pagerView.setDateTextAppearance(dateTextAppearance,typerface);
+      else
+        pagerView.setDateTextAppearance(dateTextAppearance);
     }
     if (weekDayTextAppearance != null) {
+      if (typerface !=null)
+        pagerView.setWeekDayTextAppearance(weekDayTextAppearance,typerface);
+      else
       pagerView.setWeekDayTextAppearance(weekDayTextAppearance);
     }
     pagerView.setShowOtherDates(showOtherDates);
@@ -213,8 +222,17 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     }
     this.dateTextAppearance = taId;
     for (V pagerView : currentViews) {
+      if (typerface !=null)
+        pagerView.setDateTextAppearance(taId,typerface);
+      else
       pagerView.setDateTextAppearance(taId);
     }
+  }
+
+  public void setDateTextFontAppearance(Typeface typerface)
+  {
+    if (typerface!=null)
+    this.typerface=typerface;
   }
 
   public void setShowOtherDates(@ShowOtherDates int showFlags) {

@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
@@ -112,6 +113,16 @@ abstract class CalendarPagerView extends ViewGroup
     invalidateDecorators();
   }
 
+
+  public void setWeekDayTextAppearance(int taId,Typeface typerface) {
+    for (WeekDayView weekDayView : weekDayViews) {
+      weekDayView.setTextAppearance(getContext(), taId);
+      if (typerface != null) {
+        weekDayView.setTypeface(typerface);
+      }
+    }
+  }
+
   public void setWeekDayTextAppearance(int taId) {
     for (WeekDayView weekDayView : weekDayViews) {
       weekDayView.setTextAppearance(getContext(), taId);
@@ -121,6 +132,14 @@ abstract class CalendarPagerView extends ViewGroup
   public void setDateTextAppearance(int taId) {
     for (DayView dayView : dayViews) {
       dayView.setTextAppearance(getContext(), taId);
+    }
+  }
+  public void setDateTextAppearance(int taId,Typeface typerface) {
+    for (DayView dayView : dayViews) {
+      dayView.setTextAppearance(getContext(), taId);
+      if (typerface != null) {
+        dayView.setTypeface(typerface);
+      }
     }
   }
 
