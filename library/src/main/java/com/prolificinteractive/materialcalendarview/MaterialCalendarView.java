@@ -1954,6 +1954,17 @@ public class MaterialCalendarView extends ViewGroup {
           } else {
             calendarDayToShow = lastVisibleCalendarDay;
           }
+        } else if (calendarMode == CalendarMode.TWO_WEEKS) {
+          LocalDate lastVisibleCalendar = calendarDayToShow.getDate();
+          CalendarDay lastVisibleCalendarDay = CalendarDay.from(lastVisibleCalendar.plusDays(13));
+          if (currentlySelectedDate != null &&
+                  (currentlySelectedDate.equals(calendarDayToShow) || currentlySelectedDate.equals(lastVisibleCalendarDay) ||
+                          (currentlySelectedDate.isAfter(calendarDayToShow) && currentlySelectedDate.isBefore(lastVisibleCalendarDay)))) {
+            // Currently selected date is within view, so center on that
+            calendarDayToShow = currentlySelectedDate;
+          } else {
+            calendarDayToShow = lastVisibleCalendarDay;
+          }
         }
       }
     }
@@ -1974,6 +1985,9 @@ public class MaterialCalendarView extends ViewGroup {
         break;
       case WEEKS:
         newAdapter = new WeekPagerAdapter(this);
+        break;
+      case TWO_WEEKS:
+        newAdapter = new TwoWeekPagerAdapter(this);
         break;
       default:
         throw new IllegalArgumentException("Provided display mode which is not yet implemented");

@@ -52,6 +52,7 @@
     <attr name="mcv_calendarMode" format="enum">
       <enum name="month" value="0"/>
       <enum name="week" value="1"/>
+      <enum name="two_week" value="2" />
     </attr>
 
     <attr name="mcv_selectionMode" format="enum">

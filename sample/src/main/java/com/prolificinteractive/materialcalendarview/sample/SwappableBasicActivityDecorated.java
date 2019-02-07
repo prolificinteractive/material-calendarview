@@ -66,6 +66,13 @@ public class SwappableBasicActivityDecorated extends AppCompatActivity
         .commit();
   }
 
+  @OnClick(R.id.button_two_weeks)
+    public void onSetTwoWeekMode() {
+        widget.state().edit()
+                .setCalendarDisplayMode(CalendarMode.TWO_WEEKS)
+                .commit();
+    }
+
   @OnClick(R.id.button_months)
   public void onSetMonthMode() {
     widget.state().edit()
