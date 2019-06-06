@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
@@ -17,10 +18,14 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatCheckedTextView;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
+
+import java.util.Calendar;
 import java.util.List;
 
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showDecoratedDisabled;
@@ -47,6 +52,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
   private boolean isDecoratedDisabled = false;
   @ShowOtherDates
   private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
+  private VietCalendar vietCalendar;
 
   public DayView(Context context, CalendarDay day) {
     super(context);
@@ -190,6 +196,19 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 
   @Override
   protected void onDraw(@NonNull Canvas canvas) {
+    Paint paint = new Paint();
+    paint.setStyle(Paint.Style.FILL);
+    paint.setTextAlign(Paint.Align.RIGHT);
+    paint.setColor(Color.GRAY);
+    paint.setTextSize(dpToPx(12));
+    CalendarDay calendarDay = getDate();
+    vietCalendar = VietCalendar.getInstance();
+    Calendar calendar = vietCalendar.getLichAm(calendarDay.getDay(),calendarDay.getMonth(),calendarDay.getYear());
+    String lichAm = calendar.get(Calendar.DAY_OF_MONTH)+"";
+    if(calendar.get(Calendar.DAY_OF_MONTH) == 1){
+      lichAm += "/"+calendar.get(Calendar.MONTH);
+    }
+    canvas.drawText(lichAm, getWidth()*0.85f, getHeight()*0.3f, paint);
     if (customBackground != null) {
       customBackground.setBounds(tempRect);
       customBackground.setState(getDrawableState());
@@ -301,5 +320,10 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
       tempRect.set(0, offset, width, radius + offset);
       circleDrawableRect.set(0, circleOffset, width, radius + circleOffset);
     }
+  }
+  private int dpToPx(int dp) {
+    return (int) TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics()
+    );
   }
 }
