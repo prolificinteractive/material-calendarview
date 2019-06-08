@@ -39,7 +39,7 @@ dependencies {
 Example:
 
 ```xml
-<com.prolificinteractive.materialcalendarview.MaterialCalendarView
+<calendarview.MaterialCalendarView
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/calendarView"
     android:layout_width="match_parent"

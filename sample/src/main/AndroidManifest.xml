@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.prolificinteractive.materialcalendarview.sample"
+    package="com.eagleteam.calendarview.sample"
     >
 
   <application
@@ -11,7 +11,7 @@
       android:theme="@style/AppTheme"
       >
     <activity
-        android:name=".MainActivity"
+        android:name="com.eagleteam.calendarview.sample.BasicActivity"
         android:label="@string/app_name"
         >
       <intent-filter>
@@ -22,73 +22,72 @@
     </activity>
 
     <activity
-        android:name=".OldCalendarViewActivity"
+        android:name="com.eagleteam.calendarview.sample.OldCalendarViewActivity"
         android:label="@string/title_activity_old_calendar"
-        android:parentActivityName=".MainActivity"
+        android:parentActivityName="com.eagleteam.calendarview.sample.MainActivity"
         >
 
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
-          android:value=".MainActivity"
+          android:value="com.eagleteam.calendarview.sample.MainActivity"
           />
 
       <intent-filter>
         <action android:name="android.intent.action.RUN"/>
-        <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE"/>
+        <category android:name="com.eagleteam.calendarview.sample.SAMPLE"/>
       </intent-filter>
 
     </activity>
 
     <activity
-        android:name=".BasicActivity"
+        android:name="com.eagleteam.calendarview.sample.MainActivity"
         android:label="@string/title_activity_basic"
-        android:parentActivityName=".MainActivity"
         >
 
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
-          android:value=".MainActivity"
+          android:value="com.eagleteam.calendarview.sample.MainActivity"
           />
 
       <intent-filter>
         <action android:name="android.intent.action.RUN"/>
-        <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE"/>
+        <category android:name="com.eagleteam.calendarview.sample.SAMPLE"/>
       </intent-filter>
 
     </activity>
 
     <activity
-        android:name=".BasicActivityDecorated"
+        android:name="com.eagleteam.calendarview.sample.BasicActivityDecorated"
         android:label="@string/title_activity_decorators"
-        android:parentActivityName=".MainActivity"
+        android:parentActivityName="com.eagleteam.calendarview.sample.MainActivity"
         >
 
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
-          android:value=".MainActivity"
+          android:value="com.eagleteam.calendarview.sample.MainActivity"
           />
 
       <intent-filter>
         <action android:name="android.intent.action.RUN"/>
-        <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE"/>
+        <category android:name="com.eagleteam.calendarview.sample.SAMPLE"/>
       </intent-filter>
 
     </activity>
 
     <activity
-        android:name=".MultipleViewActivity"
+        android:name="com.eagleteam.calendarview.sample.MultipleViewActivity"
         android:label="@string/title_activity_multiple_view"
-        android:parentActivityName=".MainActivity"
+        android:parentActivityName="com.eagleteam.calendarview.sample.MainActivity"
         >
 
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
-          android:value=".MainActivity"
+          android:value="com.eagleteam.calendarview.sample.MainActivity"
           />
 
       <intent-filter>
         <action android:name="android.intent.action.RUN"/>
-        <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE"/>
+        <category android:name="com.eagleteam.calendarview.sample.SAMPLE"/>
       </intent-filter>
     </activity>
 
