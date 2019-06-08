@@ -42,8 +42,14 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
   private Calendar lichAm;
   private int selectionColor = Color.GRAY;
   public static int currentDateColor = 0;
-  public static int lichAmTextColor = 0;
+  public static int selectedDateColor = 0;
+  public static int normalDateColor = 0;
+  public static int lichAmTextColorUnSelect = 0;
+  public static int lichAmTextColorSelected = 0;
   public static int lichAmBackgroundColor = 0;
+  public static int lichAmTextSize = 0;
+  public static int textSizeNormalDate = 0;
+  public static int textSizeSelectedDate = 0;
 
   private final int fadeTime;
   private Drawable customBackground = null;
@@ -57,11 +63,10 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
   private boolean isDecoratedDisabled = false;
   @ShowOtherDates
   private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
-  private VietCalendar vietCalendar;
-  private boolean isSelected = false;
-  private boolean isCurrent = false;
+  private boolean isSelected;
+  private boolean isCurrent;
 
-  public DayView(Context context, CalendarDay day) {
+  public DayView(Context context, CalendarDay day, Calendar lichAm) {
     super(context);
 
     fadeTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
@@ -75,19 +80,15 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
     }
 
     setDay(day);
-    setLichAm(day);
+    this.lichAm = lichAm;
     isCurrent = day.equals(CalendarDay.today());
     isSelected = isCurrent;
+    initPaint();
   }
 
   public void setDay(CalendarDay date) {
     this.date = date;
     setText(getLabel());
-  }
-
-  public void setLichAm(CalendarDay day){
-    vietCalendar = VietCalendar.getInstance();
-    lichAm = vietCalendar.getLichAm(day.getDay(),day.getMonth(),day.getYear());
   }
 
   /**
@@ -210,9 +211,37 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 
   private final Rect tempRect = new Rect();
   private final Rect circleDrawableRect = new Rect();
-
+  private Paint paint = new Paint();
+  private void initPaint(){
+    paint.setAntiAlias(true);
+    paint.setStyle(Paint.Style.FILL);
+    paint.setTextAlign(Paint.Align.CENTER);
+    paint.setTextSize(DayView.lichAmTextSize);
+  }
   @Override
   protected void onDraw(@NonNull Canvas canvas) {
+    //start custom code
+
+    if(isCurrent){
+      //draw background
+      paint.setColor(DayView.lichAmBackgroundColor);
+      canvas.drawCircle(getWidth()*0.80f,getHeight()*0.22f,DayView.lichAmTextSize*0.8f,paint);
+      paint.setColor(DayView.lichAmTextColorSelected);
+      setTextColor(DayView.currentDateColor);
+      setTextSize(DayView.textSizeSelectedDate);
+    }else if(isSelected) {
+      paint.setColor(DayView.lichAmBackgroundColor);
+      canvas.drawCircle(getWidth()*0.80f,getHeight()*0.22f,DayView.lichAmTextSize*0.8f,paint);
+      //finish
+      paint.setColor(DayView.lichAmTextColorSelected);
+//      setTextSize(DayView.textSizeSelectedDate);
+      setTextColor(DayView.selectedDateColor);
+    }else {
+      paint.setColor(DayView.lichAmTextColorUnSelect);
+      setTextColor(DayView.normalDateColor);
+//      setTextSize(DayView.textSizeNormalDate);
+    }
+    canvas.drawText(lichAm(), getWidth()*0.80f, getHeight()*0.3f, paint);
     //default code
     if (customBackground != null) {
       customBackground.setBounds(tempRect);
@@ -221,29 +250,6 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
     }
     mCircleDrawable.setBounds(circleDrawableRect);
     //end default code
-
-
-    //start custom code
-    Paint paint = new Paint();
-    paint.setAntiAlias(true);
-    paint.setStyle(Paint.Style.FILL);
-    paint.setTextAlign(Paint.Align.CENTER);
-    paint.setColor(DayView.lichAmTextColor);
-    paint.setTextSize(dpToPx(10));
-    if(isSelected){
-      paint.setColor(DayView.lichAmBackgroundColor);
-      canvas.drawCircle(getWidth()*0.80f,getHeight()*0.22f,dpToPx(10),paint);
-      paint.setColor(Color.WHITE);
-      setTextSize(20);
-    }else if(date.equals(CalendarDay.today())) {
-      setTextColor(DayView.currentDateColor);
-      setTextSize(20);
-    }else {
-      setTextSize(18);
-    }
-    canvas.drawText(lichAm(), getWidth()*0.80f, getHeight()*0.3f, paint);
-
-
     super.onDraw(canvas);
   }
 
@@ -361,10 +367,5 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
       tempRect.set(0, offset, width, radius + offset);
       circleDrawableRect.set(0, circleOffset, width, radius + circleOffset);
     }
-  }
-  private int dpToPx(int dp) {
-    return (int) TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics()
-    );
   }
 }

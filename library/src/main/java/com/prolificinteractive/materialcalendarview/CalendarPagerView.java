@@ -15,6 +15,7 @@ import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,6 +44,7 @@ abstract class CalendarPagerView extends ViewGroup
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     protected boolean showWeekDays;
+    private VietCalendar vietCalendar;
 
     private final Collection<DayView> dayViews = new ArrayList<>();
 
@@ -64,6 +66,7 @@ abstract class CalendarPagerView extends ViewGroup
         if (showWeekDays) {
             buildWeekDays(resetAndGetWorkingCalendar());
         }
+        vietCalendar = VietCalendar.getInstance();
         buildDayViews(dayViews, resetAndGetWorkingCalendar());
     }
 
@@ -82,7 +85,7 @@ abstract class CalendarPagerView extends ViewGroup
 
     protected void addDayView(Collection<DayView> dayViews, LocalDate temp) {
         CalendarDay day = CalendarDay.from(temp);
-        DayView dayView = new DayView(getContext(), day);
+        DayView dayView = new DayView(getContext(), day,vietCalendar.getLichAm(day.getDay(),day.getMonth(),day.getYear()));
         dayView.setOnClickListener(this);
         dayView.setOnLongClickListener(this);
         dayViews.add(dayView);
@@ -143,7 +146,6 @@ abstract class CalendarPagerView extends ViewGroup
     }
 
     public void setSelectionColor(int color) {
-        Log.i("select:",color+"/"+dayViews.size());
         for (DayView dayView : dayViews) {
             dayView.setSelectionColor(color);
         }

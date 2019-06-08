@@ -18,8 +18,15 @@
       app:mcv_selectionColor="#BDBDBD"
       app:mcv_firstDayOfWeek="monday"
       app:mcv_titleAnimationOrientation="horizontal"
-      app:mcv_lichAmTextColor="#BDBDBD"
+      app:mcv_textSizeNormalDate="7sp"
+      app:mcv_textSizeSelectedDate="9sp"
+      app:mcv_lichAmTextColorUnSelect="#BDBDBD"
+      app:mcv_lichAmTextColorSelected="#ffffff"
       app:mcv_lichAmBackgroundColor="#4CAF50"
+      app:mcv_lichAmTextSize="10sp"
+      app:mcv_currentDateColor="#ff0000"
+      app:mcv_normalDateColor="#000000"
+      app:mcv_selectedDateColor="#9C27B0"
       />
 
   <TextView

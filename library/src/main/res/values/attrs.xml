@@ -13,6 +13,7 @@
 
     <!--begin custom attr-->
     <attr name="mcv_currentDateColor" format="color"/>
+      <attr name="mcv_selectedDateColor" format="color"/>
     <attr name="mcv_normalDateColor" format="color"/>
     <attr name="mcv_lichAmBackgroundColor" format="color"/>
     <attr name="mcv_lichAmTextColorUnSelect" format="color"/>

@@ -30,9 +30,6 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
   private Integer color = null;
   private Integer dateTextAppearance = null;
   private Integer weekDayTextAppearance = null;
-  private Integer currentDateColor = null;
-  private Integer lichAmTextColor = null;
-  private Integer lichAmBackgroundColor = null;
   @ShowOtherDates
   private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
   private CalendarDay minDate = null;

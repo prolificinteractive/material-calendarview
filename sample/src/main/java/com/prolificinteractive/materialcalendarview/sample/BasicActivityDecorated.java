@@ -73,11 +73,11 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateS
 
     @Override
     protected List<CalendarDay> doInBackground(@NonNull Void... voids) {
-      try {
-        Thread.sleep(2000);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
+//      try {
+//        Thread.sleep(2000);
+//      } catch (InterruptedException e) {
+//        e.printStackTrace();
+//      }
       LocalDate temp = LocalDate.now().minusMonths(2);
       final ArrayList<CalendarDay> dates = new ArrayList<>();
       for (int i = 0; i < 30; i++) {
@@ -85,7 +85,6 @@ public class BasicActivityDecorated extends AppCompatActivity implements OnDateS
         dates.add(day);
         temp = temp.plusDays(5);
       }
-
       return dates;
     }
 

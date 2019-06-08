@@ -10,10 +10,15 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateLongClickListener;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+import com.prolificinteractive.materialcalendarview.decorator.SubjectDecorator;
+import com.prolificinteractive.materialcalendarview.sample.decorators.OneDayDecorator;
+import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -45,6 +50,7 @@ public class BasicActivity extends AppCompatActivity
     widget.setSelectedDate(LocalDate.now());
     //Setup initial text
     textView.setText("No Selection");
+    widget.addDecorator(new SubjectDecorator(CalendarDay.from(2019,6,8),new int[]{Color.RED,Color.RED,Color.BLUE,Color.BLUE,Color.BLUE,Color.MAGENTA,Color.MAGENTA/**/},this));
   }
 
   @Override
