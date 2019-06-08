@@ -1,8 +1,10 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -12,6 +14,8 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateLongClickListener;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
 /**
@@ -37,7 +41,8 @@ public class BasicActivity extends AppCompatActivity
     widget.setOnDateChangedListener(this);
     widget.setOnDateLongClickListener(this);
     widget.setOnMonthChangedListener(this);
-
+    widget.setTileWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+    widget.setSelectedDate(LocalDate.now());
     //Setup initial text
     textView.setText("No Selection");
   }

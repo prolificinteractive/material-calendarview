@@ -14,8 +14,12 @@
   <com.prolificinteractive.materialcalendarview.MaterialCalendarView
       android:id="@+id/calendarView"
       android:layout_width="match_parent"
-      android:layout_height="300dp"
+      android:layout_height="350dp"
+      app:mcv_selectionColor="#BDBDBD"
       app:mcv_firstDayOfWeek="monday"
+      app:mcv_titleAnimationOrientation="horizontal"
+      app:mcv_lichAmTextColor="#BDBDBD"
+      app:mcv_lichAmBackgroundColor="#4CAF50"
       />
 
   <TextView

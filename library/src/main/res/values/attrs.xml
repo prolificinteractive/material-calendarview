@@ -11,6 +11,17 @@
     <attr name="mcv_rightArrow" format="reference"/>
     <attr name="mcv_selectionColor" format="color"/>
 
+    <!--begin custom attr-->
+    <attr name="mcv_currentDateColor" format="color"/>
+    <attr name="mcv_normalDateColor" format="color"/>
+    <attr name="mcv_lichAmBackgroundColor" format="color"/>
+    <attr name="mcv_lichAmTextColorUnSelect" format="color"/>
+    <attr name="mcv_lichAmTextColorSelected" format="color"/>
+    <attr name="mcv_lichAmTextSize" format="dimension"/>
+    <attr name="mcv_textSizeNormalDate" format="dimension"/>
+    <attr name="mcv_textSizeSelectedDate" format="dimension"/>
+    <!--End of custom attr-->
+
     <attr name="mcv_showOtherDates" format="integer">
       <flag name="none" value="0"/>
       <flag name="other_months" value="1"/>

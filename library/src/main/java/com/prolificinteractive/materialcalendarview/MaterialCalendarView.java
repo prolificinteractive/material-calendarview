@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -241,6 +242,9 @@ public class MaterialCalendarView extends ViewGroup {
   private boolean showWeekDays;
 
   private State state;
+  private int currentDateColor = 0;
+  private int lichAmTextColor = 0;
+  private int lichAmBackgroundColor = 0;
 
   public MaterialCalendarView(Context context) {
     this(context, null);
@@ -357,11 +361,24 @@ public class MaterialCalendarView extends ViewGroup {
           )
       );
 
+
+      DayView.currentDateColor = a.getColor(
+                      R.styleable.MaterialCalendarView_mcv_currentDateColor,
+                      Color.parseColor("#ff0000")
+              );
+      DayView.lichAmTextColor = a.getColor(
+                      R.styleable.MaterialCalendarView_mcv_lichAmTextColor,
+                      Color.parseColor("#CDDC39")
+              );
+      DayView.lichAmBackgroundColor = a.getColor(
+                      R.styleable.MaterialCalendarView_mcv_lichAmBackgroundColor,
+                      Color.parseColor("#4CAF50")
+              );
       setSelectionColor(
-          a.getColor(
-              R.styleable.MaterialCalendarView_mcv_selectionColor,
-              getThemeAccentColor(context)
-          )
+              a.getColor(
+                      R.styleable.MaterialCalendarView_mcv_selectionColor,
+                      getThemeAccentColor(context)
+              )
       );
 
       CharSequence[] array = a.getTextArray(R.styleable.MaterialCalendarView_mcv_weekDayLabels);

@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -38,7 +39,11 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 @SuppressLint("ViewConstructor") class DayView extends AppCompatCheckedTextView {
 
   private CalendarDay date;
+  private Calendar lichAm;
   private int selectionColor = Color.GRAY;
+  public static int currentDateColor = 0;
+  public static int lichAmTextColor = 0;
+  public static int lichAmBackgroundColor = 0;
 
   private final int fadeTime;
   private Drawable customBackground = null;
@@ -53,6 +58,8 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
   @ShowOtherDates
   private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
   private VietCalendar vietCalendar;
+  private boolean isSelected = false;
+  private boolean isCurrent = false;
 
   public DayView(Context context, CalendarDay day) {
     super(context);
@@ -68,11 +75,19 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
     }
 
     setDay(day);
+    setLichAm(day);
+    isCurrent = day.equals(CalendarDay.today());
+    isSelected = isCurrent;
   }
 
   public void setDay(CalendarDay date) {
     this.date = date;
     setText(getLabel());
+  }
+
+  public void setLichAm(CalendarDay day){
+    vietCalendar = VietCalendar.getInstance();
+    lichAm = vietCalendar.getLichAm(day.getDay(),day.getMonth(),day.getYear());
   }
 
   /**
@@ -121,8 +136,10 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 
   public void setSelectionColor(int color) {
     this.selectionColor = color;
+    Log.i("selectionColor",color+"");
     regenerateBackground();
   }
+
 
   /**
    * @param drawable custom selection drawable
@@ -196,28 +213,52 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 
   @Override
   protected void onDraw(@NonNull Canvas canvas) {
-    Paint paint = new Paint();
-    paint.setStyle(Paint.Style.FILL);
-    paint.setTextAlign(Paint.Align.RIGHT);
-    paint.setColor(Color.GRAY);
-    paint.setTextSize(dpToPx(12));
-    CalendarDay calendarDay = getDate();
-    vietCalendar = VietCalendar.getInstance();
-    Calendar calendar = vietCalendar.getLichAm(calendarDay.getDay(),calendarDay.getMonth(),calendarDay.getYear());
-    String lichAm = calendar.get(Calendar.DAY_OF_MONTH)+"";
-    if(calendar.get(Calendar.DAY_OF_MONTH) == 1){
-      lichAm += "/"+calendar.get(Calendar.MONTH);
-    }
-    canvas.drawText(lichAm, getWidth()*0.85f, getHeight()*0.3f, paint);
+    //default code
     if (customBackground != null) {
       customBackground.setBounds(tempRect);
       customBackground.setState(getDrawableState());
       customBackground.draw(canvas);
     }
-
     mCircleDrawable.setBounds(circleDrawableRect);
+    //end default code
+
+
+    //start custom code
+    Paint paint = new Paint();
+    paint.setAntiAlias(true);
+    paint.setStyle(Paint.Style.FILL);
+    paint.setTextAlign(Paint.Align.CENTER);
+    paint.setColor(DayView.lichAmTextColor);
+    paint.setTextSize(dpToPx(10));
+    if(isSelected){
+      paint.setColor(DayView.lichAmBackgroundColor);
+      canvas.drawCircle(getWidth()*0.80f,getHeight()*0.22f,dpToPx(10),paint);
+      paint.setColor(Color.WHITE);
+      setTextSize(20);
+    }else if(date.equals(CalendarDay.today())) {
+      setTextColor(DayView.currentDateColor);
+      setTextSize(20);
+    }else {
+      setTextSize(18);
+    }
+    canvas.drawText(lichAm(), getWidth()*0.80f, getHeight()*0.3f, paint);
+
 
     super.onDraw(canvas);
+  }
+
+  @Override
+  public void setChecked(boolean checked) {
+    isSelected = checked;
+    super.setChecked(checked);
+  }
+
+  private String lichAm(){
+    String valueLichAm = lichAm.get(Calendar.DAY_OF_MONTH)+"";
+    if(lichAm.get(Calendar.DAY_OF_MONTH) == 1){
+      valueLichAm += "/"+lichAm.get(Calendar.MONTH);
+    }
+    return valueLichAm;
   }
 
   private void regenerateBackground() {
