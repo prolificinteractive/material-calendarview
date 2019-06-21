@@ -1799,6 +1799,7 @@ public class MaterialCalendarView extends ViewGroup {
     private final CalendarDay maxDate;
     private final boolean cacheCurrentPosition;
     private final boolean showWeekDays;
+    private final CalendarDay dayToShow;
 
     private State(final StateBuilder builder) {
       calendarMode = builder.calendarMode;
@@ -1807,6 +1808,7 @@ public class MaterialCalendarView extends ViewGroup {
       maxDate = builder.maxDate;
       cacheCurrentPosition = builder.cacheCurrentPosition;
       showWeekDays = builder.showWeekDays;
+      dayToShow = builder.dayToShow;
     }
 
     /**
@@ -1824,6 +1826,7 @@ public class MaterialCalendarView extends ViewGroup {
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private boolean showWeekDays;
+    private CalendarDay dayToShow = null;
 
     public StateBuilder() {
       calendarMode = CalendarMode.MONTHS;
@@ -1850,6 +1853,15 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public StateBuilder setFirstDayOfWeek(DayOfWeek day) {
       this.firstDayOfWeek = day;
+      return this;
+    }
+
+    /**
+     * Sets the day the calendar should focus on when committing new state.
+     * @param dayToShow the day the calendar should focus on and display on screen
+     */
+    public StateBuilder setDayToShow(CalendarDay dayToShow) {
+      this.dayToShow = dayToShow;
       return this;
     }
 
@@ -1926,7 +1938,12 @@ public class MaterialCalendarView extends ViewGroup {
   private void commit(State state) {
     // Use the calendarDayToShow to determine which date to focus on for the case of switching between month and week views
     CalendarDay calendarDayToShow = null;
-    if (adapter != null && state.cacheCurrentPosition) {
+
+    if (state.dayToShow != null) {
+      calendarDayToShow = state.dayToShow;
+    }
+
+    if (adapter != null && calendarDayToShow == null && state.cacheCurrentPosition) {
       calendarDayToShow = adapter.getItem(pager.getCurrentItem());
       if (calendarMode != state.calendarMode) {
         CalendarDay currentlySelectedDate = getSelectedDate();
