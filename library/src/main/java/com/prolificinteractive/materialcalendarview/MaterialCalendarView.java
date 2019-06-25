@@ -315,6 +315,11 @@ public class MaterialCalendarView extends ViewGroup {
           .setShowWeekDays(showWeekDays)
           .commit();
 
+      setTopbarVisible(a.getBoolean(
+              R.styleable.MaterialCalendarView_mcv_topBarVisible,
+              true
+      ));
+
       setSelectionMode(a.getInteger(
           R.styleable.MaterialCalendarView_mcv_selectionMode,
           SELECTION_MODE_SINGLE
