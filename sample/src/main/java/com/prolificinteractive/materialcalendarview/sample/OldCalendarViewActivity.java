@@ -29,6 +29,8 @@ public class OldCalendarViewActivity extends AppCompatActivity
     setContentView(R.layout.activity_old_calendarview);
     ButterKnife.bind(this);
 
+    textView.setText(FORMATTER.format(widget.getDate()));
+
     widget.setOnDateChangeListener(this);
   }
 
