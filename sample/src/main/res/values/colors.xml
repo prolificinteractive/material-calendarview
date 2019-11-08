@@ -2,4 +2,5 @@
 <resources>
   <color name="sample_primary">#0093FF</color>
   <color name="sample_accent">#006BBA</color>
+  <color name="red">#BA0000</color>
 </resources>

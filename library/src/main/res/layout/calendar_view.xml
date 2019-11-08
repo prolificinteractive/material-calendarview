@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:orientation="horizontal"
-    >
+    android:orientation="horizontal">
 
   <ImageButton
       android:id="@+id/previous"
@@ -17,19 +16,17 @@
       android:background="?selectableItemBackgroundBorderless"
       android:contentDescription="@string/previous"
       android:padding="@dimen/mcv_arrow_padding"
-      app:srcCompat="@drawable/mcv_action_previous"
-      />
+      app:srcCompat="@drawable/mcv_action_previous" />
 
   <TextView
       android:id="@+id/month_name"
+      style="?android:attr/textAppearanceMedium"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:layout_weight="1"
       android:gravity="center"
-      tools:text="August 2018"
-      style="?android:attr/textAppearanceMedium"
-      />
+      tools:text="August 2018" />
 
   <ImageButton
       android:id="@+id/next"
@@ -39,7 +36,6 @@
       android:background="?selectableItemBackgroundBorderless"
       android:contentDescription="@string/next"
       android:padding="@dimen/mcv_arrow_padding"
-      app:srcCompat="@drawable/mcv_action_next"
-      />
+      app:srcCompat="@drawable/mcv_action_next" />
 
 </LinearLayout>
