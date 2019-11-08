@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CalendarView;
@@ -28,6 +29,8 @@ public class OldCalendarViewActivity extends AppCompatActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_old_calendarview);
     ButterKnife.bind(this);
+
+    textView.setText(FORMATTER.format(widget.getDate()));
 
     widget.setOnDateChangeListener(this);
   }
