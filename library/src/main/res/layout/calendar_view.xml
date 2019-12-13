@@ -9,37 +9,45 @@
     android:orientation="horizontal"
     >
 
-  <ImageButton
-      android:id="@+id/previous"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/mcv_arrow_margin"
-      android:background="?selectableItemBackgroundBorderless"
-      android:contentDescription="@string/previous"
-      android:padding="@dimen/mcv_arrow_padding"
-      app:srcCompat="@drawable/mcv_action_previous"
-      />
-
   <TextView
       android:id="@+id/month_name"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:layout_weight="1"
-      android:gravity="center"
+      android:gravity="start"
+      android:layout_marginHorizontal="@dimen/mcv_arrow_margin"
       tools:text="August 2018"
       style="?android:attr/textAppearanceMedium"
       />
-
-  <ImageButton
-      android:id="@+id/next"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/mcv_arrow_margin"
-      android:background="?selectableItemBackgroundBorderless"
-      android:contentDescription="@string/next"
-      android:padding="@dimen/mcv_arrow_padding"
-      app:srcCompat="@drawable/mcv_action_next"
-      />
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    
+        <ImageButton
+              android:id="@+id/previous"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_margin="@dimen/mcv_arrow_margin"
+              android:background="?selectableItemBackgroundBorderless"
+              android:contentDescription="@string/previous"
+              android:padding="@dimen/mcv_arrow_padding"
+              app:srcCompat="@drawable/mcv_action_previous"
+              />
+        
+        <ImageButton
+              android:id="@+id/next"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_margin="@dimen/mcv_arrow_margin"
+              android:background="?selectableItemBackgroundBorderless"
+              android:contentDescription="@string/next"
+              android:padding="@dimen/mcv_arrow_padding"
+              app:srcCompat="@drawable/mcv_action_next"
+              />
+    
+    </LinearLayout>
 
 </LinearLayout>
