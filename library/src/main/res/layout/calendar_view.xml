@@ -16,6 +16,7 @@
       android:layout_gravity="center"
       android:layout_weight="1"
       android:gravity="start"
+      android:paddingHorizontal="@dimen/mcv_arrow_padding"
       android:layout_marginHorizontal="@dimen/mcv_arrow_margin"
       tools:text="August 2018"
       style="?android:attr/textAppearanceMedium"
