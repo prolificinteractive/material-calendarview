@@ -1,7 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import java.util.Collection;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
