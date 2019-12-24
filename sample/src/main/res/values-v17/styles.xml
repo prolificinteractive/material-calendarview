@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CalendarHedStyle" parent="TextAppearance.MaterialCalendarWidget.Header">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAlignment">viewEnd</item>
+    </style>
+</resources>

@@ -7,6 +7,7 @@ ext {
   junitVersion = '4.12'
   runnerVersion = '0.5'
   supportVersion = '27.0.2'
+  constraint_layout = '2.0.0-beta3'
 
   supportV4 = 'androidx.legacy:legacy-support-v4:1.0.0'
   supportDesign = "com.google.android.material:material:1.2.0-alpha02"
@@ -23,6 +24,9 @@ ext {
   hamcrestCore = "org.hamcrest:hamcrest-core:$hamcrestVersion"
   hamcrestLibrary = "org.hamcrest:hamcrest-library:$hamcrestVersion"
   hamcrestIntegration = "org.hamcrest:hamcrest-integration:$hamcrestVersion"
+
+  //constraintlayout
+  constraintlayout = "androidx.constraintlayout:constraintlayout:$constraint_layout"
 
   // Other
   threeTenAbp = 'com.jakewharton.threetenabp:threetenabp:1.2.1'
