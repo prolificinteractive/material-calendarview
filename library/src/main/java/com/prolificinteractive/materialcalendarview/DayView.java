@@ -223,7 +223,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
       drawable.addState(new int[] { android.R.attr.state_pressed }, generateCircleDrawable(color));
     }
 
-    drawable.addState(new int[] { }, generateCircleDrawable(Color.TRANSPARENT));
+//    drawable.addState(new int[] { }, generateCircleDrawable(Color.TRANSPARENT));
 
     return drawable;
   }

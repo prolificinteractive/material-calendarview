@@ -31,6 +31,7 @@
                     android:id="@+id/calenderView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:elevation="5dp"
                     app:mcv_dateTextAppearance="@style/CalendarDayStyle"
                     app:mcv_headerTextAppearance="@style/CalendarHedStyle"
                     app:mcv_showOtherDates="other_months"
