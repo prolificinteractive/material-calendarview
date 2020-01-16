@@ -26,7 +26,7 @@
     <item name="android:background">@android:color/transparent</item>
   </style>
 
-  <style name="CalendarHedStyle" parent="TextAppearance.MaterialCalendarWidget.Header">
+  <style name="CalendarHeaderStyle" parent="TextAppearance.MaterialCalendarWidget.Header">
     <item name="android:textSize">12sp</item>
     <item name="android:textStyle">normal</item>
   </style>
