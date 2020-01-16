@@ -7,12 +7,13 @@ ext {
   junitVersion = '4.12'
   runnerVersion = '0.5'
   supportVersion = '27.0.2'
+  constraint_layout = '2.0.0-beta3'
 
-  supportV4 = "com.android.support:support-v4:$supportVersion"
-  supportDesign = "com.android.support:design:$supportVersion"
-  supportAnnotations = "com.android.support:support-annotations:$supportVersion"
-  supportAppCompat = "com.android.support:appcompat-v7:$supportVersion"
-  recyclerviewV7 = "com.android.support:recyclerview-v7:$supportVersion"
+  supportV4 = 'androidx.legacy:legacy-support-v4:1.0.0'
+  supportDesign = "com.google.android.material:material:1.2.0-alpha02"
+  supportAnnotations = 'androidx.annotation:annotation:1.0.0'
+  supportAppCompat = 'androidx.appcompat:appcompat:1.0.0'
+  recyclerviewV7 = 'androidx.recyclerview:recyclerview:1.0.0'
 
   // Test
   junit = "junit:junit:$junitVersion"
@@ -24,10 +25,13 @@ ext {
   hamcrestLibrary = "org.hamcrest:hamcrest-library:$hamcrestVersion"
   hamcrestIntegration = "org.hamcrest:hamcrest-integration:$hamcrestVersion"
 
+  //constraintlayout
+  constraintlayout = "androidx.constraintlayout:constraintlayout:$constraint_layout"
+
   // Other
-  threeTenAbp = 'com.jakewharton.threetenabp:threetenabp:1.1.1'
-  butterknife = 'com.jakewharton:butterknife:8.5.1'
-  butterknifeCompiler = 'com.jakewharton:butterknife-compiler:8.5.1'
+  threeTenAbp = 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+  butterknife = 'com.jakewharton:butterknife:10.2.1'
+  butterknifeCompiler = 'com.jakewharton:butterknife-compiler:10.2.1'
 
   testDep = [junit,
              hamcrestCore,

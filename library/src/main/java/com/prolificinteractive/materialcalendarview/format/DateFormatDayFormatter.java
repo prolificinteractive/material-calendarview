@@ -1,6 +1,6 @@
 package com.prolificinteractive.materialcalendarview.format;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import java.text.DateFormat;
 import java.util.Locale;

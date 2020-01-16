@@ -1,7 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.os.Build;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;

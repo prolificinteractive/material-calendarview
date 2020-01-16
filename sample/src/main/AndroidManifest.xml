@@ -289,6 +289,21 @@
 
     </activity>
 
+      <activity android:name=".CalenderOnAppBarActivity"
+          android:label="Calender On Appbar"
+          android:parentActivityName=".MainActivity"
+          android:theme="@style/AppTheme.NoActionBar">
+          <meta-data
+              android:name="android.support.PARENT_ACTIVITY"
+              android:value=".MainActivity"
+              />
+
+          <intent-filter>
+              <action android:name="android.intent.action.RUN"/>
+              <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE"/>
+          </intent-filter>
+      </activity>
+
   </application>
 
 </manifest>

@@ -33,5 +33,7 @@ dependencies {
   implementation rootProject.ext.supportAppCompat
   implementation rootProject.ext.recyclerviewV7
   implementation rootProject.ext.butterknife
+  implementation rootProject.ext.supportDesign
+  implementation rootProject.ext.constraintlayout
   annotationProcessor rootProject.ext.butterknifeCompiler
 }

@@ -2,8 +2,8 @@ package com.prolificinteractive.materialcalendarview.sample;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.transition.TransitionManager;
 import android.view.ViewGroup;
 import android.widget.Toast;

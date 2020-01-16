@@ -13,4 +13,31 @@
     <item name="fontFamily">@font/shirkhand</item>
   </style>
 
+  <style name="AppTheme.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+
+  </style>
+
+  <style name="AppTheme.AppBarOverlay" parent="Widget.MaterialComponents.AppBarLayout.Primary">
+    <item name="android:textColorPrimary">#66000000</item>
+    <item name="actionMenuTextColor">#66000000</item>
+    <item name="android:textColorSecondary">#66000000</item>
+    <item name="android:background">@android:color/transparent</item>
+  </style>
+
+  <style name="CalendarHeaderStyle" parent="TextAppearance.MaterialCalendarWidget.Header">
+    <item name="android:textSize">12sp</item>
+    <item name="android:textStyle">normal</item>
+  </style>
+  <style name="CalendarDayStyle" parent="TextAppearance.MaterialCalendarWidget.Date">
+    <item name="android:textStyle">bold</item>
+    <item name="android:background">@drawable/my_date_text_color</item>
+
+  </style>
+  <style name="CalendarWeekStyle" parent="TextAppearance.MaterialCalendarWidget.WeekDay"/>
+  <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+    <item name="android:textColor">#141313</item>
+  </style>
+
 </resources>
