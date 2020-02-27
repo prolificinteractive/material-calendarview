@@ -637,6 +637,14 @@ public class MaterialCalendarView extends ViewGroup {
   public int getSelectionColor() {
     return accentColor;
   }
+  
+  public void setDEFAULTMAXWEEKS(int num) {
+    DEFAULT_MAX_WEEKS = num;
+  }
+  
+  public int getDEFAULTMAXWEEKS() {
+    return DEFAULT_MAX_WEEKS;
+  }
 
   /**
    * @param color The selection color
