@@ -638,11 +638,11 @@ public class MaterialCalendarView extends ViewGroup {
     return accentColor;
   }
   
-  public void setDEFAULTMAXWEEKS(int num) {
+  public void setDefaultMaxWeeks(int num) {
     DEFAULT_MAX_WEEKS = num;
   }
   
-  public int getDEFAULTMAXWEEKS() {
+  public int geDefaultMaxWeeks() {
     return DEFAULT_MAX_WEEKS;
   }
 
