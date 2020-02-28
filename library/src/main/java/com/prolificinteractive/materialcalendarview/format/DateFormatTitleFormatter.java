@@ -1,7 +1,7 @@
 package com.prolificinteractive.materialcalendarview.format;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-import org.threeten.bp.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Format using a {@linkplain java.text.DateFormat} instance.

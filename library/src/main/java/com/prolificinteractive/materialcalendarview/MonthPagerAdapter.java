@@ -1,7 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.support.annotation.NonNull;
-import org.threeten.bp.Period;
+import java.time.Period;
 
 /**
  * Pager adapter backing the calendar view
