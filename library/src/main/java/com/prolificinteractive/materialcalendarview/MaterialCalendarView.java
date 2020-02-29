@@ -490,6 +490,14 @@ public class MaterialCalendarView extends ViewGroup {
       pager.setCurrentItem(pager.getCurrentItem() - 1, true);
     }
   }
+  
+  public void setDefaultMaxWeeks(int num) {
+    DEFAULT_MAX_WEEKS = num;
+  }
+  
+  public int geDefaultMaxWeeks() {
+    return DEFAULT_MAX_WEEKS;
+  }
 
   /**
    * Go to next month or week without using the button {@link #buttonFuture}. Should only go to
@@ -638,14 +646,6 @@ public class MaterialCalendarView extends ViewGroup {
     return accentColor;
   }
   
-  public void setDefaultMaxWeeks(int num) {
-    DEFAULT_MAX_WEEKS = num;
-  }
-  
-  public int geDefaultMaxWeeks() {
-    return DEFAULT_MAX_WEEKS;
-  }
-
   /**
    * @param color The selection color
    */
