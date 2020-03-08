@@ -274,10 +274,9 @@ public class MaterialCalendarView extends ViewGroup {
 
     titleChanger = new TitleChanger(title);
 
-    pager.setOnPageChangeListener(pageChangeListener);
     pager.setPageTransformer(false, new ViewPager.PageTransformer() {
       @Override
-      public void transformPage(View page, float position) {
+      public void transformPage(@NonNull View page, float position) {
         position = (float) Math.sqrt(1 - Math.abs(position));
         page.setAlpha(position);
       }
@@ -417,6 +416,18 @@ public class MaterialCalendarView extends ViewGroup {
       monthView.setShowOtherDates(getShowOtherDates());
       addView(monthView, new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
     }
+  }
+
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    pager.addOnPageChangeListener(pageChangeListener);
+  }
+
+  @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    pager.clearOnPageChangeListeners();
   }
 
   private void setupChildren() {
