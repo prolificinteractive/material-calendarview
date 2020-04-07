@@ -38,6 +38,9 @@ dependencies {
   implementation 'androidx.appcompat:appcompat:1.0.0'
   implementation 'androidx.annotation:annotation:1.0.0'
 
+  // SSP / SDP
+  implementation 'com.intuit.ssp:ssp-android:1.0.6'
+  implementation 'com.intuit.sdp:sdp-android:1.0.6'
 }
 
 tasks.withType(Javadoc) {
