@@ -3,11 +3,11 @@ apply plugin: 'maven'
 apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-  compileSdkVersion rootProject.ext.compileSdkVersion
+  compileSdkVersion 28
 
   defaultConfig {
-    minSdkVersion rootProject.ext.minSdkVersion
-    targetSdkVersion rootProject.ext.targetSdkVersion
+    minSdkVersion 16
+    targetSdkVersion 27
 
     versionCode Integer.parseInt(project.VERSION_CODE)
     versionName project.VERSION_NAME
@@ -23,6 +23,10 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
+    buildTypes {
+        staging {
+        }
+    }
 }
 
 group = "com.github.prolificinteractive"
@@ -30,13 +34,10 @@ version = android.defaultConfig.versionName
 archivesBaseName = 'material-calendarview'
 
 dependencies {
-  implementation rootProject.ext.threeTenAbp
-  implementation rootProject.ext.supportV4
-  implementation rootProject.ext.supportAppCompat
-  implementation rootProject.ext.supportAnnotations
+  implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
+  implementation 'androidx.appcompat:appcompat:1.0.0'
+  implementation 'androidx.annotation:annotation:1.0.0'
 
-  rootProject.ext.testDep.each { testImplementation it }
-  rootProject.ext.androidTestDep.each { androidTestImplementation it }
 }
 
 tasks.withType(Javadoc) {

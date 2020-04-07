@@ -2,148 +2,148 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.animation.Animator;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.TextView;
+
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 
 class TitleChanger {
 
-  public static final int DEFAULT_ANIMATION_DELAY = 400;
-  public static final int DEFAULT_Y_TRANSLATION_DP = 20;
+    public static final int DEFAULT_ANIMATION_DELAY = 400;
+    public static final int DEFAULT_Y_TRANSLATION_DP = 20;
 
-  private final TextView title;
-  @NonNull private TitleFormatter titleFormatter = TitleFormatter.DEFAULT;
+    private final TextView title;
+    private final int animDelay;
+    private final int animDuration;
+    private final int translate;
+    private final Interpolator interpolator = new DecelerateInterpolator(2f);
+    @NonNull
+    private TitleFormatter titleFormatter = TitleFormatter.DEFAULT;
+    private int orientation = MaterialCalendarView.VERTICAL;
 
-  private final int animDelay;
-  private final int animDuration;
-  private final int translate;
-  private final Interpolator interpolator = new DecelerateInterpolator(2f);
+    private long lastAnimTime = 0;
+    private CalendarDay previousMonth = null;
 
-  private int orientation = MaterialCalendarView.VERTICAL;
+    public TitleChanger(TextView title) {
+        this.title = title;
 
-  private long lastAnimTime = 0;
-  private CalendarDay previousMonth = null;
+        Resources res = title.getResources();
 
-  public TitleChanger(TextView title) {
-    this.title = title;
+        animDelay = DEFAULT_ANIMATION_DELAY;
 
-    Resources res = title.getResources();
+        animDuration = res.getInteger(android.R.integer.config_shortAnimTime) / 2;
 
-    animDelay = DEFAULT_ANIMATION_DELAY;
-
-    animDuration = res.getInteger(android.R.integer.config_shortAnimTime) / 2;
-
-    translate = (int) TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP, DEFAULT_Y_TRANSLATION_DP, res.getDisplayMetrics()
-    );
-  }
-
-  public void change(final CalendarDay currentMonth) {
-    long currentTime = System.currentTimeMillis();
-
-    if (currentMonth == null) {
-      return;
+        translate = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, DEFAULT_Y_TRANSLATION_DP, res.getDisplayMetrics()
+        );
     }
 
-    if (TextUtils.isEmpty(title.getText()) || (currentTime - lastAnimTime) < animDelay) {
-      doChange(currentTime, currentMonth, false);
+    public void change(final CalendarDay currentMonth) {
+        long currentTime = System.currentTimeMillis();
+
+        if (currentMonth == null) {
+            return;
+        }
+
+        if (TextUtils.isEmpty(title.getText()) || (currentTime - lastAnimTime) < animDelay) {
+            doChange(currentTime, currentMonth, false);
+        }
+
+        if (currentMonth.equals(previousMonth) ||
+                (currentMonth.getMonth() == previousMonth.getMonth()
+                        && currentMonth.getYear() == previousMonth.getYear())) {
+            return;
+        }
+
+        doChange(currentTime, currentMonth, true);
     }
 
-    if (currentMonth.equals(previousMonth) ||
-        (currentMonth.getMonth() == previousMonth.getMonth()
-            && currentMonth.getYear() == previousMonth.getYear())) {
-      return;
-    }
+    private void doChange(final long now, final CalendarDay currentMonth, boolean animate) {
 
-    doChange(currentTime, currentMonth, true);
-  }
+        title.animate().cancel();
+        doTranslation(title, 0);
 
-  private void doChange(final long now, final CalendarDay currentMonth, boolean animate) {
+        title.setAlpha(1);
+        lastAnimTime = now;
 
-    title.animate().cancel();
-    doTranslation(title, 0);
+        final CharSequence newTitle = titleFormatter.format(currentMonth);
 
-    title.setAlpha(1);
-    lastAnimTime = now;
+        if (!animate) {
+            title.setText(newTitle);
+        } else {
+            final int translation = translate * (previousMonth.isBefore(currentMonth) ? 1 : -1);
+            final ViewPropertyAnimator viewPropertyAnimator = title.animate();
 
-    final CharSequence newTitle = titleFormatter.format(currentMonth);
-
-    if (!animate) {
-      title.setText(newTitle);
-    } else {
-      final int translation = translate * (previousMonth.isBefore(currentMonth) ? 1 : -1);
-      final ViewPropertyAnimator viewPropertyAnimator = title.animate();
-
-      if (orientation == MaterialCalendarView.HORIZONTAL) {
-        viewPropertyAnimator.translationX(translation * -1);
-      } else {
-        viewPropertyAnimator.translationY(translation * -1);
-      }
-
-      viewPropertyAnimator
-          .alpha(0)
-          .setDuration(animDuration)
-          .setInterpolator(interpolator)
-          .setListener(new AnimatorListener() {
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-              doTranslation(title, 0);
-              title.setAlpha(1);
+            if (orientation == MaterialCalendarView.HORIZONTAL) {
+                viewPropertyAnimator.translationX(translation * -1);
+            } else {
+                viewPropertyAnimator.translationY(translation * -1);
             }
 
-            @Override
-            public void onAnimationEnd(Animator animator) {
-              title.setText(newTitle);
-              doTranslation(title, translation);
+            viewPropertyAnimator
+                    .alpha(0)
+                    .setDuration(animDuration)
+                    .setInterpolator(interpolator)
+                    .setListener(new AnimatorListener() {
 
-              final ViewPropertyAnimator viewPropertyAnimator = title.animate();
-              if (orientation == MaterialCalendarView.HORIZONTAL) {
-                viewPropertyAnimator.translationX(0);
-              } else {
-                viewPropertyAnimator.translationY(0);
-              }
+                        @Override
+                        public void onAnimationCancel(Animator animator) {
+                            doTranslation(title, 0);
+                            title.setAlpha(1);
+                        }
 
-              viewPropertyAnimator
-                  .alpha(1)
-                  .setDuration(animDuration)
-                  .setInterpolator(interpolator)
-                  .setListener(new AnimatorListener())
-                  .start();
-            }
-          }).start();
+                        @Override
+                        public void onAnimationEnd(Animator animator) {
+                            title.setText(newTitle);
+                            doTranslation(title, translation);
+
+                            final ViewPropertyAnimator viewPropertyAnimator = title.animate();
+                            if (orientation == MaterialCalendarView.HORIZONTAL) {
+                                viewPropertyAnimator.translationX(0);
+                            } else {
+                                viewPropertyAnimator.translationY(0);
+                            }
+
+                            viewPropertyAnimator
+                                    .alpha(1)
+                                    .setDuration(animDuration)
+                                    .setInterpolator(interpolator)
+                                    .setListener(new AnimatorListener())
+                                    .start();
+                        }
+                    }).start();
+        }
+
+        previousMonth = currentMonth;
     }
 
-    previousMonth = currentMonth;
-  }
-
-  private void doTranslation(final TextView title, final int translate) {
-    if (orientation == MaterialCalendarView.HORIZONTAL) {
-      title.setTranslationX(translate);
-    } else {
-      title.setTranslationY(translate);
+    private void doTranslation(final TextView title, final int translate) {
+        if (orientation == MaterialCalendarView.HORIZONTAL) {
+            title.setTranslationX(translate);
+        } else {
+            title.setTranslationY(translate);
+        }
     }
-  }
 
-  public void setTitleFormatter(@Nullable final TitleFormatter titleFormatter) {
-    this.titleFormatter = titleFormatter == null ? TitleFormatter.DEFAULT : titleFormatter;
-  }
+    public void setTitleFormatter(@Nullable final TitleFormatter titleFormatter) {
+        this.titleFormatter = titleFormatter == null ? TitleFormatter.DEFAULT : titleFormatter;
+    }
 
-  public void setOrientation(int orientation) {
-    this.orientation = orientation;
-  }
+    public int getOrientation() {
+        return orientation;
+    }
 
-  public int getOrientation() {
-    return orientation;
-  }
+    public void setOrientation(int orientation) {
+        this.orientation = orientation;
+    }
 
-  public void setPreviousMonth(CalendarDay previousMonth) {
-    this.previousMonth = previousMonth;
-  }
+    public void setPreviousMonth(CalendarDay previousMonth) {
+        this.previousMonth = previousMonth;
+    }
 }
