@@ -7,7 +7,6 @@ import android.text.style.ForegroundColorSpan;
 
 import androidx.core.content.ContextCompat;
 
-
 public class CurrentDayDecorator implements DayViewDecorator {
 
     private final Drawable selectionDrawable;
@@ -16,11 +15,10 @@ public class CurrentDayDecorator implements DayViewDecorator {
 
     private CalendarDay currentDay = CalendarDay.today();
 
-    CurrentDayDecorator(Activity context, boolean flag) {
+    public CurrentDayDecorator(Activity context, boolean flag) {
         drawable = ContextCompat.getDrawable(context, R.drawable.gray_circle);
         selectionDrawable = ContextCompat.getDrawable(context, R.drawable.calendar_selector);
         this.flag = flag;
-
     }
 
     @Override
@@ -30,7 +28,7 @@ public class CurrentDayDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-        if (flag == true) {
+        if (flag) {
             view.addSpan(new ForegroundColorSpan(Color.WHITE));
             view.setSelectionDrawable(selectionDrawable);
 

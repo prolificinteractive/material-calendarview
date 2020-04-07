@@ -5,8 +5,7 @@ import android.text.style.ForegroundColorSpan;
 
 public class NoSelectionDecorator implements DayViewDecorator {
 
-
-    NoSelectionDecorator() {
+    public NoSelectionDecorator() {
     }
 
     @Override
@@ -20,5 +19,3 @@ public class NoSelectionDecorator implements DayViewDecorator {
 
     }
 }
-
-
