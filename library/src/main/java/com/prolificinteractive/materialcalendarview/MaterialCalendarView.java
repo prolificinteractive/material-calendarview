@@ -141,7 +141,7 @@ public class MaterialCalendarView extends ViewGroup {
     private final TextView title;
     private final ImageView buttonPast;
     private final ImageView buttonFuture;
-    private final CalendarPager pager;
+    public final CalendarPager pager;
     private final ArrayList<DayViewDecorator> dayViewDecorators = new ArrayList<>();
     private final OnClickListener onClickListener = new OnClickListener() {
         @Override
