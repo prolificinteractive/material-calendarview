@@ -141,7 +141,7 @@ public class MaterialCalendarView extends ViewGroup {
     private final TextView title;
     private final ImageView buttonPast;
     private final ImageView buttonFuture;
-    public final CalendarPager pager;
+    private final CalendarPager pager;
     private final ArrayList<DayViewDecorator> dayViewDecorators = new ArrayList<>();
     private final OnClickListener onClickListener = new OnClickListener() {
         @Override
@@ -372,6 +372,10 @@ public class MaterialCalendarView extends ViewGroup {
             monthView.setShowOtherDates(getShowOtherDates());
             addView(monthView, new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
         }
+    }
+
+    public void setViewPagerRotation(int rotationDegree){
+        pager.setRotationY(rotationDegree);
     }
 
     private static int getThemeAccentColor(Context context) {
