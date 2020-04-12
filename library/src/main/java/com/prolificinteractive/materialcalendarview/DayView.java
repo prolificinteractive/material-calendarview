@@ -116,6 +116,7 @@ class DayView extends AppCompatCheckedTextView {
     public void setDay(CalendarDay date) {
         this.date = date;
         setText(getLabel());
+        setTextSize(getContext().getResources().getDimension(R.dimen._14ssp));
     }
 
     /**

@@ -26,6 +26,8 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/_14ssp"
         tools:text="August 2018" />
 
     <ImageButton
