@@ -658,7 +658,10 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if there is a future month that can be shown
      */
     public boolean canGoForward() {
-        return pager.getCurrentItem() < (adapter.getCount() - 1);
+        if (LocalUtils.isRTL())
+            return pager.getCurrentItem() < (adapter.getCount() - 1);
+        else
+            return pager.getCurrentItem() > 0;
     }
 
     /**
@@ -667,7 +670,10 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if there is a previous month that can be shown
      */
     public boolean canGoBack() {
-        return pager.getCurrentItem() > 0;
+        if (LocalUtils.isRTL())
+            return pager.getCurrentItem() > 0;
+        else
+            return pager.getCurrentItem() < (adapter.getCount() - 1);
     }
 
     /**
