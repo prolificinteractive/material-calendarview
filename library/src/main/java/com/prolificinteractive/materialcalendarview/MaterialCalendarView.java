@@ -148,9 +148,9 @@ public class MaterialCalendarView extends ViewGroup {
         @Override
         public void onClick(View v) {
             if (v == ForwardArrowButton) {
-                handleForwardArrowButtonClicked();
+                pager.setCurrentItem(pager.getCurrentItem() + 1, true);
             } else if (v == backArrowButton) {
-                handleBackArrowButtonClicked();
+                pager.setCurrentItem(pager.getCurrentItem() - 1, true);
             }
         }
     };
@@ -210,28 +210,7 @@ public class MaterialCalendarView extends ViewGroup {
         ForwardArrowButton.setOnClickListener(onClickListener);
 
         titleChanger = new TitleChanger(title);
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                titleChanger.setPreviousMonth(currentMonth);
-
-                currentMonth = adapter.getItem(pager.getCurrentItem());
-                updateUi();
-
-                dispatchOnMonthChanged(currentMonth);
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        setOnChangeViewPagerListener();
         pager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
             public void transformPage(View page, float position) {
@@ -449,16 +428,24 @@ public class MaterialCalendarView extends ViewGroup {
         view.setAlpha(enable ? 1f : 0.1f);
     }
 
-    private void handleBackArrowButtonClicked() {
-        pager.setCurrentItem(pager.getCurrentItem() - 1, true);
-    }
+    private void setOnChangeViewPagerListener() {
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
-    private void handleForwardArrowButtonClicked() {
-        pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-    }
+            @Override
+            public void onPageSelected(int position) {
+                titleChanger.setPreviousMonth(currentMonth);
+                currentMonth = adapter.getItem(pager.getCurrentItem());
+                updateUi();
+                dispatchOnMonthChanged(currentMonth);
+            }
 
-    public void setViewPagerRotation(int rotationDegree) {
-        pager.setRotationY(rotationDegree);
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
     private void setupChildren() {
