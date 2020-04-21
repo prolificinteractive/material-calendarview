@@ -168,25 +168,6 @@ public class MaterialCalendarView extends ViewGroup {
     private OnDateSelectedListener listener;
     private OnDateLongClickListener longClickListener;
     private OnMonthChangedListener monthListener;
-    private final ViewPager.OnPageChangeListener pageChangeListener =
-            new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageSelected(int position) {
-                    titleChanger.setPreviousMonth(currentMonth);
-                    currentMonth = adapter.getItem(position);
-                    updateUi();
-
-                    dispatchOnMonthChanged(currentMonth);
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-                }
-
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                }
-            };
     private OnRangeSelectedListener rangeListener;
     private int accentColor = 0;
     private int tileHeight = INVALID_TILE_DIMENSION;
@@ -229,8 +210,28 @@ public class MaterialCalendarView extends ViewGroup {
         rightArrowButton.setOnClickListener(onClickListener);
 
         titleChanger = new TitleChanger(title);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        pager.setOnPageChangeListener(pageChangeListener);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                titleChanger.setPreviousMonth(currentMonth);
+
+                currentMonth = adapter.getItem(pager.getCurrentItem());
+                updateUi();
+
+                dispatchOnMonthChanged(currentMonth);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         pager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
             public void transformPage(View page, float position) {
