@@ -140,17 +140,17 @@ public class MaterialCalendarView extends ViewGroup {
     private static final int DAY_NAMES_ROW = 1;
     private final TitleChanger titleChanger;
     private final TextView title;
-    private final ImageView leftArrowButton;
-    private final ImageView rightArrowButton;
+    private final ImageView backArrowButton;
+    private final ImageView ForwardArrowButton;
     private final CalendarPager pager;
     private final ArrayList<DayViewDecorator> dayViewDecorators = new ArrayList<>();
     private final OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v == rightArrowButton) {
-                handleRightArrowButtonClicked();
-            } else if (v == leftArrowButton) {
-                handleLeftArrowButtonClicked();
+            if (v == ForwardArrowButton) {
+                handleForwardArrowButtonClicked();
+            } else if (v == backArrowButton) {
+                handleBackArrowButtonClicked();
             }
         }
     };
@@ -201,13 +201,13 @@ public class MaterialCalendarView extends ViewGroup {
         final View content = inflater.inflate(R.layout.calendar_view, null, false);
 
         topbar = content.findViewById(R.id.header);
-        leftArrowButton = content.findViewById(R.id.previous);
+        backArrowButton = content.findViewById(R.id.previous);
         title = content.findViewById(R.id.month_name);
-        rightArrowButton = content.findViewById(R.id.next);
+        ForwardArrowButton = content.findViewById(R.id.next);
         pager = new CalendarPager(getContext());
 
-        leftArrowButton.setOnClickListener(onClickListener);
-        rightArrowButton.setOnClickListener(onClickListener);
+        backArrowButton.setOnClickListener(onClickListener);
+        ForwardArrowButton.setOnClickListener(onClickListener);
 
         titleChanger = new TitleChanger(title);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -449,18 +449,12 @@ public class MaterialCalendarView extends ViewGroup {
         view.setAlpha(enable ? 1f : 0.1f);
     }
 
-    private void handleLeftArrowButtonClicked() {
-        if (LocalUtils.isRTL())
-            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-        else
-            pager.setCurrentItem(pager.getCurrentItem() - 1, true);
+    private void handleBackArrowButtonClicked() {
+        pager.setCurrentItem(pager.getCurrentItem() - 1, true);
     }
 
-    private void handleRightArrowButtonClicked() {
-        if (LocalUtils.isRTL())
-            pager.setCurrentItem(pager.getCurrentItem() - 1, true);
-        else
-            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+    private void handleForwardArrowButtonClicked() {
+        pager.setCurrentItem(pager.getCurrentItem() + 1, true);
     }
 
     public void setViewPagerRotation(int rotationDegree) {
@@ -479,12 +473,12 @@ public class MaterialCalendarView extends ViewGroup {
 
     private void updateUi() {
         titleChanger.change(currentMonth);
-        enableView(leftArrowButton, canGoBack());
-        enableView(rightArrowButton, canGoForward());
+        enableView(backArrowButton, canGoBack());
+        enableView(ForwardArrowButton, canGoForward());
     }
 
     /**
-     * Go to previous month or week without using the button {@link #leftArrowButton}. Should only go to
+     * Go to previous month or week without using the button {@link #backArrowButton}. Should only go to
      * previous if {@link #canGoBack()} is true, meaning it's possible to go to the previous month
      * or week.
      */
@@ -495,7 +489,7 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * Go to next month or week without using the button {@link #rightArrowButton}. Should only go to
+     * Go to next month or week without using the button {@link #ForwardArrowButton}. Should only go to
      * next if {@link #canGoForward()} is enabled, meaning it's possible to go to the next month or
      * week.
      */
@@ -659,10 +653,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if there is a future month that can be shown
      */
     public boolean canGoForward() {
-        if (LocalUtils.isRTL())
-            return pager.getCurrentItem() < (adapter.getCount() - 1);
-        else
-            return pager.getCurrentItem() > 0;
+        return pager.getCurrentItem() < (adapter.getCount() - 1);
     }
 
     /**
@@ -671,10 +662,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @return true if there is a previous month that can be shown
      */
     public boolean canGoBack() {
-        if (LocalUtils.isRTL())
-            return pager.getCurrentItem() > 0;
-        else
-            return pager.getCurrentItem() < (adapter.getCount() - 1);
+        return pager.getCurrentItem() > 0;
     }
 
     /**
@@ -714,7 +702,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param description String to use as content description
      */
     public void setContentDescriptionArrowPast(final CharSequence description) {
-        leftArrowButton.setContentDescription(description);
+        backArrowButton.setContentDescription(description);
     }
 
     /**
@@ -723,7 +711,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param description String to use as content description
      */
     public void setContentDescriptionArrowFuture(final CharSequence description) {
-        rightArrowButton.setContentDescription(description);
+        ForwardArrowButton.setContentDescription(description);
     }
 
     /**
@@ -759,28 +747,28 @@ public class MaterialCalendarView extends ViewGroup {
      * @return icon used for the left arrow
      */
     public Drawable getLeftArrow() {
-        return leftArrowButton.getDrawable();
+        return backArrowButton.getDrawable();
     }
 
     /**
      * @param icon the new icon to use for the left paging arrow
      */
     public void setLeftArrow(@DrawableRes final int icon) {
-        leftArrowButton.setImageResource(icon);
+        backArrowButton.setImageResource(icon);
     }
 
     /**
      * @return icon used for the right arrow
      */
     public Drawable getRightArrow() {
-        return rightArrowButton.getDrawable();
+        return ForwardArrowButton.getDrawable();
     }
 
     /**
      * @param icon the new icon to use for the right paging arrow
      */
     public void setRightArrow(@DrawableRes final int icon) {
-        rightArrowButton.setImageResource(icon);
+        ForwardArrowButton.setImageResource(icon);
     }
 
     /**
@@ -1119,7 +1107,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Sets the visibility {@link #topbar}, which contains
-     * the previous month button {@link #leftArrowButton}, next month button {@link #rightArrowButton},
+     * the previous month button {@link #backArrowButton}, next month button {@link #ForwardArrowButton},
      * and the month title {@link #title}.
      *
      * @param visible Boolean indicating if the topbar is visible
