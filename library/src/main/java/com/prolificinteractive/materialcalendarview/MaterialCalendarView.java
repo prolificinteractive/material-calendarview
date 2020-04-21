@@ -9,12 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -28,12 +22,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
+
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DateFormatDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
+
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.WeekFields;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -43,10 +48,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-
-import org.threeten.bp.DayOfWeek;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.temporal.WeekFields;
 
 /**
  * <p>
@@ -139,17 +140,17 @@ public class MaterialCalendarView extends ViewGroup {
     private static final int DAY_NAMES_ROW = 1;
     private final TitleChanger titleChanger;
     private final TextView title;
-    private final ImageView buttonPast;
-    private final ImageView buttonFuture;
+    private final ImageView leftArrowButton;
+    private final ImageView rightArrowButton;
     private final CalendarPager pager;
     private final ArrayList<DayViewDecorator> dayViewDecorators = new ArrayList<>();
     private final OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v == buttonFuture) {
-                pager.setCurrentItem(pager.getCurrentItem() + 1, true);
-            } else if (v == buttonPast) {
-                pager.setCurrentItem(pager.getCurrentItem() - 1, true);
+            if (v == rightArrowButton) {
+                handleRightArrowButtonClicked();
+            } else if (v == leftArrowButton) {
+                handleLeftArrowButtonClicked();
             }
         }
     };
@@ -219,13 +220,13 @@ public class MaterialCalendarView extends ViewGroup {
         final View content = inflater.inflate(R.layout.calendar_view, null, false);
 
         topbar = content.findViewById(R.id.header);
-        buttonPast = content.findViewById(R.id.previous);
+        leftArrowButton = content.findViewById(R.id.previous);
         title = content.findViewById(R.id.month_name);
-        buttonFuture = content.findViewById(R.id.next);
+        rightArrowButton = content.findViewById(R.id.next);
         pager = new CalendarPager(getContext());
 
-        buttonPast.setOnClickListener(onClickListener);
-        buttonFuture.setOnClickListener(onClickListener);
+        leftArrowButton.setOnClickListener(onClickListener);
+        rightArrowButton.setOnClickListener(onClickListener);
 
         titleChanger = new TitleChanger(title);
 
@@ -374,10 +375,6 @@ public class MaterialCalendarView extends ViewGroup {
         }
     }
 
-    public void setViewPagerRotation(int rotationDegree){
-        pager.setRotationY(rotationDegree);
-    }
-
     private static int getThemeAccentColor(Context context) {
         int colorAttr;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -451,6 +448,24 @@ public class MaterialCalendarView extends ViewGroup {
         view.setAlpha(enable ? 1f : 0.1f);
     }
 
+    private void handleLeftArrowButtonClicked() {
+        if (LocalUtils.isRTL())
+            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+        else
+            pager.setCurrentItem(pager.getCurrentItem() - 1, true);
+    }
+
+    private void handleRightArrowButtonClicked() {
+        if (LocalUtils.isRTL())
+            pager.setCurrentItem(pager.getCurrentItem() - 1, true);
+        else
+            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+    }
+
+    public void setViewPagerRotation(int rotationDegree) {
+        pager.setRotationY(rotationDegree);
+    }
+
     private void setupChildren() {
         addView(topbar);
 
@@ -463,12 +478,12 @@ public class MaterialCalendarView extends ViewGroup {
 
     private void updateUi() {
         titleChanger.change(currentMonth);
-        enableView(buttonPast, canGoBack());
-        enableView(buttonFuture, canGoForward());
+        enableView(leftArrowButton, canGoBack());
+        enableView(rightArrowButton, canGoForward());
     }
 
     /**
-     * Go to previous month or week without using the button {@link #buttonPast}. Should only go to
+     * Go to previous month or week without using the button {@link #leftArrowButton}. Should only go to
      * previous if {@link #canGoBack()} is true, meaning it's possible to go to the previous month
      * or week.
      */
@@ -479,7 +494,7 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
-     * Go to next month or week without using the button {@link #buttonFuture}. Should only go to
+     * Go to next month or week without using the button {@link #rightArrowButton}. Should only go to
      * next if {@link #canGoForward()} is enabled, meaning it's possible to go to the next month or
      * week.
      */
@@ -692,7 +707,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param description String to use as content description
      */
     public void setContentDescriptionArrowPast(final CharSequence description) {
-        buttonPast.setContentDescription(description);
+        leftArrowButton.setContentDescription(description);
     }
 
     /**
@@ -701,7 +716,7 @@ public class MaterialCalendarView extends ViewGroup {
      * @param description String to use as content description
      */
     public void setContentDescriptionArrowFuture(final CharSequence description) {
-        buttonFuture.setContentDescription(description);
+        rightArrowButton.setContentDescription(description);
     }
 
     /**
@@ -737,28 +752,28 @@ public class MaterialCalendarView extends ViewGroup {
      * @return icon used for the left arrow
      */
     public Drawable getLeftArrow() {
-        return buttonPast.getDrawable();
+        return leftArrowButton.getDrawable();
     }
 
     /**
      * @param icon the new icon to use for the left paging arrow
      */
     public void setLeftArrow(@DrawableRes final int icon) {
-        buttonPast.setImageResource(icon);
+        leftArrowButton.setImageResource(icon);
     }
 
     /**
      * @return icon used for the right arrow
      */
     public Drawable getRightArrow() {
-        return buttonFuture.getDrawable();
+        return rightArrowButton.getDrawable();
     }
 
     /**
      * @param icon the new icon to use for the right paging arrow
      */
     public void setRightArrow(@DrawableRes final int icon) {
-        buttonFuture.setImageResource(icon);
+        rightArrowButton.setImageResource(icon);
     }
 
     /**
@@ -1097,7 +1112,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Sets the visibility {@link #topbar}, which contains
-     * the previous month button {@link #buttonPast}, next month button {@link #buttonFuture},
+     * the previous month button {@link #leftArrowButton}, next month button {@link #rightArrowButton},
      * and the month title {@link #title}.
      *
      * @param visible Boolean indicating if the topbar is visible
