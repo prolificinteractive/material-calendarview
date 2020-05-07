@@ -171,7 +171,7 @@ public class MaterialCalendarView extends ViewGroup {
    */
   public static final int DEFAULT_TILE_SIZE_DP = 44;
   private static final int DEFAULT_DAYS_IN_WEEK = 7;
-  private static final int DEFAULT_MAX_WEEKS = 6;
+  public static int DEFAULT_MAX_WEEKS = 6;
   private static final int DAY_NAMES_ROW = 1;
 
   private final TitleChanger titleChanger;
@@ -490,6 +490,14 @@ public class MaterialCalendarView extends ViewGroup {
       pager.setCurrentItem(pager.getCurrentItem() - 1, true);
     }
   }
+  
+  public void setDefaultMaxWeeks(int num) {
+    DEFAULT_MAX_WEEKS = num;
+  }
+  
+  public int geDefaultMaxWeeks() {
+    return DEFAULT_MAX_WEEKS;
+  }
 
   /**
    * Go to next month or week without using the button {@link #buttonFuture}. Should only go to
@@ -637,7 +645,7 @@ public class MaterialCalendarView extends ViewGroup {
   public int getSelectionColor() {
     return accentColor;
   }
-
+  
   /**
    * @param color The selection color
    */

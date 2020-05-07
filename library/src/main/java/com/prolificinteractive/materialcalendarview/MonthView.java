@@ -10,7 +10,7 @@ import org.threeten.bp.LocalDate;
  * Display a month of {@linkplain DayView}s and
  * seven {@linkplain WeekDayView}s.
  */
-@SuppressLint("ViewConstructor") class MonthView extends CalendarPagerView {
+@SuppressLint("ViewConstructor") public class MonthView extends CalendarPagerView {
 
   public MonthView(
       @NonNull final MaterialCalendarView view,

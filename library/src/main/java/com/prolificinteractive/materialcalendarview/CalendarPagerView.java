@@ -20,12 +20,13 @@ import org.threeten.bp.temporal.WeekFields;
 
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SHOW_DEFAULTS;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
+import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.DEFAULT_MAX_WEEKS;
 
 abstract class CalendarPagerView extends ViewGroup
     implements View.OnClickListener, View.OnLongClickListener {
 
   protected static final int DEFAULT_DAYS_IN_WEEK = 7;
-  protected static final int DEFAULT_MAX_WEEKS = 6;
+  public static int DEFAULT_MAX_WEEKS = DEFAULT_MAX_WEEKS;
   protected static final int DAY_NAMES_ROW = 1;
 
   private final ArrayList<WeekDayView> weekDayViews = new ArrayList<>();
