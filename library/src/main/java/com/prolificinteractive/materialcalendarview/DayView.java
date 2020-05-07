@@ -30,7 +30,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 /**
  * Display one day of a {@linkplain MaterialCalendarView}
  */
-@SuppressLint("ViewConstructor") class DayView extends AppCompatCheckedTextView {
+@SuppressLint("ViewConstructor") public class DayView extends AppCompatCheckedTextView {
 
   private CalendarDay date;
   private int selectionColor = Color.GRAY;
