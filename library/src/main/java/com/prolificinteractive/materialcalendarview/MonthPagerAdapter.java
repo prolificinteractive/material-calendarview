@@ -6,7 +6,7 @@ import org.threeten.bp.Period;
 /**
  * Pager adapter backing the calendar view
  */
-class MonthPagerAdapter extends CalendarPagerAdapter<MonthView> {
+public class MonthPagerAdapter extends CalendarPagerAdapter<MonthView> {
 
   MonthPagerAdapter(MaterialCalendarView mcv) {
     super(mcv);
