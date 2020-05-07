@@ -18,7 +18,7 @@ import org.threeten.bp.LocalDate;
 /**
  * Pager adapter backing the calendar view
  */
-abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAdapter {
+public abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAdapter {
 
   private final ArrayDeque<V> currentViews;
 
