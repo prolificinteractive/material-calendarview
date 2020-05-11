@@ -10,12 +10,12 @@
 
     <ImageButton
         android:id="@+id/previous"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_margin="@dimen/mcv_arrow_margin"
         android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/previous"
-        android:padding="@dimen/mcv_arrow_padding"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/mcv_action_previous" />
 
     <TextView
@@ -24,19 +24,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="@dimen/_14ssp"
         android:layout_weight="1"
         android:gravity="center"
+        android:textSize="@dimen/_14ssp"
         tools:text="August 2018" />
 
     <ImageButton
         android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_margin="@dimen/mcv_arrow_margin"
         android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/next"
-        android:padding="@dimen/mcv_arrow_padding"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/mcv_action_next" />
 
 </LinearLayout>
