@@ -2,6 +2,7 @@
 <resources>
 
     <style name="TextAppearance.MaterialCalendarWidget.Header" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textSize">@dimen/_14ssp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
