@@ -4,17 +4,17 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.threeten.bp.DayOfWeek.FRIDAY;
-import static org.threeten.bp.DayOfWeek.MONDAY;
-import static org.threeten.bp.DayOfWeek.SATURDAY;
-import static org.threeten.bp.DayOfWeek.SUNDAY;
-import static org.threeten.bp.DayOfWeek.THURSDAY;
-import static org.threeten.bp.DayOfWeek.TUESDAY;
-import static org.threeten.bp.DayOfWeek.WEDNESDAY;
-import static org.threeten.bp.Month.DECEMBER;
-import static org.threeten.bp.Month.FEBRUARY;
-import static org.threeten.bp.Month.JANUARY;
-import static org.threeten.bp.Month.MARCH;
+import static java.time.DayOfWeek.FRIDAY;
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
+import static java.time.DayOfWeek.THURSDAY;
+import static java.time.DayOfWeek.TUESDAY;
+import static java.time.DayOfWeek.WEDNESDAY;
+import static java.time.Month.DECEMBER;
+import static java.time.Month.FEBRUARY;
+import static java.time.Month.JANUARY;
+import static java.time.Month.MARCH;
 
 public class WeeklyRangeIndexTest {
   private static final int _2018 = 2018;

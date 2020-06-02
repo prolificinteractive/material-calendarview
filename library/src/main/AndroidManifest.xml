@@ -1,14 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.prolificinteractive.materialcalendarview"
-    >
-
-  <application>
-    <provider
-        android:name=".MaterialCalendarViewInitProvider"
-        android:authorities="${applicationId}.materialcalendarviewinitprovider"
-        android:enabled="true"
-        android:exported="false"
-        />
-  </application>
-
-</manifest>
+<manifest package="com.prolificinteractive.materialcalendarview" />

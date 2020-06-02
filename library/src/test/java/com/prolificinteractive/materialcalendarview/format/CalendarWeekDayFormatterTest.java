@@ -4,7 +4,7 @@ import java.util.Locale;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.threeten.bp.DayOfWeek;
+import java.time.DayOfWeek;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

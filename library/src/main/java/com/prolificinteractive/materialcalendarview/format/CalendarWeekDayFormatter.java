@@ -1,8 +1,8 @@
 package com.prolificinteractive.materialcalendarview.format;
 
 import java.util.Locale;
-import org.threeten.bp.DayOfWeek;
-import org.threeten.bp.format.TextStyle;
+import java.time.DayOfWeek;
+import java.time.format.TextStyle;
 
 /**
  * Format the day of the week with using {@link TextStyle#SHORT} by default.

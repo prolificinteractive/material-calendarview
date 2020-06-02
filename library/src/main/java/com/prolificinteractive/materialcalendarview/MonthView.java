@@ -3,8 +3,8 @@ package com.prolificinteractive.materialcalendarview;
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import java.util.Collection;
-import org.threeten.bp.DayOfWeek;
-import org.threeten.bp.LocalDate;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 /**
  * Display a month of {@linkplain DayView}s and

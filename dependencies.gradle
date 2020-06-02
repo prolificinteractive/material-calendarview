@@ -7,12 +7,15 @@ ext {
   junitVersion = '4.12'
   runnerVersion = '0.5'
   supportVersion = '27.0.2'
+  desugarJdkLibsVer = '1.0.4'
 
   supportV4 = "com.android.support:support-v4:$supportVersion"
   supportDesign = "com.android.support:design:$supportVersion"
   supportAnnotations = "com.android.support:support-annotations:$supportVersion"
   supportAppCompat = "com.android.support:appcompat-v7:$supportVersion"
   recyclerviewV7 = "com.android.support:recyclerview-v7:$supportVersion"
+
+  coreLibraryDesugaring = "com.android.tools:desugar_jdk_libs:$desugarJdkLibsVer"
 
   // Test
   junit = "junit:junit:$junitVersion"
@@ -25,7 +28,6 @@ ext {
   hamcrestIntegration = "org.hamcrest:hamcrest-integration:$hamcrestVersion"
 
   // Other
-  threeTenAbp = 'com.jakewharton.threetenabp:threetenabp:1.1.1'
   butterknife = 'com.jakewharton:butterknife:8.5.1'
   butterknifeCompiler = 'com.jakewharton:butterknife-compiler:8.5.1'
 

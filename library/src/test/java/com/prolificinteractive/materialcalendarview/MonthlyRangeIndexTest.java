@@ -4,15 +4,15 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.threeten.bp.Month.APRIL;
-import static org.threeten.bp.Month.DECEMBER;
-import static org.threeten.bp.Month.FEBRUARY;
-import static org.threeten.bp.Month.JANUARY;
-import static org.threeten.bp.Month.JULY;
-import static org.threeten.bp.Month.JUNE;
-import static org.threeten.bp.Month.MAY;
-import static org.threeten.bp.Month.NOVEMBER;
-import static org.threeten.bp.Month.OCTOBER;
+import static java.time.Month.APRIL;
+import static java.time.Month.DECEMBER;
+import static java.time.Month.FEBRUARY;
+import static java.time.Month.JANUARY;
+import static java.time.Month.JULY;
+import static java.time.Month.JUNE;
+import static java.time.Month.MAY;
+import static java.time.Month.NOVEMBER;
+import static java.time.Month.OCTOBER;
 
 public class MonthlyRangeIndexTest {
 
