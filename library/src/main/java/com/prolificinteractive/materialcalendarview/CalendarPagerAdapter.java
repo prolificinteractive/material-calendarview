@@ -3,17 +3,21 @@ package com.prolificinteractive.materialcalendarview;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
+
+import org.threeten.bp.LocalDate;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.threeten.bp.LocalDate;
 
 /**
  * Pager adapter backing the calendar view
@@ -36,6 +40,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
   private DateRangeIndex rangeIndex;
   private List<CalendarDay> selectedDates = new ArrayList<>();
   private WeekDayFormatter weekDayFormatter = WeekDayFormatter.DEFAULT;
+  private int weekDayGravity = Gravity.CENTER;
   private DayFormatter dayFormatter = DayFormatter.DEFAULT;
   private DayFormatter dayFormatterContentDescription = dayFormatter;
   private List<DayViewDecorator> decorators = new ArrayList<>();
@@ -90,6 +95,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     newAdapter.maxDate = maxDate;
     newAdapter.selectedDates = selectedDates;
     newAdapter.weekDayFormatter = weekDayFormatter;
+    newAdapter.weekDayGravity = weekDayGravity;
     newAdapter.dayFormatter = dayFormatter;
     newAdapter.dayFormatterContentDescription = dayFormatterContentDescription;
     newAdapter.decorators = decorators;
@@ -156,6 +162,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     if (weekDayTextAppearance != null) {
       pagerView.setWeekDayTextAppearance(weekDayTextAppearance);
     }
+    pagerView.setWeekDayTextGravity(weekDayGravity);
     pagerView.setShowOtherDates(showOtherDates);
     pagerView.setMinimumDate(minDate);
     pagerView.setMaximumDate(maxDate);
@@ -259,6 +266,13 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     this.weekDayTextAppearance = taId;
     for (V pagerView : currentViews) {
       pagerView.setWeekDayTextAppearance(taId);
+    }
+  }
+
+  public void setWeekDayTextGravity(int gravity) {
+    this.weekDayGravity = gravity;
+    for (V pagerView : currentViews) {
+      pagerView.setWeekDayTextGravity(gravity);
     }
   }
 

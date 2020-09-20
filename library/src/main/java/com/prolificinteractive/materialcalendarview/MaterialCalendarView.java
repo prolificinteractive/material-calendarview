@@ -750,6 +750,10 @@ public class MaterialCalendarView extends ViewGroup {
     adapter.setWeekDayTextAppearance(resourceId);
   }
 
+  public void setWeekDayTextGravity(int gravity) {
+    adapter.setWeekDayTextGravity(gravity);
+  }
+
   /**
    * Get the currently selected date, or null if no selection. Depending on the selection mode,
    * you might get different results.
