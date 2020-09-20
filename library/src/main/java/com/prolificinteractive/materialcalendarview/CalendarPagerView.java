@@ -7,16 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.temporal.TemporalField;
 import org.threeten.bp.temporal.WeekFields;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.SHOW_DEFAULTS;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
@@ -115,6 +118,13 @@ abstract class CalendarPagerView extends ViewGroup
   public void setWeekDayTextAppearance(int taId) {
     for (WeekDayView weekDayView : weekDayViews) {
       weekDayView.setTextAppearance(getContext(), taId);
+    }
+  }
+
+  public void setWeekDayTextGravity(int gravity) {
+    for (WeekDayView weekDayView : weekDayViews) {
+      weekDayView.setGravity(gravity);
+      weekDayView.invalidate();
     }
   }
 

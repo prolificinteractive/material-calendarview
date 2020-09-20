@@ -3,14 +3,18 @@ package com.prolificinteractive.materialcalendarview.sample;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import android.view.Gravity;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
+
 import org.threeten.bp.DayOfWeek;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class CustomizeCodeActivity extends AppCompatActivity {
 
@@ -28,6 +32,7 @@ public class CustomizeCodeActivity extends AppCompatActivity {
     widget.setRightArrow(R.drawable.ic_arrow_forward);
     widget.setSelectionColor(getResources().getColor(R.color.sample_primary));
     widget.setWeekDayTextAppearance(R.style.CustomTextAppearance);
+    widget.setWeekDayTextGravity(Gravity.BOTTOM);
     widget.setHeaderTextAppearance(R.style.CustomTextAppearance);
     widget.setDateTextAppearance(R.style.CustomTextAppearance);
     widget.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
