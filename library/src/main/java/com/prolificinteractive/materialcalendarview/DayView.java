@@ -104,7 +104,10 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 
   @NonNull
   public String getLabel() {
-    return formatter.format(date);
+    if(date != null)
+      return formatter.format(date);
+
+    return  "0";
   }
 
   @NonNull
