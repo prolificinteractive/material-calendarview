@@ -27,6 +27,8 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
@@ -248,6 +250,8 @@ public class MaterialCalendarView extends ViewGroup {
 
   public MaterialCalendarView(Context context, AttributeSet attrs) {
     super(context, attrs);
+
+    if (isInEditMode()) AndroidThreeTen.init(context);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       //If we're on good Android versions, turn off clipping for cool effects
