@@ -419,7 +419,7 @@ public class MaterialCalendarView extends ViewGroup {
       monthView.setDateTextAppearance(adapter.getDateTextAppearance());
       monthView.setWeekDayTextAppearance(adapter.getWeekDayTextAppearance());
       monthView.setShowOtherDates(getShowOtherDates());
-      addView(monthView, new LayoutParams(calendarMode.visibleWeeksCount + DAY_NAMES_ROW));
+      addView(monthView, new LayoutParams(calendarMode.getVisibleWeeksCount() + DAY_NAMES_ROW));
     }
   }
 
@@ -428,8 +428,8 @@ public class MaterialCalendarView extends ViewGroup {
 
     pager.setId(R.id.mcv_pager);
     pager.setOffscreenPageLimit(1);
-    int tileHeight = showWeekDays ? calendarMode.visibleWeeksCount + DAY_NAMES_ROW
-                                  : calendarMode.visibleWeeksCount;
+    int tileHeight = showWeekDays ? calendarMode.getVisibleWeeksCount() + DAY_NAMES_ROW
+                                  : calendarMode.getVisibleWeeksCount();
     addView(pager, new LayoutParams(tileHeight));
   }
 
@@ -1648,7 +1648,7 @@ public class MaterialCalendarView extends ViewGroup {
   }
 
   private int getWeekCountBasedOnMode() {
-    int weekCount = calendarMode.visibleWeeksCount;
+    int weekCount = calendarMode.getVisibleWeeksCount();
     final boolean isInMonthsMode = calendarMode.equals(CalendarMode.MONTHS);
     if (isInMonthsMode && mDynamicHeightEnabled && adapter != null && pager != null) {
       final LocalDate cal = adapter.getItem(pager.getCurrentItem()).getDate();
@@ -1992,8 +1992,8 @@ public class MaterialCalendarView extends ViewGroup {
     setRangeDates(minDate, maxDate);
 
     // Reset height params after mode change
-    int tileHeight = showWeekDays ? calendarMode.visibleWeeksCount + DAY_NAMES_ROW
-                                  : calendarMode.visibleWeeksCount;
+    int tileHeight = showWeekDays ? calendarMode.getVisibleWeeksCount() + DAY_NAMES_ROW
+                                  : calendarMode.getVisibleWeeksCount();
     pager.setLayoutParams(new LayoutParams(tileHeight));
 
     setCurrentDate(
