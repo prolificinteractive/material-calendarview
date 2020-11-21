@@ -10,6 +10,7 @@ import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.listeners.DateRangeIndex;
+import com.prolificinteractive.materialcalendarview.listeners.DayViewDecorator;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.listeners.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import org.threeten.bp.DayOfWeek;
 

@@ -1,6 +1,10 @@
-package com.prolificinteractive.materialcalendarview;
+package com.prolificinteractive.materialcalendarview.listeners;
 
 import android.support.annotation.NonNull;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
 import java.util.List;
 
 /**

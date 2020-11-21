@@ -1,6 +1,9 @@
-package com.prolificinteractive.materialcalendarview;
+package com.prolificinteractive.materialcalendarview.listeners;
 
 import android.support.annotation.NonNull;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 /**
  * The callback used to indicate a date has been selected or deselected

@@ -1,4 +1,7 @@
-package com.prolificinteractive.materialcalendarview;
+package com.prolificinteractive.materialcalendarview.listeners;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 /**
  * The callback used to indicate the user changes the displayed month

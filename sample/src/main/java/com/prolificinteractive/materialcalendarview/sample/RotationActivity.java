@@ -8,8 +8,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateLongClickListener;
-import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+import com.prolificinteractive.materialcalendarview.listeners.OnDateLongClickListener;
+import com.prolificinteractive.materialcalendarview.listeners.OnMonthChangedListener;
 import org.threeten.bp.format.DateTimeFormatter;
 
 /**
