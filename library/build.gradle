@@ -39,6 +39,7 @@ dependencies {
 
   rootProject.ext.testDep.each { testImplementation it }
   rootProject.ext.androidTestDep.each { androidTestImplementation it }
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 tasks.withType(Javadoc) {
@@ -62,4 +63,7 @@ android.libraryVariants.all { variant ->
       linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
     }
   }
+}
+repositories {
+  mavenCentral()
 }
