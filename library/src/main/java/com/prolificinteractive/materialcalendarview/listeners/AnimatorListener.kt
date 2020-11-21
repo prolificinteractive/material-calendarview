@@ -1,8 +1,8 @@
-package com.prolificinteractive.materialcalendarview;
+package com.prolificinteractive.materialcalendarview.listeners;
 
 import android.animation.Animator;
 
-class AnimatorListener : Animator.AnimatorListener {
+open class AnimatorListener : Animator.AnimatorListener {
     override fun onAnimationStart(animation: Animator) {
 
     }

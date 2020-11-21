@@ -12,6 +12,7 @@ import android.view.animation.Interpolator;
 import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
+import com.prolificinteractive.materialcalendarview.listeners.AnimatorListener;
 
 class TitleChanger {
 
