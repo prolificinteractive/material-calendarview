@@ -11,6 +11,9 @@ class DayViewFacade {
     val isDecorated: Boolean
         get() = backgroundDrawable != null || spans.size > 0 || daysDisabled
 
+    /** TODO
+     * use a default value since setter does not allow null
+     * */
     var backgroundDrawable: Drawable? = null
         /**
          * Set a drawable to draw behind everything else
@@ -19,8 +22,12 @@ class DayViewFacade {
          */
 
         set(value) {
-            field = value ?: throw IllegalArgumentException("Drawable can not be null")
+            field = value //?: throw IllegalArgumentException("Drawable can not be null")
         }
+
+    /** TODO
+     * use a default value since setter does not allow null
+     * */
     var selectionDrawable: Drawable? = null
         /**
          * Set a custom selection drawable
@@ -29,9 +36,9 @@ class DayViewFacade {
          * @param drawable the drawable for selection
          */
         set(value) {
-            field = value ?: throw IllegalArgumentException("Selection Drawable Can not be null.")
+            field = value // ?: throw IllegalArgumentException("Selection Drawable Can not be null.")
         }
-    private val spans: LinkedList<Span> = LinkedList<Span>()
+    val spans: LinkedList<Span> = LinkedList<Span>()
 
     var daysDisabled = false
 

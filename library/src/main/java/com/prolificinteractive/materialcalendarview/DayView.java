@@ -275,7 +275,7 @@ class DayView extends AppCompatCheckedTextView {
             String label = getLabel();
             SpannableString formattedLabel = new SpannableString(getLabel());
             for (DayViewFacade.Span span : spans) {
-                formattedLabel.setSpan(span.span, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                formattedLabel.setSpan(span.getSpan(), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             setText(formattedLabel);
         }
