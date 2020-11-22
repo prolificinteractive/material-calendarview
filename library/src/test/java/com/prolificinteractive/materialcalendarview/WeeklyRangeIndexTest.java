@@ -1,5 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
+import com.prolificinteractive.materialcalendarview.listeners.DateRangeIndex;
+
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

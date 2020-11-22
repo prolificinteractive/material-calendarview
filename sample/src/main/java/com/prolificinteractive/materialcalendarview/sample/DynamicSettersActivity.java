@@ -23,7 +23,7 @@ import butterknife.OnClick;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateLongClickListener;
+import com.prolificinteractive.materialcalendarview.listeners.OnDateLongClickListener;
 import java.util.Random;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.format.DateTimeFormatter;

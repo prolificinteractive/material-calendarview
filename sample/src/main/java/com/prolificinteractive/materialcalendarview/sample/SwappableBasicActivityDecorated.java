@@ -9,7 +9,7 @@ import butterknife.OnClick;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.listeners.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.sample.decorators.HighlightWeekendsDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.MySelectorDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.OneDayDecorator;
