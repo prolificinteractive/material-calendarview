@@ -9,6 +9,7 @@ import java.util.Properties
 plugins {
     id("com.android.library")
     id("maven-publish")
+    id("signing")
 }
 
 android {
@@ -91,13 +92,31 @@ fun metadata(publication: MavenPublication) {
 
 fun MavenPom.config() {
     name.set(groupId)
+    description.set(project.requireProperty("publication.description"))
+    url.set(project.requireProperty("publication.url"))
     licenses {
         license {
-            name.set("The Apache Software License, Version 2.0")
-            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-            distribution.set("repo")
+            name.set(project.requireProperty("publication.license.name"))
+            url.set(project.requireProperty("publication.license.url"))
         }
     }
+    developers {
+        developer {
+            name.set(project.requireProperty("publication.developer.name"))
+            email.set(project.requireProperty("publication.developer.email"))
+            organization.set(project.requireProperty("publication.developer.email"))
+            organizationUrl.set(project.requireProperty("publication.developer.email"))
+        }
+    }
+    scm {
+        connection.set(project.requireProperty("publication.scm.connection"))
+        developerConnection.set(project.requireProperty("publication.scm.developerConnection"))
+        url.set(project.requireProperty("publication.scm.url"))
+    }
+}
+
+signing {
+    sign(publishing.publications)
 }
 
 // Because the components are created only during the afterEvaluate phase, you must
