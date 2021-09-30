@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 2.1.0 *(2021-09-30)*
+* Migrate to AndroidX.
+* Removed MaterialCalendarViewInitProvider.
+* Migrate to java.time, added Java 8 desugaring.
+* Updated versions: gradle 7.2, minSdk 21, targetSdk 31.
+
 Version 2.0.0 *(2018-09-07)*
 ----------------------------
 * New: Changed `java.util.Calendar` in favor of `java.time.LocalDate`.

@@ -16,7 +16,7 @@ Step 1. Add the JitPack repository to your build file
 allprojects {
   repositories {
     ...
-    maven { url 'https://jitpack.io' }
+    mavenCentral()
   }
 }
 ```
@@ -25,7 +25,7 @@ Step 2. Add the dependency
 
 ```groovy
 dependencies {
-  implementation 'com.github.prolificinteractive:material-calendarview:${version}'
+  implementation 'family.amma:material-calendarview:${version}'
 }
 ```
 
@@ -72,6 +72,10 @@ One of the aims of this library is to be customizable. The many options include:
 All of this and more can be done via the decorator api. Please check out the [decorator documentation](https://github.com/prolificinteractive/material-calendarview/wiki/Decorators).
 
 ## Recent Changes
+
+### Major Change in 2.1
+Migrations: AndroidX, `java.time` instead of `org.threeten.bp`, gradle 7.2, minSdk 21, targetSdk 31.
+Removed MaterialCalendarViewInitProvider.
 
 ### Major Change in 2.0
 
