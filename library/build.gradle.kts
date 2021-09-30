@@ -7,7 +7,7 @@ import java.io.File
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("maven-publish")
 }
 
@@ -18,9 +18,6 @@ android {
     defaultConfig {
         minSdk = AndroidProject.minSdkVersion
         targetSdk = AndroidProject.targetSdkVersion
-
-        versionCode = 20
-        versionName = "2.1.0"
     }
 
     lint {
@@ -31,10 +28,6 @@ android {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = AndroidProject.jvmVersion
         targetCompatibility = AndroidProject.jvmVersion
-    }
-
-    buildTypes {
-        release { isMinifyEnabled = true }
     }
 }
 
