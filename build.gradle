@@ -1,6 +1,6 @@
 wrapper {
   //if you change this version you will need to run the 'gradlew wrapper' command twice from the command line to auto update the gradle cache
-  gradleVersion = "5.1.1"
+  gradleVersion = "7.2"
 }
 buildscript {
   repositories {
@@ -8,8 +8,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.3.0'
-    classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+    classpath 'com.android.tools.build:gradle:7.0.2'
   }
 }
 

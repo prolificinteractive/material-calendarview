@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
-import org.threeten.bp.DayOfWeek;
+import java.time.DayOfWeek;
 
 /**
  * Highlight Saturdays and Sundays with a background

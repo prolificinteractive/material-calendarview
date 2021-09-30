@@ -3,8 +3,8 @@ package com.prolificinteractive.materialcalendarview.sample;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -17,8 +17,8 @@ import com.prolificinteractive.materialcalendarview.sample.decorators.OneDayDeco
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.Month;
+import java.time.LocalDate;
+import java.time.Month;
 
 /**
  * Shows off the most basic usage

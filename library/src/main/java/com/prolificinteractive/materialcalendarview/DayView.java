@@ -13,8 +13,8 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.AppCompatCheckedTextView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatCheckedTextView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.view.Gravity;
@@ -23,6 +23,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOth
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import java.util.List;
 
+import static android.view.View.TEXT_ALIGNMENT_CENTER;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showDecoratedDisabled;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOtherMonths;
 import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.showOutOfRange;
@@ -57,9 +58,7 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
 
     setGravity(Gravity.CENTER);
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      setTextAlignment(TEXT_ALIGNMENT_CENTER);
-    }
+    setTextAlignment(TEXT_ALIGNMENT_CENTER);
 
     setDay(day);
   }
@@ -214,14 +213,10 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
     StateListDrawable drawable = new StateListDrawable();
     drawable.setExitFadeDuration(fadeTime);
     drawable.addState(new int[] { android.R.attr.state_checked }, generateCircleDrawable(color));
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      drawable.addState(
-          new int[] { android.R.attr.state_pressed },
-          generateRippleDrawable(color, bounds)
-      );
-    } else {
-      drawable.addState(new int[] { android.R.attr.state_pressed }, generateCircleDrawable(color));
-    }
+    drawable.addState(
+            new int[] { android.R.attr.state_pressed },
+            generateRippleDrawable(color, bounds)
+    );
 
     drawable.addState(new int[] { }, generateCircleDrawable(Color.TRANSPARENT));
 

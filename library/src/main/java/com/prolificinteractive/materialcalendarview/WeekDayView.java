@@ -2,12 +2,11 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatTextView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 import android.view.Gravity;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
-import org.threeten.bp.DayOfWeek;
+import java.time.DayOfWeek;
 
 /**
  * Display a day of the week
@@ -22,10 +21,7 @@ import org.threeten.bp.DayOfWeek;
 
     setGravity(Gravity.CENTER);
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      setTextAlignment(TEXT_ALIGNMENT_CENTER);
-    }
-
+    setTextAlignment(TEXT_ALIGNMENT_CENTER);
     setDayOfWeek(dayOfWeek);
   }
 

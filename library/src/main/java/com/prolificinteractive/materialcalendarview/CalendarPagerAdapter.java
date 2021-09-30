@@ -1,8 +1,8 @@
 package com.prolificinteractive.materialcalendarview;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.PagerAdapter;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
@@ -13,7 +13,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.threeten.bp.LocalDate;
+import java.time.LocalDate;
 
 /**
  * Pager adapter backing the calendar view
