@@ -6,9 +6,8 @@ import android.content.Context;
 import android.content.pm.ProviderInfo;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import com.jakewharton.threetenabp.AndroidThreeTen;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * With this in place, we don't have to have the user install 310Abp by himself.
@@ -21,8 +20,6 @@ public final class MaterialCalendarViewInitProvider extends ContentProvider {
   public MaterialCalendarViewInitProvider() { }
 
   @Override public boolean onCreate() {
-    // The interesting piece here.
-    AndroidThreeTen.init(getContext());
     return true;
   }
 

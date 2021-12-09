@@ -1,6 +1,6 @@
 package com.prolificinteractive.materialcalendarview.format;
 
-import org.threeten.bp.DayOfWeek;
+import java.time.DayOfWeek;
 
 /**
  * Use an array to supply week day labels

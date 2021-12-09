@@ -6,9 +6,9 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +24,10 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateLongClickListener;
+
+import java.time.DayOfWeek;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
-import org.threeten.bp.DayOfWeek;
-import org.threeten.bp.format.DateTimeFormatter;
 
 public class DynamicSettersActivity extends AppCompatActivity implements OnDateLongClickListener {
 

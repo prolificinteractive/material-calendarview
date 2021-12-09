@@ -2,9 +2,10 @@ package com.prolificinteractive.materialcalendarview;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import org.threeten.bp.LocalDate;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.time.LocalDate;
 
 /**
  * An imputable representation of a day on a calendar, based on {@link LocalDate}.
