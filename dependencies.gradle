@@ -24,6 +24,10 @@ ext {
   hamcrestLibrary = "org.hamcrest:hamcrest-library:$hamcrestVersion"
   hamcrestIntegration = "org.hamcrest:hamcrest-integration:$hamcrestVersion"
 
+  // Other
+  butterknife = 'com.jakewharton:butterknife:8.5.1'
+  butterknifeCompiler = 'com.jakewharton:butterknife-compiler:8.5.1'
+
   testDep = [junit,
              hamcrestCore,
              hamcrestLibrary,
