@@ -2,4 +2,4 @@ jdk:
   - openjdk11
 install:
   - echo "Running a custom install command"
-  - ./gradlew clean :library:build -xtest
+  - ./gradlew clean :library:publishReleasePublicationToMavenLocal -xtest
