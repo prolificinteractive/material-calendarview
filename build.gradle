@@ -8,7 +8,7 @@ buildscript {
     google()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:7.0.4'
+    classpath 'com.android.tools.build:gradle:7.1.0-beta05'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
   }
 }
