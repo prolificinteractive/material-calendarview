@@ -57,3 +57,13 @@ android.libraryVariants.all { variant ->
     }
   }
 }
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      groupId = 'com.prolificinteractive'
+      artifactId = 'materialcalendarview'
+      version = '2.1.0'
+    }
+  }
+}
