@@ -2,24 +2,30 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 android {
-  compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
-  defaultConfig {
-    minSdkVersion rootProject.ext.minSdkVersion
-    targetSdkVersion rootProject.ext.targetSdkVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
 
 
-      vectorDrawables.useSupportLibrary = true
-  }
+        vectorDrawables.useSupportLibrary = true
+    }
 
-  lintOptions {
-    abortOnError false
-  }
+    buildTypes {
+        release {
+            minifyEnabled true
+        }
+    }
 
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_11
-    targetCompatibility JavaVersion.VERSION_11
-  }
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
 }
 
 group = "com.github.prolificinteractive"
@@ -27,43 +33,47 @@ version = android.defaultConfig.versionName
 archivesBaseName = 'material-calendarview'
 
 dependencies {
-  implementation rootProject.ext.supportV4
-  implementation 'androidx.appcompat:appcompat:1.4.0'
-  implementation 'androidx.annotation:annotation:1.3.0'
+    implementation rootProject.ext.supportV4
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'androidx.annotation:annotation:1.3.0'
 
-  rootProject.ext.testDep.each { testImplementation it }
-  rootProject.ext.androidTestDep.each { androidTestImplementation it }
+    rootProject.ext.testDep.each { testImplementation it }
+    rootProject.ext.androidTestDep.each { androidTestImplementation it }
 }
 
 tasks.withType(Javadoc) {
-  options.addStringOption('Xdoclint:none', '-quiet')
-  options.addStringOption('encoding', 'UTF-8')
-  options.addStringOption('charSet', 'UTF-8')
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
 }
 
 android.libraryVariants.all { variant ->
-  task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
-    title "Material CalendarView ${version}"
-    description "Generates Javadoc for $variant.name."
-    source = variant.javaCompiler.source
-    doFirst {
-      classpath = files(variant.javaCompiler.classpath.files, project.android.getBootClasspath())
+    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+        title "Material CalendarView ${version}"
+        description "Generates Javadoc for $variant.name."
+        source = variant.javaCompiler.source
+        doFirst {
+            classpath = files(variant.javaCompiler.classpath.files, project.android.getBootClasspath())
+        }
+        exclude '**/BuildConfig.java'
+        exclude '**/R.java'
+        options {
+            links "http://docs.oracle.com/javase/7/docs/api/"
+            linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
+        }
     }
-    exclude '**/BuildConfig.java'
-    exclude '**/R.java'
-    options {
-      links "http://docs.oracle.com/javase/7/docs/api/"
-      linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
-    }
-  }
 }
 
-publishing {
-  publications {
-    mavenJava(MavenPublication) {
-      groupId = 'com.prolificinteractive'
-      artifactId = 'materialcalendarview'
-      version = '2.1.0'
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.hduerkop'
+                artifactId = 'materialcalendarview'
+                version = '2.1.0'
+            }
+        }
     }
-  }
 }
