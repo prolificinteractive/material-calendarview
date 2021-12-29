@@ -1,8 +1,8 @@
 package com.prolificinteractive.materialcalendarview.sample;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -13,8 +13,9 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.sample.decorators.HighlightWeekendsDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.MySelectorDecorator;
 import com.prolificinteractive.materialcalendarview.sample.decorators.OneDayDecorator;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.Month;
+
+import java.time.LocalDate;
+import java.time.Month;
 
 /**
  * Shows off the most basic usage

@@ -1,7 +1,7 @@
 package com.prolificinteractive.materialcalendarview;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;

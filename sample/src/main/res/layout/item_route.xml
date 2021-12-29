@@ -6,6 +6,6 @@
     android:minHeight="48dp"
     android:padding="16dp"
     android:gravity="center_vertical|start"
-    android:textAppearance="?android:attr/textAppearanceListItem"
+    android:textAppearance="?attr/textAppearanceListItem"
     android:background="?attr/selectableItemBackground"
     />
