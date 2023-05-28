@@ -13,19 +13,22 @@ import org.threeten.bp.DayOfWeek;
  */
 public class HighlightWeekendsDecorator implements DayViewDecorator {
 
-  private final Drawable highlightDrawable;
-  private static final int color = Color.parseColor("#228BC34A");
+    private final Drawable highlightDrawable;
 
-  public HighlightWeekendsDecorator() {
-    highlightDrawable = new ColorDrawable(color);
-  }
+    private static final int color = Color.parseColor("#228BC34A");
 
-  @Override public boolean shouldDecorate(final CalendarDay day) {
-    final DayOfWeek weekDay = day.getDate().getDayOfWeek();
-    return weekDay == DayOfWeek.SATURDAY || weekDay == DayOfWeek.SUNDAY;
-  }
+    public HighlightWeekendsDecorator() {
+        highlightDrawable = new ColorDrawable(color);
+    }
 
-  @Override public void decorate(final DayViewFacade view) {
-    view.setBackgroundDrawable(highlightDrawable);
-  }
+    @Override
+    public boolean shouldDecorate(final CalendarDay day) {
+        final DayOfWeek weekDay = day.getDate().getDayOfWeek();
+        return weekDay == DayOfWeek.SATURDAY || weekDay == DayOfWeek.SUNDAY;
+    }
+
+    @Override
+    public void decorate(final DayViewFacade view) {
+        view.setBackgroundDrawable(highlightDrawable);
+    }
 }

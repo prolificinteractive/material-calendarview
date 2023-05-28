@@ -14,29 +14,30 @@ import java.util.HashSet;
  */
 public class RangeDayDecorator implements DayViewDecorator {
 
-  private final HashSet<CalendarDay> list = new HashSet<>();
-  private final Drawable drawable;
+    private final HashSet<CalendarDay> list = new HashSet<>();
 
-  public RangeDayDecorator(final Context context) {
-    drawable = context.getResources().getDrawable(R.drawable.my_selector);
-  }
+    private final Drawable drawable;
 
-  @Override
-  public boolean shouldDecorate(CalendarDay day) {
-    return list.contains(day);
-  }
+    public RangeDayDecorator(final Context context) {
+        drawable = context.getResources().getDrawable(R.drawable.my_selector);
+    }
 
-  @Override
-  public void decorate(DayViewFacade view) {
-    view.setSelectionDrawable(drawable);
-  }
+    @Override
+    public boolean shouldDecorate(CalendarDay day) {
+        return list.contains(day);
+    }
 
-  /**
-   * We're changing the dates, so make sure to call {@linkplain MaterialCalendarView#invalidateDecorators()}
-   */
-  public void addFirstAndLast(final CalendarDay first, final CalendarDay last) {
-    list.clear();
-    list.add(first);
-    list.add(last);
-  }
+    @Override
+    public void decorate(DayViewFacade view) {
+        view.setSelectionDrawable(drawable);
+    }
+
+    /**
+     * We're changing the dates, so make sure to call {@linkplain MaterialCalendarView#invalidateDecorators()}
+     */
+    public void addFirstAndLast(final CalendarDay first, final CalendarDay last) {
+        list.clear();
+        list.add(first);
+        list.add(last);
+    }
 }

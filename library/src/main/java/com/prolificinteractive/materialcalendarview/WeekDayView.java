@@ -12,30 +12,29 @@ import org.threeten.bp.DayOfWeek;
 /**
  * Display a day of the week
  */
-@SuppressLint("ViewConstructor") class WeekDayView extends AppCompatTextView {
+@SuppressLint("ViewConstructor")
+class WeekDayView extends AppCompatTextView {
 
-  private WeekDayFormatter formatter = WeekDayFormatter.DEFAULT;
-  private DayOfWeek dayOfWeek;
+    private WeekDayFormatter formatter = WeekDayFormatter.DEFAULT;
 
-  public WeekDayView(final Context context, final DayOfWeek dayOfWeek) {
-    super(context);
+    private DayOfWeek dayOfWeek;
 
-    setGravity(Gravity.CENTER);
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      setTextAlignment(TEXT_ALIGNMENT_CENTER);
+    public WeekDayView(final Context context, final DayOfWeek dayOfWeek) {
+        super(context);
+        setGravity(Gravity.CENTER);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            setTextAlignment(TEXT_ALIGNMENT_CENTER);
+        }
+        setDayOfWeek(dayOfWeek);
     }
 
-    setDayOfWeek(dayOfWeek);
-  }
+    public void setWeekDayFormatter(@Nullable final WeekDayFormatter formatter) {
+        this.formatter = formatter == null ? WeekDayFormatter.DEFAULT : formatter;
+        setDayOfWeek(dayOfWeek);
+    }
 
-  public void setWeekDayFormatter(@Nullable final WeekDayFormatter formatter) {
-    this.formatter = formatter == null ? WeekDayFormatter.DEFAULT : formatter;
-    setDayOfWeek(dayOfWeek);
-  }
-
-  public void setDayOfWeek(final DayOfWeek dayOfWeek) {
-    this.dayOfWeek = dayOfWeek;
-    setText(formatter.format(dayOfWeek));
-  }
+    public void setDayOfWeek(final DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+        setText(formatter.format(dayOfWeek));
+    }
 }

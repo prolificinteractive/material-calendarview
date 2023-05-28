@@ -19,57 +19,42 @@ import org.threeten.bp.Month;
 /**
  * Shows off the most basic usage
  */
-public class SwappableBasicActivityDecorated extends AppCompatActivity
-    implements OnDateSelectedListener {
+public class SwappableBasicActivityDecorated extends AppCompatActivity implements OnDateSelectedListener {
 
-  private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
+    private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
 
-  @BindView(R.id.calendarView) MaterialCalendarView widget;
+    @BindView(R.id.calendarView)
+    MaterialCalendarView widget;
 
-  @Override protected void onCreate(final Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_basic_modes);
-    ButterKnife.bind(this);
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_basic_modes);
+        ButterKnife.bind(this);
+        widget.setOnDateChangedListener(this);
+        widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+        final LocalDate instance = LocalDate.now();
+        widget.setSelectedDate(instance);
+        final LocalDate min = LocalDate.of(instance.getYear(), Month.JANUARY, 1);
+        final LocalDate max = LocalDate.of(instance.getYear(), Month.DECEMBER, 31);
+        widget.state().edit().setMinimumDate(min).setMaximumDate(max).commit();
+        widget.addDecorators(new MySelectorDecorator(this), new HighlightWeekendsDecorator(), oneDayDecorator);
+    }
 
-    widget.setOnDateChangedListener(this);
-    widget.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        //If you change a decorate, you need to invalidate decorators
+        oneDayDecorator.setDate(date.getDate());
+        widget.invalidateDecorators();
+    }
 
-    final LocalDate instance = LocalDate.now();
-    widget.setSelectedDate(instance);
+    @OnClick(R.id.button_weeks)
+    public void onSetWeekMode() {
+        widget.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit();
+    }
 
-    final LocalDate min = LocalDate.of(instance.getYear(), Month.JANUARY, 1);
-    final LocalDate max = LocalDate.of(instance.getYear(), Month.DECEMBER, 31);
-
-    widget.state().edit().setMinimumDate(min).setMaximumDate(max).commit();
-
-    widget.addDecorators(
-        new MySelectorDecorator(this),
-        new HighlightWeekendsDecorator(),
-        oneDayDecorator
-    );
-  }
-
-  @Override
-  public void onDateSelected(
-      @NonNull MaterialCalendarView widget,
-      @NonNull CalendarDay date,
-      boolean selected) {
-    //If you change a decorate, you need to invalidate decorators
-    oneDayDecorator.setDate(date.getDate());
-    widget.invalidateDecorators();
-  }
-
-  @OnClick(R.id.button_weeks)
-  public void onSetWeekMode() {
-    widget.state().edit()
-        .setCalendarDisplayMode(CalendarMode.WEEKS)
-        .commit();
-  }
-
-  @OnClick(R.id.button_months)
-  public void onSetMonthMode() {
-    widget.state().edit()
-        .setCalendarDisplayMode(CalendarMode.MONTHS)
-        .commit();
-  }
+    @OnClick(R.id.button_months)
+    public void onSetMonthMode() {
+        widget.state().edit().setCalendarDisplayMode(CalendarMode.MONTHS).commit();
+    }
 }

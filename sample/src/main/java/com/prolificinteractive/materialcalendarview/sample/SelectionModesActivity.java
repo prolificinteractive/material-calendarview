@@ -25,60 +25,64 @@ import org.threeten.bp.format.DateTimeFormatter;
  *
  * @see MaterialCalendarView.SelectionMode
  */
-public class SelectionModesActivity extends AppCompatActivity
-    implements OnDateSelectedListener, OnRangeSelectedListener {
+public class SelectionModesActivity extends AppCompatActivity implements OnDateSelectedListener, OnRangeSelectedListener {
 
-  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
 
-  @BindView(R.id.parent) ViewGroup parent;
-  @BindView(R.id.calendar_view_single) MaterialCalendarView single;
-  @BindView(R.id.calendar_view_multi) MaterialCalendarView multi;
-  @BindView(R.id.calendar_view_range) MaterialCalendarView range;
-  @BindView(R.id.calendar_view_none) MaterialCalendarView none;
+    @BindView(R.id.parent)
+    ViewGroup parent;
 
-  private RangeDayDecorator decorator;
+    @BindView(R.id.calendar_view_single)
+    MaterialCalendarView single;
 
-  @Override protected void onCreate(final Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_selection_modes);
-    ButterKnife.bind(this);
+    @BindView(R.id.calendar_view_multi)
+    MaterialCalendarView multi;
 
-    decorator = new RangeDayDecorator(this);
+    @BindView(R.id.calendar_view_range)
+    MaterialCalendarView range;
 
-    single.setOnDateChangedListener(this);
-    multi.setOnDateChangedListener(this);
-    range.setOnDateChangedListener(this);
-    range.setOnRangeSelectedListener(this);
-    range.addDecorator(decorator);
-    none.setOnDateChangedListener(this);
-  }
+    @BindView(R.id.calendar_view_none)
+    MaterialCalendarView none;
 
-  @Override public void onDateSelected(
-      @NonNull final MaterialCalendarView widget,
-      @NonNull final CalendarDay date,
-      final boolean selected) {
-    final String text = selected ? FORMATTER.format(date.getDate()) : "No Selection";
-    Toast.makeText(SelectionModesActivity.this, text, Toast.LENGTH_SHORT).show();
-  }
+    private RangeDayDecorator decorator;
 
-  @Override public void onRangeSelected(
-      @NonNull final MaterialCalendarView widget,
-      @NonNull final List<CalendarDay> dates) {
-    if (dates.size() > 0) {
-      decorator.addFirstAndLast(dates.get(0), dates.get(dates.size() - 1));
-      range.invalidateDecorators();
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_selection_modes);
+        ButterKnife.bind(this);
+        decorator = new RangeDayDecorator(this);
+        single.setOnDateChangedListener(this);
+        multi.setOnDateChangedListener(this);
+        range.setOnDateChangedListener(this);
+        range.setOnRangeSelectedListener(this);
+        range.addDecorator(decorator);
+        none.setOnDateChangedListener(this);
     }
-  }
 
-  @OnCheckedChanged(R.id.calendar_mode)
-  void onCalendarModeChanged(boolean checked) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      TransitionManager.beginDelayedTransition(parent);
+    @Override
+    public void onDateSelected(@NonNull final MaterialCalendarView widget, @NonNull final CalendarDay date, final boolean selected) {
+        final String text = selected ? FORMATTER.format(date.getDate()) : "No Selection";
+        Toast.makeText(SelectionModesActivity.this, text, Toast.LENGTH_SHORT).show();
     }
-    final CalendarMode mode = checked ? CalendarMode.WEEKS : CalendarMode.MONTHS;
-    single.state().edit().setCalendarDisplayMode(mode).commit();
-    multi.state().edit().setCalendarDisplayMode(mode).commit();
-    range.state().edit().setCalendarDisplayMode(mode).commit();
-    none.state().edit().setCalendarDisplayMode(mode).commit();
-  }
+
+    @Override
+    public void onRangeSelected(@NonNull final MaterialCalendarView widget, @NonNull final List<CalendarDay> dates) {
+        if (dates.size() > 0) {
+            decorator.addFirstAndLast(dates.get(0), dates.get(dates.size() - 1));
+            range.invalidateDecorators();
+        }
+    }
+
+    @OnCheckedChanged(R.id.calendar_mode)
+    void onCalendarModeChanged(boolean checked) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(parent);
+        }
+        final CalendarMode mode = checked ? CalendarMode.WEEKS : CalendarMode.MONTHS;
+        single.state().edit().setCalendarDisplayMode(mode).commit();
+        multi.state().edit().setCalendarDisplayMode(mode).commit();
+        range.state().edit().setCalendarDisplayMode(mode).commit();
+        none.state().edit().setCalendarDisplayMode(mode).commit();
+    }
 }
