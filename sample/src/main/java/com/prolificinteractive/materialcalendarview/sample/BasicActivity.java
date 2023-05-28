@@ -17,48 +17,42 @@ import org.threeten.bp.format.DateTimeFormatter;
 /**
  * Shows off the most basic usage
  */
-public class BasicActivity extends AppCompatActivity
-    implements OnDateSelectedListener, OnMonthChangedListener, OnDateLongClickListener {
+public class BasicActivity extends AppCompatActivity implements OnDateSelectedListener, OnMonthChangedListener, OnDateLongClickListener {
 
-  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, d MMM yyyy");
 
-  @BindView(R.id.calendarView)
-  MaterialCalendarView widget;
+    @BindView(R.id.calendarView)
+    MaterialCalendarView widget;
 
-  @BindView(R.id.textView)
-  TextView textView;
+    @BindView(R.id.textView)
+    TextView textView;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_basic);
-    ButterKnife.bind(this);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_basic);
+        ButterKnife.bind(this);
+        widget.setOnDateChangedListener(this);
+        widget.setOnDateLongClickListener(this);
+        widget.setOnMonthChangedListener(this);
+        //Setup initial text
+        textView.setText("No Selection");
+    }
 
-    widget.setOnDateChangedListener(this);
-    widget.setOnDateLongClickListener(this);
-    widget.setOnMonthChangedListener(this);
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        textView.setText(selected ? FORMATTER.format(date.getDate()) : "No Selection");
+    }
 
-    //Setup initial text
-    textView.setText("No Selection");
-  }
+    @Override
+    public void onDateLongClick(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
+        final String text = String.format("%s is available", FORMATTER.format(date.getDate()));
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
 
-  @Override
-  public void onDateSelected(
-      @NonNull MaterialCalendarView widget,
-      @NonNull CalendarDay date,
-      boolean selected) {
-    textView.setText(selected ? FORMATTER.format(date.getDate()) : "No Selection");
-  }
-
-  @Override
-  public void onDateLongClick(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date) {
-    final String text = String.format("%s is available", FORMATTER.format(date.getDate()));
-    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-  }
-
-  @Override
-  public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-    //noinspection ConstantConditions
-    getSupportActionBar().setTitle(FORMATTER.format(date.getDate()));
-  }
+    @Override
+    public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+        //noinspection ConstantConditions
+        getSupportActionBar().setTitle(FORMATTER.format(date.getDate()));
+    }
 }

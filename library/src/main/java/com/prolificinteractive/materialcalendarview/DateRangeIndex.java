@@ -6,18 +6,18 @@ package com.prolificinteractive.materialcalendarview;
  */
 interface DateRangeIndex {
 
-  /**
-   * Count of pages displayed between 2 dates.
-   */
-  int getCount();
+    /**
+     * Count of pages displayed between 2 dates.
+     */
+    int getCount();
 
-  /**
-   * Index of the page where the date is displayed.
-   */
-  int indexOf(CalendarDay day);
+    /**
+     * Index of the page where the date is displayed.
+     */
+    int indexOf(CalendarDay day);
 
-  /**
-   * Get the first date at the position within the index.
-   */
-  CalendarDay getItem(int position);
+    /**
+     * Get the first date at the position within the index.
+     */
+    CalendarDay getItem(int position);
 }

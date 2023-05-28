@@ -12,30 +12,26 @@ import java.text.SimpleDateFormat;
 /**
  * Shows off the most basic usage
  */
-public class OldCalendarViewActivity extends AppCompatActivity
-    implements CalendarView.OnDateChangeListener {
+public class OldCalendarViewActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener {
 
-  private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
+    private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
-  @BindView(R.id.calendarView)
-  CalendarView widget;
+    @BindView(R.id.calendarView)
+    CalendarView widget;
 
-  @BindView(R.id.textView)
-  TextView textView;
+    @BindView(R.id.textView)
+    TextView textView;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_old_calendarview);
-    ButterKnife.bind(this);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_old_calendarview);
+        ButterKnife.bind(this);
+        widget.setOnDateChangeListener(this);
+    }
 
-    widget.setOnDateChangeListener(this);
-  }
-
-  @Override
-  public void onSelectedDayChange(
-      CalendarView view, int year, int month,
-      int dayOfMonth) {
-    textView.setText(FORMATTER.format(view.getDate()));
-  }
+    @Override
+    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+        textView.setText(FORMATTER.format(view.getDate()));
+    }
 }
